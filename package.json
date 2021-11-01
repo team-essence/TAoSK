@@ -6,7 +6,7 @@
   "author": "roll1226 <tomo_yasu_4724@icloud.com>",
   "license": "MIT",
   "scripts": {
-    "init": "husky install",
+    "prepare": "husky install",
     "check-types:front": "cd frontend && yarn check-types",
     "check-types:api": "cd api && yarn check-types",
     "check-types:all": "yarn check-types:front && yarn check-types:api",
