@@ -5,7 +5,6 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import firebase from 'firebase/compat/app';
 import { auth } from 'utils/lib/firebase/firebaseInitial';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
