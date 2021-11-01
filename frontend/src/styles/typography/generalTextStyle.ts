@@ -35,7 +35,7 @@ export type GeneralTextStyleProps = {
 export const generalText = styled.span<GeneralTextStyleProps>`
   font-size: ${(props) => props.fontSize}px;
   line-height: ${(props) => (props.fontSize > 20 ? 1.5 : 2)};
-  color: ${(props) => props.fontColor || generalColorStyle.Black};
+  color: ${(props) => props.fontColor || generalColorStyle.black};
   font-weight: ${(props) => props.fontWeight || GeneralFontWeight.NORMAL};
 `;
 
