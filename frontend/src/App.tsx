@@ -3,8 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 const App: FC = () => {
-  console.log();
-
+  console.error();
   return (
     <div className="App">
       <header className="App-header">
