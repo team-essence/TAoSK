@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mariadb:10.6.1
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: example
+    ports:
+      - 3306:3306
+    volumes:
+      - ./sql:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
