@@ -3,9 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 const App: FC = () => {
-  var test = '';
-
-  console.error();
+  console.log();
 
   return (
     <div className="App">
