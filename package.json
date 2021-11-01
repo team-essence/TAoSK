@@ -9,16 +9,20 @@
     "init": "husky install",
     "check-types:front": "cd frontend && yarn check-types",
     "check-types:api": "cd api && yarn check-types",
-    "check-types:all": "yarn check-types:front && check-types:api"
+    "check-types:all": "yarn check-types:front && check-types:api",
+    "lint:front": "cd frontend && yarn fix:eslint",
+    "lint:api": "cd api && yarn fix:eslint"
   },
   "devDependencies": {
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json}": [
-      "cd frontend && yarn fix:eslint",
-      "cd api && yarn fix:eslint"
+    "frontend/**/*.{ts,tsx}": [
+      "yarn lint:front"
+    ],
+    "api/**/*.{js,jsx,ts,tsx,json}": [
+      "yarn fix:api"
     ]
   }
 }
