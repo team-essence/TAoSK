@@ -2,7 +2,7 @@
  * consoleを使う場合はこちらを利用する
  *
  */
-export default class LoggerUtil {
+export default class logger {
   public static debug(message?: any, ...optionalParams: any[]) {
     if (process.env.NODE_ENV !== 'production') {
       // eslint-disable-next-line no-console

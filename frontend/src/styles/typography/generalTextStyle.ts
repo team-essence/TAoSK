@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import GeneralColorStyle from '../colors/GeneralColorStyle';
+import generalColorStyle from 'styles/colors/generalColorStyle';
 
 export enum GeneralFontSize {
   SIZE_08 = 8,
@@ -32,14 +32,14 @@ export type GeneralTextStyleProps = {
   fontWeight?: GeneralFontWeight;
 };
 
-export const GeneralText = styled.span<GeneralTextStyleProps>`
+export const generalText = styled.span<GeneralTextStyleProps>`
   font-size: ${(props) => props.fontSize}px;
   line-height: ${(props) => (props.fontSize > 20 ? 1.5 : 2)};
-  color: ${(props) => props.fontColor || GeneralColorStyle.Black};
+  color: ${(props) => props.fontColor || generalColorStyle.Black};
   font-weight: ${(props) => props.fontWeight || GeneralFontWeight.NORMAL};
 `;
 
-export const GeneralTextParagraph = styled(GeneralText.withComponent('p'))`
+export const generalTextParagraph = styled(generalText.withComponent('p'))`
   white-space: pre-wrap;
   word-break: break-all;
 `;

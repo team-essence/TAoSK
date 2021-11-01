@@ -1,4 +1,4 @@
-import { toast, ToastOptions } from 'react-toastify';
+import { toast as toastFunc, ToastOptions } from 'react-toastify';
 
 const toastOption: ToastOptions = {
   position: 'top-right',
@@ -10,13 +10,13 @@ const toastOption: ToastOptions = {
   progress: undefined,
 };
 
-class ToastUtil {
+class toast {
   /**
    * toast info type
    * @param {string} text [表示テキスト]
    */
   public static info(text: string) {
-    return toast.info(text, toastOption);
+    return toastFunc.info(text, toastOption);
   }
 
   /**
@@ -24,7 +24,7 @@ class ToastUtil {
    * @param {string} text [表示テキスト]
    */
   public static success(text: string) {
-    return toast.success(text, toastOption);
+    return toastFunc.success(text, toastOption);
   }
 
   /**
@@ -32,7 +32,7 @@ class ToastUtil {
    * @param {string} text [表示テキスト]
    */
   public static warning(text: string) {
-    return toast.warn(text, toastOption);
+    return toastFunc.warn(text, toastOption);
   }
 
   /**
@@ -40,7 +40,7 @@ class ToastUtil {
    * @param {string} text [表示テキスト]
    */
   public static error(text: string) {
-    return toast.error(text, toastOption);
+    return toastFunc.error(text, toastOption);
   }
 
   /**
@@ -48,7 +48,7 @@ class ToastUtil {
    * @param {string} text [表示テキスト]
    */
   public static default(text: string) {
-    return toast(text, toastOption);
+    return toastFunc(text, toastOption);
   }
 
   /**
@@ -56,8 +56,8 @@ class ToastUtil {
    * @param {string} text [表示テキスト]
    */
   public static dark(text: string) {
-    return toast.dark(text, toastOption);
+    return toastFunc.dark(text, toastOption);
   }
 }
 
-export default ToastUtil;
+export default toast;
