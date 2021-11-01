@@ -23,7 +23,11 @@
       "version": "detect"
     }
   },
-  "plugins": ["react-hooks", "react", "@typescript-eslint"],
+  "plugins": [
+    "react-hooks",
+    "react",
+    "@typescript-eslint"
+  ],
   // 基本的にルールは recommended に従う
   // prettier は配列の最後尾に書く
   "extends": [
@@ -36,6 +40,9 @@
   ],
   "rules": {
     // TypeScirpt なので prop-types は要らない
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-console": [
+      "error"
+    ],
   }
 }
