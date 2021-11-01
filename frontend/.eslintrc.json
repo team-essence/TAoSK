@@ -36,6 +36,7 @@
   ],
   "rules": {
     // TypeScirpt なので prop-types は要らない
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "@typescript-eslint/no-empty-interface": 0
   }
 }
