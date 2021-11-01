@@ -8,26 +8,25 @@ npm は禁止 yarn を使う
 
 ### 起動方法
 
-`cd frontend`</br>
-`yarn`</br>
-`yarn start`
+`make init-front`</br>
+`make start-front`
 
 ### フォルダ構成
 
-```md
+```bash
 frontend/
-&ensp;├─ public
-&ensp;├─ src/
-&ensp;&ensp;├─ index.tsx
-&ensp;&ensp;├─ App.tsx
-&ensp;&ensp;├─ pages/
-&ensp;&ensp;├─ components/
-&ensp;&ensp;├─ hooks/
-&ensp;&ensp;├─ consts/
-&ensp;&ensp;├─ models/
-&ensp;&ensp;├─ utils/
-&ensp;&ensp;├─ env/
-&ensp;&ensp;├─ styles/
+      ├─ public
+      ├─ src/
+            ├─ index.tsx
+            ├─ App.tsx
+            ├─ pages/
+            ├─ components/
+            ├─ hooks/
+            ├─ consts/
+            ├─ models/
+            ├─ utils/
+            ├─ env/
+            ├─ styles/
 ```
 
 | ディレクトリ | 役割                           |
@@ -116,3 +115,4 @@ const StyledContainer = styled.div`
 ## バックエンド
 
 あとでかく
+`Makefileで起動できるようにしてくれ`
