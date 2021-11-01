@@ -8,9 +8,8 @@ npm は禁止 yarn を使う
 
 ### 起動方法
 
-`cd frontend`</br>
-`yarn`</br>
-`yarn start`
+`make init-front`</br>
+`make start-front`
 
 ### フォルダ構成
 
@@ -116,3 +115,4 @@ const StyledContainer = styled.div`
 ## バックエンド
 
 あとでかく
+`Makefileで起動できるようにしてくれ`
