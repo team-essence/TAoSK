@@ -1,6 +1,6 @@
 const generalColorStyle = {
-  Black: '#454545',
-  Sns: {
+  black: '#454545',
+  sns: {
     Facebook: '#1877f2',
     Twitter: '#1da1f2',
   },
