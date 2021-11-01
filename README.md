@@ -83,9 +83,9 @@ const [state, setState] = useState("");
 
 ```js
 // 例
-import { button } from "components/button";
+import { Button } from "components/Button";
 
-export const hoge = () => {
+export const Hoge = () => {
   // 処理
 };
 ```
@@ -97,13 +97,13 @@ export const hoge = () => {
 
 ```js
 // 例
-import { button } from "components/button";
+import { Button } from "components/Button";
 
-export const hoge = () => {
+export const Hoge = () => {
   return (
     <StyledContainer>
       <p>hoge</p>
-      <button />
+      <Button />
     </StyledContainer>
   );
 };
