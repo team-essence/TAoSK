@@ -1,10 +1,13 @@
 init:
 	@make init-front
+	@make init-api
 	@make init-husky
 init-front:
 	cd frontend && yarn
 init-husky:
 	yarn
+init-api:
+	cd api && yarn
 start-front:
 	cd frontend && yarn start
 build-front:
