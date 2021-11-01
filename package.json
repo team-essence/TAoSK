@@ -17,7 +17,7 @@
   },
   "lint-staged": {
     "frontend/**/*.{ts,tsx}": [
-      "cd frontend && yarn lint"
+      "cd frontend && yarn fix:eslint"
     ],
     "api/**/*.{js,jsx,ts,tsx,json}": [
       "cd api && yarn fix:eslint"
