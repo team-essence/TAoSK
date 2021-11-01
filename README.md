@@ -16,18 +16,18 @@ npm は禁止 yarn を使う
 
 ```md
 frontend/
-├─ public
-├─ src/
-├─ index.tsx
-├─ App.tsx
-├─ pages/
-├─ components/
-├─ hooks/
-├─ consts/
-├─ models/
-├─ utils/
-├─ env/
-├─ styles/
+&ensp;├─ public
+&ensp;├─ src/
+&ensp;&ensp;├─ index.tsx
+&ensp;&ensp;├─ App.tsx
+&ensp;&ensp;├─ pages/
+&ensp;&ensp;├─ components/
+&ensp;&ensp;├─ hooks/
+&ensp;&ensp;├─ consts/
+&ensp;&ensp;├─ models/
+&ensp;&ensp;├─ utils/
+&ensp;&ensp;├─ env/
+&ensp;&ensp;├─ styles/
 ```
 
 | ディレクトリ | 役割                           |
@@ -54,7 +54,7 @@ frontend/
 
 ```js
 // 例
-UserData.ts, PostForm.tsx;
+UserData.tsx, PostForm.tsx;
 class User extends React.Component {}
 const App: FC = () => {};
 ```
