@@ -4,11 +4,14 @@
 このプロジェクトの node.js の推奨は v16.0.0</br>
 npm は禁止 yarn を使う
 
+## 初期インストール
+
+`make init`
+
 ## フロントエンド
 
 ### 起動方法
 
-`make init-front`</br>
 `make start-front`
 
 ### フォルダ構成
