@@ -1,0 +1,24 @@
+{
+  "name": "TAoSK",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/team-essence/TAoSK.git",
+  "author": "roll1226 <tomo_yasu_4724@icloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "init": "husky install",
+    "check-types:front": "cd frontend && yarn check-types",
+    "check-types:api": "cd api && yarn check-types",
+    "check-types:all": "yarn check-types:front && check-types:api"
+  },
+  "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^11.2.6"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json}": [
+      "cd api && yarn lint",
+      "cd frontend && yarn lint"
+    ]
+  }
+}

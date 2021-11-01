@@ -22,7 +22,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "fix:eslint": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
-    "fix:prettier": "prettier --write ."
+    "fix:prettier": "prettier --write .",
+    "check-types": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [

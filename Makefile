@@ -1,5 +1,10 @@
+init:
+	@make init-front
+	@make init-husky
 init-front:
 	cd frontend && yarn
+init-husky:
+	yarn
 start-front:
 	cd frontend && yarn start
 build-front:
