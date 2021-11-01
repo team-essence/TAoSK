@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-export const Signin: FC = () => {
+export const SignIn: FC = () => {
   return (
     <div>
       <p>ログイン</p>
