@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 export type UseInputResult = {
   value: string;
-  onChange: (e: any) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const useInput = (initialValue: string): UseInputResult => {

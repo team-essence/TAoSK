@@ -5,11 +5,21 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
+import firebase from 'firebase/compat/app';
 import { auth } from 'utils/lib/firebase/firebaseInitial';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 // import { Loading } from 'components/loading/Loading';
-const AuthContext = createContext<any>('');
+
+type AuthContextProps = {
+  user: User | null;
+  loading: boolean;
+};
+
+const AuthContext = createContext<AuthContextProps>({
+  user: null,
+  loading: true,
+});
 
 export const useAuthContext = () => {
   return useContext(AuthContext);
@@ -17,7 +27,7 @@ export const useAuthContext = () => {
 
 export const AuthProvider: FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>('');
+  const [user, setUser] = useState<User | null>(null);
   const value = { user, loading };
 
   useEffect(() => {
@@ -39,7 +49,8 @@ export const AuthProvider: FC = ({ children }) => {
     );
   } else {
     return (
-      <AuthContext.Provider value={value}>
+      <AuthContext.Provider
+        value={{ user: value.user, loading: value.loading }}>
         {!loading && children}
       </AuthContext.Provider>
     );
