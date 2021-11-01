@@ -16,11 +16,11 @@
     "lint-staged": "^11.2.6"
   },
   "lint-staged": {
-    "api/**/*.{js,jsx,ts,tsx,json}": [
-      "cd api && yarn lint"
-    ],
     "frontend/**/*.{js,jsx,ts,tsx,json}": [
       "cd frontend && yarn lint"
+    ],
+    "api/**/*.{js,jsx,ts,tsx,json}": [
+      "cd api && yarn fix:eslint"
     ]
   }
 }
