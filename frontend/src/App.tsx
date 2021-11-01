@@ -3,6 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 
 const App: FC = () => {
+  let test: number = 2;
+
+  test = 'hoge';
+
   return (
     <div className="App">
       <header className="App-header">
