@@ -3,7 +3,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA';
 
 export const theme = {
   fontSizes: {
-    size_8: '10px',
+    size_10: '10px',
     size_12: '12px',
     size_14: '14px',
     size_16: '16px',
