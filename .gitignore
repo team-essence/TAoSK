@@ -60,4 +60,4 @@ coverage
 !.vscode/launch.json
 !.vscode/extensions.json
 
-sql/
+/docker/sql/data

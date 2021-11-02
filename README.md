@@ -118,4 +118,31 @@ const StyledContainer = styled.div`
 ## バックエンド
 
 あとでかく
-`Makefileで起動できるようにしてくれ`
+## Makefileの実行一覧
+| make                     | description                                  |
+| ------------------------ | -------------------------------------------- |
+| make start-sql           | Start sql                                    |
+| make re-build-sql        | Re build                                     |
+| make create-class        | Generate a new class                         |
+| make create-config       | Generate a CLI configuration file            |
+| make create-controller   | Generate a controller declaration            |
+| make create-decorator    | Generate a custom decorator                  |
+| make create-filter       | Generate a filter declaration                |
+| make create-gateway      | Generate a gateway declaration               |
+| make create-guard        | Generate a guard declaration                 |
+| make create-interceptor  | Generate an interceptor declaration          |
+| make create-interface    | Generate an interface                        |
+| make create-middleware   | Generate a middleware declaration            |
+| make create-model        | Generate a module declaration                |
+| make create-pipe         | Generate a pipe declaration                  |
+| make create-provider     | Generate a provider declaration              |
+| make create-resolver     | Generate a GraphQL resolver declaration      |
+| make create-service      | Generate a service declaration               |
+| make create-library      | Generate a new library within a monorepo     |
+| make create-resource     | Generate a new CRUD resource                 |
+
+### Makefileで実行する場合引数を渡してあげる(引数名は全て同じ`name`)
+```bash
+# 例
+make create-model name=todos
+```
