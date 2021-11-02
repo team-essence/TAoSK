@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   html {
     box-sizing: border-box;
-    font-size: ${({ theme }) => theme.fontSizes.normal};
+    font-size: ${({ theme }) => theme.fontSizes.size_16};
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.7;
