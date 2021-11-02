@@ -58,3 +58,5 @@ create-library:
 	cd api &&  nest g lib ${name}
 create-resource:
 	cd api &&  nest g res ${name}
+sql:
+	docker compose exec mysql bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'

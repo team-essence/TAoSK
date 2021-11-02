@@ -141,6 +141,7 @@ const StyledContainer = styled.div`
 | make create-service      | Generate a service declaration               |
 | make create-library      | Generate a new library within a monorepo     |
 | make create-resource     | Generate a new CRUD resource                 |
+| make sql                 | Enter the SQL container                      |
 
 ### Makefileで実行する場合引数を渡してあげる(引数名は全て同じ`name`)
 ```bash
