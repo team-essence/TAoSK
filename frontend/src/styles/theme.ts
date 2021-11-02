@@ -3,13 +3,27 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA';
 
 export const theme = {
   fontSizes: {
-    xsmall: '10px',
-    small: '12px',
-    normalS: '14px',
-    normal: '16px',
-    normalL: '18px',
-    large: '24px',
-    xlarge: '32px',
+    size_10: '10px',
+    size_12: '12px',
+    size_14: '14px',
+    size_16: '16px',
+    size_18: '18px',
+    size_20: '20px',
+    size_22: '22px',
+    size_24: '24px',
+    size_28: '28px',
+    size_32: '32px',
+    size_36: '36px',
+    size_48: '48px',
+    size_52: '52px',
+    size_56: '56px',
+    size_60: '60px',
+  },
+  fontWeights: {
+    normal: 400,
+    bold: 700,
+    heavy: 800,
+    black: 900,
   },
   colors: {
     primary: {
