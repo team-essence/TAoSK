@@ -10,6 +10,13 @@ export default class DotEnv {
       appId: process.env.REACT_APP_FIREBASE_APP_ID as string,
     };
   };
+
+  /**
+   * API endpoint
+   */
+  public getApiEndpoint = () => {
+    return process.env.REACT_APP_API_URL;
+  };
 }
 
 export const env = new DotEnv();
