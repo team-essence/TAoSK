@@ -123,6 +123,7 @@ const StyledContainer = styled.div`
 | ------------------------ | -------------------------------------------- |
 | make start-sql           | Start sql                                    |
 | make re-build-sql        | Re build                                     |
+| make start-api           | start api (post: 4000)                       |
 | make create-class        | Generate a new class                         |
 | make create-config       | Generate a CLI configuration file            |
 | make create-controller   | Generate a controller declaration            |
