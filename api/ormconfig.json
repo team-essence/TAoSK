@@ -2,8 +2,8 @@
   "type": "mysql",
   "host": "localhost",
   "port": 3306,
-  "username": "root",
-  "password": "root",
+  "username": "default",
+  "password": "secret",
   "database": "taosk",
   "entities": [
     "dist/**/entities/*{.ts,.js}"
