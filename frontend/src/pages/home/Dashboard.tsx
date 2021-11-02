@@ -28,14 +28,12 @@ export const Dashboard: FC = () => {
 
   const { todos } = data;
 
-  if (!user) {
-    return <Redirect to="/signup" />;
-  } else {
-    return (
-      <div>
-        {JSON.stringify(todos)}
-        <p>プロジェクト一覧とか通知とかマイページとか</p>
-      </div>
-    );
-  }
+  if (!user) return <Redirect to="/signup" />;
+
+  return (
+    <div>
+      {JSON.stringify(todos)}
+      <p>プロジェクト一覧とか通知とかマイページとか</p>
+    </div>
+  );
 };

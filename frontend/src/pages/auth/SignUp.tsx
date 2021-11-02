@@ -17,25 +17,23 @@ export const SignUp: FC = () => {
     setIsDisabled(true);
   }, [email.value, password.value]);
 
-  if (user) {
-    return <Redirect to="/" />;
-  } else {
-    return (
-      <div>
-        <h1>新規登録</h1>
-        <input type="text" placeholder="メールアドレスを入力" {...email} />
-        <input
-          type="password"
-          placeholder="パスワードを入力"
-          {...password}
-          minLength={6}
-        />
-        <button
-          disabled={isDisabled}
-          onClick={() => firebaseAuth.createUser(email.value, password.value)}>
-          登録するボタン
-        </button>
-      </div>
-    );
-  }
+  if (user) return <Redirect to="/" />;
+
+  return (
+    <div>
+      <h1>新規登録</h1>
+      <input type="text" placeholder="メールアドレスを入力" {...email} />
+      <input
+        type="password"
+        placeholder="パスワードを入力"
+        {...password}
+        minLength={6}
+      />
+      <button
+        disabled={isDisabled}
+        onClick={() => firebaseAuth.createUser(email.value, password.value)}>
+        登録するボタン
+      </button>
+    </div>
+  );
 };
