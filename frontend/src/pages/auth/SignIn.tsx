@@ -5,13 +5,11 @@ import { useAuthContext } from 'context/AuthProvider';
 export const SignIn: FC = () => {
   const { user } = useAuthContext();
 
-  if (user) {
-    return <Redirect to="/" />;
-  } else {
-    return (
-      <div>
-        <p>ログイン</p>
-      </div>
-    );
-  }
+  if (user) return <Redirect to="/" />;
+
+  return (
+    <div>
+      <p>ログイン</p>
+    </div>
+  );
 };
