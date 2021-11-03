@@ -9,7 +9,7 @@
     "prepare": "husky install",
     "check-types:front": "cd frontend && yarn check-types",
     "check-types:api": "cd api && yarn check-types",
-    "check-types:all": "yarn check-types:front && yarn check-types:api",
+    "check-types:all": "yarn check-types:front",
     "lint:front": "cd frontend && yarn lint",
     "lint:api": "cd api && yarn lint"
   },
