@@ -119,16 +119,23 @@ const StyledContainer = styled.div`
 
 ### 起動方法
 
-初回起動時
+#### 初回起動時
+
 `cd api`
+
 `docker-compose up --build`
+
 docker の初期 DB 作成がうまく動かないので下記で DB 作成
+
 `docker ps`(一覧が出るので mySQL のコンテナ ID を取得)
+
 `docker exec -it [コンテナID] bash`
+
 `mysql -u root -p`(password は[password])
+
 `CREATE DATABASE IF NOT EXISTS taosk_db`
 
-2 回以降は下記
+#### 2 回以降は下記
 `docker-compose up`
 (開発者は基本的に docker を up したり down したりすることが多くなる想定なので makefile 化はしない)
 
@@ -180,8 +187,11 @@ nest generate service [複数形モデル名]
 例 nest generate service books
 spec が同時にできてしまうので消す、できないコマンドあるかも
 
-````
+makefileのコマンドでも作れる
+
+
 ## Makefile の実行一覧
+````
 
 | make                    | description                              |
 | ----------------------- | ---------------------------------------- |
