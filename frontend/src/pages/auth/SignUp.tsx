@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { regexEmail, regexPassword } from 'consts/regex';
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
@@ -17,7 +17,7 @@ export const SignUp: FC = () => {
     setIsDisabled(true);
   }, [email.value, password.value]);
 
-  if (user) return <Redirect to="/" />;
+  if (user) return <Navigate to="/" />;
 
   return (
     <div>
