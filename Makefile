@@ -10,14 +10,16 @@ init-api:
 	cd api && yarn
 start-front:
 	cd frontend && yarn start
-start-api:
-	cd api && yarn start:dev
 build-front:
 	cd frontend && yarn build
-re-build-sql:
-	docker compose up --build
-start-sql:
-	docker compose up
+start-api:
+	cd api && docker compose up
+down-api:
+	cd api && docker compose down
+ps:
+	cd api && docker compose ps
+re-build-api:
+	cd api && docker compose up --build
 test-front:
 	cd frontend && yarn test
 eslint-front:
@@ -35,28 +37,30 @@ create-class:
 create-config:
 	cd api && nest g config ${name}
 create-controller:
-	cd api &&  nest g co ${name}
+	cd api && nest g co ${name}
 create-decorator:
-	cd api &&  nest g d ${name}
+	cd api && nest g d ${name}
 create-filter:
-	cd api &&  nest g f ${name}
+	cd api && nest g f ${name}
 create-gateway:
-	cd api &&  nest g ga ${name}
+	cd api && nest g ga ${name}
 create-guard:
-	cd api &&  nest g gu ${name}
+	cd api && nest g gu ${name}
 create-interceptor:
-	cd api &&  nest g in ${name}
+	cd api && nest g in ${name}
 create-interface:
-	cd api &&  nest g interface ${name}
+	cd api && nest g interface ${name}
 create-middleware:
-	cd api &&  nest g mi ${name}
+	cd api && nest g mi ${name}
 create-pipe:
-	cd api &&  nest g pi ${name}
+	cd api && nest g pi ${name}
 create-provider:
-	cd api &&  nest g pr ${name}
+	cd api && nest g pr ${name}
 create-library:
-	cd api &&  nest g lib ${name}
+	cd api && nest g lib ${name}
 create-resource:
-	cd api &&  nest g res ${name}
+	cd api && nest g res ${name}
+init-dabase:
+	cd api && docker compose exec db-server mysql -u root -p -e'CREATE DATABASE IF NOT EXISTS $$MYSQL_DATABASE; GRANT ALL PRIVILEGES ON $$MYSQL_DATABASE.* TO develop@"%";'
 sql:
-	docker compose exec mysql bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+	cd api && docker compose exec db-server bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'

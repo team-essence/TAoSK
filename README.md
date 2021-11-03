@@ -135,7 +135,12 @@ docker の初期 DB 作成がうまく動かないので下記で DB 作成
 
 `CREATE DATABASE IF NOT EXISTS taosk_db`
 
+#### 大変だったら ↓ で(個人に任せる)
+
+`make init-database`
+
 #### 2 回以降は下記
+
 `docker-compose up`
 (開発者は基本的に docker を up したり down したりすることが多くなる想定なので makefile 化はしない)
 
@@ -187,17 +192,19 @@ nest generate service [複数形モデル名]
 例 nest generate service books
 spec が同時にできてしまうので消す、できないコマンドあるかも
 
-makefileのコマンドでも作れる
-
+makefile のコマンドでも作れる
 
 ## Makefile の実行一覧
+
 ````
 
 | make                    | description                              |
 | ----------------------- | ---------------------------------------- |
-| make start-sql          | Start sql                                |
-| make re-build-sql       | Re build                                 |
-| make start-api          | start api (post: 4000)                   |
+| make start-api          | Start api                                |
+| make down-api           | Down api                                 |
+| make re-build-api       | Re build                                 |
+| make ps                 | Container list                           |
+| make sql                | Enter the SQL container                  |
 | make create-class       | Generate a new class                     |
 | make create-config      | Generate a CLI configuration file        |
 | make create-controller  | Generate a controller declaration        |
@@ -215,7 +222,6 @@ makefileのコマンドでも作れる
 | make create-service     | Generate a service declaration           |
 | make create-library     | Generate a new library within a monorepo |
 | make create-resource    | Generate a new CRUD resource             |
-| make sql                | Enter the SQL container                  |
 
 ### Makefile で実行する場合引数を渡してあげる(引数名は全て同じ`name`)
 
