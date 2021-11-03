@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  api-server:
+    container_name: api-server
+    build: .
+    tty: true
+    restart: always
+    ports:
+      - '3700:3700'
+    volumes:
+      - type: bind
+        source: .
+        target: /api-server
+    depends_on:
+      - db-server
+  db-server:
+    container_name: db-server
+    image: mysql:5.7.29
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports:
+      - '10000:3306'
+    volumes:
+      - ./docker/db/initdb.d:/docker-entrypoint-initdb.d
+      - ./db/mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: develop
+      MYSQL_USER: develop
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'

@@ -61,3 +61,4 @@ coverage
 !.vscode/extensions.json
 
 /docker/sql/data
+/api/db
