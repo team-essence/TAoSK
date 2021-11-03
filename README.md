@@ -8,6 +8,54 @@ npm は禁止 yarn を使う
 
 `make init`
 
+## コード規約
+
+### ファイル名・クラス名・変数・関数名とかの命名
+
+[codic](https://codic.jp/engine)を使う
+
+###ファイル名・クラス名
+
+拡張子が tsx のコンポーネントファイルに関してはアッパーキャメルを使う
+
+```js
+// 例
+UserData.tsx, PostForm.tsx;
+class User extends React.Component {}
+const App: FC = () => {};
+```
+
+それ以外の通常の ts ファイルなどに関してはローワーキャメルを使う
+
+```js
+// 例
+multipleIncludes.ts, formatDate.ts,
+```
+
+### 変数・関数名
+
+ローワーキャメルを使う
+
+```js
+// 例
+const userData = "hoge";
+const createUser = () => {};
+const [state, setState] = useState("");
+```
+
+### コンポーネントの呼び出しと書き出し
+
+基本的に default export は禁止、export を利用する
+
+```js
+// 例
+import { Button } from "components/Button";
+
+export const Hoge = () => {
+  // 処理
+};
+```
+
 ## フロントエンド
 
 ### 起動方法
@@ -44,53 +92,6 @@ frontend/
 | env          | env 系をまとめる               |
 | styles       | 初期スタイル設定               |
 
-### コード規約
-
-#### ファイル名・クラス名・変数・関数名とかの命名
-
-[codic](https://codic.jp/engine)を使う
-
-#### ファイル名・クラス名
-
-拡張子が tsx のコンポーネントファイルに関してはアッパーキャメルを使う
-
-```js
-// 例
-UserData.tsx, PostForm.tsx;
-class User extends React.Component {}
-const App: FC = () => {};
-```
-
-それ以外の通常の ts ファイルなどに関してはローワーキャメルを使う
-
-```js
-// 例
-multipleIncludes.ts, formatDate.ts,
-```
-
-#### 変数・関数名
-
-ローワーキャメルを使う
-
-```js
-// 例
-const userData = "hoge";
-const createUser = () => {};
-const [state, setState] = useState("");
-```
-
-#### コンポーネントの呼び出しと書き出し
-
-基本的に default export は禁止、export を利用する
-
-```js
-// 例
-import { Button } from "components/Button";
-
-export const Hoge = () => {
-  // 処理
-};
-```
 
 #### styled-components の使用
 
