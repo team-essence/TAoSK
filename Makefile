@@ -61,6 +61,6 @@ create-library:
 create-resource:
 	cd api && nest g res ${name}
 init-dabase:
-	cd api && docker compose exec db-server mysql -u root -p -e'CREATE DATABASE IF NOT EXISTS $$MYSQL_DATABASE; GRANT ALL PRIVILEGES ON $$MYSQL_DATABASE.* TO develop@"%";'
+	cd api && docker compose exec db-server mysql -u root -p -e'CREATE DATABASE IF NOT EXISTS taosk_db; GRANT ALL PRIVILEGES ON taosk_db.* TO develop@"%";'
 sql:
 	cd api && docker compose exec db-server bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
