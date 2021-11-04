@@ -18,9 +18,6 @@
     "lint-staged": "^11.2.6"
   },
   "lint-staged": {
-    "frontend/**/*.{ts,tsx}": [
-      "yarn lint:front"
-    ],
     "api/**/*.{js,jsx,ts,tsx}": [
       "yarn lint:api"
     ]

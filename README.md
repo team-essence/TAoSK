@@ -92,7 +92,6 @@ frontend/
 | env          | env 系をまとめる               |
 | styles       | 初期スタイル設定               |
 
-
 #### styled-components の使用
 
 - 記述する際はコンポーネントの 1 番下に置く
@@ -115,6 +114,14 @@ const StyledContainer = styled.div`
   background-color: "#fff";
 `;
 ```
+
+#### gql の型を自動生成
+
+1. Playground でクレリーを確認する
+2. gql ファイルを発火したいページのフォルダ内に作る
+3. `make generate-gql` or `cd frontend && yarn generate-gql`を発火
+4. ファイル名はわかりやすく
+   (_api コンテナを起動していること_)
 
 ## バックエンド
 

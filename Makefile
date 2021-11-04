@@ -12,6 +12,8 @@ start-front:
 	cd frontend && yarn start
 build-front:
 	cd frontend && yarn build
+generate-gql:
+	cd frontend && yarn generate-gql
 start-api:
 	cd api && docker compose up
 down-api:
