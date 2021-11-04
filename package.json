@@ -16,5 +16,10 @@
   "devDependencies": {
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6"
+  },
+  "lint-staged": {
+    "api/**/*.{js,jsx,ts,tsx}": [
+      "yarn lint:api"
+    ]
   }
 }
