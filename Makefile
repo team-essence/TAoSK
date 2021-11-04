@@ -2,6 +2,7 @@ init:
 	@make init-front
 	@make init-api
 	@make init-husky
+	@make generate-gql
 init-front:
 	cd frontend && yarn
 init-husky:
