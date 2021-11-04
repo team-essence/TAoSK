@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client';
@@ -28,7 +28,7 @@ export const Dashboard: FC = () => {
 
   const { todos } = data;
 
-  if (!user) return <Redirect to="/signup" />;
+  if (!user) return <Navigate to="/signup" />;
 
   return (
     <div>
