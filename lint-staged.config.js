@@ -9,4 +9,7 @@ module.exports = {
 
     return `"yarn lint:front" ${relativePaths.join(" ")}`;
   },
+  "api/**/*.{js,jsx,ts,tsx}": () => {
+    return "yarn lint:api";
+  }
 };
