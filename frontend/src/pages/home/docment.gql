@@ -1,6 +1,7 @@
 query Users {
-  users {
+  user(id: "test1") {
     id
     name
+    image
   }
 }

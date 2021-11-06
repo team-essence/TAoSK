@@ -14,7 +14,7 @@ export const Dashboard: FC = () => {
 
   return (
     <div>
-      {!usersQuery.loading && <>{JSON.stringify(usersQuery.data?.users)}</>}
+      {!usersQuery.loading && <>{JSON.stringify(usersQuery.data?.user)}</>}
 
       <p>プロジェクト一覧とか通知とかマイページとか</p>
     </div>
