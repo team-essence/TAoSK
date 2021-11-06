@@ -10,6 +10,8 @@ import { User } from './users/user';
 @Module({
   imports: [
     GraphQLModule.forRoot({
+      playground: true,
+      debug: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     TypeOrmModule.forRoot({

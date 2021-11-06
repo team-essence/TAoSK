@@ -6,17 +6,12 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-export enum GenderType {
-  Male = 'male',
-  Female = 'female',
-}
-
-@Entity()
+@Entity({ name: 'users' })
 @ObjectType()
 export class User {
   @PrimaryGeneratedColumn()
-  @Field((type) => ID)
-  uid: string;
+  @Field()
+  id: string;
 
   @Column()
   @Field()
@@ -24,9 +19,9 @@ export class User {
 
   @Column()
   @Field()
-  gender: GenderType;
+  image: string;
 
-  @CreateDateColumn()
-  @Field()
-  createdAt: Date;
+  // @CreateDateColumn()
+  // @Field()
+  // createdAt: Date;
 }
