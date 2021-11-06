@@ -62,3 +62,4 @@ coverage
 
 /docker/sql/data
 /api/db
+*.gen.ts

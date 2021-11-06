@@ -4,14 +4,20 @@ import { AuthProvider } from 'context/AuthProvider';
 import { SignUp } from 'pages/auth/SignUp';
 import { SignIn } from 'pages/auth/SignIn';
 import { Dashboard } from 'pages/home/Dashboard';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
 import { env } from 'env/dotEnv';
 
 const App: FC = () => {
-  const cache = new InMemoryCache();
   const client = new ApolloClient({
-    uri: `${env.getApiEndpoint()}/graphql`,
-    cache,
+    link: createHttpLink({
+      uri: `${env.getApiEndpoint()}/graphql`,
+    }),
+    cache: new InMemoryCache(),
   });
 
   return (

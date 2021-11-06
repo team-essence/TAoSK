@@ -1,0 +1,34 @@
+overwrite: true
+schema: ../api/src/schema.gql
+documents: src/**/*.gql
+generates:
+  src/types/graphql.gen.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      enumsAsTypes: true
+      namingConvention: keep
+      avoidOptionals: true
+      scalars:
+        BigInt: string
+        ISO8601Date: string
+        ISO8601DateTime: string
+  src/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .gen.ts
+      baseTypesPath: types/graphql.gen.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      gqlImport: '@apollo/client#gql'
+      constEnums: true
+      reactApolloVersion: 3
+      withComponent: false
+      withHOC: false
+      withHooks: true
+      enumsAsTypes: true
+      namingConvention: keep
+      avoidOptionals: true
