@@ -3,13 +3,14 @@
 # ------------------------------------------------------
 
 type User {
-  id: String!
+  id: ID!
   name: String!
   image: String!
 }
 
 type Query {
   allUsers: [User!]!
+  user(id: String!): User!
 }
 
 type Mutation {

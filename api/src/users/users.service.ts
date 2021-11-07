@@ -22,15 +22,19 @@ export class UsersService {
     return users;
   }
 
-  // findOneById(uid: string): Promise<User> {
-  //   return this.usersRepostiory.findOne(uid);
-  // }
+  getUser(id: string): Promise<User> {
+    const user = this.usersRepostiory.findOne(id);
+    if (!user) throw new NotFoundException();
+
+    return user;
+  }
 
   async create(data: NewUserInput): Promise<User> {
     const user = this.usersRepostiory.create(data);
     await this.usersRepostiory.save(user).catch((err) => {
       new InternalServerErrorException();
     });
+
     return user;
   }
 

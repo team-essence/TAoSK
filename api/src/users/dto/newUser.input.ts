@@ -24,5 +24,5 @@ export class NewUserInput {
 
   // @IsDateString()
   // @Field()
-  // createdAt: string;
+  // createdAt: Date;
 }
