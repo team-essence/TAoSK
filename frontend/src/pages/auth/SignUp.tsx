@@ -4,12 +4,23 @@ import { regexEmail, regexPassword } from 'consts/regex';
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
 import { useAuthContext } from 'context/AuthProvider';
+import { useAddUserMutation } from './docment.gen';
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const email = useInput('');
   const password = useInput('');
+
+  const addUserMutation = (id: string) =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useAddUserMutation({
+      variables: {
+        id,
+        name: 'aa',
+        image: 'aa',
+      },
+    });
 
   useEffect(() => {
     if (regexEmail.test(email.value) && regexPassword.test(password.value))
@@ -31,7 +42,13 @@ export const SignUp: FC = () => {
       />
       <button
         disabled={isDisabled}
-        onClick={() => firebaseAuth.createUser(email.value, password.value)}>
+        onClick={() =>
+          firebaseAuth
+            .createUser(email.value, password.value)
+            .then((result) => {
+              addUserMutation(result.user.uid);
+            })
+        }>
         登録するボタン
       </button>
     </div>

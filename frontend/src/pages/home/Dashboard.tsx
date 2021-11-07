@@ -9,7 +9,7 @@ export const Dashboard: FC = () => {
   const { currentUser } = useAuthContext();
 
   const usersQuery = useUsersQuery({
-    variables: { id: 'a' },
+    variables: { id: currentUser!.uid },
   });
 
   if (!currentUser) return <Navigate to="/signup" />;

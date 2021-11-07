@@ -1,0 +1,7 @@
+mutation AddUser($id: String!, $name: String!, $image: String!) {
+  addUser(newUser: { id: $id, name: $name, image: $image }) {
+    id
+    name
+    image
+  }
+}
