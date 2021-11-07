@@ -4,7 +4,8 @@ import {
   MaxLength,
   Min,
   IsString,
-  IsEnum,
+  IsBoolean,
+  IsNumber,
   IsDateString,
 } from 'class-validator';
 
@@ -20,9 +21,45 @@ export class NewUserInput {
 
   @IsString()
   @Field()
-  image: string;
+  company: string;
+
+  @IsString()
+  @Field()
+  icon_image: string;
+
+  @IsBoolean()
+  @Field()
+  online_flg: boolean;
+
+  @IsNumber()
+  @Field()
+  hp: number;
+
+  @IsNumber()
+  @Field()
+  mp: number;
+
+  @IsNumber()
+  @Field()
+  occupation_id: number;
+
+  @IsString()
+  @Field()
+  memo: string;
+
+  @IsNumber()
+  @Field()
+  rank: number;
 
   // @IsDateString()
   // @Field()
-  // createdAt: Date;
+  // created_at: Date;
+
+  // @IsDateString()
+  // @Field()
+  // updated_at: Date;
+
+  // @IsDateString()
+  // @Field()
+  // deleted_at: Date;
 }

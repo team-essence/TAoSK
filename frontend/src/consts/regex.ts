@@ -3,4 +3,4 @@ export const regexEmail =
 
 export const regexPassword = /^([a-zA-Z0-9]{6,50})$/;
 
-// export const regexName = /^.{1,50}$/;
+export const regexText = /^.{1,50}$/;

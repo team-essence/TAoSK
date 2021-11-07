@@ -1,7 +1,33 @@
-mutation AddUser($id: String!, $name: String!, $image: String!) {
-  addUser(newUser: { id: $id, name: $name, image: $image }) {
+mutation AddUser(
+  $id: String!
+  $name: String!
+  $company: String!
+  $icon_image: String!
+  $occupation_id: Float!
+) {
+  addUser(
+    newUser: {
+      id: $id
+      name: $name
+      company: $company
+      icon_image: $icon_image
+      online_flg: true
+      hp: 100
+      mp: 100
+      occupation_id: $occupation_id
+      memo: "memooooo"
+      rank: 0
+    }
+  ) {
     id
     name
-    image
+    company
+    icon_image
+    online_flg
+    hp
+    mp
+    occupation_id
+    memo
+    rank
   }
 }

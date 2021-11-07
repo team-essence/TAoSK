@@ -2,6 +2,13 @@ query Users($id: String!) {
   user(id: $id) {
     id
     name
-    image
+    company
+    icon_image
+    online_flg
+    hp
+    mp
+    occupation_id
+    memo
+    rank
   }
 }
