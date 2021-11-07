@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
 
 export const SignIn: FC = () => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
-  if (user) return <Navigate to="/" />;
+  if (currentUser) return <Navigate to="/" />;
 
   return (
     <div>

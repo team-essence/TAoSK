@@ -6,11 +6,13 @@ import { useQuery } from '@apollo/client';
 import { useUsersQuery } from './docment.gen';
 
 export const Dashboard: FC = () => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
-  const usersQuery = useUsersQuery();
+  const usersQuery = useUsersQuery({
+    variables: { id: 'a' },
+  });
 
-  if (!user) return <Navigate to="/signup" />;
+  if (!currentUser) return <Navigate to="/signup" />;
 
   return (
     <div>

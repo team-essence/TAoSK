@@ -6,7 +6,7 @@ import { useInput } from 'hooks/useInput';
 import { useAuthContext } from 'context/AuthProvider';
 
 export const SignUp: FC = () => {
-  const { user } = useAuthContext();
+  const { currentUser } = useAuthContext();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const email = useInput('');
   const password = useInput('');
@@ -17,7 +17,7 @@ export const SignUp: FC = () => {
     setIsDisabled(true);
   }, [email.value, password.value]);
 
-  if (user) return <Navigate to="/" />;
+  if (currentUser) return <Navigate to="/" />;
 
   return (
     <div>
