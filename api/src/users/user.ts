@@ -24,13 +24,6 @@ export class User {
 
   @Column({
     type: 'varchar',
-    length: 50,
-  })
-  @Field()
-  company: string;
-
-  @Column({
-    type: 'varchar',
     length: 255,
   })
   @Field()
@@ -51,6 +44,10 @@ export class User {
   @Column({ type: 'int' })
   @Field()
   occupation_id: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  companies_id: number;
 
   @Column({
     type: 'varchar',

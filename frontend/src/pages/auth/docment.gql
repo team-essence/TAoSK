@@ -1,19 +1,19 @@
 mutation AddUser(
   $id: String!
   $name: String!
-  $company: String!
   $icon_image: String!
+  $companies_id: Float!
   $occupation_id: Float!
 ) {
   addUser(
     newUser: {
       id: $id
       name: $name
-      company: $company
       icon_image: $icon_image
       online_flg: true
       hp: 100
       mp: 100
+      companies_id: $companies_id
       occupation_id: $occupation_id
       memo: "memooooo"
       rank: 0
@@ -21,11 +21,11 @@ mutation AddUser(
   ) {
     id
     name
-    company
     icon_image
     online_flg
     hp
     mp
+    companies_id
     occupation_id
     memo
     rank

@@ -21,10 +21,6 @@ export class NewUserInput {
 
   @IsString()
   @Field()
-  company: string;
-
-  @IsString()
-  @Field()
   icon_image: string;
 
   @IsBoolean()
@@ -42,6 +38,10 @@ export class NewUserInput {
   @IsNumber()
   @Field()
   occupation_id: number;
+
+  @IsNumber()
+  @Field()
+  companies_id: number;
 
   @IsString()
   @Field()

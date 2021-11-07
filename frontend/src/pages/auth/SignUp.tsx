@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { regexEmail, regexPassword, regexText } from 'consts/regex';
 import { occupationList } from 'consts/occupationList';
+import { companyList } from 'consts/companyList';
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
 import { useSelectBox } from 'hooks/useSelectBox';
@@ -15,7 +16,7 @@ export const SignUp: FC = () => {
   const email = useInput('');
   const password = useInput('');
   const name = useInput('');
-  const company = useInput('');
+  const company = useSelectBox('');
   const occupation = useSelectBox('');
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export const SignUp: FC = () => {
       regexEmail.test(email.value) &&
       regexPassword.test(password.value) &&
       regexText.test(name.value) &&
-      regexText.test(company.value) &&
+      company.value &&
       occupation.value
     )
       return setIsDisabled(false);
@@ -49,11 +50,16 @@ export const SignUp: FC = () => {
         {...password}
       />
       <input type="text" placeholder="名前を入力" {...name} />
-      <input type="text" placeholder="会社名を入力" {...company} />
+      <select required {...company}>
+        <option value="">所属企業を選択してください</option>
+        {companyList.map((item, index) => (
+          <option value={item} key={index}>
+            {item}
+          </option>
+        ))}
+      </select>
       <select required {...occupation}>
-        <option value="" hidden>
-          職種を選択してください
-        </option>
+        <option value="">職種を選択してください</option>
         {occupationList.map((item, index) => (
           <option value={item} key={index}>
             {item}
@@ -70,9 +76,9 @@ export const SignUp: FC = () => {
                 variables: {
                   id: result.user.uid,
                   name: name.value,
-                  company: company.value,
                   icon_image: 'http:aaa',
-                  occupation_id: occupationList.indexOf(occupation.value),
+                  companies_id: companyList.indexOf(company.value) + 1,
+                  occupation_id: occupationList.indexOf(occupation.value) + 1,
                 },
               });
             })

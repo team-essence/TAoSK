@@ -5,12 +5,12 @@
 type User {
   id: ID!
   name: String!
-  company: String!
   icon_image: String!
   online_flg: Boolean!
   hp: Float!
   mp: Float!
   occupation_id: Float!
+  companies_id: Float!
   memo: String!
   rank: Float!
 }
@@ -27,12 +27,12 @@ type Mutation {
 input NewUserInput {
   id: String!
   name: String!
-  company: String!
   icon_image: String!
   online_flg: Boolean!
   hp: Float!
   mp: Float!
   occupation_id: Float!
+  companies_id: Float!
   memo: String!
   rank: Float!
 }

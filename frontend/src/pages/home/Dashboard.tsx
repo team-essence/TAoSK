@@ -5,6 +5,7 @@ import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client';
 import { useUsersQuery } from './docment.gen';
 import { occupationList } from 'consts/occupationList';
+import { companyList } from 'consts/companyList';
 
 export const Dashboard: FC = () => {
   const { currentUser } = useAuthContext();
@@ -24,7 +25,11 @@ export const Dashboard: FC = () => {
           <p>
             職種：
             {data?.user.occupation_id &&
-              occupationList[data.user.occupation_id]}
+              occupationList[data.user.occupation_id - 1]}
+          </p>
+          <p>
+            会社：
+            {data?.user.companies_id && companyList[data.user.companies_id - 1]}
           </p>
           <p>HP：{data?.user.hp}</p>
           <p>MP：{data?.user.mp}</p>
