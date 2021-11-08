@@ -1,5 +1,14 @@
-query Users {
-  users {
+query Users($id: String!) {
+  user(id: $id) {
+    id
     name
+    icon_image
+    online_flg
+    hp
+    mp
+    companies_id
+    occupation_id
+    memo
+    rank
   }
 }

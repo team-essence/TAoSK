@@ -1,0 +1,33 @@
+mutation AddUser(
+  $id: String!
+  $name: String!
+  $icon_image: String!
+  $companies_id: Float!
+  $occupation_id: Float!
+) {
+  addUser(
+    newUser: {
+      id: $id
+      name: $name
+      icon_image: $icon_image
+      online_flg: true
+      hp: 100
+      mp: 100
+      companies_id: $companies_id
+      occupation_id: $occupation_id
+      memo: "memo"
+      rank: 0
+    }
+  ) {
+    id
+    name
+    icon_image
+    online_flg
+    hp
+    mp
+    companies_id
+    occupation_id
+    memo
+    rank
+  }
+}

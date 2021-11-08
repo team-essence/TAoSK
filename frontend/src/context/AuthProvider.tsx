@@ -11,12 +11,12 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 // import { Loading } from 'components/loading/Loading';
 
 type AuthContextProps = {
-  user: User | null;
+  currentUser: User | null;
   loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextProps>({
-  user: null,
+  currentUser: null,
   loading: true,
 });
 
@@ -26,12 +26,12 @@ export const useAuthContext = () => {
 
 export const AuthProvider: FC = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-  const value = { user, loading };
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const value = { currentUser, loading };
 
   useEffect(() => {
     const unsubscribed = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      setCurrentUser(user);
       setLoading(false);
     });
 
@@ -49,7 +49,7 @@ export const AuthProvider: FC = ({ children }) => {
   } else {
     return (
       <AuthContext.Provider
-        value={{ user: value.user, loading: value.loading }}>
+        value={{ currentUser: value.currentUser, loading: value.loading }}>
         {!loading && children}
       </AuthContext.Provider>
     );
