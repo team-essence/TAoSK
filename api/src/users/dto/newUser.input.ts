@@ -49,5 +49,29 @@ export class NewUserInput {
 
   @IsNumber()
   @Field()
-  rank: number;
+  technology: number;
+
+  @IsNumber()
+  @Field()
+  achievement: number;
+
+  @IsNumber()
+  @Field()
+  motivation: number;
+
+  @IsNumber()
+  @Field()
+  solution: number;
+
+  @IsNumber()
+  @Field()
+  plan: number;
+
+  @IsNumber()
+  @Field()
+  design: number;
+
+  @IsNumber()
+  @Field()
+  exp: number;
 }

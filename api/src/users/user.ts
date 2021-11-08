@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   Entity,
   Column,
@@ -58,7 +58,31 @@ export class User {
 
   @Column({ type: 'int' })
   @Field()
-  rank: number;
+  technology: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  achievement: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  motivation: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  solution: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  plan: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  design: number;
+
+  @Column({ type: 'int' })
+  @Field()
+  exp: number;
 
   @CreateDateColumn()
   @Field()
