@@ -15,7 +15,7 @@ export const Dashboard: FC = () => {
     getUserById({
       variables: { id: currentUser.uid },
     });
-  }, [currentUser]);
+  }, [currentUser, getUserById]);
 
   if (!currentUser) return <Navigate to="/signup" />;
 
@@ -40,7 +40,7 @@ export const Dashboard: FC = () => {
         </div>
       )}
 
-      <p>プロジェクト一覧とか通知とかマイページとか</p>
+      <p>プロジェクト一覧が表示される</p>
     </div>
   );
 };
