@@ -9,7 +9,7 @@ export class QualificationsResolver {
   constructor(private qualificationService: QualificationsService) {}
 
   @Query(() => [Qualification])
-  public async getQualifications(
+  public async qualifications(
     @Args({ name: 'user_ids', type: () => [String] }) user_ids: [string],
   ) {
     const qualifications =

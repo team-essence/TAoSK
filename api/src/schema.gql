@@ -44,8 +44,8 @@ type Interest {
 type Query {
   allUsers: [User!]!
   user(id: String!): User!
-  getQualifications(user_ids: [String!]!): [Qualification!]!
-  getInterests(user_ids: [String!]!): [Interest!]!
+  qualifications(user_ids: [String!]!): [Qualification!]!
+  interests(user_ids: [String!]!): [Interest!]!
 }
 
 type Mutation {

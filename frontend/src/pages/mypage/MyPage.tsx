@@ -33,13 +33,9 @@ export const MyPage: FC = () => {
     <div>
       <p>マイページ</p>
       <pre>{JSON.stringify(userQuery.data?.user, null, '\t')}</pre>
-      <pre>{JSON.stringify(intetestsQuery.data?.getInterests, null, '\t')}</pre>
+      <pre>{JSON.stringify(intetestsQuery.data?.interests, null, '\t')}</pre>
       <pre>
-        {JSON.stringify(
-          qualificationsQuery.data?.getQualifications,
-          null,
-          '\t'
-        )}
+        {JSON.stringify(qualificationsQuery.data?.qualifications, null, '\t')}
       </pre>
     </div>
   );

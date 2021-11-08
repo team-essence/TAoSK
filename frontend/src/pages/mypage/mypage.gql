@@ -20,13 +20,13 @@ query Users($id: String!) {
 }
 
 query Interests($user_ids: String!) {
-  getInterests(user_ids: [$user_ids]) {
+  interests(user_ids: [$user_ids]) {
     context
   }
 }
 
 query Qualification($user_ids: String!) {
-  getQualifications(user_ids: [$user_ids]) {
+  qualifications(user_ids: [$user_ids]) {
     name
   }
 }

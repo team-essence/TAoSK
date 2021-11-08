@@ -9,7 +9,7 @@ export class InterestsResolver {
   constructor(private interestsService: InterestsService) {}
 
   @Query(() => [Interest])
-  public async getInterests(
+  public async interests(
     @Args({ name: 'user_ids', type: () => [String] }) user_ids: [string],
   ) {
     const interests = await this.interestsService.getInterestsByIds(user_ids);
