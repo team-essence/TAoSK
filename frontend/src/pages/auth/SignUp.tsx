@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { regexEmail, regexPassword, regexText } from 'consts/regex';
 import { occupationList } from 'consts/occupationList';
 import { companyList } from 'consts/companyList';
@@ -7,11 +7,14 @@ import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
 import { useSelectBox } from 'hooks/useSelectBox';
 import { useAuthContext } from 'context/AuthProvider';
-import { useAddUserMutation } from './docment.gen';
+import { useAddUserMutation } from './signUp.gen';
+import { useGetUserByIdLazyQuery } from './document.gen';
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext();
-  const [addUserMutation, { data, loading, error }] = useAddUserMutation();
+  const [addUserMutation, { loading, error }] = useAddUserMutation();
+  const [tryGetUserById, { data }] = useGetUserByIdLazyQuery();
+  const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const email = useInput('');
   const password = useInput('');
@@ -37,7 +40,34 @@ export const SignUp: FC = () => {
     password.value,
   ]);
 
-  if (currentUser) return <Navigate to="/" />;
+  useEffect(() => {
+    if (!currentUser) return;
+    tryGetUserById({
+      variables: {
+        id: currentUser.uid,
+      },
+    });
+    if (!data) return;
+    navigate('/');
+  }, [currentUser, data]);
+
+  const trySingUp = () => {
+    firebaseAuth
+      .createUser(email.value, password.value)
+      .then(async (result) => {
+        await addUserMutation({
+          variables: {
+            id: result.user.uid,
+            name: name.value,
+            icon_image: 'http:aaa',
+            companies_id: companyList.indexOf(company.value) + 1,
+            occupation_id: occupationList.indexOf(occupation.value) + 1,
+          },
+        });
+
+        navigate('/');
+      });
+  };
 
   return (
     <div>
@@ -66,23 +96,8 @@ export const SignUp: FC = () => {
           </option>
         ))}
       </select>
-      <button
-        disabled={isDisabled}
-        onClick={() =>
-          firebaseAuth
-            .createUser(email.value, password.value)
-            .then((result) => {
-              addUserMutation({
-                variables: {
-                  id: result.user.uid,
-                  name: name.value,
-                  icon_image: 'http:aaa',
-                  companies_id: companyList.indexOf(company.value) + 1,
-                  occupation_id: occupationList.indexOf(occupation.value) + 1,
-                },
-              });
-            })
-        }>
+
+      <button disabled={isDisabled} onClick={trySingUp}>
         登録するボタン
       </button>
     </div>

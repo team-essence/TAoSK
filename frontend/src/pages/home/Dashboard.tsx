@@ -1,18 +1,21 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
-import { gql } from '@apollo/client';
-import { useQuery } from '@apollo/client';
-import { useUsersQuery } from './docment.gen';
+import { useUsersLazyQuery, useUsersQuery } from './docment.gen';
 import { occupationList } from 'consts/occupationList';
 import { companyList } from 'consts/companyList';
 
 export const Dashboard: FC = () => {
   const { currentUser } = useAuthContext();
 
-  const { data, loading, error } = useUsersQuery({
-    variables: { id: currentUser ? currentUser.uid : '' },
-  });
+  const [getUserById, { data, loading, error }] = useUsersLazyQuery();
+
+  useEffect(() => {
+    if (!currentUser) return;
+    getUserById({
+      variables: { id: currentUser.uid },
+    });
+  }, [currentUser]);
 
   if (!currentUser) return <Navigate to="/signup" />;
 

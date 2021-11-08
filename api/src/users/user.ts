@@ -60,15 +60,15 @@ export class User {
   @Field()
   rank: number;
 
-  // @CreateDateColumn()
-  // @Field()
-  // created_at: Date;
+  @CreateDateColumn()
+  @Field()
+  created_at: Date;
 
-  // @UpdateDateColumn()
-  // @Field()
-  // updated_at: Date;
+  @UpdateDateColumn()
+  @Field()
+  updated_at: Date;
 
-  // @DeleteDateColumn()
-  // @Field()
-  // deleted_at: Date;
+  @DeleteDateColumn()
+  @Field()
+  deleted_at: Date;
 }

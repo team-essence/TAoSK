@@ -15,7 +15,7 @@ mutation AddUser(
       mp: 100
       companies_id: $companies_id
       occupation_id: $occupation_id
-      memo: "memooooo"
+      memo: "memo"
       rank: 0
     }
   ) {

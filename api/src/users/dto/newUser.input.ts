@@ -50,16 +50,4 @@ export class NewUserInput {
   @IsNumber()
   @Field()
   rank: number;
-
-  // @IsDateString()
-  // @Field()
-  // created_at: Date;
-
-  // @IsDateString()
-  // @Field()
-  // updated_at: Date;
-
-  // @IsDateString()
-  // @Field()
-  // deleted_at: Date;
 }
