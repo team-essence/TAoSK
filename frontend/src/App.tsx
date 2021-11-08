@@ -4,6 +4,7 @@ import { AuthProvider } from 'context/AuthProvider';
 import { SignUp } from 'pages/auth/SignUp';
 import { SignIn } from 'pages/auth/SignIn';
 import { Dashboard } from 'pages/home/Dashboard';
+import { MyPage } from 'pages/mypage/MyPage';
 import {
   ApolloClient,
   InMemoryCache,
@@ -26,6 +27,7 @@ const App: FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/mypage" element={<MyPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
           </Routes>

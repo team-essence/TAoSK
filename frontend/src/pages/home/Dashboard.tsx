@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
-import { useUsersLazyQuery, useUsersQuery } from './docment.gen';
+import { useUsersLazyQuery, useUsersQuery } from './user.gen';
 import { occupationList } from 'consts/occupationList';
 import { companyList } from 'consts/companyList';
 
@@ -36,7 +36,7 @@ export const Dashboard: FC = () => {
           </p>
           <p>HP：{data?.user.hp}</p>
           <p>MP：{data?.user.mp}</p>
-          <p>経験値：{data?.user.rank}</p>
+          <p>経験値：{data?.user.exp}</p>
         </div>
       )}
 

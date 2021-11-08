@@ -1,0 +1,32 @@
+query Users($id: String!) {
+  user(id: $id) {
+    id
+    name
+    icon_image
+    online_flg
+    hp
+    mp
+    occupation_id
+    companies_id
+    memo
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+  }
+}
+
+query Interests($user_ids: String!) {
+  getInterests(user_ids: [$user_ids]) {
+    context
+  }
+}
+
+query Qualification($user_ids: String!) {
+  getQualifications(user_ids: [$user_ids]) {
+    name
+  }
+}

@@ -6,9 +6,15 @@ query Users($id: String!) {
     online_flg
     hp
     mp
-    companies_id
     occupation_id
+    companies_id
     memo
-    rank
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
   }
 }

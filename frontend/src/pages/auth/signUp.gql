@@ -13,10 +13,16 @@ mutation AddUser(
       online_flg: true
       hp: 100
       mp: 100
-      companies_id: $companies_id
-      occupation_id: $occupation_id
-      memo: "memo"
-      rank: 0
+      occupation_id: $companies_id
+      companies_id: $occupation_id
+      memo: ""
+      technology: 0
+      achievement: 0
+      motivation: 0
+      solution: 0
+      plan: 0
+      design: 0
+      exp: 0
     }
   ) {
     id
@@ -25,9 +31,15 @@ mutation AddUser(
     online_flg
     hp
     mp
-    companies_id
     occupation_id
+    companies_id
     memo
-    rank
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
   }
 }
