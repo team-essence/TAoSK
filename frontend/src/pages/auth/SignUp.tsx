@@ -49,7 +49,7 @@ export const SignUp: FC = () => {
     });
     if (!data) return;
     navigate('/');
-  }, [currentUser, data]);
+  }, [currentUser, data, navigate, tryGetUserById]);
 
   const trySingUp = () => {
     firebaseAuth
