@@ -9,9 +9,9 @@ export const MyPage: FC = () => {
   const [getUserById, userQuery] = useGetUserLazyQuery();
 
   useEffect(() => {
-    if (!id) return;
-    getUserById({ variables: { id } });
-  }, [getUserById, id]);
+    if (!currentUser) return;
+    getUserById({ variables: { id: currentUser.uid } });
+  }, [currentUser, getUserById]);
 
   if (!currentUser) return <Navigate to="/signup" />;
   if (currentUser.uid !== id) return <Navigate to="/" />;
@@ -20,10 +20,6 @@ export const MyPage: FC = () => {
     <div>
       <p>マイページ</p>
       <pre>{JSON.stringify(userQuery.data?.user, null, '\t')}</pre>
-      <pre>{JSON.stringify(userQuery.data?.user.interest, null, '\t')}</pre>
-      <pre>
-        {JSON.stringify(userQuery.data?.user.qualifications, null, '\t')}
-      </pre>
     </div>
   );
 };

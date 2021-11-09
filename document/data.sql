@@ -4,18 +4,18 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS allocations;
 DROP TABLE IF EXISTS chats;
+DROP TABLE IF EXISTS companies;
 DROP TABLE IF EXISTS groups;
 DROP TABLE IF EXISTS interests;
 DROP TABLE IF EXISTS invitations;
-DROP TABLE IF EXISTS logs;
-DROP TABLE IF EXISTS qualification;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS companies;
 DROP TABLE IF EXISTS list_sorts;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS lists;
+DROP TABLE IF EXISTS logs;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS monsters;
+DROP TABLE IF EXISTS qualification;
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS occupations;
 DROP TABLE IF EXISTS species;
 
@@ -51,11 +51,9 @@ CREATE TABLE chats
 -- 企業テーブル
 CREATE TABLE companies
 (
-	id int unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-	name varchar(255) NOT NULL COMMENT '企業名',
 	uid varchar(255) NOT NULL COMMENT 'uid',
-	PRIMARY KEY (id),
-	UNIQUE (uid)
+	name varchar(50) NOT NULL COMMENT '企業名',
+	PRIMARY KEY (uid)
 ) COMMENT = '企業テーブル';
 
 
@@ -158,11 +156,12 @@ CREATE TABLE projects
 	overview varchar(255) COMMENT '概要',
 	monster_id int unsigned NOT NULL COMMENT 'モンスターid',
 	hp int(11) COMMENT 'モンスターHP : タスクパラメータから算出',
+	difficulty int(11) NOT NULL COMMENT '難易度 : 星の数',
 	end_date datetime NOT NULL COMMENT '期日',
+	project_end_flg boolean COMMENT 'プロジェクト終了フラグ',
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP COMMENT '作成日',
 	updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日',
 	deleted_at datetime COMMENT '削除日',
-	project_end_flg boolean COMMENT 'プロジェクト終了フラグ',
 	PRIMARY KEY (id)
 ) COMMENT = 'プロジェクトテーブル';
 
@@ -218,8 +217,8 @@ CREATE TABLE users
 	online_flg boolean COMMENT 'オンライン状態フラグ',
 	hp int(11) COMMENT 'ユーザのHP',
 	mp int(11) COMMENT 'ユーザのMP',
+	campany varchar(50) COMMENT '企業名',
 	occupation_id int unsigned NOT NULL COMMENT '職種ID : 職種テーブルへの外部キー',
-	companies_id int unsigned NOT NULL COMMENT '企業I D : 所属企業',
 	memo varchar(255) COMMENT '人事メモ : 人事が個人へのメモ書きに用いる',
 	technology int(11) COMMENT '技術力',
 	achievement int(11) COMMENT '達成力',
@@ -237,14 +236,6 @@ CREATE TABLE users
 
 
 /* Create Foreign Keys */
-
-ALTER TABLE users
-	ADD FOREIGN KEY (companies_id)
-	REFERENCES companies (id)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
 
 ALTER TABLE list_sorts
 	ADD FOREIGN KEY (list_id)
