@@ -23,11 +23,7 @@
       "version": "detect"
     }
   },
-  "plugins": [
-    "react-hooks",
-    "react",
-    "@typescript-eslint"
-  ],
+  "plugins": ["react-hooks", "react", "@typescript-eslint"],
   // 基本的にルールは recommended に従う
   // prettier は配列の最後尾に書く
   "extends": [
@@ -39,17 +35,9 @@
     "prettier"
   ],
   "rules": {
-    "no-console": [
-      "error"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "no-console": ["error"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
     "semi-spacing": [
       "error",
       {
@@ -57,15 +45,21 @@
         "before": false
       }
     ],
-    "semi-style": [
-      "error",
-      "last"
-    ],
+    "semi-style": ["error", "last"],
     "no-extra-semi": "error",
     "no-unexpected-multiline": "error",
     "no-unreachable": "error",
     // TypeScirpt なので prop-types は要らない
     "react/prop-types": "off",
-    "@typescript-eslint/no-empty-interface": 0
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ]
   }
 }
