@@ -7,12 +7,18 @@ import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
 import { useSelectBox } from 'hooks/useSelectBox';
 import { useAuthContext } from 'context/AuthProvider';
-import { useAddUserMutation } from './signUp.gen';
+import {
+  useAddUserMutation,
+  useAddQualificationMutation,
+  useAddInterestMutation,
+} from './signUp.gen';
 import { useGetUserByIdLazyQuery } from './document.gen';
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext();
   const [addUserMutation, { loading, error }] = useAddUserMutation();
+  const [addQualificationMutation] = useAddQualificationMutation();
+  const [addInterestMutation] = useAddInterestMutation();
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -47,21 +53,49 @@ export const SignUp: FC = () => {
     navigate('/');
   }, [currentUser, data, navigate, tryGetUserById]);
 
+  const addUser = (id: string) => {
+    addUserMutation({
+      variables: {
+        id,
+        name: name.value,
+        icon_image: 'http:aaa',
+        companies_id: companyList.indexOf(company.value) + 1,
+        occupation_id: occupationList.indexOf(occupation.value) + 1,
+      },
+    });
+  };
+
+  const addQualification = (id: string) => {
+    ['資格1', '資格2', '資格3'].forEach((item) => {
+      addQualificationMutation({
+        variables: {
+          user_id: id,
+          name: item,
+        },
+      });
+    });
+  };
+
+  const addInterest = (id: string) => {
+    ['興味1', '興味2', '興味3'].forEach((item) => {
+      addInterestMutation({
+        variables: {
+          user_id: id,
+          context: item,
+        },
+      });
+    });
+  };
+
   const trySingUp = () => {
     firebaseAuth
       .createUser(email.value, password.value)
       .then(async (result) => {
-        await addUserMutation({
-          variables: {
-            id: result.user.uid,
-            name: name.value,
-            icon_image: 'http:aaa',
-            companies_id: companyList.indexOf(company.value) + 1,
-            occupation_id: occupationList.indexOf(occupation.value) + 1,
-          },
-        });
-
-        navigate('/');
+        await Promise.all([
+          addUser(result.user.uid),
+          addQualification(result.user.uid),
+          addInterest(result.user.uid),
+        ]).then(() => navigate('/'));
       });
   };
 

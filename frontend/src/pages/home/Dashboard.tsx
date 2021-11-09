@@ -12,9 +12,7 @@ export const Dashboard: FC = () => {
 
   useEffect(() => {
     if (!currentUser) return;
-    getUserById({
-      variables: { id: currentUser.uid },
-    });
+    getUserById({ variables: { id: currentUser.uid } });
   }, [currentUser, getUserById]);
 
   if (!currentUser) return <Navigate to="/signup" />;

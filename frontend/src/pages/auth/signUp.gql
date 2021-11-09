@@ -43,3 +43,17 @@ mutation AddUser(
     exp
   }
 }
+
+mutation AddQualification($user_id: String!, $name: String!) {
+  addQualification(newQualification: { user_id: $user_id, name: $name }) {
+    user_id
+    name
+  }
+}
+
+mutation AddInterest($user_id: String!, $context: String!) {
+  addInterest(newInterest: { user_id: $user_id, context: $context }) {
+    user_id
+    context
+  }
+}
