@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, NavLink } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
 import { useUsersLazyQuery, useUsersQuery } from './user.gen';
 import { occupationList } from 'consts/occupationList';
@@ -21,25 +21,7 @@ export const Dashboard: FC = () => {
 
   return (
     <div>
-      {!loading && (
-        <div>
-          <p>id：{data?.user.id}</p>
-          <p>名前：{data?.user.name}</p>
-          <p>
-            職種：
-            {data?.user.occupation_id &&
-              occupationList[data.user.occupation_id - 1]}
-          </p>
-          <p>
-            会社：
-            {data?.user.companies_id && companyList[data.user.companies_id - 1]}
-          </p>
-          <p>HP：{data?.user.hp}</p>
-          <p>MP：{data?.user.mp}</p>
-          <p>経験値：{data?.user.exp}</p>
-        </div>
-      )}
-
+      <NavLink to={`/mypage/${data?.user.id}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧が表示される</p>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
 import {
   useUsersLazyQuery,
@@ -9,25 +9,21 @@ import {
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext();
+  const { id } = useParams();
   const [getUserById, userQuery] = useUsersLazyQuery();
   const [getInterestsById, intetestsQuery] = useInterestsLazyQuery();
   const [getQualificationsById, qualificationsQuery] =
     useQualificationLazyQuery();
 
   useEffect(() => {
-    if (!currentUser) return;
-    getUserById({
-      variables: { id: currentUser.uid },
-    });
-    getInterestsById({
-      variables: { user_ids: currentUser.uid },
-    });
-    getQualificationsById({
-      variables: { user_ids: currentUser.uid },
-    });
-  }, [currentUser, getInterestsById, getQualificationsById, getUserById]);
+    if (!id) return;
+    getUserById({ variables: { id } });
+    getInterestsById({ variables: { user_ids: id } });
+    getQualificationsById({ variables: { user_ids: id } });
+  }, [getInterestsById, getQualificationsById, getUserById, id]);
 
   if (!currentUser) return <Navigate to="/signup" />;
+  if (currentUser.uid !== id) return <Navigate to="/" />;
 
   return (
     <div>

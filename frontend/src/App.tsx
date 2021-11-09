@@ -27,7 +27,7 @@ const App: FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
           </Routes>

@@ -14,8 +14,8 @@ export const SignUp: FC = () => {
   const { currentUser } = useAuthContext();
   const [addUserMutation, { loading, error }] = useAddUserMutation();
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery();
-  const navigate = useNavigate();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const navigate = useNavigate();
   const email = useInput('');
   const password = useInput('');
   const name = useInput('');
@@ -42,11 +42,7 @@ export const SignUp: FC = () => {
 
   useEffect(() => {
     if (!currentUser) return;
-    tryGetUserById({
-      variables: {
-        id: currentUser.uid,
-      },
-    });
+    tryGetUserById({ variables: { id: currentUser.uid } });
     if (!data) return;
     navigate('/');
   }, [currentUser, data, navigate, tryGetUserById]);
