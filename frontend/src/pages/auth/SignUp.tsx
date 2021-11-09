@@ -16,7 +16,7 @@ import { useGetUserByIdLazyQuery } from './document.gen';
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext();
-  const [addUserMutation, { loading, error }] = useAddUserMutation();
+  const [addUserMutation] = useAddUserMutation();
   const [addQualificationMutation] = useAddQualificationMutation();
   const [addInterestMutation] = useAddInterestMutation();
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery();
@@ -95,7 +95,9 @@ export const SignUp: FC = () => {
           addUser(result.user.uid),
           addQualification(result.user.uid),
           addInterest(result.user.uid),
-        ]).then(() => navigate('/'));
+        ])
+          .then(() => navigate('/'))
+          .catch(() => 'err');
       });
   };
 

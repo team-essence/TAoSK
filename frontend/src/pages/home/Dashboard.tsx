@@ -1,14 +1,12 @@
 import React, { FC, useEffect } from 'react';
 import { Navigate, NavLink } from 'react-router-dom';
 import { useAuthContext } from 'context/AuthProvider';
-import { useUsersLazyQuery, useUsersQuery } from './user.gen';
-import { occupationList } from 'consts/occupationList';
-import { companyList } from 'consts/companyList';
+import { useUsersLazyQuery } from './user.gen';
 
 export const Dashboard: FC = () => {
   const { currentUser } = useAuthContext();
 
-  const [getUserById, { data, loading, error }] = useUsersLazyQuery();
+  const [getUserById, { data }] = useUsersLazyQuery();
 
   useEffect(() => {
     if (!currentUser) return;
