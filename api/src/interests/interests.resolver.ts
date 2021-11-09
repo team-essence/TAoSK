@@ -9,10 +9,19 @@ export class InterestsResolver {
   constructor(private interestsService: InterestsService) {}
 
   @Query(() => [Interest])
-  public async interests(
+  public async allInterests() {
+    return this.interestsService.findAll().catch((err) => {
+      throw err;
+    });
+  }
+
+  @Query(() => [Interest])
+  public async interestsByUserIds(
     @Args({ name: 'user_ids', type: () => [String] }) user_ids: [string],
   ) {
-    const interests = await this.interestsService.getInterestsByIds(user_ids);
+    const interests = await this.interestsService.getInterestsByUserIds(
+      user_ids,
+    );
     if (!interests) {
       throw new NotFoundException(user_ids);
     }

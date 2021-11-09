@@ -12,12 +12,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class QualificationsService {
   constructor(
     @InjectRepository(Qualification)
-    private qualificationsRepostiory: Repository<Qualification>,
+    private qualificationsRepository: Repository<Qualification>,
   ) {}
 
   getQualificationsByIds(user_ids: [string]): Promise<Qualification[]> {
-    const qualifications = this.qualificationsRepostiory.find({
-      user_id: In(user_ids),
+    const qualifications = this.qualificationsRepository.find({
+      where: {
+        user: In(user_ids),
+      },
+      relations: ['user'],
     });
     if (!qualifications) throw new NotFoundException();
 
@@ -25,11 +28,11 @@ export class QualificationsService {
   }
 
   async create(data: NewQualificationInput): Promise<Qualification> {
-    const user = this.qualificationsRepostiory.create(data);
-    await this.qualificationsRepostiory.save(user).catch((err) => {
+    const qualification = this.qualificationsRepository.create(data);
+    await this.qualificationsRepository.save(qualification).catch((err) => {
       new InternalServerErrorException();
     });
 
-    return user;
+    return qualification;
   }
 }

@@ -12,12 +12,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class InterestsService {
   constructor(
     @InjectRepository(Interest)
-    private interestsRepostiory: Repository<Interest>,
+    private interestsRepository: Repository<Interest>,
   ) {}
 
-  getInterestsByIds(user_ids: [string]): Promise<Interest[]> {
-    const interests = this.interestsRepostiory.find({
-      user_id: In(user_ids),
+  findAll(): Promise<Interest[]> {
+    const interests = this.interestsRepository.find();
+    if (!interests) throw new NotFoundException();
+
+    return interests;
+  }
+
+  getInterestsByUserIds(user_ids: [string]): Promise<Interest[]> {
+    const interests = this.interestsRepository.find({
+      where: {
+        user: In(user_ids),
+      },
+      relations: ['user'],
     });
     if (!interests) throw new NotFoundException();
 
@@ -25,8 +35,8 @@ export class InterestsService {
   }
 
   async create(data: NewInterestInput): Promise<Interest> {
-    const interest = this.interestsRepostiory.create(data);
-    await this.interestsRepostiory.save(interest).catch((err) => {
+    const interest = this.interestsRepository.create(data);
+    await this.interestsRepository.save(interest).catch((err) => {
       new InternalServerErrorException();
     });
 

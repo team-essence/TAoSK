@@ -1,5 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString } from 'class-validator';
+import { IsArray, IsString, ValidateNested } from 'class-validator';
+import { User } from 'src/users/user';
+import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @InputType()
 export class NewInterestInput {
@@ -10,4 +12,11 @@ export class NewInterestInput {
   @IsString()
   @Field()
   user_id: string;
+}
+
+@InputType()
+export class NewInterestClientInput {
+  @IsArray()
+  @Field(() => [String])
+  context: [string];
 }

@@ -2,6 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Interest {
+  id: Float!
+  context: String!
+  user: User!
+}
+
+type Qualification {
+  id: Float!
+  name: String!
+  user: User!
+}
+
 type User {
   id: ID!
   name: String!
@@ -19,6 +31,8 @@ type User {
   plan: Float!
   design: Float!
   exp: Float!
+  qualifications: [Qualification!]!
+  interest: [Interest!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -29,29 +43,26 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Qualification {
-  id: Float!
-  name: String!
-  user_id: ID!
-}
-
-type Interest {
-  id: Float!
-  context: String!
-  user_id: ID!
-}
-
 type Query {
   allUsers: [User!]!
   user(id: String!): User!
   qualifications(user_ids: [String!]!): [Qualification!]!
-  interests(user_ids: [String!]!): [Interest!]!
+  allInterests: [Interest!]!
+  interestsByUserIds(user_ids: [String!]!): [Interest!]!
 }
 
 type Mutation {
-  addUser(newUser: NewUserInput!): User!
+  addUser(newQualification: NewQualificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
   addQualification(newQualification: NewQualificationInput!): Qualification!
   addInterest(newInterest: NewInterestInput!): Interest!
+}
+
+input NewQualificationClientInput {
+  name: [String!]!
+}
+
+input NewInterestClientInput {
+  context: [String!]!
 }
 
 input NewUserInput {

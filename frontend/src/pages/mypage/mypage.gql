@@ -1,4 +1,4 @@
-query Users($id: String!) {
+query GetUser($id: String!) {
   user(id: $id) {
     id
     name
@@ -16,17 +16,26 @@ query Users($id: String!) {
     plan
     design
     exp
+
+    interest {
+      context
+    }
+
+    qualifications {
+      name
+    }
   }
 }
 
-query Interests($user_ids: String!) {
-  interests(user_ids: [$user_ids]) {
-    context
-  }
-}
-
-query Qualification($user_ids: String!) {
-  qualifications(user_ids: [$user_ids]) {
-    name
-  }
-}
+# query interestsByUserIds($user_ids: String!) {
+#   interestsByUserIds(user_ids: [$user_ids]) {
+#     context
+#   }
+# }
+#
+# query Qualification($user_ids: String!) {
+#   qualifications(user_ids: [$user_ids]) {
+#     name
+#   }
+# }
+#

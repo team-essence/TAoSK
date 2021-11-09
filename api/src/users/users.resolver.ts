@@ -3,6 +3,8 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { User } from './user';
 import { UsersService } from './users.service';
 import { NewUserInput } from './dto/newUser.input';
+import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
+import { NewQualificationClientInput } from 'src/qualifications/dto/newQualification.input';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -25,10 +27,18 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
-  public async addUser(@Args('newUser') newUser: NewUserInput): Promise<User> {
-    return this.usersService.create(newUser).catch((err) => {
-      throw err;
-    });
+  public async addUser(
+    @Args('newUser') newUser: NewUserInput,
+    @Args('newInterest') newInterest: NewInterestClientInput,
+    @Args('newQualification') newQualification: NewQualificationClientInput,
+  ): Promise<User> {
+    const user = await this.usersService
+      .create({ newUser, newInterest, newQualification })
+      .catch((err) => {
+        throw err;
+      });
+
+    return user;
   }
 
   // @Mutation((returns) => Boolean)

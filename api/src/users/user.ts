@@ -1,4 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Interest } from 'src/interests/interest';
+import { Qualification } from 'src/qualifications/qualification';
 import {
   Entity,
   Column,
@@ -6,6 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity('users')
@@ -83,6 +87,14 @@ export class User {
   @Column({ type: 'int' })
   @Field()
   exp: number;
+
+  @OneToMany(() => Qualification, (qualification) => qualification.user)
+  @Field(() => [Qualification])
+  qualifications: Qualification[];
+
+  @OneToMany(() => Interest, (interest) => interest.user)
+  @Field(() => [Interest])
+  interest: Interest[];
 
   @CreateDateColumn()
   @Field()

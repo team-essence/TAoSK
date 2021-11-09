@@ -7,18 +7,12 @@ import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
 import { useSelectBox } from 'hooks/useSelectBox';
 import { useAuthContext } from 'context/AuthProvider';
-import {
-  useAddUserMutation,
-  useAddQualificationMutation,
-  useAddInterestMutation,
-} from './signUp.gen';
+import { useAddUserMutation } from './signUp.gen';
 import { useGetUserByIdLazyQuery } from './document.gen';
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext();
   const [addUserMutation] = useAddUserMutation();
-  const [addQualificationMutation] = useAddQualificationMutation();
-  const [addInterestMutation] = useAddInterestMutation();
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -61,31 +55,33 @@ export const SignUp: FC = () => {
         icon_image: 'http:aaa',
         companies_id: companyList.indexOf(company.value) + 1,
         occupation_id: occupationList.indexOf(occupation.value) + 1,
+        context: ['資格1', '資格2', '資格3'],
+        qualificationName: ['興味1', '興味2', '興味3'],
       },
     });
   };
 
-  const addQualification = (id: string) => {
-    ['資格1', '資格2', '資格3'].forEach((item) => {
-      addQualificationMutation({
-        variables: {
-          user_id: id,
-          name: item,
-        },
-      });
-    });
-  };
+  // const addQualification = (id: string) => {
+  //   ['資格1', '資格2', '資格3'].forEach((item) => {
+  //     addQualificationMutation({
+  //       variables: {
+  //         user_id: id,
+  //         name: item,
+  //       },
+  //     });
+  //   });
+  // };
 
-  const addInterest = (id: string) => {
-    ['興味1', '興味2', '興味3'].forEach((item) => {
-      addInterestMutation({
-        variables: {
-          user_id: id,
-          context: item,
-        },
-      });
-    });
-  };
+  // const addInterest = (id: string) => {
+  //   ['興味1', '興味2', '興味3'].forEach((item) => {
+  //     addInterestMutation({
+  //       variables: {
+  //         user_id: id,
+  //         context: item,
+  //       },
+  //     });
+  //   });
+  // };
 
   const trySingUp = () => {
     firebaseAuth
@@ -93,8 +89,8 @@ export const SignUp: FC = () => {
       .then(async (result) => {
         await Promise.all([
           addUser(result.user.uid),
-          addQualification(result.user.uid),
-          addInterest(result.user.uid),
+          // addQualification(result.user.uid),
+          // addInterest(result.user.uid),
         ])
           .then(() => navigate('/'))
           .catch(() => 'err');
