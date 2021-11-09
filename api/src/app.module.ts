@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
 import { UsersModule } from './users/users.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { QualificationsModule } from './qualifications/qualifications.module';
+import { InterestsModule } from './interests/interests.module';
 import { User } from './users/user';
+import { Qualification } from './qualifications/qualification';
+import { Interest } from './interests/interest';
 
 @Module({
   imports: [
@@ -21,10 +25,12 @@ import { User } from './users/user';
       username: 'root',
       password: 'password',
       database: 'taosk_db',
-      entities: [User],
+      entities: [User, Qualification, Interest],
       synchronize: true,
     }),
     UsersModule,
+    QualificationsModule,
+    InterestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -4,6 +4,8 @@ mutation AddUser(
   $icon_image: String!
   $companies_id: Float!
   $occupation_id: Float!
+  $context: [String!]!
+  $qualificationName: [String!]!
 ) {
   addUser(
     newUser: {
@@ -13,11 +15,19 @@ mutation AddUser(
       online_flg: true
       hp: 100
       mp: 100
-      companies_id: $companies_id
-      occupation_id: $occupation_id
-      memo: "memo"
-      rank: 0
+      occupation_id: $companies_id
+      companies_id: $occupation_id
+      memo: ""
+      technology: 0
+      achievement: 0
+      motivation: 0
+      solution: 0
+      plan: 0
+      design: 0
+      exp: 0
     }
+    newInterest: { context: $context }
+    newQualification: { name: $qualificationName }
   ) {
     id
     name
@@ -25,9 +35,29 @@ mutation AddUser(
     online_flg
     hp
     mp
-    companies_id
     occupation_id
+    companies_id
     memo
-    rank
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
   }
 }
+
+# mutation AddQualification($user_id: String!, $name: String!) {
+#   addQualification(newQualification: { user_id: $user_id, name: $name }) {
+#     user_id
+#     name
+#   }
+# }
+#
+# mutation AddInterest($user_id: String!, $context: String!) {
+#   addInterest(newInterest: { user_id: $user_id, context: $context }) {
+#     user_id
+#     context
+#   }
+# }

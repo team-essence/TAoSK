@@ -2,6 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Interest {
+  id: Float!
+  context: String!
+  user: User!
+}
+
+type Qualification {
+  id: Float!
+  name: String!
+  user: User!
+}
+
 type User {
   id: ID!
   name: String!
@@ -12,7 +24,15 @@ type User {
   occupation_id: Float!
   companies_id: Float!
   memo: String!
-  rank: Float!
+  technology: Float!
+  achievement: Float!
+  motivation: Float!
+  solution: Float!
+  plan: Float!
+  design: Float!
+  exp: Float!
+  qualifications: [Qualification!]!
+  interest: [Interest!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -26,10 +46,23 @@ scalar DateTime
 type Query {
   allUsers: [User!]!
   user(id: String!): User!
+  qualifications(user_ids: [String!]!): [Qualification!]!
+  allInterests: [Interest!]!
+  interestsByUserIds(user_ids: [String!]!): [Interest!]!
 }
 
 type Mutation {
-  addUser(newUser: NewUserInput!): User!
+  addUser(newQualification: NewQualificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
+  addQualification(newQualification: NewQualificationInput!): Qualification!
+  addInterest(newInterest: NewInterestInput!): Interest!
+}
+
+input NewQualificationClientInput {
+  name: [String!]!
+}
+
+input NewInterestClientInput {
+  context: [String!]!
 }
 
 input NewUserInput {
@@ -42,5 +75,21 @@ input NewUserInput {
   occupation_id: Float!
   companies_id: Float!
   memo: String!
-  rank: Float!
+  technology: Float!
+  achievement: Float!
+  motivation: Float!
+  solution: Float!
+  plan: Float!
+  design: Float!
+  exp: Float!
+}
+
+input NewQualificationInput {
+  name: String!
+  user_id: String!
+}
+
+input NewInterestInput {
+  context: String!
+  user_id: String!
 }
