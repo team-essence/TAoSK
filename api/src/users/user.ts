@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Interest } from 'src/interests/interest';
 import { Qualification } from 'src/qualifications/qualification';
+import { Group } from 'src/groups/group';
 import {
   Entity,
   Column,
@@ -95,6 +96,10 @@ export class User {
   @OneToMany(() => Interest, (interest) => interest.user)
   @Field(() => [Interest])
   interest: Interest[];
+
+  @OneToMany(() => Group, (group) => group.user)
+  @Field(() => [Group])
+  group: Group[];
 
   @CreateDateColumn()
   @Field()

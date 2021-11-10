@@ -10,6 +10,12 @@ import { InterestsModule } from './interests/interests.module';
 import { User } from './users/user';
 import { Qualification } from './qualifications/qualification';
 import { Interest } from './interests/interest';
+import { SpeciesModule } from './species/species.module';
+import { MonstersModule } from './monsters/monsters.module';
+import { CompaniesModule } from './companies/companies.module';
+import { OccupationsModule } from './occupations/occupations.module';
+import { ProjectsModule } from './projects/projects.module';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [
@@ -31,6 +37,12 @@ import { Interest } from './interests/interest';
     UsersModule,
     QualificationsModule,
     InterestsModule,
+    SpeciesModule,
+    MonstersModule,
+    CompaniesModule,
+    OccupationsModule,
+    ProjectsModule,
+    GroupsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
