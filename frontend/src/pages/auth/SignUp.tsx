@@ -5,7 +5,6 @@ import { occupationList } from 'consts/occupationList';
 import { companyList } from 'consts/companyList';
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
-import { useSelectBox } from 'hooks/useSelectBox';
 import { useAuthContext } from 'context/AuthProvider';
 import { useAddUserMutation } from './signUp.gen';
 import { useGetUserByIdLazyQuery } from './document.gen';
@@ -19,8 +18,8 @@ export const SignUp: FC = () => {
   const email = useInput('');
   const password = useInput('');
   const name = useInput('');
-  const company = useSelectBox('');
-  const occupation = useSelectBox('');
+  const company = useInput('');
+  const occupation = useInput('');
 
   useEffect(() => {
     if (
@@ -100,14 +99,28 @@ export const SignUp: FC = () => {
   return (
     <div>
       <h1>新規登録</h1>
-      <input type="text" placeholder="メールアドレスを入力" {...email} />
+      <input
+        type="text"
+        placeholder="メールアドレスを入力"
+        required
+        maxLength={50}
+        {...email}
+      />
       <input
         type="password"
         placeholder="パスワードを入力"
+        required
         minLength={6}
+        maxLength={50}
         {...password}
       />
-      <input type="text" placeholder="名前を入力" {...name} />
+      <input
+        type="text"
+        placeholder="名前を入力"
+        required
+        maxLength={50}
+        {...name}
+      />
       <select required {...company}>
         <option value="">所属企業を選択してください</option>
         {companyList.map((item, index) => (

@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from 'context/AuthProvider';
 import { SignUp } from 'pages/auth/SignUp';
 import { SignIn } from 'pages/auth/SignIn';
-import { Dashboard } from 'pages/home/Dashboard';
+import { ProjectList } from 'pages/projectList/ProjectList';
 import { MyPage } from 'pages/mypage/MyPage';
 import {
   ApolloClient,
@@ -26,7 +26,7 @@ const App: FC = () => {
       <ApolloProvider client={client}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<ProjectList />} />
             <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
