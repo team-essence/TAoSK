@@ -2,8 +2,8 @@ mutation AddUser(
   $id: String!
   $name: String!
   $icon_image: String!
-  $companies_id: Float!
   $occupation_id: Float!
+  $company: String!
   $context: [String!]!
   $qualificationName: [String!]!
 ) {
@@ -15,8 +15,8 @@ mutation AddUser(
       online_flg: true
       hp: 100
       mp: 100
-      occupation_id: $companies_id
-      companies_id: $occupation_id
+      occupation_id: $occupation_id
+      company: $company
       memo: ""
       technology: 0
       achievement: 0
@@ -36,7 +36,7 @@ mutation AddUser(
     hp
     mp
     occupation_id
-    companies_id
+    company
     memo
     technology
     achievement

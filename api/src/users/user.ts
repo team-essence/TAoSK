@@ -49,9 +49,12 @@ export class User {
   @Field()
   occupation_id: number;
 
-  @Column({ type: 'int' })
+  @Column({
+    type: 'varchar',
+    length: 50,
+  })
   @Field()
-  companies_id: number;
+  company: string;
 
   @Column({
     type: 'varchar',

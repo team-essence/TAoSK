@@ -7,7 +7,7 @@ query GetUser($id: String!) {
     hp
     mp
     occupation_id
-    companies_id
+    company
     memo
     technology
     achievement
@@ -26,16 +26,3 @@ query GetUser($id: String!) {
     }
   }
 }
-
-# query interestsByUserIds($user_ids: String!) {
-#   interestsByUserIds(user_ids: [$user_ids]) {
-#     context
-#   }
-# }
-#
-# query Qualification($user_ids: String!) {
-#   qualifications(user_ids: [$user_ids]) {
-#     name
-#   }
-# }
-#

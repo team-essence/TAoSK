@@ -39,9 +39,9 @@ export class NewUserInput {
   @Field()
   occupation_id: number;
 
-  @IsNumber()
+  @IsString()
   @Field()
-  companies_id: number;
+  company: string;
 
   @IsString()
   @Field()

@@ -22,7 +22,7 @@ type User {
   hp: Float!
   mp: Float!
   occupation_id: Float!
-  companies_id: Float!
+  company: String!
   memo: String!
   technology: Float!
   achievement: Float!
@@ -73,7 +73,7 @@ input NewUserInput {
   hp: Float!
   mp: Float!
   occupation_id: Float!
-  companies_id: Float!
+  company: String!
   memo: String!
   technology: Float!
   achievement: Float!
