@@ -12,8 +12,7 @@ import {
 @ObjectType()
 export class ListSort {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -23,7 +22,7 @@ export class ListSort {
   task_list: number;
 
   //リストID
-  @Field()
+  @Field(() => List, { defaultValue: '' })
   @ManyToOne(() => List, (list) => list.listSort)
   @JoinColumn({ name: 'list_id' })
   list: List;

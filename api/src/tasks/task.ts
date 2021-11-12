@@ -18,8 +18,7 @@ import {
 @ObjectType()
 export class Task {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -85,13 +84,13 @@ export class Task {
   end_date: Date;
 
   //プロジェクトID
-  @Field()
+  @Field(() => Project, { defaultValue: '' })
   @ManyToOne(() => Project, (project) => project.task)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
   //リストID
-  @Field()
+  @Field(() => List, { defaultValue: '' })
   @ManyToOne(() => List, (list) => list.task)
   @JoinColumn({ name: 'list_id' })
   list: List;

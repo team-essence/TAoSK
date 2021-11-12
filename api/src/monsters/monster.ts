@@ -14,8 +14,7 @@ import {
 @ObjectType()
 export class Monster {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -43,7 +42,7 @@ export class Monster {
 
   //多対１
   //種族ID
-  @Field()
+  @Field(() => Specie, { defaultValue: '' })
   @ManyToOne(() => Specie, (specie) => specie.monster)
   @JoinColumn({ name: 'specie_id' })
   specie: Specie;

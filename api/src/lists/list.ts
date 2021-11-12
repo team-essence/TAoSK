@@ -15,8 +15,7 @@ import {
 @ObjectType()
 export class List {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -34,7 +33,7 @@ export class List {
   name: string;
 
   //プロジェクトID
-  @Field()
+  @Field(() => Project, { defaultValue: '' })
   @ManyToOne(() => Project, (project) => project.list)
   @JoinColumn({ name: 'project_id' })
   project: Project;

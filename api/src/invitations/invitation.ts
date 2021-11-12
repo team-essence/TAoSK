@@ -3,7 +3,6 @@ import { User } from 'src/users/user';
 import { Project } from 'src/projects/project';
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
@@ -15,19 +14,18 @@ import {
 @ObjectType()
 export class Invitation {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
   //ユーザID
-  @Field()
+  @Field(() => User, { defaultValue: '' })
   @ManyToOne(() => User, (user) => user.invitation)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   //プロジェクトID
-  @Field()
+  @Field(() => Project, { defaultValue: '' })
   @ManyToOne(() => Project, (project) => project.invitation)
   @JoinColumn({ name: 'project_id' })
   project: Project;

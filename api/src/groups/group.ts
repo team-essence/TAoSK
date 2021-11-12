@@ -16,8 +16,7 @@ import {
 @ObjectType()
 export class Group {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -33,7 +32,7 @@ export class Group {
   user: User;
 
   //プロジェクトID
-  @Field()
+  @Field(() => Project, { defaultValue: '' })
   @ManyToOne(() => Project, (project) => project.group)
   @JoinColumn({ name: 'project_id' })
   project: Project;

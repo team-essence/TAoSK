@@ -4,12 +4,25 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { QualificationsModule } from './qualifications/qualifications.module';
-import { InterestsModule } from './interests/interests.module';
 import { User } from './users/user';
 import { Qualification } from './qualifications/qualification';
 import { Interest } from './interests/interest';
+import { Specie } from './species/specie';
+import { Monster } from './monsters/monster';
+import { Company } from './companies/company';
+import { Occupation } from './occupations/occupation';
+import { Project } from './projects/project';
+import { Group } from './groups/group';
+import { Invitation } from './invitations/invitation';
+import { List } from './lists/list';
+import { ListSort } from './list-sorts/list-sort';
+import { Task } from './tasks/task';
+import { Allocation } from './allocations/allocation';
+import { Chat } from './chats/chat';
+import { Log } from './logs/log';
+import { UsersModule } from './users/users.module';
+import { QualificationsModule } from './qualifications/qualifications.module';
+import { InterestsModule } from './interests/interests.module';
 import { SpeciesModule } from './species/species.module';
 import { MonstersModule } from './monsters/monsters.module';
 import { CompaniesModule } from './companies/companies.module';
@@ -38,7 +51,24 @@ import { LogsModule } from './logs/logs.module';
       username: 'root',
       password: 'password',
       database: 'taosk_db',
-      entities: [User, Qualification, Interest],
+      entities: [
+        User,
+        Qualification,
+        Interest,
+        Specie,
+        Monster,
+        Company,
+        Occupation,
+        Project,
+        Group,
+        Invitation,
+        List,
+        ListSort,
+        Task,
+        Allocation,
+        Chat,
+        Log,
+      ],
       synchronize: true,
     }),
     UsersModule,

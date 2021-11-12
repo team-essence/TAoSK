@@ -15,8 +15,7 @@ import {
 @ObjectType()
 export class Chat {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -29,7 +28,7 @@ export class Chat {
   comment: string;
 
   //タスクID
-  @Field()
+  @Field(() => Task, { defaultValue: '' })
   @ManyToOne(() => Task, (task) => task.chat)
   @JoinColumn({ name: 'task_id' })
   task: Task;

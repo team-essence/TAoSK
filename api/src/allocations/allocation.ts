@@ -3,7 +3,6 @@ import { User } from 'src/users/user';
 import { Project } from 'src/projects/project';
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
@@ -15,8 +14,7 @@ import {
 @ObjectType()
 export class Allocation {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 

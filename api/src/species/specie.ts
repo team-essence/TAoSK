@@ -5,8 +5,7 @@ import { Monster } from 'src/monsters/monster';
 @ObjectType()
 export class Specie {
   // id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 

@@ -21,8 +21,7 @@ import {
 @ObjectType()
 export class Project {
   //id
-  @PrimaryGeneratedColumn()
-  @Column({ type: 'int', unsigned: true })
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
@@ -65,15 +64,16 @@ export class Project {
   //外部キー
   //モンスターid
   //多対１
-  @Field()
+  @Field(() => Monster, { defaultValue: '' })
   @ManyToOne(() => Monster, (monster) => monster.project)
   @JoinColumn({ name: 'monster_id' })
   monster: Monster;
 
   //1対多
-  @OneToMany(() => Group, (group) => group.project)
-  @Field(() => [Group])
-  group: Group[];
+  @Field(() => Group, { defaultValue: '' })
+  @ManyToOne(() => Group, (group) => group.project)
+  @JoinColumn({ name: 'group_id' })
+  group: Group;
 
   @OneToMany(() => Invitation, (invitation) => invitation.project)
   @Field(() => [Invitation])
