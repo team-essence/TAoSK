@@ -16,6 +16,13 @@ import { CompaniesModule } from './companies/companies.module';
 import { OccupationsModule } from './occupations/occupations.module';
 import { ProjectsModule } from './projects/projects.module';
 import { GroupsModule } from './groups/groups.module';
+import { InvitationsModule } from './invitations/invitations.module';
+import { ListsModule } from './lists/lists.module';
+import { ListSortsModule } from './list-sorts/list-sorts.module';
+import { TasksModule } from './tasks/tasks.module';
+import { AllocationsModule } from './allocations/allocations.module';
+import { ChatsModule } from './chats/chats.module';
+import { LogsModule } from './logs/logs.module';
 
 @Module({
   imports: [
@@ -43,6 +50,13 @@ import { GroupsModule } from './groups/groups.module';
     OccupationsModule,
     ProjectsModule,
     GroupsModule,
+    InvitationsModule,
+    ListsModule,
+    ListSortsModule,
+    TasksModule,
+    AllocationsModule,
+    ChatsModule,
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

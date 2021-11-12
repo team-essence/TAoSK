@@ -1,6 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { User } from 'src/users/user';
-import { Project } from 'src/projects/project';
+import { Task } from 'src/tasks/task';
 import {
   Entity,
   Column,
@@ -12,31 +11,28 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
-@Entity('groups')
+@Entity('chats')
 @ObjectType()
-export class Group {
+export class Chat {
   //id
   @PrimaryGeneratedColumn()
   @Column({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
-  //権限フラグ
-  @Column({ type: 'boolean' })
+  //コメント内容
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
   @Field()
-  authority_flg: boolean;
+  comment: string;
 
-  //ユーザID
-  @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.group)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  //プロジェクトID
+  //タスクID
   @Field()
-  @ManyToOne(() => Project, (project) => project.group)
-  @JoinColumn({ name: 'project_id' })
-  project: Project;
+  @ManyToOne(() => Task, (task) => task.chat)
+  @JoinColumn({ name: 'task_id' })
+  task: Task;
 
   //作成日
   @CreateDateColumn()

@@ -42,6 +42,7 @@ export class Monster {
   story: string;
 
   //多対１
+  //種族ID
   @Field()
   @ManyToOne(() => Specie, (specie) => specie.monster)
   @JoinColumn({ name: 'specie_id' })

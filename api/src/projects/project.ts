@@ -1,6 +1,10 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Monster } from 'src/monsters/monster';
 import { Group } from 'src/groups/group';
+import { Invitation } from 'src/invitations/invitation';
+import { List } from 'src/lists/list';
+import { Task } from 'src/tasks/task';
+import { Log } from 'src/logs/log';
 import {
   Entity,
   Column,
@@ -67,9 +71,25 @@ export class Project {
   monster: Monster;
 
   //1対多
-  @OneToMany(() => Group, (group) => group.prroject)
+  @OneToMany(() => Group, (group) => group.project)
   @Field(() => [Group])
   group: Group[];
+
+  @OneToMany(() => Invitation, (invitation) => invitation.project)
+  @Field(() => [Invitation])
+  invitation: Invitation[];
+
+  @OneToMany(() => List, (list) => list.project)
+  @Field(() => [List])
+  list: List[];
+
+  @OneToMany(() => Task, (task) => task.project)
+  @Field(() => [Task])
+  task: Task[];
+
+  @OneToMany(() => Log, (log) => log.project)
+  @Field(() => [Log])
+  log: Log[];
 
   //作成日
   @CreateDateColumn()

@@ -1,8 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString, IsBoolean, IsNotEmpty, IsInt } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt } from 'class-validator';
 
 @InputType()
-export class NewGroupInput {
+export class NewInvitationInput {
   @IsNotEmpty()
   @IsString()
   @Field()
@@ -12,8 +12,4 @@ export class NewGroupInput {
   @IsInt()
   @Field()
   project_id: number;
-
-  @IsBoolean()
-  @Field()
-  authority_flg: boolean;
 }

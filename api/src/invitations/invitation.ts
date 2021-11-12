@@ -8,33 +8,27 @@ import {
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
 
-@Entity('groups')
+@Entity('invitations')
 @ObjectType()
-export class Group {
+export class Invitation {
   //id
   @PrimaryGeneratedColumn()
   @Column({ type: 'int', unsigned: true })
   @Field(() => ID)
   id: number;
 
-  //権限フラグ
-  @Column({ type: 'boolean' })
-  @Field()
-  authority_flg: boolean;
-
   //ユーザID
-  @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.group)
+  @Field()
+  @ManyToOne(() => User, (user) => user.invitation)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   //プロジェクトID
   @Field()
-  @ManyToOne(() => Project, (project) => project.group)
+  @ManyToOne(() => Project, (project) => project.invitation)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
@@ -42,11 +36,6 @@ export class Group {
   @CreateDateColumn()
   @Field()
   created_at: Date;
-
-  //更新日
-  @UpdateDateColumn()
-  @Field()
-  updated_at: Date;
 
   //削除日
   @DeleteDateColumn()
