@@ -15,9 +15,7 @@ import { env } from 'env/dotEnv';
 
 const App: FC = () => {
   const client = new ApolloClient({
-    link: createHttpLink({
-      uri: `${env.getApiEndpoint()}/graphql`,
-    }),
+    link: createHttpLink({ uri: `${env.getApiEndpoint()}/graphql` }),
     cache: new InMemoryCache(),
   });
 

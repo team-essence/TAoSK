@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { regexEmail, regexPassword, regexText } from 'consts/regex';
 import { occupationList } from 'consts/occupationList';
-import { companyList } from 'consts/companyList';
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth';
 import { useInput } from 'hooks/useInput';
 import { useAuthContext } from 'context/AuthProvider';
@@ -26,7 +25,7 @@ export const SignUp: FC = () => {
       regexEmail.test(email.value) &&
       regexPassword.test(password.value) &&
       regexText.test(name.value) &&
-      company.value &&
+      regexText.test(company.value) &&
       occupation.value
     )
       return setIsDisabled(false);
@@ -52,7 +51,7 @@ export const SignUp: FC = () => {
         id,
         name: name.value,
         icon_image: 'http:aaa',
-        companies_id: companyList.indexOf(company.value) + 1,
+        company: company.value,
         occupation_id: occupationList.indexOf(occupation.value) + 1,
         context: ['資格1', '資格2', '資格3'],
         qualificationName: ['興味1', '興味2', '興味3'],
@@ -60,37 +59,11 @@ export const SignUp: FC = () => {
     });
   };
 
-  // const addQualification = (id: string) => {
-  //   ['資格1', '資格2', '資格3'].forEach((item) => {
-  //     addQualificationMutation({
-  //       variables: {
-  //         user_id: id,
-  //         name: item,
-  //       },
-  //     });
-  //   });
-  // };
-
-  // const addInterest = (id: string) => {
-  //   ['興味1', '興味2', '興味3'].forEach((item) => {
-  //     addInterestMutation({
-  //       variables: {
-  //         user_id: id,
-  //         context: item,
-  //       },
-  //     });
-  //   });
-  // };
-
   const trySingUp = () => {
     firebaseAuth
       .createUser(email.value, password.value)
       .then(async (result) => {
-        await Promise.all([
-          addUser(result.user.uid),
-          // addQualification(result.user.uid),
-          // addInterest(result.user.uid),
-        ])
+        await Promise.all([addUser(result.user.uid)])
           .then(() => navigate('/'))
           .catch(() => 'err');
       });
@@ -121,14 +94,13 @@ export const SignUp: FC = () => {
         maxLength={50}
         {...name}
       />
-      <select required {...company}>
-        <option value="">所属企業を選択してください</option>
-        {companyList.map((item, index) => (
-          <option value={item} key={index}>
-            {item}
-          </option>
-        ))}
-      </select>
+      <input
+        type="text"
+        placeholder="会社名を入力"
+        required
+        maxLength={50}
+        {...company}
+      />
       <select required {...occupation}>
         <option value="">職種を選択してください</option>
         {occupationList.map((item, index) => (

@@ -3,9 +3,4 @@ query Users($id: String!) {
     id
     name
   }
-
-  allUsers {
-    id
-    name
-  }
 }
