@@ -1,6 +1,9 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Interest } from 'src/interests/interest';
 import { Qualification } from 'src/qualifications/qualification';
+import { Group } from 'src/groups/group';
+import { Invitation } from 'src/invitations/invitation';
+import { GameLog } from 'src/game-logs/game-log';
 import {
   Entity,
   Column,
@@ -9,7 +12,6 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
-  JoinColumn,
 } from 'typeorm';
 
 @Entity('users')
@@ -98,6 +100,18 @@ export class User {
   @OneToMany(() => Interest, (interest) => interest.user)
   @Field(() => [Interest])
   interest: Interest[];
+
+  @OneToMany(() => Group, (group) => group.user)
+  @Field(() => [Group])
+  group: Group[];
+
+  @OneToMany(() => Invitation, (invitation) => invitation.user)
+  @Field(() => [Invitation])
+  invitation: Invitation[];
+
+  @OneToMany(() => GameLog, (gameLog) => gameLog.user)
+  @Field(() => [GameLog])
+  gameLog: GameLog[];
 
   @CreateDateColumn()
   @Field()

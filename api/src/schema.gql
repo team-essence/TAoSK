@@ -14,6 +14,116 @@ type Qualification {
   user: User!
 }
 
+type Specie {
+  id: ID!
+  name: String!
+  monster: [Monster!]!
+}
+
+type Monster {
+  id: ID!
+  name: String!
+  type: Float!
+  story: String!
+  specie: Specie!
+  project: [Project!]!
+}
+
+type Invitation {
+  id: ID!
+  user: User!
+  project: Project!
+  created_at: DateTime!
+  deleted_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type ListSort {
+  id: ID!
+  task_list: Float!
+  list: List!
+}
+
+type Chat {
+  id: ID!
+  comment: String!
+  task: Task!
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime!
+}
+
+type Task {
+  id: ID!
+  overview: String!
+  explanation: String!
+  technology: Float!
+  achievement: Float!
+  solution: Float!
+  motivation: Float!
+  plan: Float!
+  design: Float!
+  weight: Float!
+  vertical_sort: Float!
+  end_date: DateTime!
+  project: Project!
+  list: List!
+  chat: [Chat!]!
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime!
+}
+
+type List {
+  id: ID!
+  list_id: Float!
+  name: String!
+  project: Project!
+  listSort: [ListSort!]!
+  task: [Task!]!
+}
+
+type GameLog {
+  id: ID!
+  context: String!
+  user: User!
+  project: Project!
+  created_at: DateTime!
+}
+
+type Project {
+  id: ID!
+  name: String!
+  overview: String!
+  hp: Float!
+  difficulty: Float!
+  end_date: DateTime!
+  project_end_flg: Boolean!
+  monster: Monster!
+  group: Group!
+  invitation: [Invitation!]!
+  list: [List!]!
+  task: [Task!]!
+  gameLog: [GameLog!]!
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime!
+}
+
+type Group {
+  id: ID!
+  authority_flg: Boolean!
+  user: User!
+  project: Project!
+  created_at: DateTime!
+  updated_at: DateTime!
+  deleted_at: DateTime!
+}
+
 type User {
   id: ID!
   name: String!
@@ -33,15 +143,13 @@ type User {
   exp: Float!
   qualifications: [Qualification!]!
   interest: [Interest!]!
+  group: [Group!]!
+  invitation: [Invitation!]!
+  gameLog: [GameLog!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type Query {
   allUsers: [User!]!

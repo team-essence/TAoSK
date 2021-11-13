@@ -12,7 +12,7 @@ import {
 @Entity('interests')
 @ObjectType()
 export class Interest {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   @Field()
   id: number;
 
