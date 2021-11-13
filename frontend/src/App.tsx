@@ -1,24 +1,16 @@
-import React, { FC } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from 'context/AuthProvider';
-import { SignUp } from 'pages/auth/SignUp';
-import { SignIn } from 'pages/auth/SignIn';
-import { ProjectList } from 'pages/projectList/ProjectList';
-import { MyPage } from 'pages/mypage/MyPage';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  createHttpLink,
-} from '@apollo/client';
-import { env } from 'env/dotEnv';
+import React, { FC } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from 'context/AuthProvider'
+import { SignUp } from 'pages/auth/SignUp'
+import { SignIn } from 'pages/auth/SignIn'
+import { ProjectList } from 'pages/projectList/ProjectList'
+import { MyPage } from 'pages/mypage/MyPage'
+import { env } from 'env/dotEnv'
+import { ApolloProvider } from '@apollo/client'
+
+import { client } from './ApolloClient'
 
 const App: FC = () => {
-  const client = new ApolloClient({
-    link: createHttpLink({ uri: `${env.getApiEndpoint()}/graphql` }),
-    cache: new InMemoryCache(),
-  });
-
   return (
     <AuthProvider>
       <ApolloProvider client={client}>
@@ -32,7 +24,7 @@ const App: FC = () => {
         </BrowserRouter>
       </ApolloProvider>
     </AuthProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
