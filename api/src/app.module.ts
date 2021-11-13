@@ -40,9 +40,12 @@ import { GameLogsModule } from './game-logs/game-logs.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      playground: true,
+      playground: {
+        subscriptionEndpoint: 'ws://localhost:3700/graphql',
+      },
       debug: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      installSubscriptionHandlers: true,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

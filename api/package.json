@@ -30,6 +30,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "graphql": "15.0.0",
+    "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.0",
     "mysql2": "^2.3.2",
     "reflect-metadata": "^0.1.13",

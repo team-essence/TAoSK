@@ -35,25 +35,25 @@
     "prettier"
   ],
   "rules": {
-    "no-console": ["error"],
+    "no-console": ["warn"],
     "quotes": ["error", "single"],
-    "semi": ["error", "always"],
+    "semi": ["warn", "always"],
     "semi-spacing": [
-      "error",
+      "warn",
       {
         "after": true,
         "before": false
       }
     ],
-    "semi-style": ["error", "last"],
-    "no-extra-semi": "error",
+    "semi-style": ["warn", "last"],
+    "no-extra-semi": "warn",
     "no-unexpected-multiline": "error",
-    "no-unreachable": "error",
+    "no-unreachable": "warn",
     // TypeScirpt なので prop-types は要らない
     "react/prop-types": "off",
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/ban-types": [
-      "error",
+      "warn",
       {
         "extendDefaults": true,
         "types": {

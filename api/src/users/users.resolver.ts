@@ -1,14 +1,18 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { User } from './user';
 import { UsersService } from './users.service';
 import { NewUserInput } from './dto/newUser.input';
 import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
 import { NewQualificationClientInput } from 'src/qualifications/dto/newQualification.input';
+import { PubSub } from 'graphql-subscriptions';
 
 @Resolver((of) => User)
 export class UsersResolver {
-  constructor(private usersService: UsersService) {}
+  private pubSub: PubSub;
+  constructor(private usersService: UsersService) {
+    this.pubSub = new PubSub();
+  }
 
   @Query(() => [User])
   public async allUsers(): Promise<User[]> {
@@ -38,7 +42,13 @@ export class UsersResolver {
         throw err;
       });
 
+    this.pubSub.publish('userAdded', { userAdded: user });
     return user;
+  }
+
+  @Subscription((returns) => User, {})
+  userAdded() {
+    return this.pubSub.asyncIterator('userAdded');
   }
 
   // @Mutation((returns) => Boolean)

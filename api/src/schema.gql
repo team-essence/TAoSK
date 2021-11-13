@@ -201,3 +201,7 @@ input NewInterestInput {
   context: String!
   user_id: String!
 }
+
+type Subscription {
+  userAdded: User!
+}

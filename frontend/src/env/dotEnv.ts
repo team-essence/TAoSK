@@ -8,15 +8,22 @@ export default class DotEnv {
       authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN as string,
       projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID as string,
       appId: process.env.REACT_APP_FIREBASE_APP_ID as string,
-    };
-  };
+    }
+  }
 
   /**
-   * API endpoint
+   * API HttpEndpoint
    */
-  public getApiEndpoint = () => {
-    return process.env.REACT_APP_API_URL;
-  };
+  public getHttpApiEndpoint = () => {
+    return process.env.REACT_APP_API_URL
+  }
+
+  /**
+   * API WSEndpoint
+   */
+  public getWsApiEndpoint = () => {
+    return process.env.REACT_APP_API_WS
+  }
 }
 
-export const env = new DotEnv();
+export const env = new DotEnv()
