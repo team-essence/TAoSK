@@ -3,7 +3,7 @@ import { Interest } from 'src/interests/interest';
 import { Qualification } from 'src/qualifications/qualification';
 import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
-import { Log } from 'src/logs/log';
+import { GameLog } from 'src/game-logs/game-log';
 import {
   Entity,
   Column,
@@ -106,9 +106,9 @@ export class User {
   @Field(() => [Invitation])
   invitation: Invitation[];
 
-  @OneToMany(() => Log, (log) => log.user)
-  @Field(() => [Log])
-  log: Log[];
+  @OneToMany(() => GameLog, (gameLog) => gameLog.user)
+  @Field(() => [GameLog])
+  gameLog: GameLog[];
 
   @CreateDateColumn()
   @Field()

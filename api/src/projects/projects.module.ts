@@ -5,7 +5,7 @@ import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
 import { List } from 'src/lists/list';
 import { Task } from 'src/tasks/task';
-import { Log } from 'src/logs/log';
+import { GameLog } from 'src/game-logs/game-log';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project]),
@@ -13,7 +13,7 @@ import { Log } from 'src/logs/log';
     TypeOrmModule.forFeature([Invitation]),
     TypeOrmModule.forFeature([List]),
     TypeOrmModule.forFeature([Task]),
-    TypeOrmModule.forFeature([Log]),
+    TypeOrmModule.forFeature([GameLog]),
   ],
 })
 export class ProjectsModule {}

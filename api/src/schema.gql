@@ -87,7 +87,7 @@ type List {
   task: [Task!]!
 }
 
-type Log {
+type GameLog {
   id: ID!
   context: String!
   user: User!
@@ -108,7 +108,7 @@ type Project {
   invitation: [Invitation!]!
   list: [List!]!
   task: [Task!]!
-  log: [Log!]!
+  gameLog: [GameLog!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -145,7 +145,7 @@ type User {
   interest: [Interest!]!
   group: [Group!]!
   invitation: [Invitation!]!
-  log: [Log!]!
+  gameLog: [GameLog!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!

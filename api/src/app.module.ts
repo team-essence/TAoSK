@@ -19,7 +19,7 @@ import { ListSort } from './list-sorts/list-sort';
 import { Task } from './tasks/task';
 import { Allocation } from './allocations/allocation';
 import { Chat } from './chats/chat';
-import { Log } from './logs/log';
+import { GameLog } from './game-logs/game-log';
 import { UsersModule } from './users/users.module';
 import { QualificationsModule } from './qualifications/qualifications.module';
 import { InterestsModule } from './interests/interests.module';
@@ -35,7 +35,7 @@ import { ListSortsModule } from './list-sorts/list-sorts.module';
 import { TasksModule } from './tasks/tasks.module';
 import { AllocationsModule } from './allocations/allocations.module';
 import { ChatsModule } from './chats/chats.module';
-import { LogsModule } from './logs/logs.module';
+import { GameLogsModule } from './game-logs/game-logs.module';
 
 @Module({
   imports: [
@@ -67,7 +67,7 @@ import { LogsModule } from './logs/logs.module';
         Task,
         Allocation,
         Chat,
-        Log,
+        GameLog,
       ],
       synchronize: true,
     }),
@@ -86,7 +86,7 @@ import { LogsModule } from './logs/logs.module';
     TasksModule,
     AllocationsModule,
     ChatsModule,
-    LogsModule,
+    GameLogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

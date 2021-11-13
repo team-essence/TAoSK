@@ -7,7 +7,7 @@ import { Interest } from 'src/interests/interest';
 import { Qualification } from 'src/qualifications/qualification';
 import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
-import { Log } from 'src/logs/log';
+import { GameLog } from 'src/game-logs/game-log';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -15,7 +15,7 @@ import { Log } from 'src/logs/log';
     TypeOrmModule.forFeature([Qualification]),
     TypeOrmModule.forFeature([Group]),
     TypeOrmModule.forFeature([Invitation]),
-    TypeOrmModule.forFeature([Log]),
+    TypeOrmModule.forFeature([GameLog]),
   ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],

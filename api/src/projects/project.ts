@@ -4,7 +4,7 @@ import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
 import { List } from 'src/lists/list';
 import { Task } from 'src/tasks/task';
-import { Log } from 'src/logs/log';
+import { GameLog } from 'src/game-logs/game-log';
 import {
   Entity,
   Column,
@@ -87,9 +87,9 @@ export class Project {
   @Field(() => [Task])
   task: Task[];
 
-  @OneToMany(() => Log, (log) => log.project)
-  @Field(() => [Log])
-  log: Log[];
+  @OneToMany(() => GameLog, (gameLog) => gameLog.project)
+  @Field(() => [GameLog])
+  gameLog: GameLog[];
 
   //作成日
   @CreateDateColumn()
