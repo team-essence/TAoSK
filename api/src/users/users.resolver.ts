@@ -6,6 +6,7 @@ import { NewUserInput } from './dto/newUser.input';
 import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
 import { NewQualificationClientInput } from 'src/qualifications/dto/newQualification.input';
 import { PubSub } from 'graphql-subscriptions';
+import { SearchUserInput } from './dto/searchUser.input';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -44,6 +45,18 @@ export class UsersResolver {
 
     this.pubSub.publish('userAdded', { userAdded: user });
     return user;
+  }
+
+  @Mutation(() => [User])
+  public async searchSameCompanyUsers(
+    @Args({ name: 'conditionSearchUser' }) conditionSearchUser: SearchUserInput,
+  ) {
+    const sameCompanyUsers = await this.usersService.searchSameCompanyUsers({
+      conditionSearchUser,
+    });
+    if (!sameCompanyUsers) throw new NotFoundException(conditionSearchUser);
+
+    return sameCompanyUsers;
   }
 
   @Subscription((returns) => User, {})

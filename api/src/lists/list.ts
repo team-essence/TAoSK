@@ -20,9 +20,9 @@ export class List {
   id: number;
 
   //リストID
-  @Column({ type: 'int', unsigned: true })
+  @Column({ type: 'varchar', length: 255 })
   @Field()
-  list_id: number;
+  list_id: string;
 
   //リスト名
   @Column({

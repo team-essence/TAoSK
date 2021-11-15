@@ -9,6 +9,8 @@ import { env } from 'env/dotEnv'
 import { ApolloProvider } from '@apollo/client'
 
 import { client } from './ApolloClient'
+import { ProjectDetail } from 'pages/projectList/projectDetail/ProjectDetail'
+import { ToastContainer } from 'react-toastify'
 
 const App: FC = () => {
   return (
@@ -17,6 +19,7 @@ const App: FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<ProjectList />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
