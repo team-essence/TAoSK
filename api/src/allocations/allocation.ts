@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { User } from 'src/users/user';
-import { Project } from 'src/projects/project';
+import { Task } from 'src/tasks/task';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -24,11 +24,11 @@ export class Allocation {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  //プロジェクトID
+  //タスクID
   @Field()
-  @ManyToOne(() => Project, (project) => project.allocation)
-  @JoinColumn({ name: 'project_id' })
-  project: Project;
+  @ManyToOne(() => Task, (task) => task.allocation)
+  @JoinColumn({ name: 'task_id' })
+  task: Task;
 
   //作成日
   @CreateDateColumn()
