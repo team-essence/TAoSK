@@ -57,6 +57,14 @@ type Chat {
   deleted_at: DateTime!
 }
 
+type Allocation {
+  id: ID!
+  user: User!
+  task: Task!
+  created_at: DateTime!
+  deleted_at: DateTime!
+}
+
 type Task {
   id: ID!
   overview: String!
@@ -73,6 +81,7 @@ type Task {
   project: Project!
   list: List!
   chat: [Chat!]!
+  allocation: [Allocation!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -145,6 +154,7 @@ type User {
   interest: [Interest!]!
   group: [Group!]!
   invitation: [Invitation!]!
+  allocation: [Allocation!]!
   gameLog: [GameLog!]!
   created_at: DateTime!
   updated_at: DateTime!

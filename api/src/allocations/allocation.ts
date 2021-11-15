@@ -25,7 +25,7 @@ export class Allocation {
   user: User;
 
   //タスクID
-  @Field()
+  @Field(() => Task, { defaultValue: '' })
   @ManyToOne(() => Task, (task) => task.allocation)
   @JoinColumn({ name: 'task_id' })
   task: Task;
