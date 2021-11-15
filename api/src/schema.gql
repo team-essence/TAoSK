@@ -80,7 +80,7 @@ type Task {
 
 type List {
   id: ID!
-  list_id: Float!
+  list_id: String!
   name: String!
   project: Project!
   listSort: [ListSort!]!
@@ -161,8 +161,10 @@ type Query {
 
 type Mutation {
   addUser(newQualification: NewQualificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
+  searchSameCompanyUsers(conditionSearchUser: SearchUserInput!): [User!]!
   addQualification(newQualification: NewQualificationInput!): Qualification!
   addInterest(newInterest: NewInterestInput!): Interest!
+  createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
 }
 
 input NewQualificationClientInput {
@@ -192,6 +194,12 @@ input NewUserInput {
   exp: Float!
 }
 
+input SearchUserInput {
+  ids: [String!]!
+  name: String!
+  company: String!
+}
+
 input NewQualificationInput {
   name: String!
   user_id: String!
@@ -200,6 +208,19 @@ input NewQualificationInput {
 input NewInterestInput {
   context: String!
   user_id: String!
+}
+
+input SelectUser {
+  ids: [String!]!
+}
+
+input NewProjectInput {
+  name: String!
+  overview: String!
+  hp: Float!
+  difficulty: Float!
+  end_date: String!
+  project_end_flg: Boolean!
 }
 
 type Subscription {

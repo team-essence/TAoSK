@@ -2,5 +2,41 @@ query Users($id: String!) {
   user(id: $id) {
     id
     name
+    icon_image
+    company
+  }
+}
+
+mutation SearchSameCompanyUsers($selectUserIds: [String!]!, $name: String!, $company: String!) {
+  searchSameCompanyUsers(
+    conditionSearchUser: { ids: $selectUserIds, name: $name, company: $company }
+  ) {
+    id
+    name
+    icon_image
+  }
+}
+
+mutation CreateProject(
+  $name: String!
+  $overview: String!
+  $difficulty: Float!
+  $end_date: String!
+  $ids: [String!]!
+) {
+  createProject(
+    newProject: {
+      name: $name
+      overview: $overview
+      hp: 100
+      difficulty: $difficulty
+      end_date: $end_date
+      project_end_flg: false
+    }
+    selectUser: { ids: $ids }
+  ) {
+    id
+    name
+    overview
   }
 }

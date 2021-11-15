@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common';
 import { User } from './user';
 import { NewUserInput } from './dto/newUser.input';
-import { Repository } from 'typeorm';
+import { In, Like, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewQualificationClientInput } from 'src/qualifications/dto/newQualification.input';
 import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
 import { Interest } from 'src/interests/interest';
 import { Qualification } from 'src/qualifications/qualification';
+import { SearchUserInput } from './dto/searchUser.input';
 
 @Injectable()
 export class UsersService {
@@ -80,6 +81,21 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  searchSameCompanyUsers({
+    conditionSearchUser,
+  }: {
+    conditionSearchUser: SearchUserInput;
+  }): Promise<User[]> {
+    const sameCompanyUsers = this.usersRepository.find({
+      id: Not(In(conditionSearchUser.ids)),
+      company: conditionSearchUser.company,
+      name: Like(`%${conditionSearchUser.name}%`),
+    });
+    if (!sameCompanyUsers) throw new NotFoundException();
+
+    return sameCompanyUsers;
   }
 
   // async remove(uid: string): Promise<boolean> {

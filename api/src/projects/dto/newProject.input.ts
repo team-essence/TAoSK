@@ -6,6 +6,7 @@ import {
   IsInt,
   IsDate,
   IsBoolean,
+  IsArray,
 } from 'class-validator';
 
 @InputType()
@@ -30,10 +31,17 @@ export class NewProjectInput {
   difficulty: number;
 
   @Field()
-  @IsDate()
-  end_date: Date;
+  @IsString()
+  end_date: string;
 
   @Field()
   @IsBoolean()
   project_end_flg: boolean;
+}
+
+@InputType()
+export class SelectUser {
+  @IsArray()
+  @Field(() => [String])
+  ids: [string];
 }
