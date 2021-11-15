@@ -4,6 +4,7 @@ import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
 import { List } from 'src/lists/list';
 import { Task } from 'src/tasks/task';
+import { Allocation } from 'src/allocations/allocation';
 import { GameLog } from 'src/game-logs/game-log';
 import {
   Entity,
@@ -86,6 +87,10 @@ export class Project {
   @OneToMany(() => Task, (task) => task.project)
   @Field(() => [Task])
   task: Task[];
+
+  @OneToMany(() => Allocation, (allocation) => allocation.project)
+  @Field(() => [Allocation])
+  allocation: Allocation[];
 
   @OneToMany(() => GameLog, (gameLog) => gameLog.project)
   @Field(() => [GameLog])

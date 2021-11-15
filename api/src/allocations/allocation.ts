@@ -20,13 +20,13 @@ export class Allocation {
 
   //ユーザID
   @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.group)
+  @ManyToOne(() => User, (user) => user.allocation)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   //プロジェクトID
   @Field()
-  @ManyToOne(() => Project, (project) => project.group)
+  @ManyToOne(() => Project, (project) => project.allocation)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
