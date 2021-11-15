@@ -2,6 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Project } from 'src/projects/project';
 import { List } from 'src/lists/list';
 import { Chat } from 'src/chats/chat';
+import { Allocation } from 'src/allocations/allocation';
 import {
   Entity,
   Column,
@@ -99,6 +100,10 @@ export class Task {
   @OneToMany(() => Chat, (chat) => chat.task)
   @Field(() => [Chat])
   chat: Chat[];
+
+  @OneToMany(() => Allocation, (allocation) => allocation.task)
+  @Field(() => [Allocation])
+  allocation: Allocation[];
 
   //作成日
   @CreateDateColumn()

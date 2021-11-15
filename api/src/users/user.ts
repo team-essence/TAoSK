@@ -3,6 +3,7 @@ import { Interest } from 'src/interests/interest';
 import { Qualification } from 'src/qualifications/qualification';
 import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
+import { Allocation } from 'src/allocations/allocation';
 import { GameLog } from 'src/game-logs/game-log';
 import {
   Entity,
@@ -108,6 +109,10 @@ export class User {
   @OneToMany(() => Invitation, (invitation) => invitation.user)
   @Field(() => [Invitation])
   invitation: Invitation[];
+
+  @OneToMany(() => Allocation, (allocation) => allocation.user)
+  @Field(() => [Allocation])
+  allocation: Allocation[];
 
   @OneToMany(() => GameLog, (gameLog) => gameLog.user)
   @Field(() => [GameLog])
