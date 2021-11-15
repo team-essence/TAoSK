@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
@@ -22,5 +23,14 @@ export class ProjectsResolver {
       });
 
     return newProjectData;
+  }
+
+  @Mutation(() => Project)
+  async getProjectById(@Args({ name: 'id' }) id: number) {
+    const project = await this.projectService.findProjectOne(id);
+
+    if (!project) throw new NotFoundException();
+
+    return project;
   }
 }

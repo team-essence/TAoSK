@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
@@ -102,6 +106,26 @@ export class ProjectsService {
         new InternalServerErrorException();
       });
     }
+
+    return project;
+  }
+
+  findProjectOne(id: number): Promise<Project> {
+    const project = this.projectRepository.findOne(id, {
+      relations: [
+        'monster',
+        'monster.specie',
+        'invitation',
+        'list',
+        'list.listSort',
+        'task',
+        'gameLog',
+        'groups',
+        'groups.user',
+      ],
+    });
+
+    if (!project) throw new NotFoundException();
 
     return project;
   }

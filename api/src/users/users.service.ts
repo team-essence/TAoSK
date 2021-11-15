@@ -98,6 +98,19 @@ export class UsersService {
     return sameCompanyUsers;
   }
 
+  async updateOnlineFlag(id: string, isOnline: boolean) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) throw new NotFoundException();
+
+    user.online_flg = isOnline;
+    await this.usersRepository.save(user).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return user;
+  }
+
   // async remove(uid: string): Promise<boolean> {
   //   const result = await this.usersRepository.delete(uid);
   //   return result.affected > 0;

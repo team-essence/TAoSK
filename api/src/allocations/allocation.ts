@@ -26,7 +26,7 @@ export class Allocation {
 
   //プロジェクトID
   @Field()
-  @ManyToOne(() => Project, (project) => project.group)
+  @ManyToOne(() => Project, (project) => project.groups)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
