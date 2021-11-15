@@ -8,25 +8,22 @@ import { ProjectList } from 'pages/projectList/ProjectList'
 import { MyPage } from 'pages/mypage/MyPage'
 import { ProjectDetail } from 'pages/projectList/projectDetail/ProjectDetail'
 import { NotFound } from 'pages/notFound/NotFound'
-import { ContentWrapper } from 'components/wrapper/ContentWrapper'
 import { client } from './ApolloClient'
 
 const App: FC = () => {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <ContentWrapper>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<ProjectList />} />
-              <Route path="/projects/:id" element={<ProjectDetail />} />
-              <Route path="/mypage/:id" element={<MyPage />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </ContentWrapper>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ProjectList />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/mypage/:id" element={<MyPage />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </AuthProvider>
     </ApolloProvider>
   )
