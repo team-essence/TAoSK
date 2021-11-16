@@ -26,7 +26,7 @@ export class UsersService {
 
   getAllUsers(): Promise<User[]> {
     const users = this.usersRepository.find({
-      relations: ['interest', 'qualifications'],
+      relations: ['interests', 'qualifications'],
     });
     if (!users) throw new NotFoundException();
 
@@ -35,7 +35,7 @@ export class UsersService {
 
   getUser(id: string): Promise<User> {
     const user = this.usersRepository.findOne(id, {
-      relations: ['interest', 'qualifications'],
+      relations: ['interests', 'qualifications'],
     });
     if (!user) throw new NotFoundException();
 
