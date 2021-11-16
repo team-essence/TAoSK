@@ -34,16 +34,16 @@ export class List {
 
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })
-  @ManyToOne(() => Project, (project) => project.list)
+  @ManyToOne(() => Project, (project) => project.lists)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
   //1対多
-  @OneToMany(() => ListSort, (listSrot) => listSrot.list)
+  @OneToMany(() => ListSort, (listSort) => listSort.list)
   @Field(() => [ListSort])
-  listSort: ListSort[];
+  listSorts: ListSort[];
 
   @OneToMany(() => Task, (task) => task.list)
   @Field(() => [Task])
-  task: Task[];
+  tasks: Task[];
 }

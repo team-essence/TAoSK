@@ -24,7 +24,7 @@ export class Interest {
   context: string;
 
   @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.interest)
+  @ManyToOne(() => User, (user) => user.interests)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

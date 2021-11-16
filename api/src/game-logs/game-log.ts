@@ -28,13 +28,13 @@ export class GameLog {
 
   //ユーザID
   @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.gameLog)
+  @ManyToOne(() => User, (user) => user.gameLogs)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })
-  @ManyToOne(() => Project, (project) => project.gameLog)
+  @ManyToOne(() => Project, (project) => project.gameLogs)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 

@@ -17,7 +17,7 @@ type Qualification {
 type Specie {
   id: ID!
   name: String!
-  monster: [Monster!]!
+  monsters: [Monster!]!
 }
 
 type Monster {
@@ -26,7 +26,7 @@ type Monster {
   type: Float!
   story: String!
   specie: Specie!
-  project: [Project!]!
+  projects: [Project!]!
 }
 
 type Invitation {
@@ -57,6 +57,14 @@ type Chat {
   deleted_at: DateTime!
 }
 
+type Allocation {
+  id: ID!
+  user: User!
+  task: Task!
+  created_at: DateTime!
+  deleted_at: DateTime!
+}
+
 type Task {
   id: ID!
   overview: String!
@@ -72,7 +80,8 @@ type Task {
   end_date: DateTime!
   project: Project!
   list: List!
-  chat: [Chat!]!
+  chats: [Chat!]!
+  allocations: [Allocation!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -83,8 +92,8 @@ type List {
   list_id: String!
   name: String!
   project: Project!
-  listSort: [ListSort!]!
-  task: [Task!]!
+  listSorts: [ListSort!]!
+  tasks: [Task!]!
 }
 
 type GameLog {
@@ -104,11 +113,11 @@ type Project {
   end_date: DateTime!
   project_end_flg: Boolean!
   monster: Monster!
-  groups: [Group!]!
-  invitation: [Invitation!]!
-  list: [List!]!
-  task: [Task!]!
-  gameLog: [GameLog!]!
+  group: Group!
+  invitations: [Invitation!]!
+  lists: [List!]!
+  tasks: [Task!]!
+  gameLogs: [GameLog!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -142,10 +151,11 @@ type User {
   design: Float!
   exp: Float!
   qualifications: [Qualification!]!
-  interest: [Interest!]!
-  group: [Group!]!
-  invitation: [Invitation!]!
-  gameLog: [GameLog!]!
+  interests: [Interest!]!
+  groups: [Group!]!
+  invitations: [Invitation!]!
+  allocations: [Allocation!]!
+  gameLogs: [GameLog!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!

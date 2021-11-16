@@ -21,5 +21,5 @@ export class Specie {
   //1対多
   @OneToMany(() => Monster, (monster) => monster.specie)
   @Field(() => [Monster])
-  monster: Monster[];
+  monsters: Monster[];
 }

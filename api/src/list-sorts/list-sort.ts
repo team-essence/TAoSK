@@ -23,7 +23,7 @@ export class ListSort {
 
   //リストID
   @Field(() => List, { defaultValue: '' })
-  @ManyToOne(() => List, (list) => list.listSort)
+  @ManyToOne(() => List, (list) => list.listSorts)
   @JoinColumn({ name: 'list_id' })
   list: List;
 }

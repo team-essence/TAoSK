@@ -28,7 +28,7 @@ mutation CreateProject(
     newProject: {
       name: $name
       overview: $overview
-      hp: 100
+      hp: 0
       difficulty: $difficulty
       end_date: $end_date
       project_end_flg: false

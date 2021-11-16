@@ -27,7 +27,7 @@ export class Group {
 
   //ユーザID
   @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.group)
+  @ManyToOne(() => User, (user) => user.groups)
   @JoinColumn({ name: 'user_id' })
   user: User;
 

@@ -86,24 +86,24 @@ export class Task {
 
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })
-  @ManyToOne(() => Project, (project) => project.task)
+  @ManyToOne(() => Project, (project) => project.tasks)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 
   //リストID
   @Field(() => List, { defaultValue: '' })
-  @ManyToOne(() => List, (list) => list.task)
+  @ManyToOne(() => List, (list) => list.tasks)
   @JoinColumn({ name: 'list_id' })
   list: List;
 
   //1対多
   @OneToMany(() => Chat, (chat) => chat.task)
   @Field(() => [Chat])
-  chat: Chat[];
+  chats: Chat[];
 
   @OneToMany(() => Allocation, (allocation) => allocation.task)
   @Field(() => [Allocation])
-  allocation: Allocation[];
+  allocations: Allocation[];
 
   //作成日
   @CreateDateColumn()
