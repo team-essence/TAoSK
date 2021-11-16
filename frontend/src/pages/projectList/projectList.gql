@@ -4,6 +4,17 @@ query Users($id: String!) {
     name
     icon_image
     company
+    hp
+    mp
+    hp
+    mp
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
   }
 }
 

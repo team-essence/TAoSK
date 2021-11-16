@@ -1,0 +1,18 @@
+query GetCurrentUser($id: String!) {
+  user(id: $id) {
+    id
+    name
+    icon_image
+    company
+    occupation_id
+    hp
+    mp
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+  }
+}
