@@ -43,12 +43,12 @@ export class Monster {
   //多対１
   //種族ID
   @Field(() => Specie, { defaultValue: '' })
-  @ManyToOne(() => Specie, (specie) => specie.monster)
+  @ManyToOne(() => Specie, (specie) => specie.monsters)
   @JoinColumn({ name: 'specie_id' })
   specie: Specie;
 
   //1対多
   @OneToMany(() => Project, (project) => project.monster)
   @Field(() => [Project])
-  project: Project[];
+  projects: Project[];
 }

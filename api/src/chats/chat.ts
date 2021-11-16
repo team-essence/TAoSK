@@ -29,7 +29,7 @@ export class Chat {
 
   //タスクID
   @Field(() => Task, { defaultValue: '' })
-  @ManyToOne(() => Task, (task) => task.chat)
+  @ManyToOne(() => Task, (task) => task.chats)
   @JoinColumn({ name: 'task_id' })
   task: Task;
 

@@ -100,23 +100,23 @@ export class User {
 
   @OneToMany(() => Interest, (interest) => interest.user)
   @Field(() => [Interest])
-  interest: Interest[];
+  interests: Interest[];
 
   @OneToMany(() => Group, (group) => group.user)
   @Field(() => [Group])
-  group: Group[];
+  groups: Group[];
 
   @OneToMany(() => Invitation, (invitation) => invitation.user)
   @Field(() => [Invitation])
-  invitation: Invitation[];
+  invitations: Invitation[];
 
   @OneToMany(() => Allocation, (allocation) => allocation.user)
   @Field(() => [Allocation])
-  allocation: Allocation[];
+  allocations: Allocation[];
 
   @OneToMany(() => GameLog, (gameLog) => gameLog.user)
   @Field(() => [GameLog])
-  gameLog: GameLog[];
+  gameLogs: GameLog[];
 
   @CreateDateColumn()
   @Field()
