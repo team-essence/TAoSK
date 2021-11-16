@@ -1,11 +1,11 @@
 import React, { FC, useEffect } from 'react'
 import { Navigate, NavLink, useParams } from 'react-router-dom'
 import { useAuthContext } from 'context/AuthProvider'
-import { useGetCurrentUserLazyQuery, useGetProjectMutation, useUpdateOnlineFlagMutation } from './getUser.gen'
+import { useGetCurrentUserLazyQuery } from './getUser.gen'
+import { useGetProjectMutation, useUpdateOnlineFlagMutation } from './projectDetail.gen'
 import styled from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
-import { group } from 'console'
 
 export const ProjectDetail: FC = () => {
   const { currentUser } = useAuthContext()
@@ -13,7 +13,7 @@ export const ProjectDetail: FC = () => {
   const { id } = useParams()
   const [getProjectById, projectData] = useGetProjectMutation()
   const [updateOnlineFlag, updatedUserData] = useUpdateOnlineFlagMutation()
-  
+
   const handleBeforeUnloadEvent = async (userId: string) => {
     logger.debug('でる')
     await updateOnlineFlag({
@@ -33,7 +33,7 @@ export const ProjectDetail: FC = () => {
       },
     })
   }, [currentUser])
- 
+
   useEffect(() => {
     if (!currentUser || !id) return
 
@@ -54,7 +54,7 @@ export const ProjectDetail: FC = () => {
 
     tryApi()
   }, [currentUser, id])
-  
+
   useEffect(() => {
     if (!currentUser) return
     logger.debug('入る')
