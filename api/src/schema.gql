@@ -172,9 +172,11 @@ type Query {
 type Mutation {
   addUser(newQualification: NewQualificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
   searchSameCompanyUsers(conditionSearchUser: SearchUserInput!): [User!]!
+  updateOnlineFlag(isOnline: Boolean!, id: String!): User!
   addQualification(newQualification: NewQualificationInput!): Qualification!
   addInterest(newInterest: NewInterestInput!): Interest!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
+  getProjectById(id: Float!): Project!
 }
 
 input NewQualificationClientInput {

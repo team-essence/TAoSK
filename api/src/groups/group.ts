@@ -33,7 +33,7 @@ export class Group {
 
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })
-  @ManyToOne(() => Project, (project) => project.group)
+  @ManyToOne(() => Project, (project) => project.groups)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 

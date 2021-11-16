@@ -1,0 +1,28 @@
+mutation GetProject($id: Float!) {
+  getProjectById(id: $id) {
+    id
+    name
+    hp
+    difficulty
+
+    groups {
+      user {
+        id
+        name
+        hp
+        mp
+        occupation_id
+        icon_image
+        online_flg
+      }
+    }
+  }
+}
+
+mutation UpdateOnlineFlag($id: String!, $isOnline: Boolean!) {
+  updateOnlineFlag(id: $id, isOnline: $isOnline) {
+    id
+    name
+    online_flg
+  }
+}

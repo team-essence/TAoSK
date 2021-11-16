@@ -69,11 +69,9 @@ export class Project {
   @JoinColumn({ name: 'monster_id' })
   monster: Monster;
 
-  //1対多
-  @Field(() => Group, { defaultValue: '' })
-  @ManyToOne(() => Group, (group) => group.project)
-  @JoinColumn({ name: 'group_id' })
-  group: Group;
+  @OneToMany(() => Group, (group) => group.project)
+  @Field(() => [Group])
+  groups: Group[];
 
   @OneToMany(() => Invitation, (invitation) => invitation.project)
   @Field(() => [Invitation])
