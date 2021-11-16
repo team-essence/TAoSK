@@ -26,7 +26,7 @@ export class UsersService {
 
   getAllUsers(): Promise<User[]> {
     const users = this.usersRepository.find({
-      relations: ['interest', 'qualifications'],
+      relations: ['interests', 'qualifications'],
     });
     if (!users) throw new NotFoundException();
 
@@ -35,7 +35,7 @@ export class UsersService {
 
   getUser(id: string): Promise<User> {
     const user = this.usersRepository.findOne(id, {
-      relations: ['interest', 'qualifications'],
+      relations: ['interests', 'qualifications'],
     });
     if (!user) throw new NotFoundException();
 
@@ -96,6 +96,19 @@ export class UsersService {
     if (!sameCompanyUsers) throw new NotFoundException();
 
     return sameCompanyUsers;
+  }
+
+  async updateOnlineFlag(id: string, isOnline: boolean) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) throw new NotFoundException();
+
+    user.online_flg = isOnline;
+    await this.usersRepository.save(user).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return user;
   }
 
   // async remove(uid: string): Promise<boolean> {

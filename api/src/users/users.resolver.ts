@@ -59,6 +59,17 @@ export class UsersResolver {
     return sameCompanyUsers;
   }
 
+  @Mutation(() => User)
+  public async updateOnlineFlag(
+    @Args({ name: 'id' }) id: string,
+    @Args({ name: 'isOnline' }) isOnline: boolean,
+  ) {
+    const user = await this.usersService.updateOnlineFlag(id, isOnline);
+    if (!user) throw new NotFoundException({ id, isOnline });
+
+    return user;
+  }
+
   @Subscription((returns) => User, {})
   userAdded() {
     return this.pubSub.asyncIterator('userAdded');

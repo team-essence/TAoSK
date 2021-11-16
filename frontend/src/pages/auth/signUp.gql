@@ -12,7 +12,7 @@ mutation AddUser(
       id: $id
       name: $name
       icon_image: $icon_image
-      online_flg: true
+      online_flg: false
       hp: 100
       mp: 100
       occupation_id: $occupation_id

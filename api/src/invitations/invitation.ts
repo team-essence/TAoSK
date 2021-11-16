@@ -20,13 +20,13 @@ export class Invitation {
 
   //ユーザID
   @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.invitation)
+  @ManyToOne(() => User, (user) => user.invitations)
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })
-  @ManyToOne(() => Project, (project) => project.invitation)
+  @ManyToOne(() => Project, (project) => project.invitations)
   @JoinColumn({ name: 'project_id' })
   project: Project;
 

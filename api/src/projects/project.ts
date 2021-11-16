@@ -65,31 +65,29 @@ export class Project {
   //モンスターid
   //多対１
   @Field(() => Monster, { defaultValue: '' })
-  @ManyToOne(() => Monster, (monster) => monster.project)
+  @ManyToOne(() => Monster, (monster) => monster.projects)
   @JoinColumn({ name: 'monster_id' })
   monster: Monster;
 
-  //1対多
-  @Field(() => Group, { defaultValue: '' })
-  @ManyToOne(() => Group, (group) => group.project)
-  @JoinColumn({ name: 'group_id' })
-  group: Group;
+  @OneToMany(() => Group, (group) => group.project)
+  @Field(() => [Group])
+  groups: Group[];
 
   @OneToMany(() => Invitation, (invitation) => invitation.project)
   @Field(() => [Invitation])
-  invitation: Invitation[];
+  invitations: Invitation[];
 
   @OneToMany(() => List, (list) => list.project)
   @Field(() => [List])
-  list: List[];
+  lists: List[];
 
   @OneToMany(() => Task, (task) => task.project)
   @Field(() => [Task])
-  task: Task[];
+  tasks: Task[];
 
   @OneToMany(() => GameLog, (gameLog) => gameLog.project)
   @Field(() => [GameLog])
-  gameLog: GameLog[];
+  gameLogs: GameLog[];
 
   //作成日
   @CreateDateColumn()
