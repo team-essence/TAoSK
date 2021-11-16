@@ -17,7 +17,7 @@ query GetUser($id: String!) {
     design
     exp
 
-    interest {
+    interests {
       context
     }
 

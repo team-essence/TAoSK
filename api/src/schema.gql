@@ -113,7 +113,7 @@ type Project {
   end_date: DateTime!
   project_end_flg: Boolean!
   monster: Monster!
-  group: Group!
+  groups: [Group!]!
   invitations: [Invitation!]!
   lists: [List!]!
   tasks: [Task!]!
