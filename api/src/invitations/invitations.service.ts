@@ -20,6 +20,22 @@ export class InvitationsService {
     private projectRepository: Repository<Project>,
   ) {}
 
+  find(userId: string): Promise<Invitation[]> {
+    const invitation = this.invitationRepository.find({
+      relations: ['project'],
+      where: {
+        user: {
+          id: userId,
+        },
+        deleted_at: IsNull(),
+      },
+    });
+
+    if (!invitation) throw new NotFoundException();
+
+    return invitation;
+  }
+
   findOne(userId: string, projectId: string): Promise<Invitation> {
     const invitation = this.invitationRepository.findOne({
       relations: ['project', 'user'],

@@ -168,6 +168,7 @@ type Query {
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
   invitation(projectId: String!, userId: String!): Invitation!
+  invitations(userId: String!): [Invitation!]!
 }
 
 type Mutation {

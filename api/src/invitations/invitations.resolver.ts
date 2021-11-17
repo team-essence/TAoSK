@@ -19,6 +19,13 @@ export class InvitationsResolver {
     return invitation;
   }
 
+  @Query(() => [Invitation])
+  public async invitations(@Args({ name: 'userId' }) userId: string) {
+    const invitations = await this.invitationService.find(userId);
+    if (!invitations) throw new NotFoundException(userId);
+    return invitations;
+  }
+
   @Mutation(() => Invitation)
   public async createInvitation(
     @Args({ name: 'userId' }) userId: string,
