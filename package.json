@@ -7,10 +7,11 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "init:all": "yarn init:husky && yarn init:front && yarn init:api",
+    "init:all": "yarn init:husky && yarn init:front && yarn init:api && yarn generate-gql",
     "init:front": "cd frontend && yarn",
     "init:api": "cd api && yarn",
     "init:husky": "yarn",
+    "generate-gql": "cd frontend && yarn generate-gql",
     "check-types:front": "cd frontend && yarn check-types",
     "check-types:api": "cd api && yarn check-types",
     "check-types:all": "yarn check-types:front",
