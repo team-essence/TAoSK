@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { occupationList } from 'consts/occupationList'
 import { useAddUserMutation } from '../pages/auth/signUp.gen'
+import { regexEmail, regexPassword, regexText } from 'consts/regex'
 
 type UserInput = { value: string }
 type UseTrySignUp = (
@@ -31,11 +32,19 @@ export const useTrySignUp: UseTrySignUp = (name, company, occupation, email, pas
   }
 
   const trySignUp = () => {
-    firebaseAuth.createUser(email.value, password.value).then(async result => {
-      await Promise.all([addUser(result.user.uid)])
-        .then(() => navigate('/'))
-        .catch(() => 'err')
-    })
+    if (
+      regexEmail.test(email.value) &&
+      regexPassword.test(password.value) &&
+      regexText.test(name.value) &&
+      regexText.test(company.value) &&
+      occupation.value
+    ) {
+      firebaseAuth.createUser(email.value, password.value).then(async result => {
+        await Promise.all([addUser(result.user.uid)])
+          .then(() => navigate('/'))
+          .catch(() => 'err')
+      })
+    }
   }
 
   return trySignUp
