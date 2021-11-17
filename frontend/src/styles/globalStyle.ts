@@ -1,6 +1,19 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'NotoSansJP';
+    src: url('fonts/NotoSansJP-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'NotoSansJP';
+    src: url('fonts/NotoSansJP-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+  }
+
   *,
   *:before,
   *:after {
@@ -13,16 +26,17 @@ export const GlobalStyle = createGlobalStyle`
     -webkit-text-size-adjust: 100%;
     line-height: 1.7;
     letter-spacing:0.05rem;
-  } 
+  }
   body {
     margin: 0;
     color: ${({ theme }) => theme.colors.black};
     background: ${({ theme }) => theme.colors.white};
     word-break: break-word;
     word-wrap: break-word;
-    font-family: "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
+    font-family: 'NotoSansJP', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
-  }
+    font-weight: 500;
+    }
 
   img {
     max-width: 100%;

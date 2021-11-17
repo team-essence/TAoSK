@@ -48,6 +48,7 @@ export const SignUp: FC = () => {
       <AuthHeader />
       <StyledWrapper>
         <StyledRegister>
+          <StyledLogoImg src={'logo.png'} />
           <h1>新規登録</h1>
           <input
             type="text"
@@ -92,6 +93,19 @@ const StyledWrapper = styled.div`
   height: calc(100vh - ${theme.headerHeight});
   padding-top: ${theme.headerHeight};
 `
+const StyledRegister = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 840px;
+  height: 1320px;
+  margin-top: 26px;
+  padding-top: 31px;
+  background-image: url('contract-paper.png');
+`
+const StyledLogoImg = styled.img`
+  height: 108px;
+`
 const StyledBackground = styled.div`
   z-index: -1;
   position: fixed;
@@ -100,11 +114,6 @@ const StyledBackground = styled.div`
   width: 100vw;
   height: 100vh;
   background-image: url('register-background.png');
+  background-size: cover;
   background-position: 50% 100%;
-`
-const StyledRegister = styled.div`
-  width: 840px;
-  height: 1320px;
-  margin-top: 26px;
-  background-image: url('contract-paper.png');
 `
