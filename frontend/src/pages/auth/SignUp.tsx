@@ -49,24 +49,37 @@ export const SignUp: FC = () => {
       <StyledWrapper>
         <StyledRegister>
           <StyledLogoImg src={'logo.png'} />
-          <h1>新規登録</h1>
-          <input
-            type="text"
-            placeholder="メールアドレスを入力"
-            required
-            maxLength={50}
-            {...email}
-          />
-          <input
-            type="password"
-            placeholder="パスワードを入力"
-            required
-            minLength={6}
-            maxLength={50}
-            {...password}
-          />
-          <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
-          <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
+          <StyledH1>新規登録書</StyledH1>
+          <StyledLabel>
+            冒険者名
+            <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
+          </StyledLabel>
+          <StyledLabel>
+            会社名
+            <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
+          </StyledLabel>
+          <StyledLabel>
+            メールアドレス
+            <input
+              type="text"
+              placeholder="メールアドレスを入力"
+              required
+              maxLength={50}
+              {...email}
+            />
+          </StyledLabel>
+          <StyledLabel>
+            パスワード
+            <input
+              type="password"
+              placeholder="パスワードを入力"
+              required
+              minLength={6}
+              maxLength={50}
+              {...password}
+            />
+          </StyledLabel>
+
           <select required {...occupation}>
             <option value="">職種を選択してください</option>
             {occupationList.map((item, index) => (
@@ -85,6 +98,8 @@ export const SignUp: FC = () => {
     </>
   )
 }
+
+type StyledLabelProps = { color?: string }
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -106,6 +121,21 @@ const StyledRegister = styled.div`
 const StyledLogoImg = styled.img`
   height: 108px;
 `
+const StyledH1 = styled.h1`
+  margin: 33px 0;
+  background: -webkit-linear-gradient(top, ${theme.colors.tenn}, ${theme.colors.nero});
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: ${theme.fontSizes.size_40};
+`
+const StyledLabel = styled.label<StyledLabelProps>`
+  color: ${props => props.color};
+  font-size: ${theme.fontSizes.size_16};
+`
+StyledLabel.defaultProps = {
+  color: theme.colors.chocolate,
+}
 const StyledBackground = styled.div`
   z-index: -1;
   position: fixed;

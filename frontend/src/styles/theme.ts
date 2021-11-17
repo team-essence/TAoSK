@@ -15,6 +15,7 @@ export const theme = {
     size_28: '28px',
     size_32: '32px',
     size_36: '36px',
+    size_40: '40px',
     size_48: '48px',
     size_52: '52px',
     size_56: '56px',
@@ -29,8 +30,11 @@ export const theme = {
   colors: {
     white: convertIntoRGBA('#FFFFFF'),
     black: convertIntoRGBA('#000000'),
+    nero: convertIntoRGBA('#100700'),
     mineShaft: convertIntoRGBA('#2c2c2c'),
     dodgerBlue: convertIntoRGBA('#11B3F9'),
+    tenn: convertIntoRGBA('#C95900'),
+    chocolate: convertIntoRGBA('#4D2709'),
   },
 } as const
 
