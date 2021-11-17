@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
   *,
@@ -16,8 +16,8 @@ export const GlobalStyle = createGlobalStyle`
   } 
   body {
     margin: 0;
-    color: ${({ theme }) => theme.colors.primary.black};
-    background: ${({ theme }) => theme.colors.primary.white};
+    color: ${({ theme }) => theme.colors.black};
+    background: ${({ theme }) => theme.colors.white};
     word-break: break-word;
     word-wrap: break-word;
     font-family: "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
@@ -72,4 +72,4 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
-`;
+`

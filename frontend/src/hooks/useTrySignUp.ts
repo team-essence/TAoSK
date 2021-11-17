@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { occupationList } from 'consts/occupationList'
-import { useAddUserMutation } from '../pages/auth/signUp.gen'
+import { useAddUserMutation } from 'pages/auth/signUp.gen'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 
 type UserInput = { value: string }

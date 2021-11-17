@@ -6,6 +6,7 @@ import { useInput } from 'hooks/useInput'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
+import { AuthHeader } from 'components/ui/header/AuthHeader'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
@@ -41,31 +42,34 @@ export const SignUp: FC = () => {
   }, [currentUser, data, navigate, tryGetUserById])
 
   return (
-    <div>
-      <h1>新規登録</h1>
-      <input type="text" placeholder="メールアドレスを入力" required maxLength={50} {...email} />
-      <input
-        type="password"
-        placeholder="パスワードを入力"
-        required
-        minLength={6}
-        maxLength={50}
-        {...password}
-      />
-      <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
-      <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
-      <select required {...occupation}>
-        <option value="">職種を選択してください</option>
-        {occupationList.map((item, index) => (
-          <option value={item} key={index}>
-            {item}
-          </option>
-        ))}
-      </select>
+    <>
+      <AuthHeader />
+      <div>
+        <h1>新規登録</h1>
+        <input type="text" placeholder="メールアドレスを入力" required maxLength={50} {...email} />
+        <input
+          type="password"
+          placeholder="パスワードを入力"
+          required
+          minLength={6}
+          maxLength={50}
+          {...password}
+        />
+        <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
+        <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
+        <select required {...occupation}>
+          <option value="">職種を選択してください</option>
+          {occupationList.map((item, index) => (
+            <option value={item} key={index}>
+              {item}
+            </option>
+          ))}
+        </select>
 
-      <button disabled={isDisabled} onClick={trySignUp}>
-        登録するボタン
-      </button>
-    </div>
+        <button disabled={isDisabled} onClick={trySignUp}>
+          登録するボタン
+        </button>
+      </div>
+    </>
   )
 }
