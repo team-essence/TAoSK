@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  front-server:
+    container_name: front-server
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /front-server
+    tty: true
+
+  api-server:
+    container_name: api-server
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
+    tty: true
+    restart: always
+    ports:
+      - "3700:3700"
+    volumes:
+      - type: bind
+        source: ./api
+        target: /api-server
+    depends_on:
+      - db-server
+  db-server:
+    platform: linux/x86_64
+    container_name: db-server
+    image: mysql:5.7.29
+    volumes:
+      - ./docker/initdb.d:/docker-entrypoint-initdb.d
+      - ./db/mysql_data:/var/lib/mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports:
+      - "10000:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: taosk_db
+      MYSQL_USER: develop
+      MYSQL_PASSWORD: password
+      TZ: "Asia/Tokyo"
