@@ -9,6 +9,7 @@ import { MyPage } from 'pages/mypage/MyPage'
 import { ProjectDetail } from 'pages/projectList/projectDetail/ProjectDetail'
 import { NotFound } from 'pages/notFound/NotFound'
 import { client } from './ApolloClient'
+import Invitation from 'pages/invitation'
 
 const App: FC = () => {
   return (
@@ -18,6 +19,7 @@ const App: FC = () => {
           <Routes>
             <Route path="/" element={<ProjectList />} />
             <Route path="/projects/:id" element={<ProjectDetail />} />
+            <Route path="/invitation/:projectId" element={<Invitation />} />
             <Route path="/mypage/:id" element={<MyPage />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />

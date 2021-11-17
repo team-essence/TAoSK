@@ -167,6 +167,7 @@ type Query {
   qualifications(user_ids: [String!]!): [Qualification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
+  invitation(projectId: String!, userId: String!): Invitation!
 }
 
 type Mutation {
@@ -177,6 +178,8 @@ type Mutation {
   addInterest(newInterest: NewInterestInput!): Interest!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
   getProjectById(id: Float!): Project!
+  joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
+  createInvitation(projectId: String!, userId: String!): Invitation!
 }
 
 input NewQualificationClientInput {
