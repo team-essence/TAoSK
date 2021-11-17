@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
 import { useInput } from 'hooks/useInput'
-import { useTrySignUp } from 'hooks/useSignUp'
+import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 
@@ -26,9 +26,11 @@ export const SignUp: FC = () => {
       regexText.test(name.value) &&
       regexText.test(company.value) &&
       occupation.value
-    )
-      return setIsDisabled(false)
-    setIsDisabled(true)
+    ) {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
   }, [company.value, email.value, name.value, occupation.value, password.value])
 
   useEffect(() => {
