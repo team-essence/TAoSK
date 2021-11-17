@@ -35,12 +35,8 @@ export const AuthHeader: FC = () => {
   )
 }
 
-const StyledLogoWrapper = styled.div`
-  object-fit: contain;
-  width: 100%;
-  height: 43px;
-`
 const StyledHeaderWrapper = styled.div`
+  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,6 +44,11 @@ const StyledHeaderWrapper = styled.div`
   width: 100vw;
   height: 70px;
   background-color: ${theme.colors.mineShaft};
+`
+const StyledLogoWrapper = styled.div`
+  object-fit: contain;
+  width: 100%;
+  height: 43px;
 `
 const StyledButtonsWrapper = styled.div`
   display: flex;

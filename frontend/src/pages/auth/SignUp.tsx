@@ -47,7 +47,7 @@ export const SignUp: FC = () => {
     <>
       <AuthHeader />
       <StyledWrapper>
-        <div>
+        <StyledRegister>
           <h1>新規登録</h1>
           <input
             type="text"
@@ -78,7 +78,8 @@ export const SignUp: FC = () => {
           <button disabled={isDisabled} onClick={trySignUp}>
             登録するボタン
           </button>
-        </div>
+        </StyledRegister>
+        <StyledBackground />
       </StyledWrapper>
     </>
   )
@@ -89,6 +90,21 @@ const StyledWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   height: calc(100vh - ${theme.headerHeight});
+  padding-top: ${theme.headerHeight};
+`
+const StyledBackground = styled.div`
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-image: url('register-background.png');
   background-position: 50% 100%;
+`
+const StyledRegister = styled.div`
+  width: 840px;
+  height: 1320px;
+  margin-top: 26px;
+  background-image: url('contract-paper.png');
 `
