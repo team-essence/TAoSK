@@ -6,8 +6,6 @@ query Users($id: String!) {
     company
     hp
     mp
-    hp
-    mp
     technology
     achievement
     motivation
