@@ -40,7 +40,6 @@ const StyledLogoWrapper = styled.div`
   width: 100%;
   height: 43px;
 `
-
 const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -50,7 +49,6 @@ const StyledHeaderWrapper = styled.div`
   height: 70px;
   background-color: ${theme.colors.mineShaft};
 `
-
 const StyledButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;

@@ -7,6 +7,8 @@ import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
+import styled from 'styled-components'
+import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
@@ -44,32 +46,49 @@ export const SignUp: FC = () => {
   return (
     <>
       <AuthHeader />
-      <div>
-        <h1>新規登録</h1>
-        <input type="text" placeholder="メールアドレスを入力" required maxLength={50} {...email} />
-        <input
-          type="password"
-          placeholder="パスワードを入力"
-          required
-          minLength={6}
-          maxLength={50}
-          {...password}
-        />
-        <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
-        <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
-        <select required {...occupation}>
-          <option value="">職種を選択してください</option>
-          {occupationList.map((item, index) => (
-            <option value={item} key={index}>
-              {item}
-            </option>
-          ))}
-        </select>
+      <StyledWrapper>
+        <div>
+          <h1>新規登録</h1>
+          <input
+            type="text"
+            placeholder="メールアドレスを入力"
+            required
+            maxLength={50}
+            {...email}
+          />
+          <input
+            type="password"
+            placeholder="パスワードを入力"
+            required
+            minLength={6}
+            maxLength={50}
+            {...password}
+          />
+          <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
+          <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
+          <select required {...occupation}>
+            <option value="">職種を選択してください</option>
+            {occupationList.map((item, index) => (
+              <option value={item} key={index}>
+                {item}
+              </option>
+            ))}
+          </select>
 
-        <button disabled={isDisabled} onClick={trySignUp}>
-          登録するボタン
-        </button>
-      </div>
+          <button disabled={isDisabled} onClick={trySignUp}>
+            登録するボタン
+          </button>
+        </div>
+      </StyledWrapper>
     </>
   )
 }
+
+const StyledWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: calc(100vh - ${theme.headerHeight});
+  background-image: url('register-background.png');
+  background-position: 50% 100%;
+`
