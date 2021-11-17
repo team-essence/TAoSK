@@ -30,6 +30,7 @@ export const theme = {
     white: convertIntoRGBA('#FFFFFF'),
     black: convertIntoRGBA('#000000'),
     mineShaft: convertIntoRGBA('#2c2c2c'),
+    dodgerBlue: convertIntoRGBA('#11B3F9'),
   },
 } as const
 
