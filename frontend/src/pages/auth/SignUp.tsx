@@ -2,24 +2,22 @@ import React, { FC, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
-import { companyList } from 'consts/companyList'
-import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { useInput } from 'hooks/useInput'
+import { useTrySignUp } from 'hooks/useSignUp'
 import { useAuthContext } from 'context/AuthProvider'
-import { useAddUserMutation } from './signUp.gen'
 import { useGetUserByIdLazyQuery } from './document.gen'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
-  const [addUserMutation] = useAddUserMutation()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const navigate = useNavigate()
-  const email = useInput('')
-  const password = useInput('')
   const name = useInput('')
   const company = useInput('')
   const occupation = useInput('')
+  const email = useInput('')
+  const password = useInput('')
+  const trySignUp = useTrySignUp(name, company, occupation, email, password)
 
   useEffect(() => {
     if (
@@ -39,28 +37,6 @@ export const SignUp: FC = () => {
     if (!data) return
     navigate('/')
   }, [currentUser, data, navigate, tryGetUserById])
-
-  const addUser = (id: string) => {
-    addUserMutation({
-      variables: {
-        id,
-        name: name.value,
-        icon_image: 'http:aaa',
-        company: company.value,
-        occupation_id: occupationList.indexOf(occupation.value) + 1,
-        context: ['資格1', '資格2', '資格3'],
-        qualificationName: ['興味1', '興味2', '興味3'],
-      },
-    })
-  }
-
-  const trySingUp = () => {
-    firebaseAuth.createUser(email.value, password.value).then(async result => {
-      await Promise.all([addUser(result.user.uid)])
-        .then(() => navigate('/'))
-        .catch(() => 'err')
-    })
-  }
 
   return (
     <div>
@@ -85,7 +61,7 @@ export const SignUp: FC = () => {
         ))}
       </select>
 
-      <button disabled={isDisabled} onClick={trySingUp}>
+      <button disabled={isDisabled} onClick={trySignUp}>
         登録するボタン
       </button>
     </div>
