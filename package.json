@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/team-essence/TAoSK.git",
-  "author": "roll1226 <tomo_yasu_4724@icloud.com>",
+  "author": "roll1226",
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
