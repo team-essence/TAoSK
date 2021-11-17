@@ -1,18 +1,47 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Navigate, NavLink, useParams } from 'react-router-dom'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
-import { useGetProjectMutation, useUpdateOnlineFlagMutation } from './projectDetail.gen'
+import {
+  useGetProjectMutation,
+  useUpdateOnlineFlagMutation,
+  useCreateInvitationMutation,
+} from './projectDetail.gen'
 import styled from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
+import { group } from 'console'
+import { useInput } from 'hooks/useInput'
+import { useDebounce } from 'hooks/useDebounce'
+import { useCreateProjectMutation, useSearchSameCompanyUsersMutation } from '../projectList.gen'
+import toast from 'utils/toast/toast'
 
 export const ProjectDetail: FC = () => {
-  const { currentUser } = useAuthContext()
-  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})
   const { id } = useParams()
-  const [getProjectById, projectData] = useGetProjectMutation()
+  const { currentUser } = useAuthContext()
+  const [selectUserIds, setSelectUserIds] = useState<string[]>([])
+  const inputUserName = useInput('')
+  const [getProjectById, projectData] = useGetProjectMutation({
+    onCompleted(data) {
+      logger.debug(data.getProjectById.groups)
+      data.getProjectById.groups.map(group => {
+        setSelectUserIds(groupList => [...groupList, group.user.id])
+      })
+    },
+  })
+  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})
   const [updateOnlineFlag, updatedUserData] = useUpdateOnlineFlagMutation()
+  const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
+  const [createInvitation] = useCreateInvitationMutation({
+    onCompleted(data) {
+      toast.success(`${data.createInvitation.user.name}を招待しました`)
+      handleInsertSelectUserId(data.createInvitation.user.id)
+    },
+    onError(err) {
+      toast.error('招待に失敗しました')
+    },
+  })
+  const debouncedInputText = useDebounce(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
     logger.debug('でる')
@@ -64,16 +93,54 @@ export const ProjectDetail: FC = () => {
   }, [currentUser])
 
   useEffect(() => {
-    logger.debug(id)
-  }, [id])
+    searchSameCompanyUsers({
+      variables: {
+        selectUserIds: selectUserIds,
+        name: debouncedInputText,
+        company: currentUserData.data?.user.company ? currentUserData.data.user.company : '',
+      },
+    })
+  }, [debouncedInputText])
+
+  const handleInsertSelectUserId = (userId: string) => {
+    setSelectUserIds(selectUserIds => [...selectUserIds, userId])
+  }
+
+  const handleInvitation = async (userId: string, projectId: string) => {
+    await createInvitation({
+      variables: {
+        userId,
+        projectId,
+      },
+    })
+  }
 
   return (
     <ProjectDetailContainer>
-      <ProjectTitleContainer>プロジェクト詳細</ProjectTitleContainer>
+      <ProjectTitleContainer>
+        プロジェクト詳細
+        <button style={{ border: 'solid' }}>招待</button>
+        <input type="text" {...inputUserName} placeholder={'ユーザ名'} />
+        {debouncedInputText &&
+          searchSameCompanyUsersData.data?.searchSameCompanyUsers.map(searchSameCompanyUsers =>
+            selectUserIds.includes(searchSameCompanyUsers.id) ? (
+              <></>
+            ) : (
+              <div key={searchSameCompanyUsers.id}>
+                <h2>名前: {searchSameCompanyUsers.name}</h2>
+                <p>id: {searchSameCompanyUsers.id}</p>
+                <button
+                  onClick={() => handleInvitation(searchSameCompanyUsers.id, id as string)}
+                  style={{ border: 'solid' }}>
+                  招待する
+                </button>
+              </div>
+            ),
+          )}
+      </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
         <div>
-          <p>プロジェクト詳細</p>
           {projectData.data?.getProjectById.groups.map(
             group =>
               group.user.online_flg && (

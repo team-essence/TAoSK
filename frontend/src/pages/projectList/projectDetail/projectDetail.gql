@@ -26,3 +26,14 @@ mutation UpdateOnlineFlag($id: String!, $isOnline: Boolean!) {
     online_flg
   }
 }
+
+mutation CreateInvitation($userId: String!, $projectId: String!) {
+  createInvitation(userId: $userId, projectId: $projectId) {
+    id
+
+    user {
+      id
+      name
+    }
+  }
+}

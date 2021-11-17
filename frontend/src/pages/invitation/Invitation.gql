@@ -1,0 +1,23 @@
+query GetInvitationByUserId($userId: String!, $projectId: String!) {
+  invitation(userId: $userId, projectId: $projectId) {
+    id
+
+    user {
+      id
+    }
+
+    project {
+      id
+    }
+  }
+}
+
+mutation JoinProject($invitationId: String!, $userId: String!, $projectId: String!) {
+  joinProject(invitationId: $invitationId, userId: $userId, projectId: $projectId) {
+    id
+
+    project {
+      id
+    }
+  }
+}

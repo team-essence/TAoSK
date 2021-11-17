@@ -49,3 +49,14 @@ mutation CreateProject(
     overview
   }
 }
+
+query GetInvitations($userId: String!) {
+  invitations(userId: $userId) {
+    id
+
+    project {
+      id
+      name
+    }
+  }
+}

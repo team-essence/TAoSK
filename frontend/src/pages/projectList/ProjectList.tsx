@@ -5,6 +5,7 @@ import {
   useSearchSameCompanyUsersMutation,
   useCreateProjectMutation,
   useUsersLazyQuery,
+  useGetInvitationsLazyQuery,
 } from './projectList.gen'
 import { useInput } from 'hooks/useInput'
 import { Rating, RatingView } from 'react-simple-star-rating'
@@ -26,6 +27,7 @@ export const ProjectList: FC = () => {
       toast.error('プロジェクトの作成に失敗しました')
     },
   })
+  const [getInvitation, invitations] = useGetInvitationsLazyQuery()
   const projectTitle = useInput('')
   const projectSummary = useInput('')
   const projectDatePicker = useInput(date.getToday())
@@ -49,8 +51,9 @@ export const ProjectList: FC = () => {
   useEffect(() => {
     if (!currentUser) return
     getUserById({ variables: { id: currentUser.uid } })
+    getInvitation({ variables: { userId: currentUser.uid } })
     setSelectUserIds(selectUserIds => [...selectUserIds, currentUser.uid])
-  }, [currentUser, getUserById])
+  }, [currentUser])
 
   const handleStarCnt = (index: number) => {
     setRatingStar(index)
@@ -84,6 +87,13 @@ export const ProjectList: FC = () => {
     <div>
       <NavLink to={`/mypage/${userData.data?.user.id}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧</p>
+
+      {invitations.data?.invitations.map((invitation, index) => (
+        <div key={index} style={{ border: 'solid red' }}>
+          <p>プロジェクト名: {invitation.project.name}</p>
+          <p>プロジェクトID: {invitation.project.id}</p>
+        </div>
+      ))}
       <br />
       <TestModalContainer>
         <h4>プロジェクト作成モーダルの内容</h4>
