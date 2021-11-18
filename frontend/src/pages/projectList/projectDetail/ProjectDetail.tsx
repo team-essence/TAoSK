@@ -19,7 +19,7 @@ import { useDebounce } from 'hooks/useDebounce'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import toast from 'utils/toast/toast'
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
-import { listType, tasksType } from 'models/list'
+import { listType, tasksType } from 'types/list'
 import { UpdateTask } from 'types/graphql.gen'
 import date from 'utils/date/date'
 
