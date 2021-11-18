@@ -2,18 +2,12 @@ import { useNavigate } from 'react-router-dom'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { occupationList } from 'consts/occupationList'
 import { useAddUserMutation } from 'pages/auth/signUp.gen'
-import { regexEmail, regexPassword, regexText } from 'consts/regex'
 
-type UserInput = { value: string }
 type UseTrySignUp = (
-  name: UserInput,
-  company: UserInput,
-  occupation: UserInput,
-  email: UserInput,
-  password: UserInput,
+  args: Record<'name' | 'company' | 'occupation' | 'email' | 'password', string>,
 ) => () => void
 
-export const useTrySignUp: UseTrySignUp = (name, company, occupation, email, password) => {
+export const useTrySignUp: UseTrySignUp = ({ name, company, occupation, email, password }) => {
   const [addUserMutation] = useAddUserMutation()
   const navigate = useNavigate()
 
@@ -21,10 +15,10 @@ export const useTrySignUp: UseTrySignUp = (name, company, occupation, email, pas
     addUserMutation({
       variables: {
         id,
-        name: name.value,
+        name,
         icon_image: 'http:aaa',
-        company: company.value,
-        occupation_id: occupationList.indexOf(occupation.value) + 1,
+        company,
+        occupation_id: occupationList.indexOf(occupation) + 1,
         context: ['資格1', '資格2', '資格3'],
         qualificationName: ['興味1', '興味2', '興味3'],
       },
@@ -32,19 +26,11 @@ export const useTrySignUp: UseTrySignUp = (name, company, occupation, email, pas
   }
 
   const trySignUp = () => {
-    if (
-      regexEmail.test(email.value) &&
-      regexPassword.test(password.value) &&
-      regexText.test(name.value) &&
-      regexText.test(company.value) &&
-      occupation.value
-    ) {
-      firebaseAuth.createUser(email.value, password.value).then(async result => {
-        await Promise.all([addUser(result.user.uid)])
-          .then(() => navigate('/'))
-          .catch(() => 'err')
-      })
-    }
+    firebaseAuth.createUser(email, password).then(async result => {
+      await Promise.all([addUser(result.user.uid)])
+        .then(() => navigate('/'))
+        .catch(() => 'err')
+    })
   }
 
   return trySignUp

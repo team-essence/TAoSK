@@ -1,8 +1,7 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
-import { useInput } from 'hooks/useInput'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
@@ -12,32 +11,49 @@ import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
+type FormInputs = Record<'name' | 'company' | 'occupation' | 'email' | 'password', string>
+
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const navigate = useNavigate()
-  const name = useInput('')
-  const company = useInput('')
-  const occupation = useInput('')
-  const email = useInput('')
-  const password = useInput('')
-  const trySignUp = useTrySignUp(name, company, occupation, email, password)
-  const { register, handleSubmit } = useForm()
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<FormInputs>({
+    mode: 'onChange',
+  })
+
+  const trySignUp = useTrySignUp({ ...getValues() })
+
+  const watchAllFields = watch()
+  const isFirst = useRef(true)
 
   useEffect(() => {
-    if (
-      regexEmail.test(email.value) &&
-      regexPassword.test(password.value) &&
-      regexText.test(name.value) &&
-      regexText.test(company.value) &&
-      occupation.value
-    ) {
-      setIsDisabled(false)
-    } else {
-      setIsDisabled(true)
+    const initializeInputValues = () => {
+      setValue('name', '', { shouldValidate: true })
+      setValue('company', '', { shouldValidate: true })
+      setValue('occupation', '', { shouldValidate: true })
+      setValue('email', '', { shouldValidate: true })
+      setValue('password', '', { shouldValidate: true })
     }
-  }, [company.value, email.value, name.value, occupation.value, password.value])
+    const hasError = Object.keys(errors).length
+
+    if (isFirst.current) {
+      initializeInputValues()
+      isFirst.current = false
+    } else if (hasError) {
+      setIsDisabled(true)
+    } else {
+      setIsDisabled(false)
+    }
+  }, [watchAllFields, setValue, errors])
 
   useEffect(() => {
     if (!currentUser) return
@@ -56,29 +72,38 @@ export const SignUp: FC = () => {
           <InputField
             label="冒険者"
             placeholder="名前を入力"
-            registration={register('name', { required: true, maxLength: 50 })}
-            {...name}
+            registration={register('name', { required: true, maxLength: 50, pattern: regexText })}
           />
           <InputField
             label="会社名"
             placeholder="会社名を入力"
-            registration={register('company', { required: true, maxLength: 50 })}
-            {...company}
+            registration={register('company', {
+              required: true,
+              maxLength: 50,
+              pattern: regexText,
+            })}
           />
           <InputField
             label="メールアドレス"
             placeholder="メールアドレスを入力"
-            registration={register('mailaddress', { required: true, maxLength: 50 })}
-            {...email}
+            registration={register('email', {
+              required: true,
+              maxLength: 50,
+              pattern: regexEmail,
+            })}
           />
           <InputField
             label="パスワード"
             placeholder="パスワードを入力"
-            registration={register('password', { required: true, minLength: 6, maxLength: 50 })}
-            {...password}
+            registration={register('password', {
+              required: true,
+              minLength: 6,
+              maxLength: 50,
+              pattern: regexPassword,
+            })}
           />
 
-          <select required {...occupation}>
+          <select {...register('occupation', { required: true })}>
             <option value="">職種を選択してください</option>
             {occupationList.map((item, index) => (
               <option value={item} key={index}>
@@ -87,7 +112,7 @@ export const SignUp: FC = () => {
             ))}
           </select>
 
-          <button disabled={isDisabled} onClick={trySignUp}>
+          <button disabled={isDisabled} onClick={handleSubmit(trySignUp)}>
             登録するボタン
           </button>
         </StyledRegister>
