@@ -45,14 +45,14 @@ export default class date {
   }
 
   /**
-   * difference in days
+   * is three days ago
    *
    * @static
    * @param {PropsDate} date
    * @return {number} [今日から何日前か]
    * @memberof date
    */
-  public static differenceInDays = (date: PropsDate): number => {
-    return differenceInDays(new Date(), new Date(date))
+  public static isThreeDaysAgo = (date: PropsDate): boolean => {
+    return differenceInDays(new Date(), new Date(date)) >= -3 ? true : false
   }
 }

@@ -8,6 +8,7 @@ import {
   useCreateInvitationMutation,
   useGetListsByProjectIdLazyQuery,
   useUpdateTaskSortMutation,
+  useAddTaskMutation,
 } from './projectDetail.gen'
 import styled from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -53,6 +54,14 @@ export const ProjectDetail: FC = () => {
     onError(err) {
       logger.debug(err)
       toast.error('タスクの移動に失敗しました')
+    },
+  })
+  const [addTask] = useAddTaskMutation({
+    onCompleted(data) {
+      toast.success('タスクを作成しました')
+    },
+    onError(err) {
+      toast.error('タスクの作成失敗しました')
     },
   })
 
@@ -248,6 +257,28 @@ export const ProjectDetail: FC = () => {
     })
   }
 
+  const handleAddTask = async (list_id: number) => {
+    addTask({
+      variables: {
+        newTask: {
+          overview: 'hoge',
+          explanation: 'hogehoge',
+          technology: 0,
+          achievement: 0,
+          solution: 0,
+          motivation: 0,
+          plan: 0,
+          design: 0,
+          weight: 0,
+          vertical_sort: list[list_id].tasks.length,
+          end_date: '2021-12-23',
+          project_id: id as string,
+          list_id: String(list_id),
+        },
+      },
+    })
+  }
+
   return (
     <ProjectDetailContainer>
       <ProjectTitleContainer>
@@ -340,7 +371,7 @@ export const ProjectDetail: FC = () => {
             {list.map((list, listIndex) => (
               <div key={listIndex}>
                 {list.title}
-
+                <button onClick={() => handleAddTask(listIndex + 1)}>追加</button>
                 <ul style={{ width: '300px', border: 'solid', minHeight: '300px' }}>
                   <Droppable droppableId={String(list.index)}>
                     {listProvided => (
@@ -363,7 +394,7 @@ export const ProjectDetail: FC = () => {
                                   <p>
                                     {date.isYesterday(task.end_date)
                                       ? 'red'
-                                      : date.differenceInDays(task.end_date) >= -3
+                                      : date.isThreeDaysAgo(task.end_date)
                                       ? 'yellow'
                                       : 'ノーマル'}
                                   </p>

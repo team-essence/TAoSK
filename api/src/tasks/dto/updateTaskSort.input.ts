@@ -12,7 +12,7 @@ export class UpdateTaskSort {
 }
 
 @InputType()
-export class UpdateTask {
+class UpdateTask {
   @Field()
   @IsString()
   id: string;

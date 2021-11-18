@@ -82,3 +82,10 @@ mutation UpdateTaskSort($updateTasks: UpdateTaskSort!) {
     overview
   }
 }
+
+mutation AddTask($newTask: NewTaskInput!) {
+  addTask(newTask: $newTask) {
+    id
+    overview
+  }
+}

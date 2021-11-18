@@ -183,6 +183,7 @@ type Mutation {
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
+  addTask(newTask: NewTaskInput!): Task!
 }
 
 input NewQualificationClientInput {
@@ -249,6 +250,22 @@ input UpdateTaskSort {
 input UpdateTask {
   id: String!
   vertical_sort: Float!
+  list_id: String!
+}
+
+input NewTaskInput {
+  overview: String!
+  explanation: String!
+  technology: Float!
+  achievement: Float!
+  solution: Float!
+  motivation: Float!
+  plan: Float!
+  design: Float!
+  weight: Float!
+  vertical_sort: Float!
+  end_date: String!
+  project_id: String!
   list_id: String!
 }
 
