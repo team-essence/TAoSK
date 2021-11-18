@@ -6,7 +6,7 @@ npm は禁止 yarn を使う
 
 ## 初期インストール
 
-`cd TAOSK`</br>
+`cd TAoSK`</br>
 `make init`</br>
 `docker-compose up --build`</br>
 
