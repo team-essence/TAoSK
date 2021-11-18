@@ -380,7 +380,6 @@ export const ProjectDetail: FC = () => {
                                 ref={taskProvided.innerRef}
                                 {...taskProvided.draggableProps}
                                 {...taskProvided.dragHandleProps}>
-                                {JSON.stringify(snapshot.isDragging)}
                                 <div>
                                   <h2>{task.overview}</h2>
                                 </div>
