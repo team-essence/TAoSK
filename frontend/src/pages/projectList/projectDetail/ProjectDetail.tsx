@@ -186,12 +186,16 @@ export const ProjectDetail: FC = () => {
     const { source, destination } = result
     const destinationDroppableId = Number(destination.droppableId)
     const sourceDroppableId = Number(source.droppableId)
+    const destinationIndex = destination.index
+    const sourceIndex = source.index
+
+    if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
 
     const listCopy = [...list]
 
     const [removedElement, newSourceList] = removeFromList(
       listCopy[sourceDroppableId].tasks,
-      source.index,
+      sourceIndex,
     )
 
     listCopy[sourceDroppableId].tasks = newSourceList
@@ -199,7 +203,7 @@ export const ProjectDetail: FC = () => {
     const destinationTask = listCopy[destinationDroppableId].tasks
     listCopy[destinationDroppableId].tasks = addToList(
       destinationTask,
-      destination.index,
+      destinationIndex,
       removedElement,
     )
 
@@ -371,11 +375,12 @@ export const ProjectDetail: FC = () => {
                         style={{ width: '300px', minHeight: '300px' }}>
                         {list.tasks.map((task, taskIndex) => (
                           <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
-                            {taskProvided => (
+                            {(taskProvided, snapshot) => (
                               <li
                                 ref={taskProvided.innerRef}
                                 {...taskProvided.draggableProps}
                                 {...taskProvided.dragHandleProps}>
+                                {JSON.stringify(snapshot.isDragging)}
                                 <div>
                                   <h2>{task.overview}</h2>
                                 </div>
