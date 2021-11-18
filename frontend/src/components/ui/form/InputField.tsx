@@ -13,12 +13,13 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export const InputField: FC<InputFieldProps> = props => {
   const { label, registration, error, ...inputAttributes } = props
+
   return (
     <div>
       <label>
         {label}
         <div>
-          <input {...inputAttributes} {...registration} />
+          <input {...registration} {...inputAttributes} />
         </div>
       </label>
       {error?.message && (
