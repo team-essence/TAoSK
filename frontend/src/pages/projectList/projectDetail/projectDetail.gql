@@ -37,3 +37,48 @@ mutation CreateInvitation($userId: String!, $projectId: String!) {
     }
   }
 }
+
+query GetListsByProjectId($projectId: String!) {
+  listsByProjectId(projectId: $projectId) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      overview
+      explanation
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      weight
+      vertical_sort
+      end_date
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+        }
+      }
+    }
+  }
+}
+
+mutation UpdateTaskSort($updateTasks: UpdateTaskSort!) {
+  updateTaskSort(updateTask: $updateTasks) {
+    id
+    overview
+  }
+}

@@ -6,6 +6,8 @@ import {
   useGetProjectMutation,
   useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
+  useGetListsByProjectIdLazyQuery,
+  useUpdateTaskSortMutation,
 } from './projectDetail.gen'
 import styled from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -13,8 +15,12 @@ import logger from 'utils/debugger/logger'
 import { group } from 'console'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
-import { useCreateProjectMutation, useSearchSameCompanyUsersMutation } from '../projectList.gen'
+import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import toast from 'utils/toast/toast'
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import { listType, tasksType } from 'models/list'
+import { UpdateTask } from 'types/graphql.gen'
+import date from 'utils/date/date'
 
 export const ProjectDetail: FC = () => {
   const { id } = useParams()
@@ -23,7 +29,6 @@ export const ProjectDetail: FC = () => {
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectMutation({
     onCompleted(data) {
-      logger.debug(data.getProjectById.groups)
       data.getProjectById.groups.map(group => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
       })
@@ -39,6 +44,59 @@ export const ProjectDetail: FC = () => {
     },
     onError(err) {
       toast.error('招待に失敗しました')
+    },
+  })
+  const [updateTaskSort] = useUpdateTaskSortMutation({
+    onCompleted(data) {
+      toast.success('タスクを移動しました')
+    },
+    onError(err) {
+      logger.debug(err)
+      toast.error('タスクの移動に失敗しました')
+    },
+  })
+
+  const [list, setList] = useState<listType[]>([])
+  const [getListsByProjectId] = useGetListsByProjectIdLazyQuery({
+    onCompleted(data) {
+      const sortList: listType[] = data.listsByProjectId.map(list => {
+        const tasks = list.tasks.map(task => {
+          const allocations = task.allocations.map(allocation => {
+            return {
+              id: allocation.user.id,
+              name: allocation.user.name,
+              icon_image: allocation.user.icon_image,
+            }
+          })
+
+          return {
+            id: task.id,
+            overview: task.overview,
+            explanation: task.explanation,
+            technology: task.technology,
+            achievement: task.achievement,
+            solution: task.solution,
+            motivation: task.motivation,
+            plan: task.plan,
+            design: task.design,
+            weight: task.weight,
+            vertical_sort: task.vertical_sort,
+            end_date: task.end_date,
+            allocations,
+          }
+        })
+
+        return {
+          index: list.listSorts[0].task_list,
+          title: list.name,
+          tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
+        }
+      })
+
+      sortList.sort((a, b) => a.index - b.index)
+
+      logger.debug(sortList)
+      setList(sortList)
     },
   })
   const debouncedInputText = useDebounce(inputUserName.value, 500)
@@ -79,6 +137,12 @@ export const ProjectDetail: FC = () => {
           id: Number(id),
         },
       })
+
+      getListsByProjectId({
+        variables: {
+          projectId: id,
+        },
+      })
     }
 
     tryApi()
@@ -104,6 +168,75 @@ export const ProjectDetail: FC = () => {
 
   const handleInsertSelectUserId = (userId: string) => {
     setSelectUserIds(selectUserIds => [...selectUserIds, userId])
+  }
+
+  const removeFromList = (list: tasksType[], index: number): [tasksType, tasksType[]] => {
+    const result = Array.from(list)
+    const [removed] = result.splice(index, 1)
+    return [removed, result]
+  }
+
+  const addToList = (list: tasksType[], index: number, element: tasksType) => {
+    const result = Array.from(list)
+    result.splice(index, 0, element)
+    return result
+  }
+
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+    const { source, destination } = result
+    const destinationDroppableId = Number(destination.droppableId)
+    const sourceDroppableId = Number(source.droppableId)
+
+    const listCopy = [...list]
+
+    const [removedElement, newSourceList] = removeFromList(
+      listCopy[sourceDroppableId].tasks,
+      source.index,
+    )
+
+    listCopy[sourceDroppableId].tasks = newSourceList
+
+    const destinationTask = listCopy[destinationDroppableId].tasks
+    listCopy[destinationDroppableId].tasks = addToList(
+      destinationTask,
+      destination.index,
+      removedElement,
+    ) as any
+
+    const sortListCopy = listCopy.map(list => {
+      const sortList = list.tasks.map((task, index) => {
+        task.vertical_sort = index
+        return task
+      })
+      return sortList
+    })
+
+    const updateTasks = sortListCopy.map((tasks, listIndex) => {
+      return tasks.map((task, taskIndex) => {
+        return {
+          id: task.id,
+          list_id: String(listIndex + 1),
+          vertical_sort: taskIndex,
+        }
+      })
+    })
+
+    const joinUpdateTasks = []
+    for (let index = 0; index < updateTasks.length; index++) {
+      joinUpdateTasks.push(...updateTasks[index])
+    }
+
+    updateTaskSort({
+      variables: {
+        updateTasks: {
+          tasks: joinUpdateTasks,
+          project_id: id as string,
+        },
+      },
+    })
+
+    setList(listCopy)
   }
 
   const handleInvitation = async (userId: string, projectId: string) => {
@@ -141,11 +274,11 @@ export const ProjectDetail: FC = () => {
 
       <ProjectDetailLeftContainer>
         <div>
+          <h2>オンライン</h2>
           {projectData.data?.getProjectById.groups.map(
             group =>
               group.user.online_flg && (
                 <>
-                  <h2>オンライン</h2>
                   <p>{group.user.name}</p>
                   <p>{group.user.icon_image}</p>
                   <p>{group.user.id}</p>
@@ -156,11 +289,11 @@ export const ProjectDetail: FC = () => {
                 </>
               ),
           )}
+          <h2>オフライン</h2>
           {projectData.data?.getProjectById.groups.map(
             group =>
               !group.user.online_flg && (
                 <>
-                  <h2>オフライン</h2>
                   <p>{group.user.name}</p>
                   <p>{group.user.icon_image}</p>
                   <p>{group.user.id}</p>
@@ -198,6 +331,54 @@ export const ProjectDetail: FC = () => {
               </p>
             </>
           )}
+        </div>
+
+        <div style={{ border: 'solid' }}></div>
+
+        <div style={{ display: 'flex' }}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            {list.map((list, listIndex) => (
+              <div key={listIndex}>
+                {list.title}
+
+                <ul style={{ width: '300px', border: 'solid', minHeight: '300px' }}>
+                  <Droppable droppableId={String(list.index)}>
+                    {listProvided => (
+                      <div
+                        {...listProvided.droppableProps}
+                        ref={listProvided.innerRef}
+                        style={{ width: '300px', minHeight: '300px' }}>
+                        {list.tasks.map((task, taskIndex) => (
+                          <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
+                            {taskProvided => (
+                              <li
+                                ref={taskProvided.innerRef}
+                                {...taskProvided.draggableProps}
+                                {...taskProvided.dragHandleProps}>
+                                <div>
+                                  <h2>{task.overview}</h2>
+                                </div>
+                                <div>
+                                  <h4>期限</h4>
+                                  <p>
+                                    {date.isYesterday(task.end_date)
+                                      ? 'red'
+                                      : date.differenceInDays(task.end_date) >= -3
+                                      ? 'yellow'
+                                      : 'ノーマル'}
+                                  </p>
+                                </div>
+                              </li>
+                            )}
+                          </Draggable>
+                        ))}
+                      </div>
+                    )}
+                  </Droppable>
+                </ul>
+              </div>
+            ))}
+          </DragDropContext>
         </div>
       </ProjectDetailLeftContainer>
 
