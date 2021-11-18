@@ -3,10 +3,9 @@ import { Navigate, NavLink, useParams } from 'react-router-dom'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import {
-  useGetProjectMutation,
+  useGetProjectLazyQuery,
   useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
-  useGetListsByProjectIdLazyQuery,
   useUpdateTaskSortMutation,
   useAddTaskMutation,
 } from './projectDetail.gen'
@@ -28,47 +27,13 @@ export const ProjectDetail: FC = () => {
   const { currentUser } = useAuthContext()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const inputUserName = useInput('')
-  const [getProjectById, projectData] = useGetProjectMutation({
+  const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
       })
-    },
-  })
-  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})
-  const [updateOnlineFlag, updatedUserData] = useUpdateOnlineFlagMutation()
-  const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
-  const [createInvitation] = useCreateInvitationMutation({
-    onCompleted(data) {
-      toast.success(`${data.createInvitation.user.name}を招待しました`)
-      handleInsertSelectUserId(data.createInvitation.user.id)
-    },
-    onError(err) {
-      toast.error('招待に失敗しました')
-    },
-  })
-  const [updateTaskSort] = useUpdateTaskSortMutation({
-    onCompleted(data) {
-      toast.success('タスクを移動しました')
-    },
-    onError(err) {
-      logger.debug(err)
-      toast.error('タスクの移動に失敗しました')
-    },
-  })
-  const [addTask] = useAddTaskMutation({
-    onCompleted(data) {
-      toast.success('タスクを作成しました')
-    },
-    onError(err) {
-      toast.error('タスクの作成失敗しました')
-    },
-  })
 
-  const [list, setList] = useState<listType[]>([])
-  const [getListsByProjectId] = useGetListsByProjectIdLazyQuery({
-    onCompleted(data) {
-      const sortList: listType[] = data.listsByProjectId.map(list => {
+      const sortList: listType[] = data.getProjectById.lists.map(list => {
         const tasks = list.tasks.map(task => {
           const allocations = task.allocations.map(allocation => {
             return {
@@ -108,6 +73,37 @@ export const ProjectDetail: FC = () => {
       setList(sortList)
     },
   })
+  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})
+  const [updateOnlineFlag] = useUpdateOnlineFlagMutation()
+  const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
+  const [createInvitation] = useCreateInvitationMutation({
+    onCompleted(data) {
+      toast.success(`${data.createInvitation.user.name}を招待しました`)
+      handleInsertSelectUserId(data.createInvitation.user.id)
+    },
+    onError(err) {
+      toast.error('招待に失敗しました')
+    },
+  })
+  const [updateTaskSort] = useUpdateTaskSortMutation({
+    onCompleted(data) {
+      toast.success('タスクを移動しました')
+    },
+    onError(err) {
+      logger.debug(err)
+      toast.error('タスクの移動に失敗しました')
+    },
+  })
+  const [addTask] = useAddTaskMutation({
+    onCompleted(data) {
+      toast.success('タスクを作成しました')
+    },
+    onError(err) {
+      toast.error('タスクの作成失敗しました')
+    },
+  })
+
+  const [list, setList] = useState<listType[]>([])
   const debouncedInputText = useDebounce(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
@@ -141,15 +137,9 @@ export const ProjectDetail: FC = () => {
         },
       })
 
-      await getProjectById({
+      getProjectById({
         variables: {
           id: Number(id),
-        },
-      })
-
-      getListsByProjectId({
-        variables: {
-          projectId: id,
         },
       })
     }

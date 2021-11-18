@@ -167,6 +167,7 @@ type Query {
   qualifications(user_ids: [String!]!): [Qualification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
+  getProjectById(id: Float!): Project!
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!
@@ -179,7 +180,6 @@ type Mutation {
   addQualification(newQualification: NewQualificationInput!): Qualification!
   addInterest(newInterest: NewInterestInput!): Interest!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
-  getProjectById(id: Float!): Project!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!

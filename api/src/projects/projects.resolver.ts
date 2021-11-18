@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
 import { ProjectsService } from './projects.service';
@@ -7,6 +7,15 @@ import { ProjectsService } from './projects.service';
 @Resolver()
 export class ProjectsResolver {
   constructor(private projectService: ProjectsService) {}
+
+  @Query(() => Project)
+  async getProjectById(@Args({ name: 'id' }) id: number) {
+    const project = await this.projectService.findProjectOne(id);
+
+    if (!project) throw new NotFoundException();
+
+    return project;
+  }
 
   @Mutation(() => Project)
   async createProject(
@@ -23,14 +32,5 @@ export class ProjectsResolver {
       });
 
     return newProjectData;
-  }
-
-  @Mutation(() => Project)
-  async getProjectById(@Args({ name: 'id' }) id: number) {
-    const project = await this.projectService.findProjectOne(id);
-
-    if (!project) throw new NotFoundException();
-
-    return project;
   }
 }
