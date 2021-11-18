@@ -211,7 +211,7 @@ export const ProjectDetail: FC = () => {
       destinationTask,
       destination.index,
       removedElement,
-    ) as any
+    )
 
     const sortListCopy = listCopy.map(list => {
       const sortList = list.tasks.map((task, index) => {
