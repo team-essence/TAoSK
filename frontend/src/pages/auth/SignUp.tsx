@@ -1,59 +1,22 @@
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
 import { useTrySignUp } from 'hooks/useTrySignUp'
+import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { InputField } from 'components/ui/form/InputField'
-import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
-
-type FormInputs = Record<'name' | 'company' | 'occupation' | 'email' | 'password', string>
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
-  const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const navigate = useNavigate()
-
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useForm<FormInputs>({
-    mode: 'onChange',
-  })
-
+  const { register, handleSubmit, getValues, isDisabled } = useSignUpForm()
   const trySignUp = useTrySignUp({ ...getValues() })
-
-  const watchAllFields = watch()
-  const isFirst = useRef(true)
-
-  useEffect(() => {
-    const initializeInputValues = () => {
-      setValue('name', '', { shouldValidate: true })
-      setValue('company', '', { shouldValidate: true })
-      setValue('occupation', '', { shouldValidate: true })
-      setValue('email', '', { shouldValidate: true })
-      setValue('password', '', { shouldValidate: true })
-    }
-    const hasError = Object.keys(errors).length
-
-    if (isFirst.current) {
-      initializeInputValues()
-      isFirst.current = false
-    } else if (hasError) {
-      setIsDisabled(true)
-    } else {
-      setIsDisabled(false)
-    }
-  }, [watchAllFields, setValue, errors])
 
   useEffect(() => {
     if (!currentUser) return
