@@ -1,5 +1,4 @@
 import 'styled-components'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 export const theme = {
   headerHeight: '70px',
@@ -28,13 +27,13 @@ export const theme = {
     black: 900,
   },
   colors: {
-    white: convertIntoRGBA('#FFFFFF'),
-    black: convertIntoRGBA('#000000'),
-    nero: convertIntoRGBA('#100700'),
-    mineShaft: convertIntoRGBA('#2c2c2c'),
-    dodgerBlue: convertIntoRGBA('#11B3F9'),
-    tenn: convertIntoRGBA('#C95900'),
-    chocolate: convertIntoRGBA('#4D2709'),
+    white: '#FFFFFF',
+    black: '#000000',
+    nero: '#100700',
+    mineShaft: '#2c2c2c',
+    dodgerBlue: '#11B3F9',
+    tenn: '#C95900',
+    chocolate: '#4D2709',
   },
 } as const
 
