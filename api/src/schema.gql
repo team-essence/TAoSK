@@ -169,6 +169,7 @@ type Query {
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
+  listsByProjectId(projectId: String!): [List!]!
 }
 
 type Mutation {
@@ -181,6 +182,7 @@ type Mutation {
   getProjectById(id: Float!): Project!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
+  updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
 }
 
 input NewQualificationClientInput {
@@ -237,6 +239,17 @@ input NewProjectInput {
   difficulty: Float!
   end_date: String!
   project_end_flg: Boolean!
+}
+
+input UpdateTaskSort {
+  tasks: [UpdateTask!]!
+  project_id: String!
+}
+
+input UpdateTask {
+  id: String!
+  vertical_sort: Float!
+  list_id: String!
 }
 
 type Subscription {
