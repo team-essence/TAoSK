@@ -14,7 +14,7 @@ export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const navigate = useNavigate()
-  const { register, handleSubmit, getValues, isDisabled } = useSignUpForm()
+  const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
   const trySignUp = useTrySignUp({ ...getValues() })
 
   useEffect(() => {
@@ -24,6 +24,7 @@ export const SignUp: FC = () => {
     navigate('/')
   }, [currentUser, data, navigate, tryGetUserById])
 
+  // TODO: 正規表現をちゃんと書いてエラーハンドリングする
   return (
     <>
       <AuthHeader />
@@ -34,38 +35,67 @@ export const SignUp: FC = () => {
           <InputField
             label="冒険者"
             placeholder="名前を入力"
-            registration={register('name', { required: true, maxLength: 50, pattern: regexText })}
+            registration={register('name', {
+              required: '未入力です',
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
+              pattern: regexText,
+            })}
+            error={errors['name']}
           />
           <InputField
             label="会社名"
             placeholder="会社名を入力"
             registration={register('company', {
-              required: true,
-              maxLength: 50,
+              required: '未入力です',
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
               pattern: regexText,
             })}
+            error={errors['company']}
           />
           <InputField
             label="メールアドレス"
             placeholder="メールアドレスを入力"
             registration={register('email', {
-              required: true,
-              maxLength: 50,
-              pattern: regexEmail,
+              required: '未入力です',
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
+              pattern: {
+                value: regexEmail,
+                message: '不正なメールアドレスです',
+              },
             })}
+            error={errors['email']}
           />
           <InputField
             label="パスワード"
             placeholder="パスワードを入力"
             registration={register('password', {
-              required: true,
-              minLength: 6,
-              maxLength: 50,
-              pattern: regexPassword,
+              required: '未入力です',
+              minLength: {
+                value: 6,
+                message: '6文字以上で入力してください',
+              },
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
+              pattern: {
+                value: regexPassword,
+                message: 'regex error',
+              },
             })}
+            error={errors['password']}
           />
 
-          <select {...register('occupation', { required: true })}>
+          <select {...register('occupation', { required: '未選択です' })}>
             <option value="">職種を選択してください</option>
             {occupationList.map((item, index) => (
               <option value={item} key={index}>

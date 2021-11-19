@@ -17,26 +17,35 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   inputStyles?: StyledInputProps
   label?: string
   error?: FieldError | undefined
+  errorColor?: string
   description?: string
   registration: Partial<UseFormRegisterReturn>
   type?: 'text' | 'email' | 'password'
 }
 
 export const InputField: FC<InputFieldProps> = props => {
-  const { labelStyles, inputStyles, label, registration, error, ...inputAttributes } = props
+  const {
+    labelStyles,
+    inputStyles,
+    errorColor = theme.colors.error,
+    label,
+    registration,
+    error,
+    ...inputAttributes
+  } = props
 
   return (
     <div>
-      <StyledLabel {...labelStyles}>
+      <StyledLabel {...labelStyles} color={error ? errorColor : undefined}>
         {label}
         <StyledInputWrapper {...inputStyles}>
           <input {...registration} {...inputAttributes} />
         </StyledInputWrapper>
       </StyledLabel>
       {error?.message && (
-        <div role="alert" aria-label={error.message}>
+        <StyledErrorMessage color={errorColor} role="alert" aria-label={error.message}>
           {error.message}
-        </div>
+        </StyledErrorMessage>
       )}
     </div>
   )
@@ -64,3 +73,7 @@ StyledInputWrapper.defaultProps = {
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.colors.white, 0.7),
 }
+const StyledErrorMessage = styled.div<{ color: string }>`
+  color: ${props => props.color};
+  font-size: ${({ theme }) => theme.fontSizes.size_14};
+`
