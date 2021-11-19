@@ -125,3 +125,45 @@ mutation AddTask($newTask: NewTaskInput!) {
     overview
   }
 }
+
+mutation CreateList($name: String!, $project_id: Float!, $task_list: Float!) {
+  createList(newList: { name: $name, project_id: $project_id, task_list: $task_list }) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      overview
+      explanation
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      weight
+      vertical_sort
+      end_date
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+        }
+      }
+    }
+  }
+}
+
+mutation UpdateListSort($listSort: [UpdateListSortObject!]!) {
+  updateListSort(updateListSort: { listSort: $listSort })
+}

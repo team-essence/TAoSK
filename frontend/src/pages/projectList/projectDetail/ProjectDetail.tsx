@@ -8,6 +8,8 @@ import {
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
   useAddTaskMutation,
+  useCreateListMutation,
+  useUpdateListSortMutation,
 } from './projectDetail.gen'
 import styled from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -70,6 +72,7 @@ export const ProjectDetail: FC = () => {
         return {
           id: list.id,
           list_id: list.list_id,
+          sort_id: list.listSorts[0].id,
           index: list.listSorts[0].task_list,
           title: list.name,
           tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
@@ -109,6 +112,82 @@ export const ProjectDetail: FC = () => {
     },
     onError(err) {
       toast.error('タスクの作成失敗しました')
+    },
+  })
+
+  const [createList] = useCreateListMutation({
+    onCompleted(data) {
+      toast.success('リスト作成成功！')
+      const newListData = data.createList
+
+      const tasks = newListData.tasks.map(task => {
+        const allocations = task.allocations.map(allocation => {
+          return {
+            id: allocation.user.id,
+            name: allocation.user.name,
+            icon_image: allocation.user.icon_image,
+          }
+        })
+
+        return {
+          id: task.id,
+          overview: task.overview,
+          explanation: task.explanation,
+          technology: task.technology,
+          achievement: task.achievement,
+          solution: task.solution,
+          motivation: task.motivation,
+          plan: task.plan,
+          design: task.design,
+          weight: task.weight,
+          vertical_sort: task.vertical_sort,
+          end_date: task.end_date,
+          allocations,
+        }
+      })
+
+      const newList: listType = {
+        id: newListData.id,
+        list_id: newListData.list_id,
+        sort_id: newListData.listSorts[0].id,
+        index: newListData.listSorts[0].task_list,
+        title: newListData.name,
+        tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
+      }
+
+      const listCopy = list
+      listCopy.splice(newListData.listSorts[0].task_list, 0, newList)
+      const result = listCopy
+        .map((list, index) => {
+          list.index = index
+          return list
+        })
+        .sort((a, b) => a.index - b.index)
+
+      setList(result)
+      const updateListSort = result.map((list, index) => {
+        return {
+          id: list.sort_id,
+          task_list: index,
+        }
+      })
+      updateList({
+        variables: {
+          listSort: updateListSort,
+        },
+      })
+    },
+    onError(err) {
+      toast.error('リスト作成失敗！')
+    },
+  })
+
+  const [updateList] = useUpdateListSortMutation({
+    onCompleted(data) {
+      toast.success('リスト更新成功！')
+    },
+    onError(err) {
+      toast.error('リスト更新失敗')
     },
   })
 
@@ -203,7 +282,7 @@ export const ProjectDetail: FC = () => {
     return result
   }
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return
     const { source, destination, type } = result
     const destinationDroppableId = Number(destination.droppableId)
@@ -218,6 +297,17 @@ export const ProjectDetail: FC = () => {
       if (destinationIndex === 2 || destinationIndex === 0) return
       const result = reorder(listCopy, sourceIndex, destinationIndex)
       setList(result)
+      const updateListSort = result.map((list, index) => {
+        return {
+          id: list.sort_id,
+          task_list: index,
+        }
+      })
+      await updateList({
+        variables: {
+          listSort: updateListSort,
+        },
+      })
       return
     }
 
@@ -258,7 +348,7 @@ export const ProjectDetail: FC = () => {
       joinUpdateTasks.push(...updateTasks[index])
     }
 
-    updateTaskSort({
+    await updateTaskSort({
       variables: {
         updateTasks: {
           tasks: joinUpdateTasks,
@@ -297,6 +387,16 @@ export const ProjectDetail: FC = () => {
           project_id: id as string,
           list_id: String(list_id),
         },
+      },
+    })
+  }
+
+  const handleCreateList = async () => {
+    await createList({
+      variables: {
+        name: 'ほげ',
+        project_id: Number(id),
+        task_list: 1,
       },
     })
   }
@@ -389,6 +489,8 @@ export const ProjectDetail: FC = () => {
         <div style={{ border: 'solid' }}></div>
 
         <div>
+          <button onClick={handleCreateList}>リスト作る</button>
+
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
