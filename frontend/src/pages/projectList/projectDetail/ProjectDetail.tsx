@@ -17,12 +17,19 @@ import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import toast from 'utils/toast/toast'
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
-import { listType, tasksType } from 'types/list'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+  resetServerContext,
+} from 'react-beautiful-dnd'
+import { DropType, listType, tasksType } from 'types/list'
 import { UpdateTask } from 'types/graphql.gen'
 import date from 'utils/date/date'
 
 export const ProjectDetail: FC = () => {
+  resetServerContext()
   const { id } = useParams()
   const { currentUser } = useAuthContext()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
@@ -61,6 +68,8 @@ export const ProjectDetail: FC = () => {
         })
 
         return {
+          id: list.id,
+          list_id: list.list_id,
           index: list.listSorts[0].task_list,
           title: list.name,
           tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
@@ -181,17 +190,36 @@ export const ProjectDetail: FC = () => {
     return result
   }
 
+  const reorder = (array: listType[], startIndex: number, endIndex: number) => {
+    const result = Array.from(array)
+
+    const previousItem = result[endIndex]
+    const [removed] = result.splice(startIndex, 1)
+
+    if (previousItem) {
+      removed.index = previousItem.index
+    }
+    result.splice(endIndex, 0, removed)
+    return result
+  }
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
-    const { source, destination } = result
+    const { source, destination, type } = result
     const destinationDroppableId = Number(destination.droppableId)
     const sourceDroppableId = Number(source.droppableId)
     const destinationIndex = destination.index
     const sourceIndex = source.index
-
     if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
 
     const listCopy = [...list]
+
+    if (type === DropType.COLUMN) {
+      if (destinationIndex === 2 || destinationIndex === 0) return
+      const result = reorder(listCopy, sourceIndex, destinationIndex)
+      setList(result)
+      return
+    }
 
     const [removedElement, newSourceList] = removeFromList(
       listCopy[sourceDroppableId].tasks,
@@ -301,9 +329,9 @@ export const ProjectDetail: FC = () => {
         <div>
           <h2>オンライン</h2>
           {projectData.data?.getProjectById.groups.map(
-            group =>
+            (group, index) =>
               group.user.online_flg && (
-                <>
+                <div key={index}>
                   <p>{group.user.name}</p>
                   <p>{group.user.icon_image}</p>
                   <p>{group.user.id}</p>
@@ -311,14 +339,14 @@ export const ProjectDetail: FC = () => {
                   <p>{group.user.hp}</p>
                   <p>{group.user.occupation_id}</p>
                   <p>{JSON.stringify(group.user.online_flg)}</p>
-                </>
+                </div>
               ),
           )}
           <h2>オフライン</h2>
           {projectData.data?.getProjectById.groups.map(
-            group =>
+            (group, index) =>
               !group.user.online_flg && (
-                <>
+                <div key={index}>
                   <p>{group.user.name}</p>
                   <p>{group.user.icon_image}</p>
                   <p>{group.user.id}</p>
@@ -326,7 +354,7 @@ export const ProjectDetail: FC = () => {
                   <p>{group.user.hp}</p>
                   <p>{group.user.occupation_id}</p>
                   <p>{JSON.stringify(group.user.online_flg)}</p>
-                </>
+                </div>
               ),
           )}
           {/* {JSON.stringify(projectData.data?.getProjectById.groups)} */}
@@ -360,49 +388,77 @@ export const ProjectDetail: FC = () => {
 
         <div style={{ border: 'solid' }}></div>
 
-        <div style={{ display: 'flex' }}>
+        <div>
           <DragDropContext onDragEnd={onDragEnd}>
-            {list.map((list, listIndex) => (
-              <div key={listIndex}>
-                {list.title}
-                <button onClick={() => handleAddTask(listIndex + 1)}>追加</button>
-                <ul style={{ width: '300px', border: 'solid', minHeight: '300px' }}>
-                  <Droppable droppableId={String(list.index)}>
-                    {listProvided => (
-                      <div
-                        {...listProvided.droppableProps}
-                        ref={listProvided.innerRef}
-                        style={{ width: '300px', minHeight: '300px' }}>
-                        {list.tasks.map((task, taskIndex) => (
-                          <Draggable key={task.id} draggableId={task.id} index={taskIndex}>
-                            {(taskProvided, snapshot) => (
-                              <li
-                                ref={taskProvided.innerRef}
-                                {...taskProvided.draggableProps}
-                                {...taskProvided.dragHandleProps}>
-                                <div>
-                                  <h2>{task.overview}</h2>
-                                </div>
-                                <div>
-                                  <h4>期限</h4>
-                                  <p>
-                                    {date.isYesterday(task.end_date)
-                                      ? 'red'
-                                      : date.isThreeDaysAgo(task.end_date)
-                                      ? 'yellow'
-                                      : 'ノーマル'}
-                                  </p>
-                                </div>
-                              </li>
+            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
+              {provided => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  style={{ display: 'flex' }}>
+                  {list.map((list, listIndex, { length }) => (
+                    <Draggable
+                      draggableId={`column-${list.id}`}
+                      index={listIndex}
+                      key={list.id}
+                      isDragDisabled={listIndex === 0 || length - 1 === listIndex ? true : false}>
+                      {provided => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}>
+                          <h2>{list.title}</h2>
+                          <button onClick={() => handleAddTask(listIndex + 1)}>追加</button>
+                          <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
+                            {listProvided => (
+                              <ul
+                                ref={listProvided.innerRef}
+                                {...listProvided.droppableProps}
+                                style={{
+                                  width: '300px',
+                                  border: 'solid',
+                                  minHeight: '300px',
+                                  padding: '20px',
+                                }}>
+                                {list.tasks.map((task, taskIndex) => (
+                                  <Draggable
+                                    key={task.id}
+                                    draggableId={`task-${task.id}`}
+                                    index={taskIndex}>
+                                    {(taskProvided, snapshot) => (
+                                      <li
+                                        ref={taskProvided.innerRef}
+                                        {...taskProvided.draggableProps}
+                                        {...taskProvided.dragHandleProps}>
+                                        <div>
+                                          <h2>{task.overview}</h2>
+                                        </div>
+                                        <div>
+                                          <h4>期限</h4>
+                                          <p>
+                                            {date.isYesterday(task.end_date)
+                                              ? 'red'
+                                              : date.isThreeDaysAgo(task.end_date)
+                                              ? 'yellow'
+                                              : 'ノーマル'}
+                                          </p>
+                                        </div>
+                                      </li>
+                                    )}
+                                  </Draggable>
+                                ))}
+                                {listProvided.placeholder}
+                              </ul>
                             )}
-                          </Draggable>
-                        ))}
-                      </div>
-                    )}
-                  </Droppable>
-                </ul>
-              </div>
-            ))}
+                          </Droppable>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
           </DragDropContext>
         </div>
       </ProjectDetailLeftContainer>

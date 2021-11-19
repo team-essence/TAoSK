@@ -21,7 +21,14 @@ export type tasksType = {
 }
 
 export type listType = {
+  id: string
+  list_id: string
   index: number
   title: string
   tasks: tasksType[]
+}
+
+export enum DropType {
+  COLUMN = 'COLUMN',
+  TASK = 'TASK',
 }
