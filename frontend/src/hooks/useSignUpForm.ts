@@ -23,7 +23,7 @@ export const useSignUpForm: UseSignUpForm = () => {
     mode: 'onChange',
   })
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
-  const isFirst = useRef<boolean>(true)
+  const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
 
   useEffect(() => {
@@ -36,9 +36,9 @@ export const useSignUpForm: UseSignUpForm = () => {
     }
     const hasError = Object.keys(errors).length
 
-    if (isFirst.current) {
+    if (!isComponentMounted.current) {
       initializeInputValues()
-      isFirst.current = false
+      isComponentMounted.current = true
     } else if (hasError) {
       setIsDisabled(true)
     } else {
