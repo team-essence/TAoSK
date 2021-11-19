@@ -31,7 +31,7 @@ export const theme = {
     black: '#000000',
     error: '#FF0000',
     nero: '#100700',
-    mineShaft: '#2c2c2c',
+    mineShaft: '#2C2C2C',
     dodgerBlue: '#11B3F9',
     tenn: '#C95900',
     chocolate: '#4D2709',

@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes } from 'react'
+import React, { FC, InputHTMLAttributes, useState, FocusEvent } from 'react'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
@@ -24,6 +24,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 }
 
 export const InputField: FC<InputFieldProps> = props => {
+  const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     labelStyles,
     inputStyles,
@@ -34,15 +35,20 @@ export const InputField: FC<InputFieldProps> = props => {
     ...inputAttributes
   } = props
 
+  const onBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (inputAttributes.onBlur) inputAttributes.onBlur(e)
+    setHasBlured(true)
+  }
+
   return (
     <div>
-      <StyledLabel {...labelStyles} color={error ? errorColor : undefined}>
+      <StyledLabel {...labelStyles} color={hasBlured && error ? errorColor : undefined}>
         {label}
         <StyledInputWrapper {...inputStyles}>
-          <input {...registration} {...inputAttributes} />
+          <input {...registration} {...inputAttributes} onBlur={onBlur} />
         </StyledInputWrapper>
       </StyledLabel>
-      {error?.message && (
+      {error?.message && hasBlured && (
         <StyledErrorMessage color={errorColor} role="alert" aria-label={error.message}>
           {error.message}
         </StyledErrorMessage>
