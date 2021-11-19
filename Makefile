@@ -3,32 +3,27 @@ init:
 	@make init-api
 	@make init-husky
 	@make generate-gql
+	@make build
 init-front:
 	cd frontend && yarn
 init-husky:
 	yarn
 init-api:
 	cd api && yarn
-start-front:
-	cd frontend && yarn start
-build-front:
-	cd frontend && yarn build
 generate-gql:
 	cd frontend && yarn generate-gql
-start-api:
-	cd api && docker compose up
-down-api:
-	cd api && docker compose down
+up:
+	docker compose up
+down:
+	docker compose down
 ps:
-	cd api && docker compose ps
-re-build-api:
-	cd api && docker compose up --build
-test-front:
-	cd frontend && yarn test
-eslint-front:
-	cd frontend && yarn fix:eslint
-prettier-front:
-	cd frontend && yarn fix:prettier
+	docker compose ps
+build:
+	docker compose up --build
+init-database:
+	docker compose exec db-server mysql -u root -p -e'CREATE DATABASE IF NOT EXISTS taosk_db; GRANT ALL PRIVILEGES ON taosk_db.* TO develop@"%";'
+sql:
+	docker compose exec db-server bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
 create-model:
 	cd api && nest g mo ${name}
 create-resolver:
@@ -63,7 +58,3 @@ create-library:
 	cd api && nest g lib ${name}
 create-resource:
 	cd api && nest g res ${name}
-init-database:
-	cd api && docker compose exec db-server mysql -u root -p -e'CREATE DATABASE IF NOT EXISTS taosk_db; GRANT ALL PRIVILEGES ON taosk_db.* TO develop@"%";'
-sql:
-	cd api && docker compose exec db-server bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
