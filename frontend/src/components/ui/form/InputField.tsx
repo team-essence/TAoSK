@@ -35,7 +35,7 @@ type StyledLabelProps = { color?: string }
 
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${props => props.color};
-  font-size: ${theme.fontSizes.size_16};
+  font-size: ${({ theme }) => theme.fontSizes.size_16};
 `
 StyledLabel.defaultProps = {
   color: theme.colors.chocolate,

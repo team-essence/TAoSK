@@ -43,7 +43,7 @@ const StyledHeaderWrapper = styled.div`
   padding: 0 28px;
   width: 100vw;
   height: 70px;
-  background-color: ${theme.colors.mineShaft};
+  background-color: ${({ theme }) => theme.colors.mineShaft};
 `
 const StyledLogoWrapper = styled.div`
   object-fit: contain;

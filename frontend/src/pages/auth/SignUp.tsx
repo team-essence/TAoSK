@@ -9,7 +9,6 @@ import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { InputField } from 'components/ui/form/InputField'
 import styled from 'styled-components'
-import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
@@ -89,8 +88,8 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: calc(100vh - ${theme.headerHeight});
-  padding-top: ${theme.headerHeight};
+  height: calc(100vh - ${({ theme }) => theme.headerHeight});
+  padding-top: ${({ theme }) => theme.headerHeight};
 `
 const StyledRegister = styled.div`
   display: flex;
@@ -107,11 +106,15 @@ const StyledLogoImg = styled.img`
 `
 const StyledH1 = styled.h1`
   margin: 33px 0;
-  background: -webkit-linear-gradient(top, ${theme.colors.tenn}, ${theme.colors.nero});
+  background: -webkit-linear-gradient(
+    top,
+    ${({ theme }) => theme.colors.tenn},
+    ${({ theme }) => theme.colors.nero}
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: ${theme.fontSizes.size_40};
+  font-size: ${({ theme }) => theme.fontSizes.size_40};
 `
 const StyledBackground = styled.div`
   z-index: -1;
