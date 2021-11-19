@@ -187,11 +187,14 @@ makefile のコマンドでも作れる
 
 | make                    | description                              |
 | ----------------------- | ---------------------------------------- |
-| make start-api          | Start api                                |
-| make down-api           | Down api                                 |
-| make re-build-api       | Re build                                 |
+| make init               | Project init                             |
+| make init-database      | Database init                            |
+| make up                 | Start up container                       |
+| make down               | Down container                           |
+| make build              | Container build                          |
 | make ps                 | Container list                           |
 | make sql                | Enter the SQL container                  |
+| make generate-gql       | Graphql code gen generate command        |
 | make create-class       | Generate a new class                     |
 | make create-config      | Generate a CLI configuration file        |
 | make create-controller  | Generate a controller declaration        |
