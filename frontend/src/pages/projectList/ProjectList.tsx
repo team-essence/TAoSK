@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Navigate, NavLink } from 'react-router-dom'
 import { useAuthContext } from 'context/AuthProvider'
 import {
@@ -8,11 +8,11 @@ import {
   useGetInvitationsLazyQuery,
 } from './projectList.gen'
 import { useInput } from 'hooks/useInput'
-import { Rating, RatingView } from 'react-simple-star-rating'
+import { useDebounce } from 'hooks/useDebounce'
+import { Rating } from 'react-simple-star-rating'
 import styled from 'styled-components'
 import logger from 'utils/debugger/logger'
 import date from 'utils/date/date'
-import { useDebounce } from 'hooks/useDebounce'
 import toast from 'utils/toast/toast'
 
 export const ProjectList: FC = () => {
@@ -31,8 +31,9 @@ export const ProjectList: FC = () => {
   const projectTitle = useInput('')
   const projectSummary = useInput('')
   const projectDatePicker = useInput(date.getToday())
-  const [ratingStar, setRatingStar] = useState(1)
+  const [ratingStar, setRatingStar] = useState<number>(1)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
+  const [uid, setUid] = useState<string>('')
 
   const projectUserName = useInput('')
   const debouncedInputText = useDebounce(projectUserName.value, 500)
@@ -53,6 +54,7 @@ export const ProjectList: FC = () => {
     getUserById({ variables: { id: currentUser.uid } })
     getInvitation({ variables: { userId: currentUser.uid } })
     setSelectUserIds(selectUserIds => [...selectUserIds, currentUser.uid])
+    setUid(currentUser.uid)
   }, [currentUser])
 
   const handleStarCnt = (index: number) => {
@@ -85,7 +87,7 @@ export const ProjectList: FC = () => {
 
   return (
     <div>
-      <NavLink to={`/mypage/${userData.data?.user.id}`}>マイページへ遷移</NavLink>
+      <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧</p>
 
       {invitations.data?.invitations.map((invitation, index) => (
