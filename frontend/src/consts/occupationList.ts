@@ -1,1 +1,1 @@
-export const occupationList: string[] = ['エンジニア', 'デザイナー'];
+export const occupationList: string[] = ['エンジニア', 'デザイナー']

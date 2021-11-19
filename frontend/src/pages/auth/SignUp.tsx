@@ -1,37 +1,21 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
-import { companyList } from 'consts/companyList'
-import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
-import { useInput } from 'hooks/useInput'
+import { useTrySignUp } from 'hooks/useTrySignUp'
+import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useAuthContext } from 'context/AuthProvider'
-import { useAddUserMutation } from './signUp.gen'
 import { useGetUserByIdLazyQuery } from './document.gen'
+import { AuthHeader } from 'components/ui/header/AuthHeader'
+import { InputField } from 'components/ui/form/InputField'
+import styled from 'styled-components'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
-  const [addUserMutation] = useAddUserMutation()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
-  const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const navigate = useNavigate()
-  const email = useInput('')
-  const password = useInput('')
-  const name = useInput('')
-  const company = useInput('')
-  const occupation = useInput('')
-
-  useEffect(() => {
-    if (
-      regexEmail.test(email.value) &&
-      regexPassword.test(password.value) &&
-      regexText.test(name.value) &&
-      regexText.test(company.value) &&
-      occupation.value
-    )
-      return setIsDisabled(false)
-    setIsDisabled(true)
-  }, [company.value, email.value, name.value, occupation.value, password.value])
+  const { register, handleSubmit, getValues, isDisabled } = useSignUpForm()
+  const trySignUp = useTrySignUp({ ...getValues() })
 
   useEffect(() => {
     if (!currentUser) return
@@ -40,54 +24,106 @@ export const SignUp: FC = () => {
     navigate('/')
   }, [currentUser, data, navigate, tryGetUserById])
 
-  const addUser = (id: string) => {
-    addUserMutation({
-      variables: {
-        id,
-        name: name.value,
-        icon_image: 'http:aaa',
-        company: company.value,
-        occupation_id: occupationList.indexOf(occupation.value) + 1,
-        context: ['資格1', '資格2', '資格3'],
-        qualificationName: ['興味1', '興味2', '興味3'],
-      },
-    })
-  }
-
-  const trySingUp = () => {
-    firebaseAuth.createUser(email.value, password.value).then(async result => {
-      await Promise.all([addUser(result.user.uid)])
-        .then(() => navigate('/'))
-        .catch(() => 'err')
-    })
-  }
-
   return (
-    <div>
-      <h1>新規登録</h1>
-      <input type="text" placeholder="メールアドレスを入力" required maxLength={50} {...email} />
-      <input
-        type="password"
-        placeholder="パスワードを入力"
-        required
-        minLength={6}
-        maxLength={50}
-        {...password}
-      />
-      <input type="text" placeholder="名前を入力" required maxLength={50} {...name} />
-      <input type="text" placeholder="会社名を入力" required maxLength={50} {...company} />
-      <select required {...occupation}>
-        <option value="">職種を選択してください</option>
-        {occupationList.map((item, index) => (
-          <option value={item} key={index}>
-            {item}
-          </option>
-        ))}
-      </select>
+    <>
+      <AuthHeader />
+      <StyledWrapper>
+        <StyledRegister>
+          <StyledLogoImg src={'logo.png'} />
+          <StyledH1>新規登録書</StyledH1>
+          <InputField
+            label="冒険者"
+            placeholder="名前を入力"
+            registration={register('name', { required: true, maxLength: 50, pattern: regexText })}
+          />
+          <InputField
+            label="会社名"
+            placeholder="会社名を入力"
+            registration={register('company', {
+              required: true,
+              maxLength: 50,
+              pattern: regexText,
+            })}
+          />
+          <InputField
+            label="メールアドレス"
+            placeholder="メールアドレスを入力"
+            registration={register('email', {
+              required: true,
+              maxLength: 50,
+              pattern: regexEmail,
+            })}
+          />
+          <InputField
+            label="パスワード"
+            placeholder="パスワードを入力"
+            registration={register('password', {
+              required: true,
+              minLength: 6,
+              maxLength: 50,
+              pattern: regexPassword,
+            })}
+          />
 
-      <button disabled={isDisabled} onClick={trySingUp}>
-        登録するボタン
-      </button>
-    </div>
+          <select {...register('occupation', { required: true })}>
+            <option value="">職種を選択してください</option>
+            {occupationList.map((item, index) => (
+              <option value={item} key={index}>
+                {item}
+              </option>
+            ))}
+          </select>
+
+          <button disabled={isDisabled} onClick={handleSubmit(trySignUp)}>
+            登録するボタン
+          </button>
+        </StyledRegister>
+        <StyledBackground />
+      </StyledWrapper>
+    </>
   )
 }
+
+const StyledWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: calc(100vh - ${({ theme }) => theme.headerHeight});
+  padding-top: ${({ theme }) => theme.headerHeight};
+`
+const StyledRegister = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 840px;
+  height: 1320px;
+  margin-top: 26px;
+  padding-top: 31px;
+  background-image: url('contract-paper.png');
+`
+const StyledLogoImg = styled.img`
+  height: 108px;
+`
+const StyledH1 = styled.h1`
+  margin: 33px 0;
+  background: -webkit-linear-gradient(
+    top,
+    ${({ theme }) => theme.colors.tenn},
+    ${({ theme }) => theme.colors.nero}
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: ${({ theme }) => theme.fontSizes.size_40};
+`
+const StyledBackground = styled.div`
+  z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('register-background.png');
+  background-size: cover;
+  background-position: 50% 100%;
+`

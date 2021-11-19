@@ -1,7 +1,7 @@
-import 'styled-components';
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA';
+import 'styled-components'
 
 export const theme = {
+  headerHeight: '70px',
   fontSizes: {
     size_10: '10px',
     size_12: '12px',
@@ -14,6 +14,7 @@ export const theme = {
     size_28: '28px',
     size_32: '32px',
     size_36: '36px',
+    size_40: '40px',
     size_48: '48px',
     size_52: '52px',
     size_56: '56px',
@@ -26,17 +27,17 @@ export const theme = {
     black: 900,
   },
   colors: {
-    primary: {
-      white: convertIntoRGBA('#FFFFFF'),
-      black: convertIntoRGBA('#000000'),
-    },
-    secondary: {},
-    background: {},
-    border: {},
+    white: '#FFFFFF',
+    black: '#000000',
+    nero: '#100700',
+    mineShaft: '#2c2c2c',
+    dodgerBlue: '#11B3F9',
+    tenn: '#C95900',
+    chocolate: '#4D2709',
   },
-} as const;
+} as const
 
-type AppTheme = typeof theme;
+type AppTheme = typeof theme
 
 declare module 'styled-components' {
   interface DefaultTheme extends AppTheme {}
