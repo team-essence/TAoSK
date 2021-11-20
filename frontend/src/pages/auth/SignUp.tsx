@@ -8,6 +8,7 @@ import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { InputField } from 'components/ui/form/InputField'
+import { SelectField } from 'components/ui/form/SelectField'
 import styled from 'styled-components'
 
 export const SignUp: FC = () => {
@@ -16,6 +17,10 @@ export const SignUp: FC = () => {
   const navigate = useNavigate()
   const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
   const trySignUp = useTrySignUp({ ...getValues() })
+  const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
+    return { value: v, item: v }
+  })
+  occupationOptions.unshift({ value: '', item: '職業を選択してください' })
 
   useEffect(() => {
     if (!currentUser) return
@@ -94,15 +99,12 @@ export const SignUp: FC = () => {
             })}
             error={errors['password']}
           />
-
-          <select {...register('occupation', { required: '未選択です' })}>
-            <option value="">職種を選択してください</option>
-            {occupationList.map((item, index) => (
-              <option value={item} key={index}>
-                {item}
-              </option>
-            ))}
-          </select>
+          <SelectField
+            label="職業"
+            registration={register('occupation', { required: '未選択です' })}
+            options={occupationOptions}
+            error={errors['occupation']}
+          />
 
           <button disabled={isDisabled} onClick={handleSubmit(trySignUp)}>
             登録するボタン
