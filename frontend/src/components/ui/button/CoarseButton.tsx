@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 
 type Props = {
+  className?: string
   text: string
   outerAspect: Record<'width' | 'height', string>
   innerAspect: Record<'width' | 'height', string>
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export const CoarseButton: FC<Props> = ({
+  className,
   text,
   outerAspect,
   innerAspect,
@@ -19,7 +21,7 @@ export const CoarseButton: FC<Props> = ({
   color,
 }) => {
   return (
-    <StyledButton {...outerAspect} color={color}>
+    <StyledButton className={className} {...outerAspect} color={color}>
       <StyledOuterMask {...outerAspect} bgColor={outerBgColor}>
         <StyledInnerWrapper {...innerAspect}>
           <StyledInnerMask {...innerAspect} bgColor={innerBgColor}>
