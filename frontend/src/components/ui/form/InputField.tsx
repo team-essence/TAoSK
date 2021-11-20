@@ -20,6 +20,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   errorColor?: string
   description?: string
   registration: Partial<UseFormRegisterReturn>
+  required?: boolean
   type?: 'text' | 'email' | 'password'
 }
 
@@ -32,9 +33,11 @@ export const InputField: FC<InputFieldProps> = props => {
     label,
     registration,
     error,
+    required = true,
     ...inputAttributes
   } = props
 
+  const shouldShowError = hasBlured && error?.message
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
     if (inputAttributes.onBlur) inputAttributes.onBlur(e)
     setHasBlured(true)
@@ -42,13 +45,14 @@ export const InputField: FC<InputFieldProps> = props => {
 
   return (
     <div>
-      <StyledLabel {...labelStyles} color={hasBlured && error ? errorColor : undefined}>
+      <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
         {label}
+        <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
         <StyledInputWrapper {...inputStyles}>
           <input {...registration} {...inputAttributes} onBlur={onBlur} />
         </StyledInputWrapper>
       </StyledLabel>
-      {error?.message && hasBlured && (
+      {shouldShowError && (
         <StyledErrorMessage color={errorColor} role="alert" aria-label={error.message}>
           {error.message}
         </StyledErrorMessage>
@@ -82,4 +86,8 @@ StyledInputWrapper.defaultProps = {
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${props => props.color};
   font-size: ${({ theme }) => theme.fontSizes.size_14};
+`
+const StyledRequiredSpan = styled.span`
+  display: inline-block;
+  color: ${({ theme }) => theme.colors.error};
 `
