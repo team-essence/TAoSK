@@ -9,6 +9,7 @@ import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { InputField } from 'components/ui/form/InputField'
 import styled from 'styled-components'
+import { ErrorBoundary } from 'components/ui/error/ErrorBoundary'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
@@ -31,20 +32,24 @@ export const SignUp: FC = () => {
         <StyledRegister>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
-          <InputField
-            label="冒険者"
-            placeholder="名前を入力"
-            registration={register('name', { required: true, maxLength: 50, pattern: regexText })}
-          />
-          <InputField
-            label="会社名"
-            placeholder="会社名を入力"
-            registration={register('company', {
-              required: true,
-              maxLength: 50,
-              pattern: regexText,
-            })}
-          />
+          <ErrorBoundary>
+            <InputField
+              label="冒険者"
+              placeholder="名前を入力"
+              registration={register('name', { required: true, maxLength: 50, pattern: regexText })}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <InputField
+              label="会社名"
+              placeholder="会社名を入力"
+              registration={register('company', {
+                required: true,
+                maxLength: 50,
+                pattern: regexText,
+              })}
+            />
+          </ErrorBoundary>
           <InputField
             label="メールアドレス"
             placeholder="メールアドレスを入力"

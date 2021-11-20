@@ -34,6 +34,8 @@ export const theme = {
     dodgerBlue: '#11B3F9',
     tenn: '#C95900',
     chocolate: '#4D2709',
+    seaPink: '#EFACAC',
+    totemPole: '#AC0D0D',
   },
 } as const
 
