@@ -7,6 +7,7 @@ import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
+import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
 import { SelectField } from 'components/ui/form/SelectField'
 import styled from 'styled-components'
@@ -38,6 +39,7 @@ export const SignUp: FC = () => {
         <StyledRegister>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
+          <ImageInputField />
           <InputField
             label="冒険者"
             placeholder="名前を入力"
