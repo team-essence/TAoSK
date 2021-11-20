@@ -1,20 +1,21 @@
 import React, { FC } from 'react'
 import { useImageResize } from 'hooks/useImageResize'
+import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
 import styled from 'styled-components'
 
 export const ImageInputField: FC = () => {
   const defaultSrc = 'svg/camera.svg'
-  const { resizedImageStr, handleUploadImg } = useImageResize(defaultSrc)
+  // 一辺60px以下の画像を生成
+  const { canvasContext, resizedImageStr, handleUploadImg } = useImageResize(defaultSrc, 60)
+  // 色数50以下のドット画像を生成
+  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
 
   return (
     <StyledAllWrapper marginBottom={'24px'}>
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
-          <StyledImage
-            src={resizedImageStr}
-            padding={resizedImageStr === defaultSrc ? '40px' : '0px'}
-          />
+          <StyledImage src={dottedImage} padding={dottedImage === defaultSrc ? '40px' : '0px'} />
         </StyledImageWrapper>
         <input type="file" accept=".jpg, .jpeg, .png" onChange={handleUploadImg} />
       </StyledLabel>

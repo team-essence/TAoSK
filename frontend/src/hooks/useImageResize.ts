@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from 'react'
 
-export type UseImageResizeResult = {
+export type UseImageResizeReturn = {
+  canvasContext: CanvasRenderingContext2D | undefined
   resizedImageStr: string
   handleUploadImg: (e: ChangeEvent<HTMLInputElement>) => void
 }
@@ -32,8 +33,9 @@ const drawCanvas = (
   return ctx
 }
 
-export const useImageResize = (initialValue: string): UseImageResizeResult => {
-  const [resizedImageStr, setResizedImageStr] = useState<string>(initialValue)
+export const useImageResize = (initialUrl: string, maxWidth: number): UseImageResizeReturn => {
+  const [resizedImageStr, setResizedImageStr] = useState<string>(initialUrl)
+  const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D>()
 
   const handleUploadImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.currentTarget.files || e.currentTarget.files.length === 0) return
@@ -50,10 +52,15 @@ export const useImageResize = (initialValue: string): UseImageResizeResult => {
 
     fileReader.onloadend = () => {
       fileImage.onload = () => {
-        const { wantWidth, wantHeight } = calculateWantSize(fileImage.width, fileImage.height, 150)
+        const { wantWidth, wantHeight } = calculateWantSize(
+          fileImage.width,
+          fileImage.height,
+          maxWidth,
+        )
         const ctx = drawCanvas(fileImage, wantWidth, wantHeight)
         if (!ctx) return
         ctx.canvas.toBlob(setUrlCreatedFromBlob, file.type, 1)
+        setCanvasContext(ctx)
       }
 
       if (typeof fileReader.result === 'string') fileImage.src = fileReader.result
@@ -62,5 +69,5 @@ export const useImageResize = (initialValue: string): UseImageResizeResult => {
     fileReader.readAsDataURL(file)
   }
 
-  return { resizedImageStr, handleUploadImg }
+  return { canvasContext, resizedImageStr, handleUploadImg }
 }
