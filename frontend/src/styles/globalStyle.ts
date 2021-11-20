@@ -2,14 +2,14 @@ import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
-    font-family: 'NotoSansJP';
-    src: url('fonts/NotoSansJP-Medium.otf') format('opentype');
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Medium.otf') format('truetype');
     font-weight: 500;
     font-style: normal;
   }
   @font-face {
-    font-family: 'NotoSansJP';
-    src: url('fonts/NotoSansJP-Bold.otf') format('opentype');
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
   }
@@ -33,7 +33,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.colors.white};
     word-break: break-word;
     word-wrap: break-word;
-    font-family: 'NotoSansJP', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
+    font-family: 'Mplus1Code', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
     font-weight: 500;
     }

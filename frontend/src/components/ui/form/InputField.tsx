@@ -67,6 +67,7 @@ const StyledAllWrapper = styled.label<{ marginBottom: string }>`
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${props => props.color};
   font-size: ${props => props.fontSize};
+  font-weight: 700;
 `
 StyledLabel.defaultProps = {
   color: theme.colors.chocolate,
