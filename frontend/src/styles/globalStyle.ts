@@ -3,8 +3,14 @@ import { createGlobalStyle } from 'styled-components'
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Mplus1Code';
-    src: url('fonts/Mplus1Code-Medium.otf') format('truetype');
+    src: url('fonts/Mplus1Code-Medium.ttf') format('truetype');
     font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-SemiBold.ttf') format('truetype');
+    font-weight: 600;
     font-style: normal;
   }
   @font-face {

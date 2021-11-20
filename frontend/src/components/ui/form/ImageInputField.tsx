@@ -1,7 +1,10 @@
 import React, { FC } from 'react'
 import { useImageResize } from 'hooks/useImageResize'
 import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
+import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
+import { theme } from 'styles/theme'
 
 export const ImageInputField: FC = () => {
   const defaultSrc = 'svg/camera.svg'
@@ -11,13 +14,28 @@ export const ImageInputField: FC = () => {
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
 
   return (
+    // TODO: コンポーネントにmarginをつけない。margin消す
     <StyledAllWrapper marginBottom={'24px'}>
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
           <StyledImage src={dottedImage} padding={dottedImage === defaultSrc ? '40px' : '0px'} />
         </StyledImageWrapper>
-        <input type="file" accept=".jpg, .jpeg, .png" onChange={handleUploadImg} />
+        <StyledCoarseButton
+          text="画像をアップロード"
+          outerAspect={{
+            width: '190px',
+            height: '40px',
+          }}
+          innerAspect={{
+            width: '186px',
+            height: '36px',
+          }}
+          outerBgColor={convertIntoRGBA(theme.colors.temptress, 0.2)}
+          innerBgColor={convertIntoRGBA(theme.colors.redOxide, 0.45)}
+          color={theme.colors.brandy}
+        />
+        <StyledDisappearedInput type="file" accept=".jpg, .jpeg, .png" onChange={handleUploadImg} />
       </StyledLabel>
     </StyledAllWrapper>
   )
@@ -38,10 +56,15 @@ const StyledImageWrapper = styled.div`
   border-radius: 2px;
   background-color: ${({ theme }) => theme.colors.white};
 `
-
 const StyledImage = styled.img<{ padding: string }>`
   aspect-ratio: 1 / 1;
   object-fit: contain;
   width: 100%;
   padding: ${props => props.padding};
+`
+const StyledDisappearedInput = styled.input`
+  display: none;
+`
+const StyledCoarseButton = styled(CoarseButton)`
+  margin-top: 14px;
 `
