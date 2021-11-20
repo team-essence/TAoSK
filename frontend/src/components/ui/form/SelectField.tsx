@@ -13,6 +13,7 @@ type StyledSelectProps = {
   backgroundColor?: string
 }
 type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  className?: string
   labelStyles?: StyledLabelProps
   selectStyles?: StyledSelectProps
   options: Record<'value' | 'item', string>[]
@@ -28,6 +29,7 @@ type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
 export const SelectField: FC<SelectFieldProps> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
+    className,
     labelStyles,
     selectStyles,
     options,
@@ -46,30 +48,32 @@ export const SelectField: FC<SelectFieldProps> = props => {
   }
 
   return (
-    <StyledAllWrapper marginBottom={shouldShowError ? '' : '24px'}>
-      <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
-        {label}
-        <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-        <StyledSelectWrapper {...selectStyles}>
-          <select {...registration} {...selectAttributes} onBlur={onBlur}>
-            {options.map((option, index) => (
-              <option value={option.value} key={index}>
-                {option.item}
-              </option>
-            ))}
-          </select>
-        </StyledSelectWrapper>
-      </StyledLabel>
+    <div className={className}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '' : '24px'}>
+        <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
+          {label}
+          <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
+          <StyledSelectWrapper {...selectStyles}>
+            <select {...registration} {...selectAttributes} onBlur={onBlur}>
+              {options.map((option, index) => (
+                <option value={option.value} key={index}>
+                  {option.item}
+                </option>
+              ))}
+            </select>
+          </StyledSelectWrapper>
+        </StyledLabel>
+      </StyledLabelWrapper>
       {shouldShowError && (
         <StyledErrorMessage color={errorColor} role="alert" aria-label={error.message}>
           {error.message}
         </StyledErrorMessage>
       )}
-    </StyledAllWrapper>
+    </div>
   )
 }
 
-const StyledAllWrapper = styled.label<{ marginBottom: string }>`
+const StyledLabelWrapper = styled.label<{ marginBottom: string }>`
   margin-bottom: ${props => props.marginBottom};
 `
 const StyledLabel = styled.label<StyledLabelProps>`

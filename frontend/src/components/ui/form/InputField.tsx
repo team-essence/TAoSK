@@ -13,6 +13,7 @@ type StyledInputProps = {
   backgroundColor?: string
 }
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+  className?: string
   labelStyles?: StyledLabelProps
   inputStyles?: StyledInputProps
   label?: string
@@ -27,6 +28,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 export const InputField: FC<InputFieldProps> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
+    className,
     labelStyles,
     inputStyles,
     errorColor = theme.colors.error,
@@ -44,24 +46,26 @@ export const InputField: FC<InputFieldProps> = props => {
   }
 
   return (
-    <StyledAllWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
-      <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
-        {label}
-        <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-        <StyledInputWrapper {...inputStyles}>
-          <input {...registration} {...inputAttributes} onBlur={onBlur} />
-        </StyledInputWrapper>
-      </StyledLabel>
+    <div className={className}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
+        <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
+          {label}
+          <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
+          <StyledInputWrapper {...inputStyles}>
+            <input {...registration} {...inputAttributes} onBlur={onBlur} />
+          </StyledInputWrapper>
+        </StyledLabel>
+      </StyledLabelWrapper>
       {shouldShowError && (
         <StyledErrorMessage color={errorColor} role="alert" aria-label={error.message}>
           {error.message}
         </StyledErrorMessage>
       )}
-    </StyledAllWrapper>
+    </div>
   )
 }
 
-const StyledAllWrapper = styled.label<{ marginBottom: string }>`
+const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${props => props.marginBottom};
 `
 const StyledLabel = styled.label<StyledLabelProps>`

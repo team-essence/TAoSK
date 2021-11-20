@@ -39,7 +39,7 @@ export const SignUp: FC = () => {
         <StyledRegister>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
-          <ImageInputField />
+          <StyledImageInputField />
           <InputField
             label="冒険者"
             placeholder="名前を入力"
@@ -151,6 +151,9 @@ const StyledH1 = styled.h1`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: ${({ theme }) => theme.fontSizes.size_40};
+`
+const StyledImageInputField = styled(ImageInputField)`
+  margin-bottom: 24px;
 `
 const StyledBackground = styled.div`
   z-index: -1;

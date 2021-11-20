@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
 type Props = {
+  className?: string
   width?: string
   height?: string
   border?: string
@@ -13,8 +14,12 @@ type Props = {
   onClick?: (v: MouseEvent) => void
 }
 
-export const SimpleRadiusButton: FC<Props> = ({ text, ...WrapperStyles }) => {
-  return <StyledButton {...WrapperStyles}>{text}</StyledButton>
+export const SimpleRadiusButton: FC<Props> = ({ className, text, ...WrapperStyles }) => {
+  return (
+    <StyledButton className={className} {...WrapperStyles}>
+      {text}
+    </StyledButton>
+  )
 }
 
 type StyledButtonProps = Omit<Props, 'text'>

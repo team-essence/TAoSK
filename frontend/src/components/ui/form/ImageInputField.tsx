@@ -6,7 +6,9 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
-export const ImageInputField: FC = () => {
+type Props = { className?: string }
+
+export const ImageInputField: FC<Props> = ({ className }) => {
   const defaultSrc = 'svg/camera.svg'
   // 一辺60px以下の画像を生成
   const { canvasContext, resizedImageStr, handleUploadImg } = useImageResize(defaultSrc, 60)
@@ -14,8 +16,7 @@ export const ImageInputField: FC = () => {
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
 
   return (
-    // TODO: コンポーネントにmarginをつけない。margin消す
-    <StyledAllWrapper marginBottom={'24px'}>
+    <div className={className}>
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
@@ -37,13 +38,10 @@ export const ImageInputField: FC = () => {
         />
         <StyledDisappearedInput type="file" accept=".jpg, .jpeg, .png" onChange={handleUploadImg} />
       </StyledLabel>
-    </StyledAllWrapper>
+    </div>
   )
 }
 
-const StyledAllWrapper = styled.label<{ marginBottom: string }>`
-  margin-bottom: ${props => props.marginBottom};
-`
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.colors.chocolate};
   font-size: ${({ theme }) => theme.colors.chocolate};
