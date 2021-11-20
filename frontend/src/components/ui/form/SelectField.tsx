@@ -46,7 +46,7 @@ export const SelectField: FC<SelectFieldProps> = props => {
   }
 
   return (
-    <div>
+    <StyledAllWrapper marginBottom={shouldShowError ? '' : '24px'}>
       <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
         {label}
         <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -65,10 +65,13 @@ export const SelectField: FC<SelectFieldProps> = props => {
           {error.message}
         </StyledErrorMessage>
       )}
-    </div>
+    </StyledAllWrapper>
   )
 }
 
+const StyledAllWrapper = styled.label<{ marginBottom: string }>`
+  margin-bottom: ${props => props.marginBottom};
+`
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${props => props.color};
   font-size: ${props => props.fontSize};
@@ -78,14 +81,31 @@ StyledLabel.defaultProps = {
   fontSize: theme.fontSizes.size_16,
 }
 const StyledSelectWrapper = styled.div<StyledSelectProps>`
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: calc(${props => props.height} / 2 - 4px);
+    right: 14px;
+    border-top: 8px solid ${({ theme }) => theme.colors.chocolate};
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+  }
+
   select {
+    -webkit-appearance: none;
+    appearance: none;
+    width: ${props => props.width};
     height: ${props => props.height};
+    padding-left: 8px;
     border: ${props => props.border};
     border-radius: ${props => props.borderRadius};
     background-color: ${props => props.backgroundColor};
   }
 `
 StyledSelectWrapper.defaultProps = {
+  width: 'min(33.33vw, 480px)',
   height: '40px',
   border: `solid 1px ${theme.colors.chocolate}`,
   borderRadius: '2px',

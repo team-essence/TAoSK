@@ -44,7 +44,7 @@ export const InputField: FC<InputFieldProps> = props => {
   }
 
   return (
-    <div>
+    <StyledAllWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
       <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
         {label}
         <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -57,10 +57,13 @@ export const InputField: FC<InputFieldProps> = props => {
           {error.message}
         </StyledErrorMessage>
       )}
-    </div>
+    </StyledAllWrapper>
   )
 }
 
+const StyledAllWrapper = styled.label<{ marginBottom: string }>`
+  margin-bottom: ${props => props.marginBottom};
+`
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${props => props.color};
   font-size: ${props => props.fontSize};
@@ -71,13 +74,16 @@ StyledLabel.defaultProps = {
 }
 const StyledInputWrapper = styled.div<StyledInputProps>`
   input {
+    width: ${props => props.width};
     height: ${props => props.height};
+    padding-left: 8px;
     border: ${props => props.border};
     border-radius: ${props => props.borderRadius};
     background-color: ${props => props.backgroundColor};
   }
 `
 StyledInputWrapper.defaultProps = {
+  width: 'min(33.33vw, 480px)',
   height: '40px',
   border: `solid 1px ${theme.colors.chocolate}`,
   borderRadius: '2px',

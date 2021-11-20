@@ -17,10 +17,11 @@ export const SignUp: FC = () => {
   const navigate = useNavigate()
   const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
   const trySignUp = useTrySignUp({ ...getValues() })
+
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
   })
-  occupationOptions.unshift({ value: '', item: '職業を選択してください' })
+  occupationOptions.unshift({ value: '', item: '選択' })
 
   useEffect(() => {
     if (!currentUser) return
