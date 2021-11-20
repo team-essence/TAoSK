@@ -125,11 +125,12 @@ const StyledRegister = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 840px;
-  height: 1320px;
+  width: 58.33vw;
+  height: 86.59vw;
   margin-top: 26px;
   padding-top: 31px;
   background-image: url('contract-paper.png');
+  background-size: cover;
 `
 const StyledLogoImg = styled.img`
   height: 108px;
