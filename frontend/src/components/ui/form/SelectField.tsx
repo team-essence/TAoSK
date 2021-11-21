@@ -33,7 +33,7 @@ export const SelectField: FC<SelectFieldProps> = props => {
     labelStyles,
     selectStyles,
     options,
-    errorColor = theme.colors.error,
+    errorColor = theme.COLORS.ERROR,
     label,
     registration,
     error,
@@ -82,8 +82,8 @@ const StyledLabel = styled.label<StyledLabelProps>`
   font-weight: 700;
 `
 StyledLabel.defaultProps = {
-  color: theme.colors.chocolate,
-  fontSize: theme.fontSizes.size_16,
+  color: theme.COLORS.CHOCOLATE,
+  fontSize: theme.FONT_SIZES.SIZE_16,
 }
 const StyledSelectWrapper = styled.div<StyledSelectProps>`
   position: relative;
@@ -93,7 +93,7 @@ const StyledSelectWrapper = styled.div<StyledSelectProps>`
     position: absolute;
     top: calc(${({ height }) => height} / 2 - 4px);
     right: 14px;
-    border-top: 8px solid ${({ theme }) => theme.colors.chocolate};
+    border-top: 8px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
     border-right: 8px solid transparent;
     border-left: 8px solid transparent;
   }
@@ -112,15 +112,15 @@ const StyledSelectWrapper = styled.div<StyledSelectProps>`
 StyledSelectWrapper.defaultProps = {
   width: 'min(33.33vw, 480px)',
   height: '40px',
-  border: `solid 1px ${theme.colors.chocolate}`,
+  border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
-  backgroundColor: convertIntoRGBA(theme.colors.white, 0.7),
+  backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.fontSizes.size_14};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
 const StyledRequiredSpan = styled.span`
   display: inline-block;
-  color: ${({ theme }) => theme.colors.error};
+  color: ${({ theme }) => theme.COLORS.ERROR};
 `

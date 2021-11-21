@@ -32,9 +32,9 @@ export const ImageInputField: FC<Props> = ({ className }) => {
             width: '186px',
             height: '36px',
           }}
-          outerBgColor={convertIntoRGBA(theme.colors.temptress, 0.2)}
-          innerBgColor={convertIntoRGBA(theme.colors.redOxide, 0.45)}
-          color={theme.colors.brandy}
+          outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
+          innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
+          color={theme.COLORS.BRANDY}
         />
         <StyledDisappearedInput type="file" accept=".jpg, .jpeg, .png" onChange={handleUploadImg} />
       </StyledLabel>
@@ -43,16 +43,16 @@ export const ImageInputField: FC<Props> = ({ className }) => {
 }
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.colors.chocolate};
-  font-size: ${({ theme }) => theme.colors.chocolate};
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-weight: 700;
 `
 const StyledImageWrapper = styled.div`
   width: 190px;
   height: 190px;
-  border: 1px solid ${({ theme }) => theme.colors.chocolate};
+  border: 1px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.COLORS.WHITE};
 `
 const StyledImage = styled.img<{ padding: string }>`
   aspect-ratio: 1 / 1;

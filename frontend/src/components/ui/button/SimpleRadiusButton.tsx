@@ -41,6 +41,6 @@ StyledButton.defaultProps = {
   height: '40px',
   border: 'none',
   borderRadius: '2px',
-  bgColor: theme.colors.dodgerBlue,
-  fontColor: theme.colors.white,
+  bgColor: theme.COLORS.DODGER_BLUE,
+  fontColor: theme.COLORS.WHITE,
 }
