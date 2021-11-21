@@ -43,7 +43,6 @@ export const SignUp: FC = () => {
           <StyledImageInputField />
           <InputField
             label="冒険者"
-            placeholder="名前を入力"
             registration={register('name', {
               required: '未入力です',
               maxLength: {
@@ -56,7 +55,6 @@ export const SignUp: FC = () => {
           />
           <InputField
             label="会社名"
-            placeholder="会社名を入力"
             registration={register('company', {
               required: '未入力です',
               maxLength: {
@@ -69,7 +67,6 @@ export const SignUp: FC = () => {
           />
           <InputField
             label="メールアドレス"
-            placeholder="メールアドレスを入力"
             registration={register('email', {
               required: '未入力です',
               maxLength: {
@@ -85,7 +82,6 @@ export const SignUp: FC = () => {
           />
           <PasswordField
             label="パスワード"
-            placeholder="パスワードを入力"
             registration={register('password', {
               required: '未入力です',
               minLength: {
@@ -102,6 +98,14 @@ export const SignUp: FC = () => {
               },
             })}
             error={errors['password']}
+          />
+          <PasswordField
+            label="パスワード（確認）"
+            registration={register('re-password', {
+              required: '未入力です',
+              validate: value => value === getValues('password') || 'パスワードが一致しません',
+            })}
+            error={errors['re-password']}
           />
           <SelectField
             label="職業"

@@ -7,7 +7,10 @@ import {
   FieldErrors,
 } from 'react-hook-form'
 
-type FormInputs = Record<'name' | 'company' | 'occupation' | 'email' | 'password', string>
+type FormInputs = Record<
+  'name' | 'company' | 'occupation' | 'email' | 'password' | 're-password',
+  string
+>
 
 type UseSignUpFormReturn<T> = {
   register: UseFormRegister<T>
@@ -40,6 +43,7 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
       setValue('occupation', '', { shouldValidate: true })
       setValue('email', '', { shouldValidate: true })
       setValue('password', '', { shouldValidate: true })
+      setValue('re-password', '', { shouldValidate: true })
     }
     const hasError = Object.keys(errors).length
 
