@@ -44,6 +44,7 @@ export const theme = {
     CHOCOLATE: '#4D2709',
     BRANDY: '#E0C29F',
     BRIDAL_HEATH: '#FFFAF4',
+    TEQUILA: '#FFE5C7',
   },
 } as const
 

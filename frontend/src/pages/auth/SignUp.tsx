@@ -12,7 +12,10 @@ import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { SelectField } from 'components/ui/form/SelectField'
 import { ItemInputField } from 'components/ui/form/ItemInputField'
+import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
+import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
@@ -131,9 +134,15 @@ export const SignUp: FC = () => {
             inputAspect={{ width: '400px', height: '40px' }}
           />
 
-          <button disabled={isDisabled} onClick={handleSubmit(trySignUp)}>
-            登録するボタン
-          </button>
+          <CoarseButton
+            text="登録"
+            aspect={{ width: '120px', height: '32px' }}
+            outerBgColor={convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)}
+            innerBgColor={convertIntoRGBA(theme.COLORS.ERROR, 0.5)}
+            color={theme.COLORS.TEQUILA}
+            isDisabled={isDisabled}
+            onClick={handleSubmit(trySignUp)}
+          />
         </StyledRegister>
         <StyledBackground />
       </StyledWrapper>
