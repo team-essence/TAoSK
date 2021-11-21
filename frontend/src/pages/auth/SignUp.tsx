@@ -106,7 +106,7 @@ export const SignUp: FC = () => {
                   },
                   pattern: {
                     value: regexPassword,
-                    message: 'regex error',
+                    message: '半角英数字をそれぞれ1種類以上含めてください',
                   },
                 })}
                 onChange={() => trigger('re-password')}
