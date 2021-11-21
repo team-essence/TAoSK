@@ -26,6 +26,10 @@ export const useConvertToDottedImage = (
   const [dottedImage, setDottedImage] = useState<string>(initialUrl)
 
   useEffect(() => {
+    setDottedImage(initialUrl)
+  }, [initialUrl])
+
+  useEffect(() => {
     if (!ctx) return
     setDottedImage(toPixel(ctx, numOfColors))
   }, [ctx, numOfColors])
