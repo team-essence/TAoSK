@@ -24,7 +24,7 @@ export const SimpleRoundedButton: FC<Props> = ({ className, text, ...WrapperStyl
 
 type StyledButtonProps = Omit<Props, 'text'>
 
-const StyledButton = styled.div<StyledButtonProps>`
+const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
