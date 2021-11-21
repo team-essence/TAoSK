@@ -121,14 +121,14 @@ export const SignUp: FC = () => {
                 options={occupationOptions}
                 error={errors['occupation']}
               />
-              <ItemInputField
+              <StyledItemInputField
                 label="保有資格"
                 items={certifications}
                 setItems={setCertifications}
                 placeholder={'保有資格を入力してください'}
                 inputAspect={{ width: '400px', height: '40px' }}
               />
-              <ItemInputField
+              <StyledItemInputField
                 label="興味のあること"
                 items={interests}
                 setItems={setInterests}
@@ -214,6 +214,9 @@ const StyledPasswordField = styled(PasswordField).attrs(() => ({
 const StyledSelectField = styled(SelectField).attrs(() => ({
   marginBottom: '24px',
 }))``
+const StyledItemInputField = styled(ItemInputField)`
+  margin-bottom: 24px;
+`
 const StyledBackground = styled.div`
   z-index: -1;
   position: fixed;

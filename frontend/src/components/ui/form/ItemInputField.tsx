@@ -52,11 +52,11 @@ export const ItemInputField: FC<Props> = props => {
           onClick={onClickAddButton}
         />
       </StyledRow>
-      <div>
+      <StyledItemsWrapper width={inputAspect.width}>
         {items.map((item, index) => (
           <InputItem itemName={item} key={index} onClick={() => onClickCrossButton(item)} />
         ))}
-      </div>
+      </StyledItemsWrapper>
     </StyledWrapper>
   )
 }
@@ -78,4 +78,12 @@ const StyledInput = styled.input<InputAspectStyles>`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
+`
+const StyledItemsWrapper = styled.div<{ width: string }>`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px;
+  width: ${({ width }) => width};
+  margin-top: 12px;
 `

@@ -82,11 +82,11 @@ const StyledSelectWrapper = styled.div<StyledSelectProps>`
   &:after {
     content: '';
     position: absolute;
-    top: calc(${({ height }) => height} / 2 - 4px);
+    top: calc(${({ height }) => height} / 2 - 2px);
     right: 14px;
-    border-top: 8px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
-    border-right: 8px solid transparent;
-    border-left: 8px solid transparent;
+    border-top: 7px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
   }
 
   select {
