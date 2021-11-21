@@ -36,6 +36,7 @@ export const AuthHeader: FC = () => {
 }
 
 const StyledHeaderWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   position: fixed;
   display: flex;
   justify-content: space-between;

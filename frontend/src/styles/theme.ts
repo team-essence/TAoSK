@@ -2,6 +2,9 @@ import 'styled-components'
 
 export const theme = {
   HEADER_HEIGHT: '70px',
+  Z_INDEX: {
+    HEADER: 100,
+  },
   FONT_SIZES: {
     SIZE_10: '10px',
     SIZE_12: '12px',

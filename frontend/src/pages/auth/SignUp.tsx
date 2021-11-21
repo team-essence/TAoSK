@@ -160,19 +160,18 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
   padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
 `
 const StyledRegister = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 58.33vw;
-  height: 86.59vw;
+  width: max(58.33vw, 840px);
+  height: 100%;
   margin-top: 26px;
   padding-top: 31px;
   background-image: url('contract-paper.png');
-  background-size: cover;
+  background-size: 100% 100%;
 `
 const StyledLogoImg = styled.img`
   height: 108px;
