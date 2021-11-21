@@ -28,8 +28,3 @@ export type listType = {
   title: string
   tasks: tasksType[]
 }
-
-export enum DropType {
-  COLUMN = 'COLUMN',
-  TASK = 'TASK',
-}
