@@ -38,13 +38,9 @@ export const ImageInputField: FC<Props> = ({ className }) => {
 
       <StyledCoarseButton
         text="画像をアップロード"
-        outerAspect={{
+        aspect={{
           width: '190px',
           height: '40px',
-        }}
-        innerAspect={{
-          width: '186px',
-          height: '36px',
         }}
         outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
         innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}

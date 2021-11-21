@@ -4,8 +4,7 @@ import styled from 'styled-components'
 type Props = {
   className?: string
   text: string
-  outerAspect: Record<'width' | 'height', string>
-  innerAspect: Record<'width' | 'height', string>
+  aspect: Record<'width' | 'height', string>
   outerBgColor: string
   innerBgColor: string
   color: string
@@ -16,22 +15,28 @@ type Props = {
 export const CoarseButton: FC<Props> = ({
   className,
   text,
-  outerAspect,
-  innerAspect,
+  aspect,
   outerBgColor,
   innerBgColor,
   color,
   onClick,
   isDisabled,
 }) => {
+  const INNER_WIDTH_PER_OUTER_RATIO = 0.97895
+  const INNER_HEIGHT_PER_OUTER_RATIO = 0.9
+  const innerAspect = {
+    width: `calc(${aspect.width} * ${INNER_WIDTH_PER_OUTER_RATIO})`,
+    height: `calc(${aspect.height} * ${INNER_HEIGHT_PER_OUTER_RATIO})`,
+  }
+
   return (
     <StyledButton
       className={className}
-      {...outerAspect}
+      {...aspect}
       color={color}
       onClick={onClick}
       disabled={isDisabled}>
-      <StyledOuterMask {...outerAspect} bgColor={outerBgColor}>
+      <StyledOuterMask {...aspect} bgColor={outerBgColor}>
         <StyledInnerWrapper {...innerAspect}>
           <StyledInnerMask {...innerAspect} bgColor={innerBgColor}>
             {text}

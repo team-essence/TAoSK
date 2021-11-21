@@ -30,13 +30,9 @@ export const PasswordField: FC<Props> = ({
       />
       <StyledCoarseButton
         text={shouldShowPassword ? '非表示' : '表示'}
-        outerAspect={{
+        aspect={{
           width: '53px',
           height: '30px',
-        }}
-        innerAspect={{
-          width: '50.48px',
-          height: '27px',
         }}
         outerBgColor={
           value
