@@ -40,7 +40,6 @@ export const SignUp: FC = () => {
     navigate('/')
   }, [currentUser, data, navigate, tryGetUserById])
 
-  // TODO: 正規表現をちゃんと書いてエラーハンドリングする
   return (
     <>
       <AuthHeader />
