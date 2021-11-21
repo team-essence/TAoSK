@@ -43,7 +43,7 @@ const StyledOuterMask = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BRIDAL_HEATH, 0.42)};
 `
 const StyledTextWrapper = styled.div`
-  z-index: 2;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -60,7 +60,7 @@ const StyledCrossButton = styled(CrossButton)`
   }
 `
 const StyledInnerBackground = styled.div`
-  z-index: 1;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
   opacity: 0.8;
   top: calc(50% + 0.5px);

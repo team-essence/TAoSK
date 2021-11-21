@@ -236,7 +236,7 @@ const StyledItemInputField = styled(ItemInputField).attrs(() => ({
   margin-bottom: 24px;
 `
 const StyledBackground = styled.div`
-  z-index: -1;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: fixed;
   top: 0;
   left: 0;
