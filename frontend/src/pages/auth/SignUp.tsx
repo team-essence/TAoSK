@@ -147,9 +147,17 @@ export const SignUp: FC = () => {
               <StyledRegistButton
                 text="登録"
                 aspect={{ width: '120px', height: '32px' }}
-                outerBgColor={convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)}
-                innerBgColor={convertIntoRGBA(theme.COLORS.ERROR, 0.5)}
-                color={theme.COLORS.TEQUILA}
+                outerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
+                    : convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)
+                }
+                innerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
+                    : convertIntoRGBA(theme.COLORS.ERROR, 0.5)
+                }
+                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.TEQUILA}
                 isDisabled={isDisabled}
                 onClick={handleSubmit(trySignUp)}
               />
