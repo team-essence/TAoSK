@@ -20,6 +20,8 @@ export const ItemInputField: FC<Props> = props => {
   const [value, setValue] = useState<string>('')
   const onClickAddButton = () => {
     if (!value) return
+    const isAlreadyExists = items.find(v => v === value)
+    if (isAlreadyExists) return
     items.push(value)
     setItems(items.slice())
     setValue('')
