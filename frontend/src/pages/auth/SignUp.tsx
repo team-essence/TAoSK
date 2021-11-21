@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
@@ -19,6 +19,8 @@ export const SignUp: FC = () => {
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const navigate = useNavigate()
   const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
+  const [certificates, setCertificates] = useState<string[]>([])
+  const [interests, setInterests] = useState<string[]>([])
   const trySignUp = useTrySignUp({ ...getValues() })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
@@ -115,8 +117,17 @@ export const SignUp: FC = () => {
             error={errors['occupation']}
           />
           <ItemInputField
-            label={'保有資格'}
+            label="保有資格"
+            items={certificates}
+            setItems={setCertificates}
             placeholder={'保有資格を入力してください'}
+            inputAspect={{ width: '400px', height: '40px' }}
+          />
+          <ItemInputField
+            label="興味のあること"
+            items={interests}
+            setItems={setInterests}
+            placeholder={'興味のあることを入力してください'}
             inputAspect={{ width: '400px', height: '40px' }}
           />
 

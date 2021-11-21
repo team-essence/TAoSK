@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, Dispatch } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
@@ -11,12 +11,13 @@ type Props = {
   label: string
   placeholder?: string
   inputAspect: InputAspectStyles
+  items: string[]
+  setItems: Dispatch<React.SetStateAction<string[]>>
 }
 
 export const ItemInputField: FC<Props> = props => {
-  const { className, label, placeholder, inputAspect } = props
+  const { className, label, placeholder, inputAspect, items, setItems } = props
   const [value, setValue] = useState<string>('')
-  const [items, setItems] = useState<string[]>([])
   const onClickAddButton = () => {
     if (!value) return
     items.push(value)
@@ -30,34 +31,47 @@ export const ItemInputField: FC<Props> = props => {
   }
 
   return (
-    <div className={className}>
+    <StyledWrapper className={className}>
       {label}
-      <StyledInput
-        value={value}
-        onChange={e => setValue(e.target.value)}
-        placeholder={placeholder}
-        {...inputAspect}
-      />
-      <CoarseButton
-        text="追加"
-        aspect={{
-          width: '64px',
-          height: '40px',
-        }}
-        outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
-        innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
-        color={theme.COLORS.BRANDY}
-        onClick={onClickAddButton}
-      />
+      <StyledRow>
+        <StyledInput
+          value={value}
+          onChange={e => setValue(e.target.value)}
+          placeholder={placeholder}
+          {...inputAspect}
+        />
+        <CoarseButton
+          text="追加"
+          aspect={{
+            width: '64px',
+            height: '40px',
+          }}
+          outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
+          innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
+          color={theme.COLORS.BRANDY}
+          onClick={onClickAddButton}
+        />
+      </StyledRow>
       <div>
         {items.map((item, index) => (
           <InputItem itemName={item} key={index} onClick={() => onClickCrossButton(item)} />
         ))}
       </div>
-    </div>
+    </StyledWrapper>
   )
 }
 
+const StyledWrapper = styled.div`
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  font-weight: 700;
+`
+const StyledRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+`
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
