@@ -12,7 +12,7 @@ type StyledInputProps = {
   borderRadius?: string
   backgroundColor?: string
 }
-type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputFieldProps = {
   className?: string
   labelStyles?: StyledLabelProps
   inputStyles?: StyledInputProps
@@ -23,7 +23,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   registration: Partial<UseFormRegisterReturn>
   required?: boolean
   type?: 'text' | 'email' | 'password'
-}
+} & InputHTMLAttributes<HTMLInputElement>
 
 export const InputField: FC<InputFieldProps> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
@@ -36,19 +36,20 @@ export const InputField: FC<InputFieldProps> = props => {
     registration,
     error,
     required = true,
+    color,
     ...inputAttributes
   } = props
 
   const shouldShowError = hasBlured && error?.message
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
-    if (inputAttributes.onBlur) inputAttributes.onBlur(e)
+    inputAttributes.onBlur && inputAttributes.onBlur(e)
     setHasBlured(true)
   }
 
   return (
     <div className={className}>
       <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
-        <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
+        <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
           <StyledInputWrapper {...inputStyles}>

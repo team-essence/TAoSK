@@ -9,6 +9,7 @@ import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
+import { PasswordField } from 'components/ui/form/PasswordField'
 import { SelectField } from 'components/ui/form/SelectField'
 import styled from 'styled-components'
 
@@ -82,7 +83,7 @@ export const SignUp: FC = () => {
             })}
             error={errors['email']}
           />
-          <InputField
+          <PasswordField
             label="パスワード"
             placeholder="パスワードを入力"
             registration={register('password', {

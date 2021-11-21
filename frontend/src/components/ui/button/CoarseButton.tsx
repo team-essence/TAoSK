@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
   outerBgColor: string
   innerBgColor: string
   color: string
+  onClick?: (e: MouseEvent) => void
+  isDisabled?: boolean
 }
 
 export const CoarseButton: FC<Props> = ({
@@ -19,9 +21,16 @@ export const CoarseButton: FC<Props> = ({
   outerBgColor,
   innerBgColor,
   color,
+  onClick,
+  isDisabled,
 }) => {
   return (
-    <StyledButton className={className} {...outerAspect} color={color}>
+    <StyledButton
+      className={className}
+      {...outerAspect}
+      color={color}
+      onClick={onClick}
+      disabled={isDisabled}>
       <StyledOuterMask {...outerAspect} bgColor={outerBgColor}>
         <StyledInnerWrapper {...innerAspect}>
           <StyledInnerMask {...innerAspect} bgColor={innerBgColor}>
