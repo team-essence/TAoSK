@@ -43,6 +43,7 @@ export const theme = {
     RED_OXIDE: '#660303',
     CHOCOLATE: '#4D2709',
     BRANDY: '#E0C29F',
+    BRIDAL_HEATH: '#FFFAF4',
   },
 } as const
 

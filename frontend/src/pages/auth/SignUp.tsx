@@ -11,6 +11,7 @@ import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { SelectField } from 'components/ui/form/SelectField'
+import { ItemInputField } from 'components/ui/form/ItemInputField'
 import styled from 'styled-components'
 
 export const SignUp: FC = () => {
@@ -112,6 +113,11 @@ export const SignUp: FC = () => {
             registration={register('occupation', { required: '未選択です' })}
             options={occupationOptions}
             error={errors['occupation']}
+          />
+          <ItemInputField
+            label={'保有資格'}
+            placeholder={'保有資格を入力してください'}
+            inputAspect={{ width: '400px', height: '40px' }}
           />
 
           <button disabled={isDisabled} onClick={handleSubmit(trySignUp)}>

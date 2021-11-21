@@ -1,21 +1,16 @@
 import React, { FC, MouseEvent } from 'react'
-import { theme } from 'styles/theme'
+import styled from 'styled-components'
 
 type Props = {
   className?: string
   onClick?: (e: MouseEvent) => void
-  color?: string
+  color: string
   isSquared?: boolean
 }
 
-export const CrossButton: FC<Props> = ({
-  className,
-  onClick,
-  color = theme.COLORS.CHOCOLATE,
-  isSquared = true,
-}) => {
+export const CrossButton: FC<Props> = ({ className, onClick, color, isSquared = true }) => {
   return (
-    <button className={className} onClick={onClick}>
+    <StyledButton className={className} onClick={onClick}>
       {isSquared ? (
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
           <path
@@ -47,6 +42,12 @@ export const CrossButton: FC<Props> = ({
           />
         </svg>
       )}
-    </button>
+    </StyledButton>
   )
 }
+
+const StyledButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

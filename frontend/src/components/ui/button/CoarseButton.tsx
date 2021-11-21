@@ -36,11 +36,9 @@ export const CoarseButton: FC<Props> = ({
       color={color}
       onClick={onClick}
       disabled={isDisabled}>
-      <StyledOuterMask {...aspect} bgColor={outerBgColor}>
+      <StyledOuterMask bgColor={outerBgColor}>
         <StyledInnerWrapper {...innerAspect}>
-          <StyledInnerMask {...innerAspect} bgColor={innerBgColor}>
-            {text}
-          </StyledInnerMask>
+          <StyledInnerMask bgColor={innerBgColor}>{text}</StyledInnerMask>
         </StyledInnerWrapper>
       </StyledOuterMask>
     </StyledButton>
@@ -65,10 +63,10 @@ const StyledButton = styled.button<StyledAspect & StyledFontColor>`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
 `
-const StyledOuterMask = styled.div<StyledAspect & StyledBgColor>`
+const StyledOuterMask = styled.div<StyledBgColor>`
   ${centeringFlexStyle}
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: 100%;
+  height: 100%;
   border-radius: 2px;
   background-color: ${({ bgColor }) => bgColor};
 `
@@ -79,10 +77,10 @@ const StyledInnerWrapper = styled.div<StyledAspect>`
   border-radius: 2px;
   background-image: url('grain.png');
 `
-const StyledInnerMask = styled.div<StyledAspect & StyledBgColor>`
+const StyledInnerMask = styled.div<StyledBgColor>`
   ${centeringFlexStyle}
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: 100%;
+  height: 100%;
   border: solid 0.2px ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 2px;
   background-color: ${({ bgColor }) => bgColor};
