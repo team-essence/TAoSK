@@ -46,109 +46,113 @@ export const SignUp: FC = () => {
         <StyledRegister>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
-          <StyledImageInputField />
-          <InputField
-            label="冒険者"
-            registration={register('name', {
-              required: '未入力です',
-              maxLength: {
-                value: 50,
-                message: '50文字以内で入力してください',
-              },
-              pattern: regexText,
-            })}
-            error={errors['name']}
-          />
-          <InputField
-            label="会社名"
-            registration={register('company', {
-              required: '未入力です',
-              maxLength: {
-                value: 50,
-                message: '50文字以内で入力してください',
-              },
-              pattern: regexText,
-            })}
-            error={errors['company']}
-          />
-          <InputField
-            label="メールアドレス"
-            registration={register('email', {
-              required: '未入力です',
-              maxLength: {
-                value: 50,
-                message: '50文字以内で入力してください',
-              },
-              pattern: {
-                value: regexEmail,
-                message: '不正なメールアドレスです',
-              },
-            })}
-            error={errors['email']}
-          />
-          <PasswordField
-            label="パスワード"
-            registration={register('password', {
-              required: '未入力です',
-              minLength: {
-                value: 6,
-                message: '6文字以上で入力してください',
-              },
-              maxLength: {
-                value: 50,
-                message: '50文字以内で入力してください',
-              },
-              pattern: {
-                value: regexPassword,
-                message: 'regex error',
-              },
-            })}
-            error={errors['password']}
-          />
-          <PasswordField
-            label="パスワード（確認）"
-            registration={register('re-password', {
-              required: '未入力です',
-              validate: value => value === getValues('password') || 'パスワードが一致しません',
-            })}
-            error={errors['re-password']}
-          />
-          <SelectField
-            label="職業"
-            registration={register('occupation', { required: '未選択です' })}
-            options={occupationOptions}
-            error={errors['occupation']}
-          />
-          <ItemInputField
-            label="保有資格"
-            items={certifications}
-            setItems={setCertifications}
-            placeholder={'保有資格を入力してください'}
-            inputAspect={{ width: '400px', height: '40px' }}
-          />
-          <ItemInputField
-            label="興味のあること"
-            items={interests}
-            setItems={setInterests}
-            placeholder={'興味のあることを入力してください'}
-            inputAspect={{ width: '400px', height: '40px' }}
-          />
+          <StyledFormWrapper>
+            <StyledImageInputField />
+            <StyledRightColumn>
+              <InputField
+                label="冒険者"
+                registration={register('name', {
+                  required: '未入力です',
+                  maxLength: {
+                    value: 50,
+                    message: '50文字以内で入力してください',
+                  },
+                  pattern: regexText,
+                })}
+                error={errors['name']}
+              />
+              <InputField
+                label="会社名"
+                registration={register('company', {
+                  required: '未入力です',
+                  maxLength: {
+                    value: 50,
+                    message: '50文字以内で入力してください',
+                  },
+                  pattern: regexText,
+                })}
+                error={errors['company']}
+              />
+              <InputField
+                label="メールアドレス"
+                registration={register('email', {
+                  required: '未入力です',
+                  maxLength: {
+                    value: 50,
+                    message: '50文字以内で入力してください',
+                  },
+                  pattern: {
+                    value: regexEmail,
+                    message: '不正なメールアドレスです',
+                  },
+                })}
+                error={errors['email']}
+              />
+              <PasswordField
+                label="パスワード"
+                registration={register('password', {
+                  required: '未入力です',
+                  minLength: {
+                    value: 6,
+                    message: '6文字以上で入力してください',
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: '50文字以内で入力してください',
+                  },
+                  pattern: {
+                    value: regexPassword,
+                    message: 'regex error',
+                  },
+                })}
+                error={errors['password']}
+              />
+              <PasswordField
+                label="パスワード（確認）"
+                registration={register('re-password', {
+                  required: '未入力です',
+                  validate: value => value === getValues('password') || 'パスワードが一致しません',
+                })}
+                error={errors['re-password']}
+              />
+              <SelectField
+                label="職業"
+                registration={register('occupation', { required: '未選択です' })}
+                options={occupationOptions}
+                error={errors['occupation']}
+              />
+              <ItemInputField
+                label="保有資格"
+                items={certifications}
+                setItems={setCertifications}
+                placeholder={'保有資格を入力してください'}
+                inputAspect={{ width: '400px', height: '40px' }}
+              />
+              <ItemInputField
+                label="興味のあること"
+                items={interests}
+                setItems={setInterests}
+                placeholder={'興味のあることを入力してください'}
+                inputAspect={{ width: '400px', height: '40px' }}
+              />
 
-          <StyledTerms>
-            下のボタンをクリックすることで、<StyledTermsLink to="">利用規約</StyledTermsLink>と
-            <StyledTermsLink to="">プライバシーポリシー</StyledTermsLink>
-            の内容に同意したものとみなします。
-          </StyledTerms>
+              <StyledTerms>
+                下のボタンをクリックすることで、<StyledTermsLink to="">利用規約</StyledTermsLink>と
+                <StyledTermsLink to="">プライバシーポリシー</StyledTermsLink>
+                の内容に同意したものとみなします。
+              </StyledTerms>
 
-          <CoarseButton
-            text="登録"
-            aspect={{ width: '120px', height: '32px' }}
-            outerBgColor={convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)}
-            innerBgColor={convertIntoRGBA(theme.COLORS.ERROR, 0.5)}
-            color={theme.COLORS.TEQUILA}
-            isDisabled={isDisabled}
-            onClick={handleSubmit(trySignUp)}
-          />
+              <CoarseButton
+                text="登録"
+                aspect={{ width: '120px', height: '32px' }}
+                outerBgColor={convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)}
+                innerBgColor={convertIntoRGBA(theme.COLORS.ERROR, 0.5)}
+                color={theme.COLORS.TEQUILA}
+                isDisabled={isDisabled}
+                onClick={handleSubmit(trySignUp)}
+              />
+            </StyledRightColumn>
+          </StyledFormWrapper>
         </StyledRegister>
         <StyledBackground />
       </StyledWrapper>
@@ -187,6 +191,16 @@ const StyledH1 = styled.h1`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_40};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
+`
+const StyledFormWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: min(49.02vw, 706px);
+`
+const StyledRightColumn = styled.div`
+  width: min(33.33vw, 480px);
 `
 const StyledImageInputField = styled(ImageInputField)`
   margin-bottom: 24px;

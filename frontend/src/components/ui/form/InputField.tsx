@@ -89,7 +89,7 @@ const StyledInputWrapper = styled.div<StyledInputProps>`
   }
 `
 StyledInputWrapper.defaultProps = {
-  width: 'min(33.33vw, 480px)',
+  width: '100%',
   height: '40px',
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',

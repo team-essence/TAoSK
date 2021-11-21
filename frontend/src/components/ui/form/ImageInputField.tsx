@@ -22,7 +22,7 @@ export const ImageInputField: FC<Props> = ({ className }) => {
   const onClickUploadBtn = () => inputRef.current?.click()
 
   return (
-    <div className={className}>
+    <StyledAllWrapper className={className}>
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
@@ -48,16 +48,22 @@ export const ImageInputField: FC<Props> = ({ className }) => {
         onClick={onClickUploadBtn}
       />
       <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
-    </div>
+    </StyledAllWrapper>
   )
 }
 
+const StyledAllWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: 700;
 `
 const StyledImageWrapper = styled.div`
+  margin: 4px 0;
   width: 190px;
   height: 190px;
   border: 1px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
@@ -74,9 +80,10 @@ const StyledDisappearedInput = styled.input`
   display: none;
 `
 const StyledCoarseButton = styled(CoarseButton)`
-  margin-top: 14px;
+  margin: 4px 0;
 `
 const StyledDeleteButton = styled.button`
+  margin: 4px 0;
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
