@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
 import { useTrySignUp } from 'hooks/useTrySignUp'
@@ -134,9 +134,11 @@ export const SignUp: FC = () => {
             inputAspect={{ width: '400px', height: '40px' }}
           />
 
-          <p>
-            下のボタンをクリックすることで、利用規約とプライバシーポリシーの内容に同意したものとみなします。
-          </p>
+          <StyledTerms>
+            下のボタンをクリックすることで、<StyledTermsLink to="">利用規約</StyledTermsLink>と
+            <StyledTermsLink to="">プライバシーポリシー</StyledTermsLink>
+            の内容に同意したものとみなします。
+          </StyledTerms>
 
           <CoarseButton
             text="登録"
@@ -200,4 +202,11 @@ const StyledBackground = styled.div`
   background-image: url('register-background.png');
   background-size: cover;
   background-position: 50% 100%;
+`
+const StyledTerms = styled.p`
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
+`
+const StyledTermsLink = styled(Link)`
+  color: ${({ theme }) => theme.COLORS.BRIGHT_TURQUOISE};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
 `

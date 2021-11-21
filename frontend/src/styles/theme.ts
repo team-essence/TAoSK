@@ -21,6 +21,7 @@ export const theme = {
     SIZE_60: '60px',
   },
   FONT_WEIGHTS: {
+    LIGHT: 300,
     NORMAL: 400,
     MEDIUM: 500,
     SEMIBOLD: 600,
@@ -45,6 +46,7 @@ export const theme = {
     BRANDY: '#E0C29F',
     BRIDAL_HEATH: '#FFFAF4',
     TEQUILA: '#FFE5C7',
+    BRIGHT_TURQUOISE: '#15CCF4',
   },
 } as const
 
