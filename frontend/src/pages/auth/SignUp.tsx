@@ -22,9 +22,9 @@ export const SignUp: FC = () => {
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const navigate = useNavigate()
   const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
-  const [certificates, setCertificates] = useState<string[]>([])
+  const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
-  const trySignUp = useTrySignUp({ ...getValues() })
+  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
@@ -121,8 +121,8 @@ export const SignUp: FC = () => {
           />
           <ItemInputField
             label="保有資格"
-            items={certificates}
-            setItems={setCertificates}
+            items={certifications}
+            setItems={setCertifications}
             placeholder={'保有資格を入力してください'}
             inputAspect={{ width: '400px', height: '40px' }}
           />
@@ -133,6 +133,10 @@ export const SignUp: FC = () => {
             placeholder={'興味のあることを入力してください'}
             inputAspect={{ width: '400px', height: '40px' }}
           />
+
+          <p>
+            下のボタンをクリックすることで、利用規約とプライバシーポリシーの内容に同意したものとみなします。
+          </p>
 
           <CoarseButton
             text="登録"
