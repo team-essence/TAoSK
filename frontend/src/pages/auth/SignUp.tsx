@@ -4,6 +4,7 @@ import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
+import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
@@ -25,6 +26,7 @@ export const SignUp: FC = () => {
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
+  const { aspect: innerWidth } = useWatchInnerAspect('width')
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
@@ -47,8 +49,10 @@ export const SignUp: FC = () => {
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
-            <StyledImageInputField />
-            <StyledRightColumn>
+            <StyledImageInputField
+              margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
+            />
+            <StyledRightColumn margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}>
               <StyledInputField
                 label="冒険者"
                 registration={register('name', {
@@ -198,11 +202,16 @@ const StyledFormWrapper = styled.div`
   align-items: flex-start;
   width: min(49.02vw, 706px);
 `
-const StyledRightColumn = styled.div`
+const StyledRightColumn = styled.div.attrs<{ margin: string }>(({ margin }) => ({
+  margin,
+}))<{ margin: string }>`
+  margin: ${({ margin }) => margin};
   width: min(33.33vw, 480px);
 `
-const StyledImageInputField = styled(ImageInputField)`
-  margin-bottom: 24px;
+const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(({ margin }) => ({
+  margin,
+}))<{ margin: string }>`
+  margin: ${({ margin }) => margin};
 `
 const StyledInputField = styled(InputField).attrs(() => ({
   marginBottom: '24px',
