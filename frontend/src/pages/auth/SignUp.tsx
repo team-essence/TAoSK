@@ -124,8 +124,8 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: calc(100vh - ${({ theme }) => theme.headerHeight});
-  padding-top: ${({ theme }) => theme.headerHeight};
+  height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
 `
 const StyledRegister = styled.div`
   display: flex;
@@ -145,13 +145,13 @@ const StyledH1 = styled.h1`
   margin: 33px 0;
   background: -webkit-linear-gradient(
     top,
-    ${({ theme }) => theme.colors.tenn},
-    ${({ theme }) => theme.colors.nero}
+    ${({ theme }) => theme.COLORS.TENN},
+    ${({ theme }) => theme.COLORS.NERO}
   );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: ${({ theme }) => theme.fontSizes.size_40};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_40};
 `
 const StyledImageInputField = styled(ImageInputField)`
   margin-bottom: 24px;

@@ -10,14 +10,14 @@ export const AuthHeader: FC = () => {
     borderRadius: '2px',
   }
   const registerButtonProps = {
-    border: `solid 1px ${theme.colors.dodgerBlue}`,
-    bgColor: theme.colors.white,
-    fontColor: theme.colors.dodgerBlue,
+    border: `solid 1px ${theme.COLORS.DODGER_BLUE}`,
+    bgColor: theme.COLORS.WHITE,
+    fontColor: theme.COLORS.DODGER_BLUE,
     text: '新規登録',
   }
   const loginButtonProps = {
-    border: `solid 1px ${theme.colors.dodgerBlue}`,
-    bgColor: theme.colors.dodgerBlue,
+    border: `solid 1px ${theme.COLORS.DODGER_BLUE}`,
+    bgColor: theme.COLORS.DODGER_BLUE,
     text: 'ログイン',
   }
 
@@ -43,7 +43,7 @@ const StyledHeaderWrapper = styled.div`
   padding: 0 28px;
   width: 100vw;
   height: 70px;
-  background-color: ${({ theme }) => theme.colors.mineShaft};
+  background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 const StyledLogoWrapper = styled.div`
   object-fit: contain;

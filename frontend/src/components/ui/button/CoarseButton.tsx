@@ -57,8 +57,8 @@ const StyledButton = styled.button<StyledAspect & StyledFontColor>`
   border-radius: 2px;
   background-image: url('grain.png');
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.fontSizes.size_14};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
 `
 const StyledOuterMask = styled.div<StyledAspect & StyledBgColor>`
   ${centeringFlexStyle}
@@ -78,7 +78,7 @@ const StyledInnerMask = styled.div<StyledAspect & StyledBgColor>`
   ${centeringFlexStyle}
   width: ${({ width }) => width};
   height: ${({ height }) => height};
-  border: solid 0.2px ${({ theme }) => theme.colors.brandy};
+  border: solid 0.2px ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 2px;
   background-color: ${({ bgColor }) => bgColor};
 `

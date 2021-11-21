@@ -40,15 +40,15 @@ export const PasswordField: FC<Props> = ({
         }}
         outerBgColor={
           value
-            ? convertIntoRGBA(theme.colors.temptress, 0.2)
-            : convertIntoRGBA(theme.colors.alto, 0.55)
+            ? convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
+            : convertIntoRGBA(theme.COLORS.ALTO, 0.55)
         }
         innerBgColor={
           value
-            ? convertIntoRGBA(theme.colors.redOxide, 0.45)
-            : convertIntoRGBA(theme.colors.nobel, 0.64)
+            ? convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
+            : convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
         }
-        color={theme.colors.silver}
+        color={theme.COLORS.SILVER}
         onClick={() => setShouldShowPassword(!shouldShowPassword)}
         isDisabled={!value}
       />

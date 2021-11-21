@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
 import { useImageResize } from 'hooks/useImageResize'
 import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
@@ -9,11 +9,17 @@ import { theme } from 'styles/theme'
 type Props = { className?: string }
 
 export const ImageInputField: FC<Props> = ({ className }) => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const defaultSrc = 'svg/camera.svg'
   // 一辺60px以下の画像を生成
-  const { canvasContext, resizedImageStr, handleUploadImg } = useImageResize(defaultSrc, 60)
+  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+    defaultSrc,
+    60,
+  )
   // 色数50以下のドット画像を生成
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
+
+  const onClickUploadBtn = () => inputRef.current?.click()
 
   return (
     <div className={className}>
@@ -22,37 +28,45 @@ export const ImageInputField: FC<Props> = ({ className }) => {
         <StyledImageWrapper>
           <StyledImage src={dottedImage} padding={dottedImage === defaultSrc ? '40px' : '0px'} />
         </StyledImageWrapper>
-        <StyledCoarseButton
-          text="画像をアップロード"
-          outerAspect={{
-            width: '190px',
-            height: '40px',
-          }}
-          innerAspect={{
-            width: '186px',
-            height: '36px',
-          }}
-          outerBgColor={convertIntoRGBA(theme.colors.temptress, 0.2)}
-          innerBgColor={convertIntoRGBA(theme.colors.redOxide, 0.45)}
-          color={theme.colors.brandy}
+        <StyledDisappearedInput
+          ref={inputRef}
+          type="file"
+          accept=".jpg, .jpeg, .png"
+          onChange={handleUploadImg}
         />
-        <StyledDisappearedInput type="file" accept=".jpg, .jpeg, .png" onChange={handleUploadImg} />
       </StyledLabel>
+
+      <StyledCoarseButton
+        text="画像をアップロード"
+        outerAspect={{
+          width: '190px',
+          height: '40px',
+        }}
+        innerAspect={{
+          width: '186px',
+          height: '36px',
+        }}
+        outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
+        innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
+        color={theme.COLORS.BRANDY}
+        onClick={onClickUploadBtn}
+      />
+      <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
     </div>
   )
 }
 
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.colors.chocolate};
-  font-size: ${({ theme }) => theme.colors.chocolate};
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: 700;
 `
 const StyledImageWrapper = styled.div`
   width: 190px;
   height: 190px;
-  border: 1px solid ${({ theme }) => theme.colors.chocolate};
+  border: 1px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.COLORS.WHITE};
 `
 const StyledImage = styled.img<{ padding: string }>`
   aspect-ratio: 1 / 1;
@@ -65,4 +79,8 @@ const StyledDisappearedInput = styled.input`
 `
 const StyledCoarseButton = styled(CoarseButton)`
   margin-top: 14px;
+`
+const StyledDeleteButton = styled.button`
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `

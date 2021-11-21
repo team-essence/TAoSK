@@ -3,6 +3,7 @@ import { useState, ChangeEvent } from 'react'
 export type UseImageResizeReturn = {
   canvasContext: CanvasRenderingContext2D | undefined
   resizedImageStr: string
+  initializeUploadImg: () => void
   handleUploadImg: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -37,6 +38,10 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
   const [resizedImageStr, setResizedImageStr] = useState<string>(initialUrl)
   const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D>()
 
+  const initializeUploadImg = () => {
+    setResizedImageStr(initialUrl)
+  }
+
   const handleUploadImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.currentTarget.files || e.currentTarget.files.length === 0) return
     const file = e.currentTarget.files[0]
@@ -69,5 +74,5 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
     fileReader.readAsDataURL(file)
   }
 
-  return { canvasContext, resizedImageStr, handleUploadImg }
+  return { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg }
 }

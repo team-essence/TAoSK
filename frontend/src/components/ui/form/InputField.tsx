@@ -31,7 +31,7 @@ export const InputField: FC<InputFieldProps> = props => {
     className,
     labelStyles,
     inputStyles,
-    errorColor = theme.colors.error,
+    errorColor = theme.COLORS.ERROR,
     label,
     registration,
     error,
@@ -75,8 +75,8 @@ const StyledLabel = styled.label<StyledLabelProps>`
   font-weight: 700;
 `
 StyledLabel.defaultProps = {
-  color: theme.colors.chocolate,
-  fontSize: theme.fontSizes.size_16,
+  color: theme.COLORS.CHOCOLATE,
+  fontSize: theme.FONT_SIZES.SIZE_16,
 }
 const StyledInputWrapper = styled.div<StyledInputProps>`
   input {
@@ -91,15 +91,15 @@ const StyledInputWrapper = styled.div<StyledInputProps>`
 StyledInputWrapper.defaultProps = {
   width: 'min(33.33vw, 480px)',
   height: '40px',
-  border: `solid 1px ${theme.colors.chocolate}`,
+  border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
-  backgroundColor: convertIntoRGBA(theme.colors.white, 0.7),
+  backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.fontSizes.size_14};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
 const StyledRequiredSpan = styled.span`
   display: inline-block;
-  color: ${({ theme }) => theme.colors.error};
+  color: ${({ theme }) => theme.COLORS.ERROR};
 `
