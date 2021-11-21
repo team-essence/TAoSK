@@ -76,6 +76,9 @@ const StyledInputWrapper = styled.div<StyledBoxProps>`
     border: ${({ border }) => border};
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
+    &::placeholder {
+      color: ${({ theme }) => theme.COLORS.GRAY};
+    }
   }
 `
 StyledInputWrapper.defaultProps = {

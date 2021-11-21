@@ -35,6 +35,7 @@ export const theme = {
   COLORS: {
     WHITE: '#FFFFFF',
     BLACK: '#000000',
+    GRAY: '#8F8F8F',
     ERROR: '#FF0000',
     NERO: '#100700',
     MINE_SHAFT: '#2C2C2C',

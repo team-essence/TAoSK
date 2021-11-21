@@ -105,6 +105,9 @@ const StyledInput = styled.input<InputAspectStyles>`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
+  &::placeholder {
+    color: ${({ theme }) => theme.COLORS.GRAY};
+  }
 `
 const StyledItemsWrapper = styled.div<{ width: string }>`
   display: flex;
