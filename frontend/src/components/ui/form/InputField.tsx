@@ -4,7 +4,14 @@ import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
-type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input'>
+type StyledBoxProps = {
+  width?: string
+  height?: string
+  border?: string
+  borderRadius?: string
+  backgroundColor?: string
+}
+type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledBoxProps>
 
 export const InputField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
@@ -48,13 +55,6 @@ export const InputField: FC<Props> = props => {
   )
 }
 
-type StyledBoxProps = {
-  width?: string
-  height?: string
-  border?: string
-  borderRadius?: string
-  backgroundColor?: string
-}
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${({ marginBottom }) => marginBottom};
 `

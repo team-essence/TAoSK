@@ -1,4 +1,4 @@
-import React, { FC, SelectHTMLAttributes, useState, FocusEvent } from 'react'
+import React, { FC, SelectHTMLAttributes, useState, FocusEvent, ChangeEvent } from 'react'
 import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
@@ -8,15 +8,16 @@ type StyledSelectProps = {
   width?: string
   height?: string
   border?: string
+  color?: string
   borderRadius?: string
   backgroundColor?: string
 }
-
-type Props = FieldProps<SelectHTMLAttributes<HTMLSelectElement>, 'select'> & {
+type Props = FieldProps<SelectHTMLAttributes<HTMLSelectElement>, 'select', StyledSelectProps> & {
   options: Record<'value' | 'item', string>[]
 }
 
 export const SelectField: FC<Props> = props => {
+  const [value, setValue] = useState<string>('')
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
@@ -33,8 +34,13 @@ export const SelectField: FC<Props> = props => {
   } = props
 
   const shouldShowError = hasBlured && error?.message
+  const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    registration?.onChange && registration.onChange(e)
+    setValue(e.target.value)
+  }
   const onBlur = (e: FocusEvent<HTMLSelectElement>) => {
-    if (selectAttributes.onBlur) selectAttributes.onBlur(e)
+    registration?.onBlur && registration.onBlur(e)
+    selectAttributes.onBlur && selectAttributes.onBlur(e)
     setHasBlured(true)
   }
 
@@ -44,14 +50,19 @@ export const SelectField: FC<Props> = props => {
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-          <StyledSelectWrapper {...selectStyles}>
-            <select {...registration} {...selectAttributes} onBlur={onBlur}>
+          <StyledSelectWrapper height={selectStyles?.height}>
+            <StyledSelect
+              {...selectStyles}
+              {...registration}
+              {...selectAttributes}
+              onChange={onChange}
+              onBlur={onBlur}>
               {options.map((option, index) => (
                 <option value={option.value} key={index}>
                   {option.item}
                 </option>
               ))}
-            </select>
+            </StyledSelect>
           </StyledSelectWrapper>
         </StyledLabel>
       </StyledLabelWrapper>
@@ -76,7 +87,7 @@ StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
-const StyledSelectWrapper = styled.div<StyledSelectProps>`
+const StyledSelectWrapper = styled.div<{ height?: string }>`
   position: relative;
   margin-top: 4px;
 
@@ -89,19 +100,22 @@ const StyledSelectWrapper = styled.div<StyledSelectProps>`
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
   }
-
-  select {
-    -webkit-appearance: none;
-    appearance: none;
-    width: ${({ width }) => width};
-    height: ${({ height }) => height};
-    padding-left: 8px;
-    border: ${({ border }) => border};
-    border-radius: ${({ borderRadius }) => borderRadius};
-    background-color: ${({ backgroundColor }) => backgroundColor};
-  }
 `
 StyledSelectWrapper.defaultProps = {
+  height: '40px',
+}
+const StyledSelect = styled.select<StyledSelectProps>`
+  -webkit-appearance: none;
+  appearance: none;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  padding-left: 8px;
+  border: ${({ border }) => border};
+  border-radius: ${({ borderRadius }) => borderRadius};
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  color: ${({ color }) => color};
+`
+StyledSelect.defaultProps = {
   width: 'min(33.33vw, 480px)',
   height: '40px',
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,

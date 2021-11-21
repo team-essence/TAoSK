@@ -182,7 +182,7 @@ const StyledRegister = styled.div`
   align-items: center;
   width: max(58.33vw, 840px);
   height: 100%;
-  margin-top: 26px;
+  margin: 26px 0;
   padding: 64px 0;
   background-image: url('contract-paper.png');
   background-size: 100% 100%;

@@ -6,7 +6,14 @@ import { InputField } from 'components/ui/form/InputField'
 import type { FieldProps } from 'types/fieldProps'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 
-type InputFieldProps = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input'>
+type StyledBoxProps = {
+  width?: string
+  height?: string
+  border?: string
+  borderRadius?: string
+  backgroundColor?: string
+}
+type InputFieldProps = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledBoxProps>
 type Props = { type?: 'text' | 'password' } & InputFieldProps
 
 export const PasswordField: FC<Props> = ({
