@@ -96,10 +96,12 @@ const StyledRow = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
+  margin-top: 4px;
 `
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
+  padding-left: 8px;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
@@ -109,6 +111,6 @@ const StyledItemsWrapper = styled.div<{ width: string }>`
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 12px;
-  width: ${({ width }) => width};
   margin-top: 12px;
+  width: ${({ width }) => width};
 `

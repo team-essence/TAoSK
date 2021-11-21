@@ -78,6 +78,7 @@ StyledLabel.defaultProps = {
 }
 const StyledSelectWrapper = styled.div<StyledSelectProps>`
   position: relative;
+  margin-top: 4px;
 
   &:after {
     content: '';

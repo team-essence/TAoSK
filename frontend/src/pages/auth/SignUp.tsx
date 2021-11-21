@@ -126,14 +126,12 @@ export const SignUp: FC = () => {
                 items={certifications}
                 setItems={setCertifications}
                 placeholder={'保有資格を入力してください'}
-                inputAspect={{ width: '400px', height: '40px' }}
               />
               <StyledItemInputField
                 label="興味のあること"
                 items={interests}
                 setItems={setInterests}
                 placeholder={'興味のあることを入力してください'}
-                inputAspect={{ width: '400px', height: '40px' }}
               />
 
               <StyledTerms>
@@ -142,7 +140,7 @@ export const SignUp: FC = () => {
                 の内容に同意したものとみなします。
               </StyledTerms>
 
-              <CoarseButton
+              <StyledRegistButton
                 text="登録"
                 aspect={{ width: '120px', height: '32px' }}
                 outerBgColor={convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)}
@@ -173,7 +171,7 @@ const StyledRegister = styled.div`
   width: max(58.33vw, 840px);
   height: 100%;
   margin-top: 26px;
-  padding-top: 31px;
+  padding: 64px 0;
   background-image: url('contract-paper.png');
   background-size: 100% 100%;
 `
@@ -195,6 +193,7 @@ const StyledH1 = styled.h1`
 `
 const StyledFormWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
   width: min(49.02vw, 706px);
@@ -214,7 +213,9 @@ const StyledPasswordField = styled(PasswordField).attrs(() => ({
 const StyledSelectField = styled(SelectField).attrs(() => ({
   marginBottom: '24px',
 }))``
-const StyledItemInputField = styled(ItemInputField)`
+const StyledItemInputField = styled(ItemInputField).attrs(() => ({
+  inputAspect: { width: '400px', height: '40px' },
+}))`
   margin-bottom: 24px;
 `
 const StyledBackground = styled.div`
@@ -229,9 +230,15 @@ const StyledBackground = styled.div`
   background-position: 50% 100%;
 `
 const StyledTerms = styled.p`
+  margin: 24px 0;
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
 `
 const StyledTermsLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.BRIGHT_TURQUOISE};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+`
+const StyledRegistButton = styled(CoarseButton)`
+  display: block;
+  margin: 0 auto;
 `

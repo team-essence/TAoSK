@@ -68,6 +68,7 @@ StyledLabel.defaultProps = {
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
 const StyledInputWrapper = styled.div<StyledBoxProps>`
+  margin-top: 4px;
   input {
     width: ${({ width }) => width};
     height: ${({ height }) => height};

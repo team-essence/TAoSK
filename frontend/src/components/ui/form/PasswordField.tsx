@@ -59,6 +59,6 @@ const StyledWrapper = styled.div`
 `
 const StyledCoarseButton = styled(CoarseButton)`
   position: absolute;
-  top: 32px;
+  top: 36px;
   right: 7px;
 `

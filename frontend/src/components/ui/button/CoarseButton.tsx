@@ -22,13 +22,6 @@ export const CoarseButton: FC<Props> = ({
   onClick,
   isDisabled,
 }) => {
-  const INNER_WIDTH_PER_OUTER_RATIO = 0.97895
-  const INNER_HEIGHT_PER_OUTER_RATIO = 0.9
-  const innerAspect = {
-    width: `calc(${aspect.width} * ${INNER_WIDTH_PER_OUTER_RATIO})`,
-    height: `calc(${aspect.height} * ${INNER_HEIGHT_PER_OUTER_RATIO})`,
-  }
-
   return (
     <StyledButton
       className={className}
@@ -37,7 +30,7 @@ export const CoarseButton: FC<Props> = ({
       onClick={onClick}
       disabled={isDisabled}>
       <StyledOuterMask bgColor={outerBgColor}>
-        <StyledInnerWrapper {...innerAspect}>
+        <StyledInnerWrapper>
           <StyledInnerMask bgColor={innerBgColor}>{text}</StyledInnerMask>
         </StyledInnerWrapper>
       </StyledOuterMask>
@@ -70,10 +63,10 @@ const StyledOuterMask = styled.div<StyledBgColor>`
   border-radius: 2px;
   background-color: ${({ bgColor }) => bgColor};
 `
-const StyledInnerWrapper = styled.div<StyledAspect>`
+const StyledInnerWrapper = styled.div`
   ${centeringFlexStyle}
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
   border-radius: 2px;
   background-image: url('grain.png');
 `
