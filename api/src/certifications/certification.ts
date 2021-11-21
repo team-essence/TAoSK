@@ -9,9 +9,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-@Entity('qualification')
+@Entity('certification')
 @ObjectType()
-export class Qualification {
+export class Certification {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
@@ -24,7 +24,7 @@ export class Qualification {
   name: string;
 
   @Field(() => User, { defaultValue: '' })
-  @ManyToOne(() => User, (user) => user.qualifications)
+  @ManyToOne(() => User, (user) => user.certifications)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

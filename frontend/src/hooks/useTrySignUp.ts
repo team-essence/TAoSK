@@ -20,7 +20,7 @@ export const useTrySignUp: UseTrySignUp = ({ name, company, occupation, email, p
         company,
         occupation_id: occupationList.indexOf(occupation) + 1,
         context: ['資格1', '資格2', '資格3'],
-        qualificationName: ['興味1', '興味2', '興味3'],
+        certificationName: ['興味1', '興味2', '興味3'],
       },
     })
   }

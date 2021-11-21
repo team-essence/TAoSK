@@ -8,7 +8,7 @@ type Interest {
   user: User!
 }
 
-type Qualification {
+type Certification {
   id: Float!
   name: String!
   user: User!
@@ -150,7 +150,7 @@ type User {
   plan: Float!
   design: Float!
   exp: Float!
-  qualifications: [Qualification!]!
+  certifications: [Certification!]!
   interests: [Interest!]!
   groups: [Group!]!
   invitations: [Invitation!]!
@@ -164,7 +164,7 @@ type User {
 type Query {
   allUsers: [User!]!
   user(id: String!): User!
-  qualifications(user_ids: [String!]!): [Qualification!]!
+  certifications(user_ids: [String!]!): [Certification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
   getProjectById(id: Float!): Project!
@@ -174,10 +174,10 @@ type Query {
 }
 
 type Mutation {
-  addUser(newQualification: NewQualificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
+  addUser(newCertification: NewCertificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
   searchSameCompanyUsers(conditionSearchUser: SearchUserInput!): [User!]!
   updateOnlineFlag(isOnline: Boolean!, id: String!): User!
-  addQualification(newQualification: NewQualificationInput!): Qualification!
+  addCertification(newCertification: NewCertificationInput!): Certification!
   addInterest(newInterest: NewInterestInput!): Interest!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
@@ -188,7 +188,7 @@ type Mutation {
   addTask(newTask: NewTaskInput!): Task!
 }
 
-input NewQualificationClientInput {
+input NewCertificationClientInput {
   name: [String!]!
 }
 
@@ -221,7 +221,7 @@ input SearchUserInput {
   company: String!
 }
 
-input NewQualificationInput {
+input NewCertificationInput {
   name: String!
   user_id: String!
 }

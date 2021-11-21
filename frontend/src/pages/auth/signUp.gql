@@ -5,7 +5,7 @@ mutation AddUser(
   $occupation_id: Float!
   $company: String!
   $context: [String!]!
-  $qualificationName: [String!]!
+  $certificationName: [String!]!
 ) {
   addUser(
     newUser: {
@@ -27,7 +27,7 @@ mutation AddUser(
       exp: 0
     }
     newInterest: { context: $context }
-    newQualification: { name: $qualificationName }
+    newCertification: { name: $certificationName }
   ) {
     id
     name
@@ -47,17 +47,3 @@ mutation AddUser(
     exp
   }
 }
-
-# mutation AddQualification($user_id: String!, $name: String!) {
-#   addQualification(newQualification: { user_id: $user_id, name: $name }) {
-#     user_id
-#     name
-#   }
-# }
-#
-# mutation AddInterest($user_id: String!, $context: String!) {
-#   addInterest(newInterest: { user_id: $user_id, context: $context }) {
-#     user_id
-#     context
-#   }
-# }
