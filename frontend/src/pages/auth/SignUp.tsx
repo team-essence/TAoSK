@@ -7,15 +7,23 @@ import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useAuthContext } from 'context/AuthProvider'
 import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
+import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
+import { PasswordField } from 'components/ui/form/PasswordField'
+import { SelectField } from 'components/ui/form/SelectField'
 import styled from 'styled-components'
 
 export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const navigate = useNavigate()
-  const { register, handleSubmit, getValues, isDisabled } = useSignUpForm()
+  const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
   const trySignUp = useTrySignUp({ ...getValues() })
+
+  const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
+    return { value: v, item: v }
+  })
+  occupationOptions.unshift({ value: '', item: '選択' })
 
   useEffect(() => {
     if (!currentUser) return
@@ -24,6 +32,7 @@ export const SignUp: FC = () => {
     navigate('/')
   }, [currentUser, data, navigate, tryGetUserById])
 
+  // TODO: 正規表現をちゃんと書いてエラーハンドリングする
   return (
     <>
       <AuthHeader />
@@ -31,48 +40,75 @@ export const SignUp: FC = () => {
         <StyledRegister>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
+          <StyledImageInputField />
           <InputField
             label="冒険者"
             placeholder="名前を入力"
-            registration={register('name', { required: true, maxLength: 50, pattern: regexText })}
+            registration={register('name', {
+              required: '未入力です',
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
+              pattern: regexText,
+            })}
+            error={errors['name']}
           />
           <InputField
             label="会社名"
             placeholder="会社名を入力"
             registration={register('company', {
-              required: true,
-              maxLength: 50,
+              required: '未入力です',
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
               pattern: regexText,
             })}
+            error={errors['company']}
           />
           <InputField
             label="メールアドレス"
             placeholder="メールアドレスを入力"
             registration={register('email', {
-              required: true,
-              maxLength: 50,
-              pattern: regexEmail,
+              required: '未入力です',
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
+              pattern: {
+                value: regexEmail,
+                message: '不正なメールアドレスです',
+              },
             })}
+            error={errors['email']}
           />
-          <InputField
+          <PasswordField
             label="パスワード"
             placeholder="パスワードを入力"
             registration={register('password', {
-              required: true,
-              minLength: 6,
-              maxLength: 50,
-              pattern: regexPassword,
+              required: '未入力です',
+              minLength: {
+                value: 6,
+                message: '6文字以上で入力してください',
+              },
+              maxLength: {
+                value: 50,
+                message: '50文字以内で入力してください',
+              },
+              pattern: {
+                value: regexPassword,
+                message: 'regex error',
+              },
             })}
+            error={errors['password']}
           />
-
-          <select {...register('occupation', { required: true })}>
-            <option value="">職種を選択してください</option>
-            {occupationList.map((item, index) => (
-              <option value={item} key={index}>
-                {item}
-              </option>
-            ))}
-          </select>
+          <SelectField
+            label="職業"
+            registration={register('occupation', { required: '未選択です' })}
+            options={occupationOptions}
+            error={errors['occupation']}
+          />
 
           <button disabled={isDisabled} onClick={handleSubmit(trySignUp)}>
             登録するボタン
@@ -95,11 +131,12 @@ const StyledRegister = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 840px;
-  height: 1320px;
+  width: 58.33vw;
+  height: 86.59vw;
   margin-top: 26px;
   padding-top: 31px;
   background-image: url('contract-paper.png');
+  background-size: cover;
 `
 const StyledLogoImg = styled.img`
   height: 108px;
@@ -115,6 +152,9 @@ const StyledH1 = styled.h1`
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: ${({ theme }) => theme.fontSizes.size_40};
+`
+const StyledImageInputField = styled(ImageInputField)`
+  margin-bottom: 24px;
 `
 const StyledBackground = styled.div`
   z-index: -1;

@@ -22,6 +22,8 @@ export const theme = {
   },
   fontWeights: {
     normal: 400,
+    medium: 500,
+    semiBold: 600,
     bold: 700,
     heavy: 800,
     black: 900,
@@ -29,11 +31,18 @@ export const theme = {
   colors: {
     white: '#FFFFFF',
     black: '#000000',
+    error: '#FF0000',
     nero: '#100700',
-    mineShaft: '#2c2c2c',
+    mineShaft: '#2C2C2C',
+    nobel: '#B4B4B4',
+    alto: '#D9D9D9',
+    silver: '#C4C4C4',
     dodgerBlue: '#11B3F9',
     tenn: '#C95900',
+    temptress: '#3F0000',
+    redOxide: '#660303',
     chocolate: '#4D2709',
+    brandy: '#E0C29F',
   },
 } as const
 
