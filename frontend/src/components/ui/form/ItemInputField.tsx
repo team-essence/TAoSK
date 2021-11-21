@@ -1,4 +1,4 @@
-import React, { FC, useState, Dispatch, KeyboardEvent } from 'react'
+import React, { FC, useState, Dispatch, KeyboardEvent, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
@@ -18,9 +18,16 @@ type Props = {
 export const ItemInputField: FC<Props> = props => {
   const { className, label, placeholder, inputAspect, items, setItems } = props
   const [value, setValue] = useState<string>('')
+  const [isDisabled, setIsDisabled] = useState<boolean>(false)
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const isAlreadyExists = !!items.find(v => v === e.target.value)
+    setIsDisabled(!!isAlreadyExists)
+    setValue(e.target.value)
+  }
   const onClickAddButton = () => {
     if (!value) return
-    const isAlreadyExists = items.find(v => v === value)
+    const isAlreadyExists = !!items.find(v => v === value)
     if (isAlreadyExists) return
     items.push(value)
     setItems(items.slice())
@@ -45,7 +52,7 @@ export const ItemInputField: FC<Props> = props => {
         <StyledInput
           value={value}
           onKeyPress={onKeyPress}
-          onChange={e => setValue(e.target.value)}
+          onChange={onChange}
           placeholder={placeholder}
           {...inputAspect}
         />
@@ -55,10 +62,19 @@ export const ItemInputField: FC<Props> = props => {
             width: '64px',
             height: '40px',
           }}
-          outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
-          innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
-          color={theme.COLORS.BRANDY}
+          outerBgColor={
+            isDisabled
+              ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
+              : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
+          }
+          innerBgColor={
+            isDisabled
+              ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
+              : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
+          }
+          color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
           onClick={onClickAddButton}
+          isDisabled={isDisabled}
         />
       </StyledRow>
       <StyledItemsWrapper width={inputAspect.width}>
