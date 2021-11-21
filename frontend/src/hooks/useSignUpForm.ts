@@ -5,6 +5,7 @@ import {
   UseFormHandleSubmit,
   UseFormGetValues,
   FieldErrors,
+  UseFormTrigger,
 } from 'react-hook-form'
 
 type FormInputs = Record<
@@ -18,6 +19,7 @@ type UseSignUpFormReturn<T> = {
   getValues: UseFormGetValues<T>
   isDisabled: boolean
   errors: FieldErrors
+  trigger: UseFormTrigger<T>
 }
 
 export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
@@ -29,6 +31,7 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     setValue,
     setError,
     watch,
+    trigger,
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
@@ -57,5 +60,5 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     }
   }, [watchAllFields, setValue, setError, errors])
 
-  return { register, handleSubmit, getValues, isDisabled, errors }
+  return { register, handleSubmit, getValues, isDisabled, errors, trigger }
 }

@@ -22,7 +22,7 @@ export const SignUp: FC = () => {
   const { currentUser } = useAuthContext()
   const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
   const navigate = useNavigate()
-  const { register, handleSubmit, getValues, isDisabled, errors } = useSignUpForm()
+  const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
@@ -109,6 +109,7 @@ export const SignUp: FC = () => {
                     message: 'regex error',
                   },
                 })}
+                onChange={() => trigger('re-password')}
                 error={errors['password']}
               />
               <StyledPasswordField
@@ -117,6 +118,7 @@ export const SignUp: FC = () => {
                   required: '未入力です',
                   validate: value => value === getValues('password') || 'パスワードが一致しません',
                 })}
+                onChange={() => trigger('password')}
                 error={errors['re-password']}
               />
               <StyledSelectField

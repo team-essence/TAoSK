@@ -26,6 +26,7 @@ export const PasswordField: FC<Props> = ({
   const [shouldShowPassword, setShouldShowPassword] = useState<boolean>(type === 'text')
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     registration.onChange && registration.onChange(e)
+    inputFieldProps.onChange && inputFieldProps.onChange(e)
     setValue(e.target.value)
   }
 
