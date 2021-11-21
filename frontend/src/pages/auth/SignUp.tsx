@@ -1,12 +1,11 @@
-import React, { FC, useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import React, { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { regexEmail, regexPassword, regexText } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
+import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
-import { useAuthContext } from 'context/AuthProvider'
-import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -19,9 +18,7 @@ import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
-  const { currentUser } = useAuthContext()
-  const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
-  const navigate = useNavigate()
+  useNavigateUser()
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
@@ -33,14 +30,6 @@ export const SignUp: FC = () => {
   })
   occupationOptions.unshift({ value: '', item: '選択' })
 
-  useEffect(() => {
-    if (!currentUser) return
-    tryGetUserById({ variables: { id: currentUser.uid } })
-    if (!data) return
-    navigate('/')
-  }, [currentUser, data, navigate, tryGetUserById])
-
-  // TODO: 正規表現をちゃんと書いてエラーハンドリングする
   return (
     <>
       <AuthHeader />
