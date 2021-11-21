@@ -1,4 +1,4 @@
-import React, { FC, useState, Dispatch } from 'react'
+import React, { FC, useState, Dispatch, KeyboardEvent } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
@@ -24,6 +24,12 @@ export const ItemInputField: FC<Props> = props => {
     setItems(items.slice())
     setValue('')
   }
+  const onKeyPress = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onClickAddButton()
+    }
+  }
   const onClickCrossButton = (item: string) => {
     const index = items.indexOf(item)
     items.splice(index, 1)
@@ -36,6 +42,7 @@ export const ItemInputField: FC<Props> = props => {
       <StyledRow>
         <StyledInput
           value={value}
+          onKeyPress={onKeyPress}
           onChange={e => setValue(e.target.value)}
           placeholder={placeholder}
           {...inputAspect}
