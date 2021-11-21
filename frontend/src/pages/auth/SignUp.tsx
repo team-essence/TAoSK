@@ -175,6 +175,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  cursor: url('feather-pen.png') 0 128, pointer;
 `
 const StyledRegister = styled.div`
   display: flex;
