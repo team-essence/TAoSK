@@ -1,10 +1,12 @@
-import React, { FC, useState, ChangeEvent } from 'react'
+import React, { FC, InputHTMLAttributes, useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { InputField, InputFieldProps } from 'components/ui/form/InputField'
+import { InputField } from 'components/ui/form/InputField'
+import type { FieldProps } from 'types/fieldProps'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 
+type InputFieldProps = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input'>
 type Props = { type?: 'text' | 'password' } & InputFieldProps
 
 export const PasswordField: FC<Props> = ({

@@ -1,10 +1,9 @@
 import React, { FC, SelectHTMLAttributes, useState, FocusEvent } from 'react'
-import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
+import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
-type StyledLabelProps = { color?: string; fontSize?: string }
 type StyledSelectProps = {
   width?: string
   height?: string
@@ -12,24 +11,16 @@ type StyledSelectProps = {
   borderRadius?: string
   backgroundColor?: string
 }
-type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
-  className?: string
-  labelStyles?: StyledLabelProps
-  selectStyles?: StyledSelectProps
+
+type Props = FieldProps<SelectHTMLAttributes<HTMLSelectElement>, 'select'> & {
   options: Record<'value' | 'item', string>[]
-  label?: string
-  error?: FieldError | undefined
-  errorColor?: string
-  description?: string
-  registration: Partial<UseFormRegisterReturn>
-  required?: boolean
-  type?: 'text' | 'email' | 'password'
 }
 
-export const SelectField: FC<SelectFieldProps> = props => {
+export const SelectField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
+    marginBottom,
     labelStyles,
     selectStyles,
     options,
@@ -49,7 +40,7 @@ export const SelectField: FC<SelectFieldProps> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '' : '24px'}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : marginBottom}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -73,7 +64,7 @@ export const SelectField: FC<SelectFieldProps> = props => {
   )
 }
 
-const StyledLabelWrapper = styled.label<{ marginBottom: string }>`
+const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${({ marginBottom }) => marginBottom};
 `
 const StyledLabel = styled.label<StyledLabelProps>`

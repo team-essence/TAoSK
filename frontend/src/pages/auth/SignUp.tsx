@@ -49,7 +49,7 @@ export const SignUp: FC = () => {
           <StyledFormWrapper>
             <StyledImageInputField />
             <StyledRightColumn>
-              <InputField
+              <StyledInputField
                 label="冒険者"
                 registration={register('name', {
                   required: '未入力です',
@@ -61,7 +61,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['name']}
               />
-              <InputField
+              <StyledInputField
                 label="会社名"
                 registration={register('company', {
                   required: '未入力です',
@@ -73,7 +73,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['company']}
               />
-              <InputField
+              <StyledInputField
                 label="メールアドレス"
                 registration={register('email', {
                   required: '未入力です',
@@ -88,7 +88,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['email']}
               />
-              <PasswordField
+              <StyledPasswordField
                 label="パスワード"
                 registration={register('password', {
                   required: '未入力です',
@@ -107,7 +107,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['password']}
               />
-              <PasswordField
+              <StyledPasswordField
                 label="パスワード（確認）"
                 registration={register('re-password', {
                   required: '未入力です',
@@ -115,7 +115,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['re-password']}
               />
-              <SelectField
+              <StyledSelectField
                 label="職業"
                 registration={register('occupation', { required: '未選択です' })}
                 options={occupationOptions}
@@ -205,6 +205,15 @@ const StyledRightColumn = styled.div`
 const StyledImageInputField = styled(ImageInputField)`
   margin-bottom: 24px;
 `
+const StyledInputField = styled(InputField).attrs(() => ({
+  marginBottom: '24px',
+}))``
+const StyledPasswordField = styled(PasswordField).attrs(() => ({
+  marginBottom: '24px',
+}))``
+const StyledSelectField = styled(SelectField).attrs(() => ({
+  marginBottom: '24px',
+}))``
 const StyledBackground = styled.div`
   z-index: -1;
   position: fixed;

@@ -1,34 +1,16 @@
 import React, { FC, InputHTMLAttributes, useState, FocusEvent } from 'react'
-import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
+import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
-type StyledLabelProps = { color?: string; fontSize?: string }
-type StyledInputProps = {
-  width?: string
-  height?: string
-  border?: string
-  borderRadius?: string
-  backgroundColor?: string
-}
-export type InputFieldProps = {
-  className?: string
-  labelStyles?: StyledLabelProps
-  inputStyles?: StyledInputProps
-  label?: string
-  error?: FieldError | undefined
-  errorColor?: string
-  description?: string
-  registration: Partial<UseFormRegisterReturn>
-  required?: boolean
-  type?: 'text' | 'email' | 'password'
-} & InputHTMLAttributes<HTMLInputElement>
+type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input'>
 
-export const InputField: FC<InputFieldProps> = props => {
+export const InputField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
+    marginBottom,
     labelStyles,
     inputStyles,
     errorColor = theme.COLORS.ERROR,
@@ -48,7 +30,7 @@ export const InputField: FC<InputFieldProps> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : marginBottom}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -66,6 +48,13 @@ export const InputField: FC<InputFieldProps> = props => {
   )
 }
 
+type StyledBoxProps = {
+  width?: string
+  height?: string
+  border?: string
+  borderRadius?: string
+  backgroundColor?: string
+}
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${({ marginBottom }) => marginBottom};
 `
@@ -78,7 +67,7 @@ StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
-const StyledInputWrapper = styled.div<StyledInputProps>`
+const StyledInputWrapper = styled.div<StyledBoxProps>`
   input {
     width: ${({ width }) => width};
     height: ${({ height }) => height};
