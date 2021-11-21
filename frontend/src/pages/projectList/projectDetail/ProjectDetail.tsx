@@ -26,9 +26,10 @@ import {
   DropResult,
   resetServerContext,
 } from 'react-beautiful-dnd'
-import { DropType, listType, tasksType } from 'types/list'
+import { listType, tasksType } from 'types/list'
 import { UpdateTask } from 'types/graphql.gen'
 import date from 'utils/date/date'
+import { DropType } from 'consts/dropType'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
