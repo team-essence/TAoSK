@@ -28,12 +28,12 @@ const StyledButton = styled.div<StyledButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${props => props.width};
-  height: ${props => props.height};
-  border: ${props => props.border};
-  border-radius: ${props => props.borderRadius};
-  background-color: ${props => props.bgColor};
-  color: ${props => props.fontColor};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  border: ${({ border }) => border};
+  border-radius: ${({ borderRadius }) => borderRadius};
+  background-color: ${({ bgColor }) => bgColor};
+  color: ${({ fontColor }) => fontColor};
   text-align: center;
 `
 StyledButton.defaultProps = {

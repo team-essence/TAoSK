@@ -52,33 +52,33 @@ const centeringFlexStyle = `
   align-items: center;
 `
 const StyledButton = styled.button<StyledAspect & StyledFontColor>`
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   border-radius: 2px;
   background-image: url('grain.png');
-  color: ${props => props.color};
+  color: ${({ color }) => color};
   font-size: ${({ theme }) => theme.fontSizes.size_14};
   font-weight: ${({ theme }) => theme.fontWeights.medium};
 `
 const StyledOuterMask = styled.div<StyledAspect & StyledBgColor>`
   ${centeringFlexStyle}
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   border-radius: 2px;
-  background-color: ${props => props.bgColor};
+  background-color: ${({ bgColor }) => bgColor};
 `
 const StyledInnerWrapper = styled.div<StyledAspect>`
   ${centeringFlexStyle}
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   border-radius: 2px;
   background-image: url('grain.png');
 `
 const StyledInnerMask = styled.div<StyledAspect & StyledBgColor>`
   ${centeringFlexStyle}
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   border: solid 0.2px ${({ theme }) => theme.colors.brandy};
   border-radius: 2px;
-  background-color: ${props => props.bgColor};
+  background-color: ${({ bgColor }) => bgColor};
 `

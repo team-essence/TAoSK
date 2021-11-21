@@ -58,7 +58,7 @@ const StyledImage = styled.img<{ padding: string }>`
   aspect-ratio: 1 / 1;
   object-fit: contain;
   width: 100%;
-  padding: ${props => props.padding};
+  padding: ${({ padding }) => padding};
 `
 const StyledDisappearedInput = styled.input`
   display: none;

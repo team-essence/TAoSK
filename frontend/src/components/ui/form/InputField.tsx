@@ -67,11 +67,11 @@ export const InputField: FC<InputFieldProps> = props => {
 }
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
-  margin-bottom: ${props => props.marginBottom};
+  margin-bottom: ${({ marginBottom }) => marginBottom};
 `
 const StyledLabel = styled.label<StyledLabelProps>`
-  color: ${props => props.color};
-  font-size: ${props => props.fontSize};
+  color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => fontSize};
   font-weight: 700;
 `
 StyledLabel.defaultProps = {
@@ -80,12 +80,12 @@ StyledLabel.defaultProps = {
 }
 const StyledInputWrapper = styled.div<StyledInputProps>`
   input {
-    width: ${props => props.width};
-    height: ${props => props.height};
+    width: ${({ width }) => width};
+    height: ${({ height }) => height};
     padding-left: 8px;
-    border: ${props => props.border};
-    border-radius: ${props => props.borderRadius};
-    background-color: ${props => props.backgroundColor};
+    border: ${({ border }) => border};
+    border-radius: ${({ borderRadius }) => borderRadius};
+    background-color: ${({ backgroundColor }) => backgroundColor};
   }
 `
 StyledInputWrapper.defaultProps = {
@@ -96,7 +96,7 @@ StyledInputWrapper.defaultProps = {
   backgroundColor: convertIntoRGBA(theme.colors.white, 0.7),
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
-  color: ${props => props.color};
+  color: ${({ color }) => color};
   font-size: ${({ theme }) => theme.fontSizes.size_14};
 `
 const StyledRequiredSpan = styled.span`
