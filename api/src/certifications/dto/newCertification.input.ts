@@ -4,7 +4,7 @@ import { User } from 'src/users/user';
 import { JoinColumn, ManyToOne } from 'typeorm';
 
 @InputType()
-export class NewQualificationInput {
+export class NewCertificationInput {
   @IsString()
   @Field()
   name: string;
@@ -15,7 +15,7 @@ export class NewQualificationInput {
 }
 
 @InputType()
-export class NewQualificationClientInput {
+export class NewCertificationClientInput {
   @IsArray()
   @Field(() => [String])
   name: [string];

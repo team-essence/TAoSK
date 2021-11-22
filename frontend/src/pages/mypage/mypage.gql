@@ -21,7 +21,7 @@ query GetUser($id: String!) {
       context
     }
 
-    qualifications {
+    certifications {
       name
     }
   }

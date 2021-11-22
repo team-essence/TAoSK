@@ -5,7 +5,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/user';
-import { Qualification } from './qualifications/qualification';
+import { Certification } from './certifications/certification';
 import { Interest } from './interests/interest';
 import { Specie } from './species/specie';
 import { Monster } from './monsters/monster';
@@ -21,7 +21,7 @@ import { Allocation } from './allocations/allocation';
 import { Chat } from './chats/chat';
 import { GameLog } from './game-logs/game-log';
 import { UsersModule } from './users/users.module';
-import { QualificationsModule } from './qualifications/qualifications.module';
+import { CertificationsModule } from './certifications/certifications.module';
 import { InterestsModule } from './interests/interests.module';
 import { SpeciesModule } from './species/species.module';
 import { MonstersModule } from './monsters/monsters.module';
@@ -56,7 +56,7 @@ import { GameLogsModule } from './game-logs/game-logs.module';
       database: 'taosk_db',
       entities: [
         User,
-        Qualification,
+        Certification,
         Interest,
         Specie,
         Monster,
@@ -75,7 +75,7 @@ import { GameLogsModule } from './game-logs/game-logs.module';
       synchronize: true,
     }),
     UsersModule,
-    QualificationsModule,
+    CertificationsModule,
     InterestsModule,
     SpeciesModule,
     MonstersModule,
