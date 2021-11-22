@@ -41,7 +41,9 @@ export const InputField: FC<Props> = props => {
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-          <StyledInputWrapper {...inputStyles}>
+          <StyledInputWrapper
+            {...inputStyles}
+            border={shouldShowError ? `solid 1px ${errorColor}` : undefined}>
             <input {...registration} {...inputAttributes} onBlur={onBlur} />
           </StyledInputWrapper>
         </StyledLabel>
