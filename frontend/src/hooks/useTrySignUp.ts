@@ -28,8 +28,8 @@ export const useTrySignUp: UseTrySignUp = ({
         icon_image: 'http:aaa',
         company,
         occupation_id: occupationList.indexOf(occupation) + 1,
-        context: certifications,
-        qualificationName: interests,
+        context: interests,
+        certificationName: certifications,
       },
     })
   }
