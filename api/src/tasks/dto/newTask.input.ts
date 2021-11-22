@@ -57,6 +57,14 @@ export class NewTaskInput {
 
   //期日
   @Field()
-  @IsDate()
-  end_date: Date;
+  @IsString()
+  end_date: string;
+
+  @Field()
+  @IsString()
+  project_id: string;
+
+  @Field()
+  @IsString()
+  list_id: string;
 }

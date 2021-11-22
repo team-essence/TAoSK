@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { regexEmail, regexPassword, regexText } from 'consts/regex'
+import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
 import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
@@ -50,7 +50,7 @@ export const SignUp: FC = () => {
                     value: 50,
                     message: '50文字以内で入力してください',
                   },
-                  pattern: regexText,
+                  pattern: REGEX_TEXT,
                 })}
                 error={errors['name']}
               />
@@ -62,7 +62,7 @@ export const SignUp: FC = () => {
                     value: 50,
                     message: '50文字以内で入力してください',
                   },
-                  pattern: regexText,
+                  pattern: REGEX_TEXT,
                 })}
                 error={errors['company']}
               />
@@ -75,7 +75,7 @@ export const SignUp: FC = () => {
                     message: '50文字以内で入力してください',
                   },
                   pattern: {
-                    value: regexEmail,
+                    value: REGEX_EMAIL,
                     message: '不正なメールアドレスです',
                   },
                 })}
@@ -94,7 +94,7 @@ export const SignUp: FC = () => {
                     message: '50文字以内で入力してください',
                   },
                   pattern: {
-                    value: regexPassword,
+                    value: REGEX_PASSWORD,
                     message: '半角英数字をそれぞれ1種類以上含めてください',
                   },
                 })}
