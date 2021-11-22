@@ -135,7 +135,7 @@ const StyledP = styled.p`
 const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.TIA_MARIA};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -152,5 +152,5 @@ const StyledSignInButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `

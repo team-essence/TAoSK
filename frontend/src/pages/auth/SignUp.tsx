@@ -111,7 +111,7 @@ export const SignUp: FC = () => {
                 error={errors['re-password']}
               />
               <StyledSelectField
-                label="職業"
+                label="職種"
                 registration={register('occupation', { required: '未選択です' })}
                 options={occupationOptions}
                 error={errors['occupation']}
@@ -256,7 +256,7 @@ const StyledTerms = styled.p`
 `
 const StyledTermsLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.BRIGHT_TURQUOISE};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledSignUpButton = styled(CoarseButton)`
   display: block;

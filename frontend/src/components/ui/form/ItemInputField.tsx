@@ -89,7 +89,7 @@ export const ItemInputField: FC<Props> = props => {
 const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: 700;
+  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledRow = styled.div`
   display: flex;
