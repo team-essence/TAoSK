@@ -7,7 +7,6 @@
 
 `cd TAoSK`</br>
 `make init`</br>
-`docker-compose up --build`</br>
 
 ## 起動方法
 
