@@ -77,12 +77,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
-  cursor: url('feather-pen.png') 10 124, pointer;
-  input,
-  select,
-  button,
-  label,
-  a {
+  input {
     cursor: url('feather-pen.png') 10 124, pointer;
   }
 `
