@@ -27,6 +27,7 @@ export const InputItem: FC<Props> = ({ className, itemName, onClick }) => {
 const StyledOuterWrapper = styled.div`
   display: inline-block;
   border-radius: 2px;
+  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   background-image: url('grain.png');
   color: ${({ color }) => color};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};

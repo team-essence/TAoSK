@@ -1,9 +1,5 @@
-import { auth } from 'utils/lib/firebase/firebaseInitial';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-} from 'firebase/auth';
+import { auth } from 'utils/lib/firebase/firebaseInitial'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
 export const firebaseAuth = {
   /**
@@ -12,18 +8,18 @@ export const firebaseAuth = {
    * @param {string} password [パスワード]
    */
   createUser: (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password)
   },
   /**
    * sign in user
    * @param {string} email [メールアドレス]
    * @param {string} password [パスワード]
    */
-  signnUser: (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
+  signInUser: (email: string, password: string) => {
+    return signInWithEmailAndPassword(auth, email, password)
   },
   // ログアウト
   signOut: () => {
-    signOut(auth);
+    signOut(auth)
   },
-} as const;
+} as const

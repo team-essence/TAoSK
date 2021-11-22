@@ -1,12 +1,11 @@
-import React, { FC, useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import React, { FC, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
 import { occupationList } from 'consts/occupationList'
+import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
-import { useAuthContext } from 'context/AuthProvider'
-import { useGetUserByIdLazyQuery } from './document.gen'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -19,9 +18,7 @@ import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
-  const { currentUser } = useAuthContext()
-  const [tryGetUserById, { data }] = useGetUserByIdLazyQuery()
-  const navigate = useNavigate()
+  useNavigateUser()
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
@@ -33,18 +30,11 @@ export const SignUp: FC = () => {
   })
   occupationOptions.unshift({ value: '', item: '選択' })
 
-  useEffect(() => {
-    if (!currentUser) return
-    tryGetUserById({ variables: { id: currentUser.uid } })
-    if (!data) return
-    navigate('/')
-  }, [currentUser, data, navigate, tryGetUserById])
-
   return (
     <>
       <AuthHeader />
       <StyledWrapper>
-        <StyledRegister>
+        <StyledSignUp>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
@@ -121,7 +111,7 @@ export const SignUp: FC = () => {
                 error={errors['re-password']}
               />
               <StyledSelectField
-                label="職業"
+                label="職種"
                 registration={register('occupation', { required: '未選択です' })}
                 options={occupationOptions}
                 error={errors['occupation']}
@@ -145,7 +135,7 @@ export const SignUp: FC = () => {
                 の内容に同意したものとみなします。
               </StyledTerms>
 
-              <StyledRegistButton
+              <StyledSignUpButton
                 text="登録"
                 aspect={{ width: '120px', height: '32px' }}
                 outerBgColor={
@@ -164,7 +154,7 @@ export const SignUp: FC = () => {
               />
             </StyledRightColumn>
           </StyledFormWrapper>
-        </StyledRegister>
+        </StyledSignUp>
         <StyledBackground />
       </StyledWrapper>
     </>
@@ -176,16 +166,11 @@ const StyledWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
-  cursor: url('feather-pen.png') 10 124, pointer;
-  input,
-  select,
-  button,
-  label,
-  a {
+  input {
     cursor: url('feather-pen.png') 10 124, pointer;
   }
 `
-const StyledRegister = styled.div`
+const StyledSignUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -266,9 +251,10 @@ const StyledTerms = styled.p`
 `
 const StyledTermsLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.BRIGHT_TURQUOISE};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
-const StyledRegistButton = styled(CoarseButton)`
+const StyledSignUpButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
+  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
 `

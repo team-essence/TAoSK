@@ -1,28 +1,16 @@
 import { useState, useRef, useEffect } from 'react'
-import {
-  useForm,
-  UseFormRegister,
-  UseFormHandleSubmit,
-  UseFormGetValues,
-  FieldErrors,
-  UseFormTrigger,
-} from 'react-hook-form'
+import { useForm, UseFormRegister, UseFormHandleSubmit, UseFormGetValues } from 'react-hook-form'
 
-type FormInputs = Record<
-  'name' | 'company' | 'occupation' | 'email' | 'password' | 're-password',
-  string
->
+type FormInputs = Record<'email' | 'password', string>
 
-type UseSignUpFormReturn<T> = {
+type UseSignInFormReturn<T> = {
   register: UseFormRegister<T>
   handleSubmit: UseFormHandleSubmit<T>
   getValues: UseFormGetValues<T>
   isDisabled: boolean
-  errors: FieldErrors
-  trigger: UseFormTrigger<T>
 }
 
-export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
+export const useSignInForm = (): UseSignInFormReturn<FormInputs> => {
   const {
     register,
     handleSubmit,
@@ -30,7 +18,6 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     formState: { errors },
     setValue,
     watch,
-    trigger,
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
@@ -40,12 +27,8 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
 
   useEffect(() => {
     const initializeInputValues = () => {
-      setValue('name', '', { shouldValidate: true })
-      setValue('company', '', { shouldValidate: true })
-      setValue('occupation', '', { shouldValidate: true })
       setValue('email', '', { shouldValidate: true })
       setValue('password', '', { shouldValidate: true })
-      setValue('re-password', '', { shouldValidate: true })
     }
     const hasError = Object.keys(errors).length
 
@@ -59,5 +42,5 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     }
   }, [watchAllFields, setValue, errors])
 
-  return { register, handleSubmit, getValues, isDisabled, errors, trigger }
+  return { register, handleSubmit, getValues, isDisabled }
 }

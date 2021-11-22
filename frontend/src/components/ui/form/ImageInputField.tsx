@@ -60,7 +60,7 @@ const StyledAllWrapper = styled.div`
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: 700;
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledImageWrapper = styled.div`
   margin: 4px 0;
@@ -81,6 +81,7 @@ const StyledDisappearedInput = styled.input`
 `
 const StyledCoarseButton = styled(CoarseButton)`
   margin: 4px 0;
+  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
 `
 const StyledDeleteButton = styled.button`
   margin: 4px 0;

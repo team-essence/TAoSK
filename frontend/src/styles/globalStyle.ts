@@ -9,6 +9,12 @@ export const GlobalStyle = createGlobalStyle`
   }
   @font-face {
     font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Mplus1Code';
     src: url('fonts/Mplus1Code-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
