@@ -1,19 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useState, useLayoutEffect } from 'react'
 
-type UseWatchInnerAspectReturn = { aspect: number }
+type UseWatchInnerAspectResult = {
+  innerWidth: number
+  innerHeight: number
+}
 
-export const useWatchInnerAspect = (side: 'width' | 'height'): UseWatchInnerAspectReturn => {
-  const [aspect, setAspect] = useState<number>(0)
+export const useWatchInnerAspect = (): UseWatchInnerAspectResult => {
+  const [innerWidth, setInnerWidth] = useState<number>(0)
+  const [innerHeight, setInnerHeight] = useState<number>(0)
 
-  useEffect(() => {
-    const updateAspect = () => {
-      setAspect(side === 'width' ? window.innerWidth : window.innerHeight)
-    }
+  const resize = () => {
+    setInnerWidth(window.innerWidth)
+    setInnerHeight(window.innerHeight)
+  }
 
-    updateAspect()
-    window.addEventListener('resize', updateAspect)
-    return () => window.removeEventListener('resize', updateAspect)
-  }, [side])
+  useLayoutEffect(() => {
+    window.addEventListener('resize', resize)
+    resize()
+    return () => window.removeEventListener('resize', resize)
+  }, [])
 
-  return { aspect }
+  return { innerWidth, innerHeight }
 }
