@@ -2,8 +2,10 @@ import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
 import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
+import { useNavigate } from 'react-router-dom'
 
 export const AuthHeader: FC = () => {
+  const navigate = useNavigate()
   const commonButtonProps = {
     width: '120px',
     height: '40px',
@@ -28,8 +30,16 @@ export const AuthHeader: FC = () => {
       </StyledLogoWrapper>
 
       <StyledButtonsWrapper>
-        <SimpleRoundedButton {...commonButtonProps} {...registerButtonProps} />
-        <SimpleRoundedButton {...commonButtonProps} {...loginButtonProps} />
+        <SimpleRoundedButton
+          {...commonButtonProps}
+          {...registerButtonProps}
+          onClick={() => navigate('/signup')}
+        />
+        <SimpleRoundedButton
+          {...commonButtonProps}
+          {...loginButtonProps}
+          onClick={() => navigate('/signin')}
+        />
       </StyledButtonsWrapper>
     </StyledHeaderWrapper>
   )
