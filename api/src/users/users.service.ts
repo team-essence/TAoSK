@@ -7,10 +7,10 @@ import { User } from './user';
 import { NewUserInput } from './dto/newUser.input';
 import { In, Like, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NewQualificationClientInput } from 'src/qualifications/dto/newQualification.input';
+import { NewCertificationClientInput } from 'src/certifications/dto/newCertification.input';
 import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
 import { Interest } from 'src/interests/interest';
-import { Qualification } from 'src/qualifications/qualification';
+import { Certification } from 'src/certifications/certification';
 import { SearchUserInput } from './dto/searchUser.input';
 
 @Injectable()
@@ -20,13 +20,13 @@ export class UsersService {
     private usersRepository: Repository<User>,
     @InjectRepository(Interest)
     private interestRepository: Repository<Interest>,
-    @InjectRepository(Qualification)
-    private qualificationRepository: Repository<Qualification>,
+    @InjectRepository(Certification)
+    private certificationRepository: Repository<Certification>,
   ) {}
 
   getAllUsers(): Promise<User[]> {
     const users = this.usersRepository.find({
-      relations: ['interests', 'qualifications'],
+      relations: ['interests', 'certifications'],
     });
     if (!users) throw new NotFoundException();
 
@@ -35,7 +35,7 @@ export class UsersService {
 
   getUser(id: string): Promise<User> {
     const user = this.usersRepository.findOne(id, {
-      relations: ['interests', 'qualifications'],
+      relations: ['interests', 'certifications'],
     });
     if (!user) throw new NotFoundException();
 
@@ -45,11 +45,11 @@ export class UsersService {
   async create({
     newUser,
     newInterest,
-    newQualification,
+    newCertification,
   }: {
     newUser: NewUserInput;
     newInterest: NewInterestClientInput;
-    newQualification: NewQualificationClientInput;
+    newCertification: NewCertificationClientInput;
   }): Promise<User> {
     const user = this.usersRepository.create(newUser);
     await this.usersRepository.save(user).catch((err) => {
@@ -69,15 +69,15 @@ export class UsersService {
     }
 
     for (
-      let qualification_index = 0;
-      qualification_index < newQualification.name.length;
-      qualification_index++
+      let certification_index = 0;
+      certification_index < newCertification.name.length;
+      certification_index++
     ) {
-      const newQualificationData = this.qualificationRepository.create({
-        name: newQualification.name[qualification_index],
+      const newCertificationData = this.certificationRepository.create({
+        name: newCertification.name[certification_index],
         user,
       });
-      await this.qualificationRepository.save(newQualificationData);
+      await this.certificationRepository.save(newCertificationData);
     }
 
     return user;

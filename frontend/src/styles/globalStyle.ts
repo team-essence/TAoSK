@@ -2,14 +2,26 @@ import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
-    font-family: 'NotoSansJP';
-    src: url('fonts/NotoSansJP-Medium.otf') format('opentype');
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
   }
   @font-face {
-    font-family: 'NotoSansJP';
-    src: url('fonts/NotoSansJP-Bold.otf') format('opentype');
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
   }
@@ -21,7 +33,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   html {
     box-sizing: border-box;
-    font-size: ${({ theme }) => theme.fontSizes.size_16};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.7;
@@ -29,11 +41,11 @@ export const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 0;
-    color: ${({ theme }) => theme.colors.black};
-    background: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.COLORS.BLACK};
+    background: ${({ theme }) => theme.COLORS.WHITE};
     word-break: break-word;
     word-wrap: break-word;
-    font-family: 'NotoSansJP', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
+    font-family: 'Mplus1Code', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
     font-weight: 500;
     }

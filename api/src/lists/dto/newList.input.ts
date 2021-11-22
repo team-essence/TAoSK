@@ -4,11 +4,6 @@ import { IsString, IsNotEmpty, IsInt } from 'class-validator';
 @InputType()
 export class NewListInput {
   @IsNotEmpty()
-  @IsInt()
-  @Field()
-  list_id: number;
-
-  @IsNotEmpty()
   @IsString()
   @Field()
   name: string;
@@ -17,4 +12,8 @@ export class NewListInput {
   @IsInt()
   @Field()
   project_id: number;
+
+  @IsInt()
+  @Field()
+  task_list: number;
 }

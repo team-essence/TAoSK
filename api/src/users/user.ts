@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Interest } from 'src/interests/interest';
-import { Qualification } from 'src/qualifications/qualification';
+import { Certification } from 'src/certifications/certification';
 import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
 import { Allocation } from 'src/allocations/allocation';
@@ -94,9 +94,9 @@ export class User {
   @Field()
   exp: number;
 
-  @OneToMany(() => Qualification, (qualification) => qualification.user)
-  @Field(() => [Qualification])
-  qualifications: Qualification[];
+  @OneToMany(() => Certification, (certification) => certification.user)
+  @Field(() => [Certification])
+  certifications: Certification[];
 
   @OneToMany(() => Interest, (interest) => interest.user)
   @Field(() => [Interest])

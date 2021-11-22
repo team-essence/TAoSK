@@ -4,10 +4,19 @@ import { occupationList } from 'consts/occupationList'
 import { useAddUserMutation } from 'pages/auth/signUp.gen'
 
 type UseTrySignUp = (
-  args: Record<'name' | 'company' | 'occupation' | 'email' | 'password', string>,
+  args: Record<'name' | 'company' | 'occupation' | 'email' | 'password', string> &
+    Record<'certifications' | 'interests', string[]>,
 ) => () => void
 
-export const useTrySignUp: UseTrySignUp = ({ name, company, occupation, email, password }) => {
+export const useTrySignUp: UseTrySignUp = ({
+  name,
+  company,
+  occupation,
+  email,
+  password,
+  certifications,
+  interests,
+}) => {
   const [addUserMutation] = useAddUserMutation()
   const navigate = useNavigate()
 
@@ -19,8 +28,8 @@ export const useTrySignUp: UseTrySignUp = ({ name, company, occupation, email, p
         icon_image: 'http:aaa',
         company,
         occupation_id: occupationList.indexOf(occupation) + 1,
-        context: ['資格1', '資格2', '資格3'],
-        qualificationName: ['興味1', '興味2', '興味3'],
+        context: interests,
+        certificationName: certifications,
       },
     })
   }
