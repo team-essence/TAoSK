@@ -23,7 +23,7 @@ export const SignUp: FC = () => {
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
-  const { aspect: innerWidth } = useWatchInnerAspect('width')
+  const { innerWidth } = useWatchInnerAspect()
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
