@@ -231,6 +231,10 @@ const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(
   margin: ${({ margin }) => margin};
 `
 const StyledInputField = styled(InputField).attrs(() => ({
+  inputStyles: {
+    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
+    borderRadius: '2px',
+  },
   marginBottom: '24px',
 }))``
 const StyledPasswordField = styled(PasswordField).attrs(() => ({
