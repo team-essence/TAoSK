@@ -261,4 +261,5 @@ const StyledTermsLink = styled(Link)`
 const StyledSignUpButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
+  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
 `

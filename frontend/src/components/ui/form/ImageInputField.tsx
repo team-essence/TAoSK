@@ -81,6 +81,7 @@ const StyledDisappearedInput = styled.input`
 `
 const StyledCoarseButton = styled(CoarseButton)`
   margin: 4px 0;
+  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
 `
 const StyledDeleteButton = styled.button`
   margin: 4px 0;

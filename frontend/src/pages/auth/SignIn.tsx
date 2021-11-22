@@ -151,6 +151,7 @@ const StyledBackground = styled.div`
 const StyledSignInButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
+  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
