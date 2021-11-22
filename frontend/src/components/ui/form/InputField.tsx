@@ -1,34 +1,23 @@
 import React, { FC, InputHTMLAttributes, useState, FocusEvent } from 'react'
-import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
+import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
-type StyledLabelProps = { color?: string; fontSize?: string }
-type StyledInputProps = {
+type StyledBoxProps = {
   width?: string
   height?: string
   border?: string
   borderRadius?: string
   backgroundColor?: string
 }
-export type InputFieldProps = {
-  className?: string
-  labelStyles?: StyledLabelProps
-  inputStyles?: StyledInputProps
-  label?: string
-  error?: FieldError | undefined
-  errorColor?: string
-  description?: string
-  registration: Partial<UseFormRegisterReturn>
-  required?: boolean
-  type?: 'text' | 'email' | 'password'
-} & InputHTMLAttributes<HTMLInputElement>
+type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledBoxProps>
 
-export const InputField: FC<InputFieldProps> = props => {
+export const InputField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
+    marginBottom,
     labelStyles,
     inputStyles,
     errorColor = theme.COLORS.ERROR,
@@ -48,11 +37,13 @@ export const InputField: FC<InputFieldProps> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : marginBottom}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-          <StyledInputWrapper {...inputStyles}>
+          <StyledInputWrapper
+            {...inputStyles}
+            border={shouldShowError ? `solid 1px ${errorColor}` : undefined}>
             <input {...registration} {...inputAttributes} onBlur={onBlur} />
           </StyledInputWrapper>
         </StyledLabel>
@@ -78,7 +69,8 @@ StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
-const StyledInputWrapper = styled.div<StyledInputProps>`
+const StyledInputWrapper = styled.div<StyledBoxProps>`
+  margin-top: 4px;
   input {
     width: ${({ width }) => width};
     height: ${({ height }) => height};
@@ -86,10 +78,13 @@ const StyledInputWrapper = styled.div<StyledInputProps>`
     border: ${({ border }) => border};
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
+    &::placeholder {
+      color: ${({ theme }) => theme.COLORS.GRAY};
+    }
   }
 `
 StyledInputWrapper.defaultProps = {
-  width: 'min(33.33vw, 480px)',
+  width: '100%',
   height: '40px',
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',

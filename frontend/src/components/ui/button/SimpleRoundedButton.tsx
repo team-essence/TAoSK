@@ -14,7 +14,7 @@ type Props = {
   onClick?: (v: MouseEvent) => void
 }
 
-export const SimpleRadiusButton: FC<Props> = ({ className, text, ...WrapperStyles }) => {
+export const SimpleRoundedButton: FC<Props> = ({ className, text, ...WrapperStyles }) => {
   return (
     <StyledButton className={className} {...WrapperStyles}>
       {text}
@@ -24,7 +24,7 @@ export const SimpleRadiusButton: FC<Props> = ({ className, text, ...WrapperStyle
 
 type StyledButtonProps = Omit<Props, 'text'>
 
-const StyledButton = styled.div<StyledButtonProps>`
+const StyledButton = styled.button<StyledButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;

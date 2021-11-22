@@ -2,6 +2,12 @@ import 'styled-components'
 
 export const theme = {
   HEADER_HEIGHT: '70px',
+  Z_INDEX: {
+    INDEX_MINUS_1: -1,
+    INDEX_1: 1,
+    INDEX_2: 2,
+    HEADER: 100,
+  },
   FONT_SIZES: {
     SIZE_10: '10px',
     SIZE_12: '12px',
@@ -21,6 +27,7 @@ export const theme = {
     SIZE_60: '60px',
   },
   FONT_WEIGHTS: {
+    LIGHT: 300,
     NORMAL: 400,
     MEDIUM: 500,
     SEMIBOLD: 600,
@@ -31,6 +38,7 @@ export const theme = {
   COLORS: {
     WHITE: '#FFFFFF',
     BLACK: '#000000',
+    GRAY: '#8F8F8F',
     ERROR: '#FF0000',
     NERO: '#100700',
     MINE_SHAFT: '#2C2C2C',
@@ -43,6 +51,9 @@ export const theme = {
     RED_OXIDE: '#660303',
     CHOCOLATE: '#4D2709',
     BRANDY: '#E0C29F',
+    BRIDAL_HEATH: '#FFFAF4',
+    TEQUILA: '#FFE5C7',
+    BRIGHT_TURQUOISE: '#15CCF4',
   },
 } as const
 

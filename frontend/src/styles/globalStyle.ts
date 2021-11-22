@@ -3,6 +3,12 @@ import { createGlobalStyle } from 'styled-components'
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Mplus1Code';
+    src: url('fonts/Mplus1Code-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Mplus1Code';
     src: url('fonts/Mplus1Code-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
-import { SimpleRadiusButton } from 'components/ui/button/SimpleRadiusButton'
+import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
 
 export const AuthHeader: FC = () => {
   const commonButtonProps = {
@@ -28,14 +28,15 @@ export const AuthHeader: FC = () => {
       </StyledLogoWrapper>
 
       <StyledButtonsWrapper>
-        <SimpleRadiusButton {...commonButtonProps} {...registerButtonProps} />
-        <SimpleRadiusButton {...commonButtonProps} {...loginButtonProps} />
+        <SimpleRoundedButton {...commonButtonProps} {...registerButtonProps} />
+        <SimpleRoundedButton {...commonButtonProps} {...loginButtonProps} />
       </StyledButtonsWrapper>
     </StyledHeaderWrapper>
   )
 }
 
 const StyledHeaderWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   position: fixed;
   display: flex;
   justify-content: space-between;
