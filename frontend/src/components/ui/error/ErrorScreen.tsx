@@ -16,8 +16,8 @@ export const ErrorScreen: FC<Props> = ({ error }) => {
 }
 
 const StyledErrorContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.seaPink};
-  border: double 4px ${({ theme }) => theme.colors.totemPole};
-  color: ${({ theme }) => theme.colors.totemPole};
+  background-color: ${({ theme }) => theme.COLORS.SEA_PINK};
+  border: double 4px ${({ theme }) => theme.COLORS.TOTEM_POLE};
+  color: ${({ theme }) => theme.COLORS.TOTEM_POLE};
   padding: 1em;
 `
