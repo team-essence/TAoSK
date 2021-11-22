@@ -1,12 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import {
-  useForm,
-  UseFormRegister,
-  UseFormHandleSubmit,
-  UseFormGetValues,
-  FieldErrors,
-  UseFormTrigger,
-} from 'react-hook-form'
+import { useForm, UseFormRegister, UseFormHandleSubmit, UseFormGetValues } from 'react-hook-form'
 
 type FormInputs = Record<'email' | 'password', string>
 
@@ -15,8 +8,6 @@ type UseSignInFormReturn<T> = {
   handleSubmit: UseFormHandleSubmit<T>
   getValues: UseFormGetValues<T>
   isDisabled: boolean
-  errors: FieldErrors
-  trigger: UseFormTrigger<T>
 }
 
 export const useSignInForm = (): UseSignInFormReturn<FormInputs> => {
@@ -26,9 +17,7 @@ export const useSignInForm = (): UseSignInFormReturn<FormInputs> => {
     getValues,
     formState: { errors },
     setValue,
-    setError,
     watch,
-    trigger,
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
@@ -51,7 +40,7 @@ export const useSignInForm = (): UseSignInFormReturn<FormInputs> => {
     } else {
       setIsDisabled(false)
     }
-  }, [watchAllFields, setValue, setError, errors])
+  }, [watchAllFields, setValue, errors])
 
-  return { register, handleSubmit, getValues, isDisabled, errors, trigger }
+  return { register, handleSubmit, getValues, isDisabled }
 }
