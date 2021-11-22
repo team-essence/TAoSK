@@ -34,7 +34,7 @@ export const SignUp: FC = () => {
     <>
       <AuthHeader />
       <StyledWrapper>
-        <StyledRegister>
+        <StyledSignUp>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
@@ -135,7 +135,7 @@ export const SignUp: FC = () => {
                 の内容に同意したものとみなします。
               </StyledTerms>
 
-              <StyledRegistButton
+              <StyledSignUpButton
                 text="登録"
                 aspect={{ width: '120px', height: '32px' }}
                 outerBgColor={
@@ -154,7 +154,7 @@ export const SignUp: FC = () => {
               />
             </StyledRightColumn>
           </StyledFormWrapper>
-        </StyledRegister>
+        </StyledSignUp>
         <StyledBackground />
       </StyledWrapper>
     </>
@@ -175,7 +175,7 @@ const StyledWrapper = styled.div`
     cursor: url('feather-pen.png') 10 124, pointer;
   }
 `
-const StyledRegister = styled.div`
+const StyledSignUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -258,7 +258,7 @@ const StyledTermsLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.BRIGHT_TURQUOISE};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
 `
-const StyledRegistButton = styled(CoarseButton)`
+const StyledSignUpButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
 `
