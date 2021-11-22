@@ -57,6 +57,8 @@ export const theme = {
     GOLD_SAND: '#E8B382',
     SWEET_CON: '#FCE286',
     TIA_MARIA: '#D94B0E',
+    SEA_PINK: '#EFACAC',
+    TOTEM_POLE: '#AC0D0D',
   },
 } as const
 
