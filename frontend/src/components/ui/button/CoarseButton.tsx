@@ -4,8 +4,7 @@ import styled from 'styled-components'
 type Props = {
   className?: string
   text: string
-  outerAspect: Record<'width' | 'height', string>
-  innerAspect: Record<'width' | 'height', string>
+  aspect: Record<'width' | 'height', string>
   outerBgColor: string
   innerBgColor: string
   color: string
@@ -16,8 +15,7 @@ type Props = {
 export const CoarseButton: FC<Props> = ({
   className,
   text,
-  outerAspect,
-  innerAspect,
+  aspect,
   outerBgColor,
   innerBgColor,
   color,
@@ -27,15 +25,13 @@ export const CoarseButton: FC<Props> = ({
   return (
     <StyledButton
       className={className}
-      {...outerAspect}
+      {...aspect}
       color={color}
       onClick={onClick}
       disabled={isDisabled}>
-      <StyledOuterMask {...outerAspect} bgColor={outerBgColor}>
-        <StyledInnerWrapper {...innerAspect}>
-          <StyledInnerMask {...innerAspect} bgColor={innerBgColor}>
-            {text}
-          </StyledInnerMask>
+      <StyledOuterMask bgColor={outerBgColor}>
+        <StyledInnerWrapper>
+          <StyledInnerMask bgColor={innerBgColor}>{text}</StyledInnerMask>
         </StyledInnerWrapper>
       </StyledOuterMask>
     </StyledButton>
@@ -57,28 +53,28 @@ const StyledButton = styled.button<StyledAspect & StyledFontColor>`
   border-radius: 2px;
   background-image: url('grain.png');
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.fontSizes.size_14};
-  font-weight: ${({ theme }) => theme.fontWeights.medium};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
 `
-const StyledOuterMask = styled.div<StyledAspect & StyledBgColor>`
+const StyledOuterMask = styled.div<StyledBgColor>`
   ${centeringFlexStyle}
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: 100%;
+  height: 100%;
   border-radius: 2px;
   background-color: ${({ bgColor }) => bgColor};
 `
-const StyledInnerWrapper = styled.div<StyledAspect>`
+const StyledInnerWrapper = styled.div`
   ${centeringFlexStyle}
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
   border-radius: 2px;
   background-image: url('grain.png');
 `
-const StyledInnerMask = styled.div<StyledAspect & StyledBgColor>`
+const StyledInnerMask = styled.div<StyledBgColor>`
   ${centeringFlexStyle}
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
-  border: solid 0.2px ${({ theme }) => theme.colors.brandy};
+  width: 100%;
+  height: 100%;
+  border: solid 0.2px ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 2px;
   background-color: ${({ bgColor }) => bgColor};
 `

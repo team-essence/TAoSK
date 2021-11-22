@@ -5,9 +5,13 @@ import {
   UseFormHandleSubmit,
   UseFormGetValues,
   FieldErrors,
+  UseFormTrigger,
 } from 'react-hook-form'
 
-type FormInputs = Record<'name' | 'company' | 'occupation' | 'email' | 'password', string>
+type FormInputs = Record<
+  'name' | 'company' | 'occupation' | 'email' | 'password' | 're-password',
+  string
+>
 
 type UseSignUpFormReturn<T> = {
   register: UseFormRegister<T>
@@ -15,6 +19,7 @@ type UseSignUpFormReturn<T> = {
   getValues: UseFormGetValues<T>
   isDisabled: boolean
   errors: FieldErrors
+  trigger: UseFormTrigger<T>
 }
 
 export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
@@ -26,6 +31,7 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     setValue,
     setError,
     watch,
+    trigger,
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
@@ -40,6 +46,7 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
       setValue('occupation', '', { shouldValidate: true })
       setValue('email', '', { shouldValidate: true })
       setValue('password', '', { shouldValidate: true })
+      setValue('re-password', '', { shouldValidate: true })
     }
     const hasError = Object.keys(errors).length
 
@@ -53,5 +60,5 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     }
   }, [watchAllFields, setValue, setError, errors])
 
-  return { register, handleSubmit, getValues, isDisabled, errors }
+  return { register, handleSubmit, getValues, isDisabled, errors, trigger }
 }

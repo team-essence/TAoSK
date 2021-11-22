@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
-import { SimpleRadiusButton } from 'components/ui/button/SimpleRadiusButton'
+import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
 
 export const AuthHeader: FC = () => {
   const commonButtonProps = {
@@ -10,14 +10,14 @@ export const AuthHeader: FC = () => {
     borderRadius: '2px',
   }
   const registerButtonProps = {
-    border: `solid 1px ${theme.colors.dodgerBlue}`,
-    bgColor: theme.colors.white,
-    fontColor: theme.colors.dodgerBlue,
+    border: `solid 1px ${theme.COLORS.DODGER_BLUE}`,
+    bgColor: theme.COLORS.WHITE,
+    fontColor: theme.COLORS.DODGER_BLUE,
     text: '新規登録',
   }
   const loginButtonProps = {
-    border: `solid 1px ${theme.colors.dodgerBlue}`,
-    bgColor: theme.colors.dodgerBlue,
+    border: `solid 1px ${theme.COLORS.DODGER_BLUE}`,
+    bgColor: theme.COLORS.DODGER_BLUE,
     text: 'ログイン',
   }
 
@@ -28,14 +28,15 @@ export const AuthHeader: FC = () => {
       </StyledLogoWrapper>
 
       <StyledButtonsWrapper>
-        <SimpleRadiusButton {...commonButtonProps} {...registerButtonProps} />
-        <SimpleRadiusButton {...commonButtonProps} {...loginButtonProps} />
+        <SimpleRoundedButton {...commonButtonProps} {...registerButtonProps} />
+        <SimpleRoundedButton {...commonButtonProps} {...loginButtonProps} />
       </StyledButtonsWrapper>
     </StyledHeaderWrapper>
   )
 }
 
 const StyledHeaderWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   position: fixed;
   display: flex;
   justify-content: space-between;
@@ -43,7 +44,7 @@ const StyledHeaderWrapper = styled.div`
   padding: 0 28px;
   width: 100vw;
   height: 70px;
-  background-color: ${({ theme }) => theme.colors.mineShaft};
+  background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
