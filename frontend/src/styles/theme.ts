@@ -56,6 +56,7 @@ export const theme = {
     BRIGHT_TURQUOISE: '#15CCF4',
     GOLD_SAND: '#E8B382',
     SWEET_CON: '#FCE286',
+    TIA_MARIA: '#D94B0E',
   },
 } as const
 

@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
@@ -48,6 +49,18 @@ export const SignIn: FC = () => {
               bgSrcs={isDisabled ? undefined : { outer: 'grain.png', inner: 'light-grain.png' }}
               isDisabled={isDisabled}
             />
+
+            <StyledParagraphWrapper>
+              <StyledTextLineWrapper>
+                <StyledP>TAoSKのアカウントはまだお持ちでないですか？</StyledP>
+                <StyledP>
+                  ここから<StyledLink to="/signup">登録</StyledLink>
+                </StyledP>
+              </StyledTextLineWrapper>
+              <StyledP>
+                パスワードお忘れの方は<StyledLink to="">こちら</StyledLink>
+              </StyledP>
+            </StyledParagraphWrapper>
           </StyledFormWrapper>
         </StyledSignIn>
         <StyledBackground />
@@ -91,11 +104,39 @@ const StyledLogoImg = styled.img`
   height: 170px;
 `
 const StyledInputField = styled(InputField).attrs(() => ({
+  inputStyles: {
+    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
+    borderRadius: '2px',
+  },
   marginBottom: '28px',
 }))``
 const StyledPasswordField = styled(PasswordField).attrs(() => ({
   marginBottom: '24px',
 }))``
+const StyledParagraphWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 13px;
+  margin-top: 24px;
+`
+const StyledTextLineWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`
+const StyledP = styled.p`
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.NORMAL};
+  text-align: center;
+`
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.COLORS.TIA_MARIA};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+`
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: fixed;
