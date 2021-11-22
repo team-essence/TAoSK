@@ -54,6 +54,8 @@ export const theme = {
     BRIDAL_HEATH: '#FFFAF4',
     TEQUILA: '#FFE5C7',
     BRIGHT_TURQUOISE: '#15CCF4',
+    SEA_PINK: '#EFACAC',
+    TOTEM_POLE: '#AC0D0D',
   },
 } as const
 
