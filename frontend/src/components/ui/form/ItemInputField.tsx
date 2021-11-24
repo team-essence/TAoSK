@@ -1,4 +1,4 @@
-import React, { FC, useState, Dispatch, KeyboardEvent, ChangeEvent } from 'react'
+import React, { FC, useState, useEffect, Dispatch, KeyboardEvent, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
@@ -18,17 +18,24 @@ type Props = {
 export const ItemInputField: FC<Props> = props => {
   const { className, label, placeholder, inputAspect, items, setItems } = props
   const [value, setValue] = useState<string>('')
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
+  const [isDisabled, setIsDisabled] = useState<boolean>(true)
+  const MAX_TEXT_LENGTH = 50
+  const MAX_ITEMS = 20
+
+  const getShouldDisable = (value: string) => {
+    const isAlreadyExists = !!items.find(v => v === value)
+    const isOver = value.length > MAX_TEXT_LENGTH || items.length >= MAX_ITEMS
+    return !value.trim() || !!isAlreadyExists || isOver
+  }
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isAlreadyExists = !!items.find(v => v === e.target.value)
-    setIsDisabled(!!isAlreadyExists)
-    setValue(e.target.value)
+    const newValue = e.target.value
+    const shouldDisabled = getShouldDisable(newValue)
+    setIsDisabled(shouldDisabled)
+    setValue(newValue)
   }
   const onClickAddButton = () => {
-    if (!value) return
-    const isAlreadyExists = !!items.find(v => v === value)
-    if (isAlreadyExists) return
+    if (isDisabled) return
     items.push(value)
     setItems(items.slice())
     setValue('')
@@ -44,6 +51,11 @@ export const ItemInputField: FC<Props> = props => {
     items.splice(index, 1)
     setItems(items.slice())
   }
+
+  useEffect(() => {
+    const shouldDisabled = getShouldDisable(value)
+    setIsDisabled(shouldDisabled)
+  }, [items])
 
   return (
     <StyledWrapper className={className}>
