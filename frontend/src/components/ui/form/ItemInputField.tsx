@@ -6,6 +6,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
@@ -19,10 +20,8 @@ type Props = {
 
 export const ItemInputField: FC<Props> = props => {
   const { className, label, placeholder, inputAspect, setItems } = props
-  const MAX_TEXT_LENGTH = 50
-  const MAX_ITEMS = 20
   const { value, items, isDisabled, onChange, onKeyPress, onClickAddButton, onClickCrossButton } =
-    useTextItems(MAX_TEXT_LENGTH, MAX_ITEMS)
+    useTextItems(max.TEXT_LENGTH, max.ITEMS)
 
   useEffect(() => {
     setItems(items.slice())
@@ -32,8 +31,8 @@ export const ItemInputField: FC<Props> = props => {
     <StyledWrapper className={className}>
       {label}
       <StyledItemsNum>
-        <StyledMaxItems isMax={items.length === MAX_ITEMS}>{items.length}</StyledMaxItems>/
-        {MAX_ITEMS}
+        <StyledMaxItems isMax={items.length === max.ITEMS}>{items.length}</StyledMaxItems>/
+        {max.ITEMS}
       </StyledItemsNum>
       <StyledRow>
         <StyledInput
