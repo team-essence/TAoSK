@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Pixelize from 'utils/pixelize'
 
-type DottedImage = { URLScheme: string; blob: Blob } | null
+type DottedImage = { URLScheme: string; blob: Blob | null }
 type UseConvertToDottedImageReturn = { dottedImage: DottedImage }
 
 const toPixel = (ctx: CanvasRenderingContext2D, numOfColors: number) => {
@@ -27,11 +27,14 @@ export const useConvertToDottedImage = (
   numOfColors: number,
   ctx: CanvasRenderingContext2D | undefined,
 ): UseConvertToDottedImageReturn => {
-  const [dottedImage, setDottedImage] = useState<DottedImage>(null)
+  const [dottedImage, setDottedImage] = useState<DottedImage>({
+    URLScheme: initialUrl,
+    blob: null,
+  })
 
-  // useEffect(() => {
-  //   setDottedImage(initialUrl)
-  // }, [initialUrl])
+  useEffect(() => {
+    setDottedImage(state => ({ ...state, URLScheme: initialUrl }))
+  }, [initialUrl])
 
   useEffect(() => {
     if (!ctx) return
