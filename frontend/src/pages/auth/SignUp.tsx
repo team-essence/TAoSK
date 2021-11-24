@@ -18,6 +18,7 @@ import { SelectField } from 'components/ui/form/SelectField'
 import { ItemInputField } from 'components/ui/form/ItemInputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
@@ -59,9 +60,18 @@ export const SignUp: FC = () => {
               defaultSrc={SIGN_UP_CAMERA}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
-              margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
+              margin={
+                innerWidth <= 1210
+                  ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateVwBasedOnFigma(24)} 0`
+              }
             />
-            <StyledRightColumn margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}>
+            <StyledRightColumn
+              margin={
+                innerWidth <= 1210
+                  ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateVwBasedOnFigma(24)} 0`
+              }>
               <InputField
                 label="冒険者"
                 registration={register('name', {
@@ -143,14 +153,20 @@ export const SignUp: FC = () => {
                 label="保有資格"
                 items={certifications}
                 setItems={setCertifications}
-                inputAspect={{ width: '400px', height: '40px' }}
+                inputAspect={{
+                  width: calculateVwBasedOnFigma(400),
+                  height: calculateVwBasedOnFigma(40),
+                }}
                 placeholder="保有資格を入力してください"
               />
               <StyledItemInputField
                 label="興味のあること"
                 items={interests}
                 setItems={setInterests}
-                inputAspect={{ width: '400px', height: '40px' }}
+                inputAspect={{
+                  width: calculateVwBasedOnFigma(400),
+                  height: calculateVwBasedOnFigma(40),
+                }}
                 placeholder="興味のあることを入力してください"
               />
 
@@ -162,7 +178,10 @@ export const SignUp: FC = () => {
 
               <StyledSignUpButton
                 text="登録"
-                aspect={{ width: '120px', height: '32px' }}
+                aspect={{
+                  width: calculateVwBasedOnFigma(120),
+                  height: calculateVwBasedOnFigma(32),
+                }}
                 outerBgColor={
                   isDisabled
                     ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
@@ -199,18 +218,18 @@ const StyledSignUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: max(58.33vw, 840px);
+  width: ${calculateVwBasedOnFigma(840)};
   height: 100%;
-  margin: 26px 0;
-  padding: 64px 0;
+  margin: ${calculateVwBasedOnFigma(26)} 0;
+  padding: ${calculateVwBasedOnFigma(64)} 0;
   background-image: url('contract-paper.png');
   background-size: 100% 100%;
 `
 const StyledLogoImg = styled.img`
-  height: 108px;
+  height: ${calculateVwBasedOnFigma(108)};
 `
 const StyledH1 = styled.h1`
-  margin: 33px 0;
+  margin: ${calculateVwBasedOnFigma(33)} 0;
   background: -webkit-linear-gradient(
     top,
     ${({ theme }) => theme.COLORS.TENN},
@@ -227,13 +246,13 @@ const StyledFormWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  width: min(49.02vw, 706px);
+  width: ${calculateVwBasedOnFigma(706)};
 `
 const StyledRightColumn = styled.div.attrs<{ margin: string }>(({ margin }) => ({
   margin,
 }))<{ margin: string }>`
   margin: ${({ margin }) => margin};
-  width: min(33.33vw, 480px);
+  width: ${calculateVwBasedOnFigma(480)};
 `
 const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(({ margin }) => ({
   margin,
@@ -241,7 +260,7 @@ const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(
   margin: ${({ margin }) => margin};
 `
 const StyledItemInputField = styled(ItemInputField)`
-  margin-bottom: 24px;
+  margin-bottom: ${calculateVwBasedOnFigma(24)};
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -255,7 +274,7 @@ const StyledBackground = styled.div`
   background-position: 50% 100%;
 `
 const StyledTerms = styled.p`
-  margin: 24px 0;
+  margin: ${calculateVwBasedOnFigma(24)} 0;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
 `
