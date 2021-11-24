@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
+import { DEFAULT_SIGN_UP_IMAGE } from 'consts/defaultSignUpImage'
 import { occupationList } from 'consts/occupationList'
 import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
@@ -8,6 +9,7 @@ import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
 import { useImageResize } from 'hooks/useImageResize'
 import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
+import { useCreateFile } from 'hooks/useCreateFile'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -18,26 +20,41 @@ import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
+import { uploadFileToBlob } from 'utils/azure/azureStorageBlob'
 
 export const SignUp: FC = () => {
   useNavigateUser()
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
-  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
+  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+    DEFAULT_SIGN_UP_IMAGE,
+    60,
+  )
+  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
+  // const { file} = useCreateFile(dottedImage === DEFAULT_SIGN_UP_IMAGE ? '' : dottedImage)
+  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
+  // console.log(dottedImage)
+
+  const t = useCallback(() => {
+    const metadata = { type: 'image/jpeg' }
+    const file = new File([dottedImage?.blob as Blob], 'test.jpg', metadata)
+
+    return file
+  }, [dottedImage])
+
+  // console.log(createFile(dottedImage === DEFAULT_SIGN_UP_IMAGE ? '' : dottedImage))
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
   })
+
   occupationOptions.unshift({ value: '', item: '選択' })
 
-  const defaultSrc = 'svg/camera.svg'
-  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
-    defaultSrc,
-    60,
-  )
-  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
+  const test = async () => {
+    await uploadFileToBlob(t())
+  }
 
   return (
     <>
@@ -46,10 +63,13 @@ export const SignUp: FC = () => {
         <StyledSignUp>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
+          <button type="submit" onClick={test}>
+            Upload!
+          </button>
           <StyledFormWrapper>
             <StyledImageInputField
-              dottedImage={dottedImage}
-              defaultSrc={defaultSrc}
+              dottedImage={dottedImage ? dottedImage.URLScheme : ''}
+              defaultSrc={DEFAULT_SIGN_UP_IMAGE}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
               margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
