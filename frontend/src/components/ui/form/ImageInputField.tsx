@@ -61,6 +61,7 @@ const StyledLabel = styled.label`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  cursor: pointer;
 `
 const StyledImageWrapper = styled.div`
   margin: 4px 0;
