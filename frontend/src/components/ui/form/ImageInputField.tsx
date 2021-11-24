@@ -1,24 +1,25 @@
 import React, { FC, useRef } from 'react'
-import { useImageResize } from 'hooks/useImageResize'
-import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
-type Props = { className?: string }
+type Props = {
+  className?: string
+  dottedImage: string
+  defaultSrc: string
+  handleUploadImg: (e: React.ChangeEvent<HTMLInputElement>) => void
+  initializeUploadImg: () => void
+}
 
-export const ImageInputField: FC<Props> = ({ className }) => {
+export const ImageInputField: FC<Props> = ({
+  className,
+  dottedImage,
+  defaultSrc,
+  handleUploadImg,
+  initializeUploadImg,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const defaultSrc = 'svg/camera.svg'
-  // 一辺60px以下の画像を生成
-  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
-    defaultSrc,
-    60,
-  )
-  // 色数50以下のドット画像を生成
-  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
-
   const onClickUploadBtn = () => inputRef.current?.click()
 
   return (

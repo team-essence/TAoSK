@@ -6,6 +6,8 @@ import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
+import { useImageResize } from 'hooks/useImageResize'
+import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -30,6 +32,13 @@ export const SignUp: FC = () => {
   })
   occupationOptions.unshift({ value: '', item: '選択' })
 
+  const defaultSrc = 'svg/camera.svg'
+  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+    defaultSrc,
+    60,
+  )
+  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
+
   return (
     <>
       <AuthHeader />
@@ -39,6 +48,10 @@ export const SignUp: FC = () => {
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
+              dottedImage={dottedImage}
+              defaultSrc={defaultSrc}
+              initializeUploadImg={initializeUploadImg}
+              handleUploadImg={handleUploadImg}
               margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
             />
             <StyledRightColumn margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}>
