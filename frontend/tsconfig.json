@@ -30,5 +30,5 @@
   "include": [
     "src",
     "typings/gltf.d.ts"
-  ]
+, "src/components/ui/monster/DragonIdle.tsx"  ]
 }

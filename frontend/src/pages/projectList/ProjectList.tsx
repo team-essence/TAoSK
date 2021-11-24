@@ -14,6 +14,7 @@ import styled from 'styled-components'
 import logger from 'utils/debugger/logger'
 import date from 'utils/date/date'
 import toast from 'utils/toast/toast'
+import { MonsterAvatar } from 'components/ui/monster/MonsterAvatar'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -147,6 +148,8 @@ export const ProjectList: FC = () => {
           }>
           プロジェクト作成するよボタン
         </button>
+
+        <MonsterAvatar />
       </TestModalContainer>
     </div>
   )
