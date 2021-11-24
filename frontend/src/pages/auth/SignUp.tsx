@@ -9,7 +9,7 @@ import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
 import { useImageResize } from 'hooks/useImageResize'
 import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
-import { useCreateFile } from 'hooks/useCreateFile'
+import { useBlobToFile } from 'hooks/useBlobToFile'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -33,18 +33,8 @@ export const SignUp: FC = () => {
   )
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
-  // const { file} = useCreateFile(dottedImage === DEFAULT_SIGN_UP_IMAGE ? '' : dottedImage)
+  const { fileValue } = useBlobToFile(dottedImage.blob)
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
-  // console.log(dottedImage)
-
-  const t = useCallback(() => {
-    const metadata = { type: 'image/jpeg' }
-    const file = new File([dottedImage?.blob as Blob], 'test.jpg', metadata)
-
-    return file
-  }, [dottedImage])
-
-  // console.log(createFile(dottedImage === DEFAULT_SIGN_UP_IMAGE ? '' : dottedImage))
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
@@ -53,7 +43,7 @@ export const SignUp: FC = () => {
   occupationOptions.unshift({ value: '', item: '選択' })
 
   const test = async () => {
-    await uploadFileToBlob(t())
+    await uploadFileToBlob(fileValue)
   }
 
   return (
@@ -68,7 +58,7 @@ export const SignUp: FC = () => {
           </button>
           <StyledFormWrapper>
             <StyledImageInputField
-              dottedImage={dottedImage ? dottedImage.URLScheme : ''}
+              dottedImage={dottedImage.URLScheme}
               defaultSrc={DEFAULT_SIGN_UP_IMAGE}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
