@@ -29,7 +29,11 @@ export const ItemInputField: FC<Props> = props => {
 
   return (
     <StyledWrapper className={className}>
-      {label}
+      {label}{' '}
+      <StyledItemsNum>
+        <StyledMaxItems isMax={items.length === MAX_ITEMS}>{items.length}</StyledMaxItems>/
+        {MAX_ITEMS}
+      </StyledItemsNum>
       <StyledRow>
         <StyledInput
           value={value}
@@ -71,7 +75,7 @@ export const ItemInputField: FC<Props> = props => {
 const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledRow = styled.div`
   display: flex;
@@ -79,6 +83,12 @@ const StyledRow = styled.div`
   align-items: center;
   gap: 16px;
   margin-top: 4px;
+`
+const StyledItemsNum = styled.span`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+`
+const StyledMaxItems = styled.span<{ isMax: boolean }>`
+  color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
 `
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
