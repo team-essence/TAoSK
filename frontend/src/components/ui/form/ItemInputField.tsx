@@ -29,7 +29,7 @@ export const ItemInputField: FC<Props> = props => {
 
   return (
     <StyledWrapper className={className}>
-      {label}{' '}
+      {label}
       <StyledItemsNum>
         <StyledMaxItems isMax={items.length === MAX_ITEMS}>{items.length}</StyledMaxItems>/
         {MAX_ITEMS}
@@ -85,6 +85,7 @@ const StyledRow = styled.div`
   margin-top: 4px;
 `
 const StyledItemsNum = styled.span`
+  padding-left: 8px;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
 `
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
