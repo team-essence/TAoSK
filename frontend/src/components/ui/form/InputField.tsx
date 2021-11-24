@@ -17,7 +17,6 @@ export const InputField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
-    marginBottom,
     labelStyles,
     inputStyles,
     errorColor = theme.COLORS.ERROR,
@@ -37,7 +36,7 @@ export const InputField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : marginBottom}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>

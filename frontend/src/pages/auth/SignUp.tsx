@@ -30,19 +30,24 @@ export const SignUp: FC = () => {
   })
   occupationOptions.unshift({ value: '', item: '選択' })
 
+  const inputStyles = {
+    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
+    borderRadius: '2px',
+  }
+
   return (
     <>
       <AuthHeader />
       <StyledWrapper>
         <StyledSignUp>
-          <StyledLogoImg src={'logo.png'} />
+          <StyledLogoImg src="logo.png" alt="TAoSK ロゴ" />
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
               margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
             />
             <StyledRightColumn margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}>
-              <StyledInputField
+              <InputField
                 label="冒険者"
                 registration={register('name', {
                   required: '未入力です',
@@ -52,9 +57,10 @@ export const SignUp: FC = () => {
                   },
                   pattern: REGEX_TEXT,
                 })}
+                inputStyles={inputStyles}
                 error={errors['name']}
               />
-              <StyledInputField
+              <InputField
                 label="会社名"
                 registration={register('company', {
                   required: '未入力です',
@@ -64,9 +70,10 @@ export const SignUp: FC = () => {
                   },
                   pattern: REGEX_TEXT,
                 })}
+                inputStyles={inputStyles}
                 error={errors['company']}
               />
-              <StyledInputField
+              <InputField
                 label="メールアドレス"
                 registration={register('email', {
                   required: '未入力です',
@@ -79,9 +86,10 @@ export const SignUp: FC = () => {
                     message: '不正なメールアドレスです',
                   },
                 })}
+                inputStyles={inputStyles}
                 error={errors['email']}
               />
-              <StyledPasswordField
+              <PasswordField
                 label="パスワード"
                 registration={register('password', {
                   required: '未入力です',
@@ -101,7 +109,7 @@ export const SignUp: FC = () => {
                 onChange={() => trigger('re-password')}
                 error={errors['password']}
               />
-              <StyledPasswordField
+              <PasswordField
                 label="パスワード（確認）"
                 registration={register('re-password', {
                   required: '未入力です',
@@ -110,7 +118,7 @@ export const SignUp: FC = () => {
                 onChange={() => trigger('password')}
                 error={errors['re-password']}
               />
-              <StyledSelectField
+              <SelectField
                 label="職種"
                 registration={register('occupation', { required: '未選択です' })}
                 options={occupationOptions}
@@ -120,13 +128,15 @@ export const SignUp: FC = () => {
                 label="保有資格"
                 items={certifications}
                 setItems={setCertifications}
-                placeholder={'保有資格を入力してください'}
+                inputAspect={{ width: '400px', height: '40px' }}
+                placeholder="保有資格を入力してください"
               />
               <StyledItemInputField
                 label="興味のあること"
                 items={interests}
                 setItems={setInterests}
-                placeholder={'興味のあることを入力してください'}
+                inputAspect={{ width: '400px', height: '40px' }}
+                placeholder="興味のあることを入力してください"
               />
 
               <StyledTerms>
@@ -215,22 +225,7 @@ const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(
 }))<{ margin: string }>`
   margin: ${({ margin }) => margin};
 `
-const StyledInputField = styled(InputField).attrs(() => ({
-  inputStyles: {
-    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-    borderRadius: '2px',
-  },
-  marginBottom: '24px',
-}))``
-const StyledPasswordField = styled(PasswordField).attrs(() => ({
-  marginBottom: '24px',
-}))``
-const StyledSelectField = styled(SelectField).attrs(() => ({
-  marginBottom: '24px',
-}))``
-const StyledItemInputField = styled(ItemInputField).attrs(() => ({
-  inputAspect: { width: '400px', height: '40px' },
-}))`
+const StyledItemInputField = styled(ItemInputField)`
   margin-bottom: 24px;
 `
 const StyledBackground = styled.div`

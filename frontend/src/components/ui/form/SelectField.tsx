@@ -21,7 +21,6 @@ export const SelectField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
-    marginBottom,
     labelStyles,
     selectStyles,
     options,
@@ -46,7 +45,7 @@ export const SelectField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : marginBottom}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
