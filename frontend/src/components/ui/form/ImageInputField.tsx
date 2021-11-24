@@ -27,7 +27,11 @@ export const ImageInputField: FC<Props> = ({
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
-          <StyledImage src={dottedImage} padding={dottedImage === defaultSrc ? '40px' : '0px'} />
+          <StyledImage
+            src={dottedImage}
+            alt="プロフィール画像"
+            padding={dottedImage === defaultSrc ? '40px' : '0px'}
+          />
         </StyledImageWrapper>
         <StyledDisappearedInput
           ref={inputRef}
@@ -62,6 +66,7 @@ const StyledLabel = styled.label`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  cursor: pointer;
 `
 const StyledImageWrapper = styled.div`
   margin: 4px 0;

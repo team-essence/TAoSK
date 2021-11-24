@@ -26,7 +26,7 @@ export const AuthHeader: FC = () => {
   return (
     <StyledHeaderWrapper>
       <StyledLogoWrapper>
-        <img src="svg/logo-transparent-background.svg" alt="" />
+        <img src="svg/logo-transparent-background.svg" alt="TAoSK ロゴ" />
       </StyledLogoWrapper>
 
       <StyledButtonsWrapper>

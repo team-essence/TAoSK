@@ -21,14 +21,18 @@ export const SignIn: FC = () => {
       <AuthHeader />
       <StyledWrapper>
         <StyledSignIn>
-          <StyledLogoImg src={'logo.png'} />
+          <StyledLogoImg src="logo.png" alt="TAoSK ロゴ" />
           <StyledFormWrapper>
-            <StyledInputField
+            <InputField
               label="メールアドレス"
               type="email"
               registration={register('email', { required: true })}
+              inputStyles={{
+                border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
+                borderRadius: '2px',
+              }}
             />
-            <StyledPasswordField
+            <PasswordField
               label="パスワード"
               registration={register('password', { required: true })}
             />
@@ -101,16 +105,6 @@ const StyledFormWrapper = styled.div`
 const StyledLogoImg = styled.img`
   height: 170px;
 `
-const StyledInputField = styled(InputField).attrs(() => ({
-  inputStyles: {
-    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-    borderRadius: '2px',
-  },
-  marginBottom: '28px',
-}))``
-const StyledPasswordField = styled(PasswordField).attrs(() => ({
-  marginBottom: '24px',
-}))``
 const StyledParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;

@@ -1,9 +1,11 @@
-import React, { FC, useState, Dispatch, KeyboardEvent, ChangeEvent } from 'react'
+import React, { FC, useEffect, Dispatch } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
+import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
@@ -16,38 +18,21 @@ type Props = {
 }
 
 export const ItemInputField: FC<Props> = props => {
-  const { className, label, placeholder, inputAspect, items, setItems } = props
-  const [value, setValue] = useState<string>('')
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
+  const { className, label, placeholder, inputAspect, setItems } = props
+  const { value, items, isDisabled, onChange, onKeyPress, onClickAddButton, onClickCrossButton } =
+    useTextItems(max.TEXT_LENGTH, max.ITEMS)
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isAlreadyExists = !!items.find(v => v === e.target.value)
-    setIsDisabled(!!isAlreadyExists)
-    setValue(e.target.value)
-  }
-  const onClickAddButton = () => {
-    if (!value) return
-    const isAlreadyExists = !!items.find(v => v === value)
-    if (isAlreadyExists) return
-    items.push(value)
+  useEffect(() => {
     setItems(items.slice())
-    setValue('')
-  }
-  const onKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      onClickAddButton()
-    }
-  }
-  const onClickCrossButton = (item: string) => {
-    const index = items.indexOf(item)
-    items.splice(index, 1)
-    setItems(items.slice())
-  }
+  }, [items])
 
   return (
     <StyledWrapper className={className}>
       {label}
+      <StyledItemsNum>
+        <StyledMaxItems isMax={items.length === max.ITEMS}>{items.length}</StyledMaxItems>/
+        {max.ITEMS}
+      </StyledItemsNum>
       <StyledRow>
         <StyledInput
           value={value}
@@ -89,7 +74,7 @@ export const ItemInputField: FC<Props> = props => {
 const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledRow = styled.div`
   display: flex;
@@ -97,6 +82,13 @@ const StyledRow = styled.div`
   align-items: center;
   gap: 16px;
   margin-top: 4px;
+`
+const StyledItemsNum = styled.span`
+  padding-left: 8px;
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+`
+const StyledMaxItems = styled.span<{ isMax: boolean }>`
+  color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
 `
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
