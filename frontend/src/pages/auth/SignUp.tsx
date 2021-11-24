@@ -35,7 +35,7 @@ export const SignUp: FC = () => {
       <AuthHeader />
       <StyledWrapper>
         <StyledSignUp>
-          <StyledLogoImg src={'logo.png'} />
+          <StyledLogoImg src="logo.png" alt="TAoSK ロゴ" />
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
@@ -120,13 +120,13 @@ export const SignUp: FC = () => {
                 label="保有資格"
                 items={certifications}
                 setItems={setCertifications}
-                placeholder={'保有資格を入力してください'}
+                placeholder="保有資格を入力してください"
               />
               <StyledItemInputField
                 label="興味のあること"
                 items={interests}
                 setItems={setInterests}
-                placeholder={'興味のあることを入力してください'}
+                placeholder="興味のあることを入力してください"
               />
 
               <StyledTerms>

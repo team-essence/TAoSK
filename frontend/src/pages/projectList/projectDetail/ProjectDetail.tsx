@@ -407,7 +407,7 @@ export const ProjectDetail: FC = () => {
       <ProjectTitleContainer>
         プロジェクト詳細
         <button style={{ border: 'solid' }}>招待</button>
-        <input type="text" {...inputUserName} placeholder={'ユーザ名'} />
+        <input type="text" {...inputUserName} placeholder="ユーザ名" />
         {debouncedInputText &&
           searchSameCompanyUsersData.data?.searchSameCompanyUsers.map(searchSameCompanyUsers =>
             selectUserIds.includes(searchSameCompanyUsers.id) ? (

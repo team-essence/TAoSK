@@ -26,7 +26,11 @@ export const ImageInputField: FC<Props> = ({ className }) => {
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
-          <StyledImage src={dottedImage} padding={dottedImage === defaultSrc ? '40px' : '0px'} />
+          <StyledImage
+            src={dottedImage}
+            alt="プロフィール画像"
+            padding={dottedImage === defaultSrc ? '40px' : '0px'}
+          />
         </StyledImageWrapper>
         <StyledDisappearedInput
           ref={inputRef}

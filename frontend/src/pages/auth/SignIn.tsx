@@ -21,7 +21,7 @@ export const SignIn: FC = () => {
       <AuthHeader />
       <StyledWrapper>
         <StyledSignIn>
-          <StyledLogoImg src={'logo.png'} />
+          <StyledLogoImg src="logo.png" alt="TAoSK ロゴ" />
           <StyledFormWrapper>
             <StyledInputField
               label="メールアドレス"
