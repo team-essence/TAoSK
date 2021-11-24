@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react'
 
-type UseBlobToFileReturn = { fileValue: File | null }
+type UseBlobToFileReturn = { fileData: File | null }
 
 export const useBlobToFile = (blob: Blob | null): UseBlobToFileReturn => {
-  const [blobValue, setBlobValue] = useState<Blob | null>(null)
-  const [fileValue, setFileValue] = useState<File | null>(null)
+  const [blobData, setBlobData] = useState<Blob | null>(null)
+  const [fileData, setFileData] = useState<File | null>(null)
 
   useEffect(() => {
-    setBlobValue(blob)
-    if (!blobValue) return
+    setBlobData(blob)
+    if (!blobData) return
 
     const metaData = { type: 'image/jpeg' }
     const postIndex = Date.now().toString()
-    const file = new File([blobValue], `${postIndex}.jpg`, metaData)
+    const file = new File([blobData], `${postIndex}.jpg`, metaData)
 
-    setFileValue(file)
-  }, [blob, blobValue])
+    setFileData(file)
+  }, [blob, blobData])
 
-  return { fileValue }
+  return { fileData }
 }

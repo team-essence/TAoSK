@@ -33,7 +33,7 @@ export const SignUp: FC = () => {
   )
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
-  const { fileValue } = useBlobToFile(dottedImage.blob)
+  const { fileData } = useBlobToFile(dottedImage.blob)
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
@@ -43,7 +43,7 @@ export const SignUp: FC = () => {
   occupationOptions.unshift({ value: '', item: '選択' })
 
   const test = async () => {
-    await uploadFileToBlob(fileValue)
+    await uploadFileToBlob(fileData)
   }
 
   return (
