@@ -81,7 +81,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  padding-top: ${({ theme }) => calculateVwBasedOnFigma(theme.HEADER_HEIGHT)};
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
   input {
     cursor: url('feather-pen.png') 10 124, pointer;
   }

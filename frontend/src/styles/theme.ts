@@ -1,7 +1,8 @@
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import 'styled-components'
 
 export const theme = {
-  HEADER_HEIGHT: '70px',
+  HEADER_HEIGHT: calculateVwBasedOnFigma('70px'),
   Z_INDEX: {
     INDEX_MINUS_1: -1,
     INDEX_1: 1,
@@ -9,22 +10,22 @@ export const theme = {
     HEADER: 100,
   },
   FONT_SIZES: {
-    SIZE_10: '10px',
-    SIZE_12: '12px',
-    SIZE_14: '14px',
-    SIZE_16: '16px',
-    SIZE_18: '18px',
-    SIZE_20: '20px',
-    SIZE_22: '22px',
-    SIZE_24: '24px',
-    SIZE_28: '28px',
-    SIZE_32: '32px',
-    SIZE_36: '36px',
-    SIZE_40: '40px',
-    SIZE_48: '48px',
-    SIZE_52: '52px',
-    SIZE_56: '56px',
-    SIZE_60: '60px',
+    SIZE_10: calculateVwBasedOnFigma('10px'),
+    SIZE_12: calculateVwBasedOnFigma('12px'),
+    SIZE_14: calculateVwBasedOnFigma('14px'),
+    SIZE_16: calculateVwBasedOnFigma('16px'),
+    SIZE_18: calculateVwBasedOnFigma('18px'),
+    SIZE_20: calculateVwBasedOnFigma('20px'),
+    SIZE_22: calculateVwBasedOnFigma('22px'),
+    SIZE_24: calculateVwBasedOnFigma('24px'),
+    SIZE_28: calculateVwBasedOnFigma('28px'),
+    SIZE_32: calculateVwBasedOnFigma('32px'),
+    SIZE_36: calculateVwBasedOnFigma('36px'),
+    SIZE_40: calculateVwBasedOnFigma('40px'),
+    SIZE_48: calculateVwBasedOnFigma('48px'),
+    SIZE_52: calculateVwBasedOnFigma('52px'),
+    SIZE_56: calculateVwBasedOnFigma('56px'),
+    SIZE_60: calculateVwBasedOnFigma('60px'),
   },
   FONT_WEIGHTS: {
     LIGHT: 300,

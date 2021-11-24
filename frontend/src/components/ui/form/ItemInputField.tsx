@@ -26,7 +26,7 @@ export const ItemInputField: FC<Props> = props => {
 
   useEffect(() => {
     setItems(items.slice())
-  }, [items])
+  }, [setItems, items])
 
   return (
     <StyledWrapper className={className}>
@@ -101,6 +101,7 @@ const StyledInput = styled.input<InputAspectStyles>`
   border-radius: 2px;
   &::placeholder {
     color: ${({ theme }) => theme.COLORS.GRAY};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
 `
 const StyledItemsWrapper = styled.div<{ width: string }>`

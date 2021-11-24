@@ -115,6 +115,9 @@ const StyledSelect = styled.select<StyledSelectProps>`
   border-radius: ${({ borderRadius }) => borderRadius};
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ color }) => color};
+  &::placeholder {
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  }
 `
 StyledSelect.defaultProps = {
   width: `min(33.33vw, ${calculateVwBasedOnFigma(480)})`,
