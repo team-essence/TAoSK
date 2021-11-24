@@ -1,7 +1,7 @@
-import React, { FC, useState, useCallback } from 'react'
+import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
-import { DEFAULT_SIGN_UP_IMAGE } from 'consts/defaultSignUpImage'
+import { SIGN_UP_CAMERA } from 'consts/defaultImages'
 import { occupationList } from 'consts/occupationList'
 import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
@@ -28,7 +28,7 @@ export const SignUp: FC = () => {
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
-    DEFAULT_SIGN_UP_IMAGE,
+    SIGN_UP_CAMERA,
     60,
   )
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
@@ -59,7 +59,7 @@ export const SignUp: FC = () => {
           <StyledFormWrapper>
             <StyledImageInputField
               dottedImage={dottedImage.URLScheme}
-              defaultSrc={DEFAULT_SIGN_UP_IMAGE}
+              defaultSrc={SIGN_UP_CAMERA}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
               margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
