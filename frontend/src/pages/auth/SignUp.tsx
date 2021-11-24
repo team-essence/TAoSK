@@ -20,7 +20,6 @@ import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
-import { uploadFileToBlob } from 'utils/azure/azureStorageBlob'
 
 export const SignUp: FC = () => {
   useNavigateUser()
@@ -42,10 +41,6 @@ export const SignUp: FC = () => {
 
   occupationOptions.unshift({ value: '', item: '選択' })
 
-  const test = async () => {
-    await uploadFileToBlob(fileData)
-  }
-
   return (
     <>
       <AuthHeader />
@@ -53,9 +48,6 @@ export const SignUp: FC = () => {
         <StyledSignUp>
           <StyledLogoImg src={'logo.png'} />
           <StyledH1>新規登録書</StyledH1>
-          <button type="submit" onClick={test}>
-            Upload!
-          </button>
           <StyledFormWrapper>
             <StyledImageInputField
               dottedImage={dottedImage.URLScheme}

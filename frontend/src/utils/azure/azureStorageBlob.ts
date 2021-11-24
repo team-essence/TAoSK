@@ -2,8 +2,6 @@ import { BlobServiceClient, ContainerClient } from '@azure/storage-blob'
 import { env } from 'env/dotEnv'
 
 const containerName = 'haltokyo-container'
-// const sasToken = process.env.REACT_APP_STORAGESASTOKEN
-// const storageAccountName = process.env.REACT_APP_STORAGERESOURCENAME
 const sasToken = env.getAzureStorageApiEndpoint().sasToken
 const storageAccountName = env.getAzureStorageApiEndpoint().storageAccountName
 

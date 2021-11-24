@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { uploadFileToBlob } from 'utils/azure/azureStorageBlob'
+import { collatingImagesInAzure } from 'utils/azure/collatingImagesInAzure'
 import { occupationList } from 'consts/occupationList'
 import { DEFAUT_USER } from 'consts/defaultImages'
 import { useAddUserMutation } from 'pages/auth/signUp.gen'
@@ -25,12 +25,12 @@ export const useTrySignUp: UseTrySignUp = ({
   const [addUserMutation] = useAddUserMutation()
   const navigate = useNavigate()
 
-  const addUser = (id: string, image: string) => {
+  const addUser = (id: string, url: string) => {
     addUserMutation({
       variables: {
         id,
         name,
-        icon_image: image,
+        icon_image: url,
         company,
         occupation_id: occupationList.indexOf(occupation) + 1,
         context: interests,
@@ -39,20 +39,12 @@ export const useTrySignUp: UseTrySignUp = ({
     })
   }
 
-  const a = async (fileData: File): Promise<string> => {
-    const blobsInContainer: string[] = await uploadFileToBlob(fileData)
-    const search = fileData.name
-    const regexp = new RegExp(search, 'g')
-    const url = blobsInContainer.find(i => i.match(regexp))
-
-    return url ? url : DEFAUT_USER
-  }
-
   const trySignUp = () => {
     firebaseAuth.createUser(email, password).then(async result => {
-      const b = !fileData ? DEFAUT_USER : await a(fileData)
+      const blobsInContainer: string[] = await uploadFileToBlob(fileData)
+      const url = !fileData ? DEFAUT_USER : await collatingImagesInAzure(fileData, blobsInContainer)
 
-      await Promise.all([addUser(result.user.uid, b)])
+      await Promise.all([addUser(result.user.uid, url)])
         .then(() => navigate('/'))
         .catch(() => 'err')
     })
