@@ -1,8 +1,9 @@
-import React, { FC, useState, useEffect, Dispatch, KeyboardEvent, ChangeEvent } from 'react'
+import React, { FC, useEffect, Dispatch } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
 
 type InputAspectStyles = Record<'width' | 'height', string>
@@ -16,45 +17,14 @@ type Props = {
 }
 
 export const ItemInputField: FC<Props> = props => {
-  const { className, label, placeholder, inputAspect, items, setItems } = props
-  const [value, setValue] = useState<string>('')
-  const [isDisabled, setIsDisabled] = useState<boolean>(true)
+  const { className, label, placeholder, inputAspect, setItems } = props
   const MAX_TEXT_LENGTH = 50
   const MAX_ITEMS = 20
-
-  const getShouldDisable = (value: string) => {
-    const isAlreadyExists = !!items.find(v => v === value)
-    const isOver = value.length > MAX_TEXT_LENGTH || items.length >= MAX_ITEMS
-    return !value.trim() || !!isAlreadyExists || isOver
-  }
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    const shouldDisabled = getShouldDisable(newValue)
-    setIsDisabled(shouldDisabled)
-    setValue(newValue)
-  }
-  const onClickAddButton = () => {
-    if (isDisabled) return
-    items.push(value)
-    setItems(items.slice())
-    setValue('')
-  }
-  const onKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      onClickAddButton()
-    }
-  }
-  const onClickCrossButton = (item: string) => {
-    const index = items.indexOf(item)
-    items.splice(index, 1)
-    setItems(items.slice())
-  }
+  const { value, items, isDisabled, onChange, onKeyPress, onClickAddButton, onClickCrossButton } =
+    useTextItems(MAX_TEXT_LENGTH, MAX_ITEMS)
 
   useEffect(() => {
-    const shouldDisabled = getShouldDisable(value)
-    setIsDisabled(shouldDisabled)
+    setItems(items.slice())
   }, [items])
 
   return (
