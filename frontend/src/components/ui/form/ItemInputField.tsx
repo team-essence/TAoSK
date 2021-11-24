@@ -5,6 +5,7 @@ import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
@@ -45,8 +46,8 @@ export const ItemInputField: FC<Props> = props => {
         <CoarseButton
           text="追加"
           aspect={{
-            width: '64px',
-            height: '40px',
+            width: calculateVwBasedOnFigma(64),
+            height: calculateVwBasedOnFigma(40),
           }}
           outerBgColor={
             isDisabled
@@ -81,11 +82,11 @@ const StyledRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-top: 4px;
+  gap: ${calculateVwBasedOnFigma(16)};
+  margin-top: ${calculateVwBasedOnFigma(4)};
 `
 const StyledItemsNum = styled.span`
-  padding-left: 8px;
+  padding-left: ${calculateVwBasedOnFigma(8)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
 `
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
@@ -94,7 +95,7 @@ const StyledMaxItems = styled.span<{ isMax: boolean }>`
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
-  padding-left: 8px;
+  padding-left: ${calculateVwBasedOnFigma(8)};
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
@@ -106,7 +107,7 @@ const StyledItemsWrapper = styled.div<{ width: string }>`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 12px;
-  margin-top: 12px;
+  gap: ${calculateVwBasedOnFigma(12)};
+  margin-top: ${calculateVwBasedOnFigma(12)};
   width: ${({ width }) => width};
 `
