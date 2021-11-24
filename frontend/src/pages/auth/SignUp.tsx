@@ -34,7 +34,7 @@ export const SignUp: FC = () => {
   const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
   const { fileData } = useBlobToFile(dottedImage.blob)
-  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
+  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
