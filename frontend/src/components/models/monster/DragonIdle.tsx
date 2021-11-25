@@ -36,7 +36,7 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
   })
   useEffect(() => {
     logger.debug(actions)
-    actions['Idle']?.play()
+    actions['eat']?.play()
   }, [actions])
   return (
     <group ref={group} {...props} dispose={null}>

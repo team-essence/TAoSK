@@ -17,6 +17,7 @@ import toast from 'utils/toast/toast'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -94,9 +95,15 @@ export const ProjectList: FC = () => {
 
       <StyledProjectListContainer>
         <StyledProjectListWrapper>
-          <StyledProjectCreateButton></StyledProjectCreateButton>
+          <StyledProjectCreateButton />
+
+          <StyledProjectList>
+            <StyledProject></StyledProject>
+          </StyledProjectList>
         </StyledProjectListWrapper>
       </StyledProjectListContainer>
+
+      <StyledProjectDetailContainer></StyledProjectDetailContainer>
       {/* <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧</p>
 
@@ -158,8 +165,8 @@ export const ProjectList: FC = () => {
           プロジェクト作成するよボタン
         </button> */}
 
-      {/* <MonsterAvatar /> */}
-      {/* </TestModalContainer> */}
+      {/* <MonsterAvatar />
+      </TestModalContainer> */}
     </StyledProjectListPageContainer>
   )
 }
@@ -170,16 +177,17 @@ const StyledProjectListPageContainer = styled.div`
   background: url('images/project-list-page_background.webp');
   background-attachment: fixed;
   background-position: center;
-  background-size: cover;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
+  display: flex;
 `
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  top: 50px;
-  width: 437px;
-  height: 770px;
-  transform: scale(calc(100% / 1.1));
+  top: ${calculateVwBasedOnFigma(72)};
+  left: 0;
+  width: ${calculateVwBasedOnFigma(437)};
+  height: ${calculateVwBasedOnFigma(770)};
   background: url('project-list_background.png');
   background-position: center;
   background-size: cover;
@@ -187,20 +195,34 @@ const StyledProjectListContainer = styled.div`
 `
 
 const StyledProjectListWrapper = styled.div`
-  top: 120px;
-  left: 36px;
-  position: absolute;
-  width: 80%;
-  height: 77%;
+  top: ${calculateVwBasedOnFigma(120)};
+  left: ${calculateVwBasedOnFigma(8)};
+  position: relative;
+  width: ${calculateVwBasedOnFigma(396)};
+  height: ${calculateVwBasedOnFigma(564)};
   background: #fff;
 `
 
 const StyledProjectCreateButton = styled.button`
-  border: 0px;
-  width: 100%;
-  height: 60px;
+  width: ${calculateVwBasedOnFigma(396)};
+  height: ${calculateVwBasedOnFigma(60)};
   background: url('svg/create-project_button.svg') center center no-repeat;
-  background-size: contain;
+  background-size: cover;
+`
+
+const StyledProjectList = styled.ul``
+
+const StyledProject = styled.li``
+
+const StyledProjectDetailContainer = styled.div`
+  background: url('project-detail_background.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: ${calculateVwBasedOnFigma(971)};
+  height: ${calculateVwBasedOnFigma(823)};
+  position: relative;
+  top: ${calculateVwBasedOnFigma(72)};
 `
 
 const TestModalContainer = styled.div`
