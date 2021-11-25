@@ -1,9 +1,12 @@
-import React, { FC, useState, Dispatch, KeyboardEvent, ChangeEvent } from 'react'
+import React, { FC, useEffect, Dispatch } from 'react'
 import styled from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
@@ -16,38 +19,21 @@ type Props = {
 }
 
 export const ItemInputField: FC<Props> = props => {
-  const { className, label, placeholder, inputAspect, items, setItems } = props
-  const [value, setValue] = useState<string>('')
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
+  const { className, label, placeholder, inputAspect, setItems } = props
+  const { value, items, isDisabled, onChange, onKeyPress, onClickAddButton, onClickCrossButton } =
+    useTextItems(max.TEXT_LENGTH, max.ITEMS)
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const isAlreadyExists = !!items.find(v => v === e.target.value)
-    setIsDisabled(!!isAlreadyExists)
-    setValue(e.target.value)
-  }
-  const onClickAddButton = () => {
-    if (!value) return
-    const isAlreadyExists = !!items.find(v => v === value)
-    if (isAlreadyExists) return
-    items.push(value)
+  useEffect(() => {
     setItems(items.slice())
-    setValue('')
-  }
-  const onKeyPress = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      onClickAddButton()
-    }
-  }
-  const onClickCrossButton = (item: string) => {
-    const index = items.indexOf(item)
-    items.splice(index, 1)
-    setItems(items.slice())
-  }
+  }, [setItems, items])
 
   return (
     <StyledWrapper className={className}>
       {label}
+      <StyledItemsNum>
+        <StyledMaxItems isMax={items.length === max.ITEMS}>{items.length}</StyledMaxItems>/
+        {max.ITEMS}
+      </StyledItemsNum>
       <StyledRow>
         <StyledInput
           value={value}
@@ -59,8 +45,8 @@ export const ItemInputField: FC<Props> = props => {
         <CoarseButton
           text="追加"
           aspect={{
-            width: '64px',
-            height: '40px',
+            width: calculateVwBasedOnFigma(64),
+            height: calculateVwBasedOnFigma(40),
           }}
           outerBgColor={
             isDisabled
@@ -89,31 +75,39 @@ export const ItemInputField: FC<Props> = props => {
 const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 const StyledRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin-top: 4px;
+  gap: ${calculateVwBasedOnFigma(16)};
+  margin-top: ${calculateVwBasedOnFigma(4)};
+`
+const StyledItemsNum = styled.span`
+  padding-left: ${calculateVwBasedOnFigma(8)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+`
+const StyledMaxItems = styled.span<{ isMax: boolean }>`
+  color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
 `
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
-  padding-left: 8px;
+  padding-left: ${calculateVwBasedOnFigma(8)};
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
   &::placeholder {
     color: ${({ theme }) => theme.COLORS.GRAY};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
 `
 const StyledItemsWrapper = styled.div<{ width: string }>`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 12px;
-  margin-top: 12px;
+  gap: ${calculateVwBasedOnFigma(12)};
+  margin-top: ${calculateVwBasedOnFigma(12)};
   width: ${({ width }) => width};
 `

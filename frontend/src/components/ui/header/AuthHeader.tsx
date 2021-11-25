@@ -2,13 +2,14 @@ import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
 import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { useNavigate } from 'react-router-dom'
 
 export const AuthHeader: FC = () => {
   const navigate = useNavigate()
   const commonButtonProps = {
-    width: '120px',
-    height: '40px',
+    width: calculateVwBasedOnFigma(120),
+    height: calculateVwBasedOnFigma(40),
     borderRadius: '2px',
   }
   const registerButtonProps = {
@@ -26,7 +27,7 @@ export const AuthHeader: FC = () => {
   return (
     <StyledHeaderWrapper>
       <StyledLogoWrapper>
-        <img src="svg/logo-transparent-background.svg" alt="" />
+        <img src="svg/logo-transparent-background.svg" alt="TAoSK ロゴ" />
       </StyledLogoWrapper>
 
       <StyledButtonsWrapper>
@@ -51,20 +52,20 @@ const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 28px;
+  padding: 0 ${calculateVwBasedOnFigma(28)};
   width: 100vw;
-  height: 70px;
+  height: ${calculateVwBasedOnFigma(70)};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
-  height: 43px;
+  height: ${calculateVwBasedOnFigma(43)};
 `
 const StyledButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
+  gap: ${calculateVwBasedOnFigma(14)};
   height: 100%;
 `

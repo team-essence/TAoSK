@@ -1,11 +1,15 @@
 import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
+import { SIGN_UP_CAMERA } from 'consts/defaultImages'
 import { occupationList } from 'consts/occupationList'
 import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
+import { useImageResize } from 'hooks/useImageResize'
+import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
+import { useBlobToFile } from 'hooks/useBlobToFile'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -14,6 +18,7 @@ import { SelectField } from 'components/ui/form/SelectField'
 import { ItemInputField } from 'components/ui/form/ItemInputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
@@ -22,27 +27,52 @@ export const SignUp: FC = () => {
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
-  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
+  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+    SIGN_UP_CAMERA,
+    60,
+  )
+  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
+  const { fileData } = useBlobToFile(dottedImage.blob)
+  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
   })
+
   occupationOptions.unshift({ value: '', item: '選択' })
+
+  const inputStyles = {
+    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
+    borderRadius: '2px',
+  }
 
   return (
     <>
       <AuthHeader />
       <StyledWrapper>
         <StyledSignUp>
-          <StyledLogoImg src={'logo.png'} />
+          <StyledLogoImg src="logo.png" alt="TAoSK ロゴ" />
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
-              margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}
+              dottedImage={dottedImage.URLScheme}
+              defaultSrc={SIGN_UP_CAMERA}
+              initializeUploadImg={initializeUploadImg}
+              handleUploadImg={handleUploadImg}
+              margin={
+                innerWidth <= 1210
+                  ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateVwBasedOnFigma(24)} 0`
+              }
             />
-            <StyledRightColumn margin={innerWidth <= 1210 ? '0 auto 24px auto' : '0 0 24px 0'}>
-              <StyledInputField
+            <StyledRightColumn
+              margin={
+                innerWidth <= 1210
+                  ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateVwBasedOnFigma(24)} 0`
+              }>
+              <InputField
                 label="冒険者"
                 registration={register('name', {
                   required: '未入力です',
@@ -52,9 +82,10 @@ export const SignUp: FC = () => {
                   },
                   pattern: REGEX_TEXT,
                 })}
+                inputStyles={inputStyles}
                 error={errors['name']}
               />
-              <StyledInputField
+              <InputField
                 label="会社名"
                 registration={register('company', {
                   required: '未入力です',
@@ -64,9 +95,10 @@ export const SignUp: FC = () => {
                   },
                   pattern: REGEX_TEXT,
                 })}
+                inputStyles={inputStyles}
                 error={errors['company']}
               />
-              <StyledInputField
+              <InputField
                 label="メールアドレス"
                 registration={register('email', {
                   required: '未入力です',
@@ -79,9 +111,10 @@ export const SignUp: FC = () => {
                     message: '不正なメールアドレスです',
                   },
                 })}
+                inputStyles={inputStyles}
                 error={errors['email']}
               />
-              <StyledPasswordField
+              <PasswordField
                 label="パスワード"
                 registration={register('password', {
                   required: '未入力です',
@@ -101,7 +134,7 @@ export const SignUp: FC = () => {
                 onChange={() => trigger('re-password')}
                 error={errors['password']}
               />
-              <StyledPasswordField
+              <PasswordField
                 label="パスワード（確認）"
                 registration={register('re-password', {
                   required: '未入力です',
@@ -110,7 +143,7 @@ export const SignUp: FC = () => {
                 onChange={() => trigger('password')}
                 error={errors['re-password']}
               />
-              <StyledSelectField
+              <SelectField
                 label="職種"
                 registration={register('occupation', { required: '未選択です' })}
                 options={occupationOptions}
@@ -120,13 +153,21 @@ export const SignUp: FC = () => {
                 label="保有資格"
                 items={certifications}
                 setItems={setCertifications}
-                placeholder={'保有資格を入力してください'}
+                inputAspect={{
+                  width: calculateVwBasedOnFigma(400),
+                  height: calculateVwBasedOnFigma(40),
+                }}
+                placeholder="保有資格を入力してください"
               />
               <StyledItemInputField
                 label="興味のあること"
                 items={interests}
                 setItems={setInterests}
-                placeholder={'興味のあることを入力してください'}
+                inputAspect={{
+                  width: calculateVwBasedOnFigma(400),
+                  height: calculateVwBasedOnFigma(40),
+                }}
+                placeholder="興味のあることを入力してください"
               />
 
               <StyledTerms>
@@ -137,7 +178,10 @@ export const SignUp: FC = () => {
 
               <StyledSignUpButton
                 text="登録"
-                aspect={{ width: '120px', height: '32px' }}
+                aspect={{
+                  width: calculateVwBasedOnFigma(120),
+                  height: calculateVwBasedOnFigma(32),
+                }}
                 outerBgColor={
                   isDisabled
                     ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
@@ -174,18 +218,18 @@ const StyledSignUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: max(58.33vw, 840px);
+  width: ${calculateVwBasedOnFigma(840)};
   height: 100%;
-  margin: 26px 0;
-  padding: 64px 0;
+  margin: ${calculateVwBasedOnFigma(26)} 0;
+  padding: ${calculateVwBasedOnFigma(64)} 0;
   background-image: url('contract-paper.png');
   background-size: 100% 100%;
 `
 const StyledLogoImg = styled.img`
-  height: 108px;
+  height: ${calculateVwBasedOnFigma(108)};
 `
 const StyledH1 = styled.h1`
-  margin: 33px 0;
+  margin: ${calculateVwBasedOnFigma(33)} 0;
   background: -webkit-linear-gradient(
     top,
     ${({ theme }) => theme.COLORS.TENN},
@@ -202,36 +246,21 @@ const StyledFormWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  width: min(49.02vw, 706px);
+  width: ${calculateVwBasedOnFigma(706)};
 `
 const StyledRightColumn = styled.div.attrs<{ margin: string }>(({ margin }) => ({
   margin,
 }))<{ margin: string }>`
   margin: ${({ margin }) => margin};
-  width: min(33.33vw, 480px);
+  width: ${calculateVwBasedOnFigma(480)};
 `
 const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(({ margin }) => ({
   margin,
 }))<{ margin: string }>`
   margin: ${({ margin }) => margin};
 `
-const StyledInputField = styled(InputField).attrs(() => ({
-  inputStyles: {
-    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-    borderRadius: '2px',
-  },
-  marginBottom: '24px',
-}))``
-const StyledPasswordField = styled(PasswordField).attrs(() => ({
-  marginBottom: '24px',
-}))``
-const StyledSelectField = styled(SelectField).attrs(() => ({
-  marginBottom: '24px',
-}))``
-const StyledItemInputField = styled(ItemInputField).attrs(() => ({
-  inputAspect: { width: '400px', height: '40px' },
-}))`
-  margin-bottom: 24px;
+const StyledItemInputField = styled(ItemInputField)`
+  margin-bottom: ${calculateVwBasedOnFigma(24)};
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -245,7 +274,7 @@ const StyledBackground = styled.div`
   background-position: 50% 100%;
 `
 const StyledTerms = styled.p`
-  margin: 24px 0;
+  margin: ${calculateVwBasedOnFigma(24)} 0;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
 `

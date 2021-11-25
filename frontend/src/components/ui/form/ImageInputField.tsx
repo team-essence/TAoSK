@@ -1,24 +1,26 @@
 import React, { FC, useRef } from 'react'
-import { useImageResize } from 'hooks/useImageResize'
-import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
-type Props = { className?: string }
+type Props = {
+  className?: string
+  dottedImage: string
+  defaultSrc: string
+  handleUploadImg: (e: React.ChangeEvent<HTMLInputElement>) => void
+  initializeUploadImg: () => void
+}
 
-export const ImageInputField: FC<Props> = ({ className }) => {
+export const ImageInputField: FC<Props> = ({
+  className,
+  dottedImage,
+  defaultSrc,
+  handleUploadImg,
+  initializeUploadImg,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const defaultSrc = 'svg/camera.svg'
-  // 一辺60px以下の画像を生成
-  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
-    defaultSrc,
-    60,
-  )
-  // 色数50以下のドット画像を生成
-  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
-
   const onClickUploadBtn = () => inputRef.current?.click()
 
   return (
@@ -26,7 +28,11 @@ export const ImageInputField: FC<Props> = ({ className }) => {
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
-          <StyledImage src={dottedImage} padding={dottedImage === defaultSrc ? '40px' : '0px'} />
+          <StyledImage
+            src={dottedImage}
+            alt="プロフィール画像"
+            padding={dottedImage === defaultSrc ? calculateVwBasedOnFigma(40) : '0px'}
+          />
         </StyledImageWrapper>
         <StyledDisappearedInput
           ref={inputRef}
@@ -39,8 +45,8 @@ export const ImageInputField: FC<Props> = ({ className }) => {
       <StyledCoarseButton
         text="画像をアップロード"
         aspect={{
-          width: '190px',
-          height: '40px',
+          width: calculateVwBasedOnFigma(190),
+          height: calculateVwBasedOnFigma(40),
         }}
         outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
         innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
@@ -61,11 +67,12 @@ const StyledLabel = styled.label`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  cursor: pointer;
 `
 const StyledImageWrapper = styled.div`
-  margin: 4px 0;
-  width: 190px;
-  height: 190px;
+  margin: ${calculateVwBasedOnFigma(4)} 0;
+  width: ${calculateVwBasedOnFigma(190)};
+  height: ${calculateVwBasedOnFigma(190)};
   border: 1px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
@@ -80,11 +87,11 @@ const StyledDisappearedInput = styled.input`
   display: none;
 `
 const StyledCoarseButton = styled(CoarseButton)`
-  margin: 4px 0;
+  margin: ${calculateVwBasedOnFigma(4)} 0;
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
 `
 const StyledDeleteButton = styled.button`
-  margin: 4px 0;
+  margin: ${calculateVwBasedOnFigma(4)} 0;
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
