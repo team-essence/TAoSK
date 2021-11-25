@@ -14,7 +14,9 @@ import styled from 'styled-components'
 import logger from 'utils/debugger/logger'
 import date from 'utils/date/date'
 import toast from 'utils/toast/toast'
-import { MonsterAvatar } from 'components/ui/monster/MonsterAvatar'
+import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
+import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
+import { CoarseButton } from 'components/ui/button/CoarseButton'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -87,8 +89,15 @@ export const ProjectList: FC = () => {
   if (!currentUser) return <Navigate to="/signup" />
 
   return (
-    <div>
-      <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
+    <StyledProjectListPageContainer>
+      <ProjectListHeader />
+
+      <StyledProjectListContainer>
+        <StyledProjectListWrapper>
+          <StyledProjectCreateButton></StyledProjectCreateButton>
+        </StyledProjectListWrapper>
+      </StyledProjectListContainer>
+      {/* <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧</p>
 
       {invitations.data?.invitations.map((invitation, index) => (
@@ -147,13 +156,52 @@ export const ProjectList: FC = () => {
             )
           }>
           プロジェクト作成するよボタン
-        </button>
+        </button> */}
 
-        <MonsterAvatar />
-      </TestModalContainer>
-    </div>
+      {/* <MonsterAvatar /> */}
+      {/* </TestModalContainer> */}
+    </StyledProjectListPageContainer>
   )
 }
+
+const StyledProjectListPageContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  background: url('images/project-list-page_background.webp');
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`
+
+const StyledProjectListContainer = styled.div`
+  position: relative;
+  top: 50px;
+  width: 437px;
+  height: 770px;
+  transform: scale(calc(100% / 1.1));
+  background: url('project-list_background.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+`
+
+const StyledProjectListWrapper = styled.div`
+  top: 120px;
+  left: 36px;
+  position: absolute;
+  width: 80%;
+  height: 77%;
+  background: #fff;
+`
+
+const StyledProjectCreateButton = styled.button`
+  border: 0px;
+  width: 100%;
+  height: 60px;
+  background: url('svg/create-project_button.svg') center center no-repeat;
+  background-size: contain;
+`
 
 const TestModalContainer = styled.div`
   border: solid 1px #000;
