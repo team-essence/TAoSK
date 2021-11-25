@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { useAuthContext } from 'context/AuthProvider'
+import { useAuthContext } from 'providers/AuthProvider'
 import { useGetUserLazyQuery } from './mypage.gen'
 
 export const MyPage: FC = () => {

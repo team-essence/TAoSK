@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useAuthContext } from 'context/AuthProvider'
+import { useAuthContext } from 'providers/AuthProvider'
 import { useNavigate, useParams } from 'react-router'
 import logger from 'utils/debugger/logger'
 import { useGetInvitationByUserIdLazyQuery, useJoinProjectMutation } from './Invitation.gen'
