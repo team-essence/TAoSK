@@ -1,11 +1,11 @@
 import { useState, useLayoutEffect } from 'react'
 
-type UseWatchInnerAspectResult = {
+type UseWatchInnerAspectReturn = {
   innerWidth: number
   innerHeight: number
 }
 
-export const useWatchInnerAspect = (): UseWatchInnerAspectResult => {
+export const useWatchInnerAspect = (): UseWatchInnerAspectReturn => {
   const [innerWidth, setInnerWidth] = useState<number>(0)
   const [innerHeight, setInnerHeight] = useState<number>(0)
 

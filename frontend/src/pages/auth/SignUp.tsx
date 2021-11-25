@@ -1,11 +1,15 @@
 import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
+import { SIGN_UP_CAMERA } from 'consts/defaultImages'
 import { occupationList } from 'consts/occupationList'
 import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
+import { useImageResize } from 'hooks/useImageResize'
+import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
+import { useBlobToFile } from 'hooks/useBlobToFile'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
@@ -23,12 +27,19 @@ export const SignUp: FC = () => {
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
-  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests })
+  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+    SIGN_UP_CAMERA,
+    60,
+  )
+  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
+  const { fileData } = useBlobToFile(dottedImage.blob)
+  const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
     return { value: v, item: v }
   })
+
   occupationOptions.unshift({ value: '', item: '選択' })
 
   const inputStyles = {
@@ -45,6 +56,10 @@ export const SignUp: FC = () => {
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
+              dottedImage={dottedImage.URLScheme}
+              defaultSrc={SIGN_UP_CAMERA}
+              initializeUploadImg={initializeUploadImg}
+              handleUploadImg={handleUploadImg}
               margin={
                 innerWidth <= 1210
                   ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
