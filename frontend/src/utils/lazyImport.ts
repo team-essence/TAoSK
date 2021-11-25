@@ -3,8 +3,8 @@ import React, { FC } from 'react'
 /**
  * コンポーネントの遅延読み込み
  *
- * @param React.component
- * @param exportComponentName
+ * @param {() => Promise<I>} factory
+ * @param {K} name
  */
 export const lazyImport = <
   T extends React.ComponentType<FC>,
