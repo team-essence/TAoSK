@@ -7,7 +7,7 @@ import { client } from '../ApolloClient'
 
 type Props = { children: ReactNode }
 
-export const Providers: FC<Props> = ({ children }) => {
+export const AppProvider: FC<Props> = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <ApolloProvider client={client}>
