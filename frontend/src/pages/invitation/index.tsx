@@ -6,7 +6,7 @@ import { useGetInvitationByUserIdLazyQuery, useJoinProjectMutation } from './Inv
 import { gqlErrorMessage } from 'consts/gqlErrorMessage'
 import toast from 'utils/toast/toast'
 
-const Invitation = () => {
+export const Invitation = () => {
   const navigate = useNavigate()
   const { currentUser } = useAuthContext()
   const { projectId } = useParams()
@@ -55,5 +55,3 @@ const Invitation = () => {
 
   return <></>
 }
-
-export default Invitation

@@ -1,9 +1,6 @@
 import React, { FC, createContext, useState, useContext, useEffect } from 'react'
 import { auth } from 'utils/lib/firebase/firebaseInitial'
 import { onAuthStateChanged, User } from 'firebase/auth'
-// import './test.css'
-
-import { Loading } from 'components/ui/loading/Loading'
 
 type AuthContextProps = {
   currentUser: User | null
@@ -35,7 +32,7 @@ export const AuthProvider: FC = ({ children }) => {
     }
   }, [])
 
-  if (loading) return <Loading />
+  if (loading) return null
   return (
     <AuthContext.Provider value={{ currentUser: value.currentUser, loading: value.loading }}>
       {!loading && children}

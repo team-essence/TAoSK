@@ -6,14 +6,12 @@ import { PasswordField } from 'components/ui/form/PasswordField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
-import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignIn: FC = () => {
-  useNavigateUser()
   const { register, handleSubmit, getValues, isDisabled } = useSignInForm()
   const trySignIn = useTrySignIn({ ...getValues() })
 
