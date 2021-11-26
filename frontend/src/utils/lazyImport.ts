@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 
 /**
  * コンポーネントの遅延読み込み
+ * Suspenseと合わせてに使う
  *
  * @param {() => Promise<I>} factory
  * @param {K} name
