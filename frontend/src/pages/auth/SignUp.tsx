@@ -54,7 +54,7 @@ export const SignUp: FC = () => {
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
-              dottedImage={imageUrl}
+              image={imageUrl}
               defaultSrc={SIGN_UP_CAMERA}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
