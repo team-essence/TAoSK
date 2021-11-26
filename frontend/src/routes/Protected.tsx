@@ -27,7 +27,7 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '/', element: <ProjectList /> },
-      { path: '/Projects/:id', element: <ProjectDetail /> },
+      { path: '/projects/:id', element: <ProjectDetail /> },
       { path: '/mypage/:id', element: <MyPage /> },
       { path: '/invitation/:projectId', element: <Invitation /> },
     ],
