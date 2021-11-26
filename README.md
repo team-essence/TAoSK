@@ -10,7 +10,9 @@
 
 ## 起動方法
 
-`docker-compose up`
+`docker-compose up`</br>
+or</br>
+`make up`</br>
 
 ## フロントエンド
 
@@ -20,12 +22,12 @@
 frontend/
       ├─ public
       ├─ src/
-            ├─ index.tsx
-            ├─ App.tsx
             ├─ pages/
             ├─ components/
             ├─ hooks/
             ├─ consts/
+            ├─ providers/
+            ├─ routes/
             ├─ utils/
             ├─ env/
             ├─ styles/
@@ -34,11 +36,13 @@ frontend/
 | ディレクトリ | 役割                   |
 | ------------ | ---------------------- |
 | components   | 中身の構成はまだ未定   |
-| pages        | 各ページのトップを格納 |
-| hooks        | hooks 関数を格納       |
-| consts       | 変更が無い値を格納     |
-| utils        | 関数を格納             |
-| env          | env 系をまとめる       |
+| pages        | 各ページのトップ |
+| hooks        | hooks関数       |
+| consts       | 変更が無い値     |
+| providers    | providerの設定       |
+| routes       | ルーティングの設定      |
+| utils        | 通常関数            |
+| env          | env系の設定       |
 | styles       | 初期スタイル設定       |
 
 ### コード規約
