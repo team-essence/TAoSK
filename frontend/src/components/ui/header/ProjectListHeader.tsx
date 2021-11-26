@@ -9,7 +9,7 @@ export const ProjectListHeader: FC = () => {
   return (
     <StyledHeaderWrapper>
       <StyledLogoWrapper>
-        <img src="svg/logo-transparent-background.svg" alt="ロゴ" />
+        <StyledLogo src="svg/logo-transparent-background.svg" alt="ロゴ" />
       </StyledLogoWrapper>
 
       <StyledBellWrapper>
@@ -46,6 +46,10 @@ const StyledHeaderWrapper = styled.div`
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
+  height: ${calculateVwBasedOnFigma(43)};
+`
+
+const StyledLogo = styled.img`
   height: ${calculateVwBasedOnFigma(43)};
 `
 
