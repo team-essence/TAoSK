@@ -24,6 +24,16 @@ export default class DotEnv {
   public getWsApiEndpoint = () => {
     return process.env.REACT_APP_API_WS
   }
+
+  /**
+   * API AzureStorageEndpoint
+   */
+  public getAzureStorageApiEndpoint = () => {
+    return {
+      sasToken: process.env.REACT_APP_STORAGESASTOKEN,
+      storageAccountName: process.env.REACT_APP_STORAGERESOURCENAME,
+    }
+  }
 }
 
 export const env = new DotEnv()

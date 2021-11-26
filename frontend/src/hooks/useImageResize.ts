@@ -46,16 +46,16 @@ const drawCanvas = (
  * }
  */
 export const useImageResize = (initialUrl: string, maxWidth: number): UseImageResizeReturn => {
-  const [imageUrl, setResizedImageStr] = useState<string>(initialUrl)
+  const [imageUrl, setImageUrl] = useState<string>(initialUrl)
   const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D>()
 
   const initializeUploadImg = () => {
-    setResizedImageStr(initialUrl)
+    setImageUrl(initialUrl)
   }
 
   const setUrlCreatedFromBlob = (blob: Blob | null) => {
     const resizedUrl = URL.createObjectURL(blob) // blobをimgのsrc属性で使える形へ変換
-    setResizedImageStr(resizedUrl) // リサイズした画像を表示
+    setImageUrl(resizedUrl) // リサイズした画像を表示
   }
 
   const handleUploadImg = (e: ChangeEvent<HTMLInputElement>) => {
