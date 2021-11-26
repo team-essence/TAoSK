@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react'
 
 type UseBlobToFileReturn = { fileData: File | null }
 
+/**
+ * BlobからFileへ変換
+ *
+ * @param {Blob | null} blob
+ * @return {File | null} fileData
+ */
 export const useBlobToFile = (blob: Blob | null): UseBlobToFileReturn => {
   const [blobData, setBlobData] = useState<Blob | null>(null)
   const [fileData, setFileData] = useState<File | null>(null)

@@ -1,19 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import { ThemeProvider } from 'styled-components'
-import { theme } from 'styles/theme'
+import { AppProvider } from 'providers/AppProvider'
 import { GlobalStyle } from 'styles/globalStyle'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
+    <AppProvider>
       <GlobalStyle />
       <ToastContainer />
       <App />
-    </ThemeProvider>
+    </AppProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

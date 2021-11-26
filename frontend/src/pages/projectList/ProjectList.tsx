@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Navigate, NavLink } from 'react-router-dom'
-import { useAuthContext } from 'context/AuthProvider'
+import { useAuthContext } from 'providers/AuthProvider'
 import {
   useSearchSameCompanyUsersMutation,
   useCreateProjectMutation,

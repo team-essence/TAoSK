@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAuthContext } from 'context/AuthProvider'
+import { useAuthContext } from 'providers/AuthProvider'
 import { useNavigate } from 'react-router-dom'
 import { useGetUserByIdLazyQuery } from 'pages/auth/document.gen'
 

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const Loading: FC = () => {
   return (
     <StyledContainer>
-      <StyledLoader></StyledLoader>
+      <StyledLoader />
     </StyledContainer>
   )
 }
