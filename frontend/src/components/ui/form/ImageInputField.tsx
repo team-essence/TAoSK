@@ -7,7 +7,7 @@ import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type Props = {
   className?: string
-  dottedImage: string
+  image: string
   defaultSrc: string
   handleUploadImg: (e: React.ChangeEvent<HTMLInputElement>) => void
   initializeUploadImg: () => void
@@ -15,7 +15,7 @@ type Props = {
 
 export const ImageInputField: FC<Props> = ({
   className,
-  dottedImage,
+  image,
   defaultSrc,
   handleUploadImg,
   initializeUploadImg,
@@ -29,9 +29,9 @@ export const ImageInputField: FC<Props> = ({
         プロフィール画像
         <StyledImageWrapper>
           <StyledImage
-            src={dottedImage}
+            src={image}
             alt="プロフィール画像"
-            padding={dottedImage === defaultSrc ? calculateVwBasedOnFigma(40) : '0px'}
+            defaultSrc={image === defaultSrc ? true : false}
           />
         </StyledImageWrapper>
         <StyledDisappearedInput
@@ -77,11 +77,11 @@ const StyledImageWrapper = styled.div`
   border-radius: 2px;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
 `
-const StyledImage = styled.img<{ padding: string }>`
+const StyledImage = styled.img<{ defaultSrc: boolean }>`
   aspect-ratio: 1 / 1;
-  object-fit: contain;
+  object-fit: ${({ defaultSrc }) => (defaultSrc ? 'contain' : 'cover')};
   width: 100%;
-  padding: ${({ padding }) => padding};
+  padding: ${({ defaultSrc }) => (defaultSrc ? calculateVwBasedOnFigma(40) : '0px')};
 `
 const StyledDisappearedInput = styled.input`
   display: none;

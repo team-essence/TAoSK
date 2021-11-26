@@ -11,20 +11,18 @@ const { ProjectDetail } = lazyImport(
 const { MyPage } = lazyImport(() => import('pages/mypage/MyPage'), 'MyPage')
 const { Invitation } = lazyImport(() => import('pages/invitation'), 'Invitation')
 
-const App: FC = () => {
+const ProtectedRoute: FC = () => {
   return (
-    <>
-      <Suspense fallback={<Loading />}>
-        <Outlet />
-      </Suspense>
-    </>
+    <Suspense fallback={<Loading />}>
+      <Outlet />
+    </Suspense>
   )
 }
 
 export const protectedRoutes = [
   {
     path: '/',
-    element: <App />,
+    element: <ProtectedRoute />,
     children: [
       { path: '/', element: <ProjectList /> },
       { path: '/projects/:id', element: <ProjectDetail /> },
