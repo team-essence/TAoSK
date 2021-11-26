@@ -13,12 +13,12 @@ export const ImageInputField: FC<Props> = ({ className }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const defaultSrc = 'svg/camera.svg'
   // 一辺60px以下の画像を生成
-  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
     defaultSrc,
     60,
   )
   // 色数50以下のドット画像を生成
-  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
+  const { dottedImage } = useConvertToDottedImage(imageUrl, 50, canvasContext)
 
   const onClickUploadBtn = () => inputRef.current?.click()
 

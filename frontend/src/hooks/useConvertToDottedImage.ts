@@ -18,6 +18,13 @@ const toPixel = (ctx: CanvasRenderingContext2D, numOfColors: number): string => 
   return URL.createObjectURL(dottedBlobData)
 }
 
+/**
+ * 画像をドット化する
+ * @param {string} initialUrl - imgタグのsrcに指定する初期値
+ * @param {number} numOfColors - 生成するドット絵の色数を指定
+ * @param {(CanvasRenderingContext2D | undefined)} ctx - ドット化したい画像がdrawされたcanvasコンテキスト
+ * @return {Object} { dottedImage } - ドット化された画像URL
+ */
 export const useConvertToDottedImage = (
   initialUrl: string,
   numOfColors: number,
