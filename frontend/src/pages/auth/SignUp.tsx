@@ -71,7 +71,8 @@ export const SignUp: FC = () => {
                   : `0 0 ${calculateVwBasedOnFigma(24)} 0`
               }>
               <InputField
-                label="冒険者"
+                label="冒険者名"
+                placeholder="お名前を入力してください"
                 registration={register('name', {
                   required: '未入力です',
                   maxLength: {
@@ -85,6 +86,7 @@ export const SignUp: FC = () => {
               />
               <InputField
                 label="会社名"
+                placeholder="例：学校法人日本教育財団HAL"
                 registration={register('company', {
                   required: '未入力です',
                   maxLength: {
@@ -98,6 +100,7 @@ export const SignUp: FC = () => {
               />
               <InputField
                 label="メールアドレス"
+                placeholder="例：hal_tokyo@example.com"
                 registration={register('email', {
                   required: '未入力です',
                   maxLength: {
@@ -114,6 +117,7 @@ export const SignUp: FC = () => {
               />
               <PasswordField
                 label="パスワード"
+                placeholder="6文字以上の半角英数字で入力してください"
                 registration={register('password', {
                   required: '未入力です',
                   minLength: {
@@ -134,6 +138,7 @@ export const SignUp: FC = () => {
               />
               <PasswordField
                 label="パスワード（確認）"
+                placeholder="パスワードを再度入力してください"
                 registration={register('re-password', {
                   required: '未入力です',
                   validate: value => value === getValues('password') || 'パスワードが一致しません',
