@@ -34,7 +34,7 @@ export const AuthHeader: FC = () => {
         <SimpleRoundedButton
           {...commonButtonProps}
           {...registerButtonProps}
-          onClick={() => navigate('/signup')}
+          onClick={() => navigate('/')}
         />
         <SimpleRoundedButton
           {...commonButtonProps}
