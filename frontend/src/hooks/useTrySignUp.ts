@@ -12,6 +12,19 @@ type UseTrySignUp = (
     Record<'fileData', File | null>,
 ) => () => void
 
+/**
+ * Firebaseで登録処理を行なったのち、DBにユーザーを追加する関数を返す
+ * @param {*} {
+ *   name,
+ *   company,
+ *   occupation,
+ *   email,
+ *   password,
+ *   certifications,
+ *   interests,
+ * }
+ * @return {() => void} trySignUp()
+ */
 export const useTrySignUp: UseTrySignUp = ({
   name,
   company,

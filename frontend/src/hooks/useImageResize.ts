@@ -2,7 +2,7 @@ import { useState, ChangeEvent } from 'react'
 
 export type UseImageResizeReturn = {
   canvasContext: CanvasRenderingContext2D | undefined
-  resizedImageStr: string
+  imageUrl: string
   initializeUploadImg: () => void
   handleUploadImg: (e: ChangeEvent<HTMLInputElement>) => void
 }
@@ -34,12 +34,28 @@ const drawCanvas = (
   return ctx
 }
 
+/**
+ * 第二引数に指定したwidthを基準にアスペクト比を守って縮小処理を行い、画像のリサイズを行う
+ * @param {string} initialUrl - imgタグのsrcに指定する初期値
+ * @param {number} maxWidth - ここで指定したwidth以下になるようにリサイズをする
+ * @return {UseImageResizeReturn} {
+ * canvasContext: リサイズした画像をdrawしたcanvasのコンテキスト,
+ * imageUrl: リサイズ後のurl,
+ * initializeUploadImg: imageUrlを第一引数に設定した初期値に戻す,
+ * handleUploadImg: input[type="file"]でファイルが変更された時にリサイズ処理を実行する
+ * }
+ */
 export const useImageResize = (initialUrl: string, maxWidth: number): UseImageResizeReturn => {
-  const [resizedImageStr, setResizedImageStr] = useState<string>(initialUrl)
+  const [imageUrl, setImageUrl] = useState<string>(initialUrl)
   const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D>()
 
   const initializeUploadImg = () => {
-    setResizedImageStr(initialUrl)
+    setImageUrl(initialUrl)
+  }
+
+  const setUrlCreatedFromBlob = (blob: Blob | null) => {
+    const resizedUrl = URL.createObjectURL(blob) // blobをimgのsrc属性で使える形へ変換
+    setImageUrl(resizedUrl) // リサイズした画像を表示
   }
 
   const handleUploadImg = (e: ChangeEvent<HTMLInputElement>) => {
@@ -49,11 +65,6 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
 
     const fileReader = new FileReader()
     const fileImage = new Image()
-
-    const setUrlCreatedFromBlob = (blob: Blob | null) => {
-      const resizedUrl = URL.createObjectURL(blob) // blobをimgのsrc属性で使える形へ変換
-      setResizedImageStr(resizedUrl) // リサイズした画像を表示
-    }
 
     fileReader.onloadend = () => {
       fileImage.onload = () => {
@@ -74,5 +85,5 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
     fileReader.readAsDataURL(file)
   }
 
-  return { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg }
+  return { canvasContext, imageUrl, initializeUploadImg, handleUploadImg }
 }

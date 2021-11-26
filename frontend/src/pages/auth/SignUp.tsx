@@ -25,11 +25,11 @@ export const SignUp: FC = () => {
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
-  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
     SIGN_UP_CAMERA,
     60,
   )
-  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
+  const { dottedImage } = useConvertToDottedImage(imageUrl, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
   const { fileData } = useBlobToFile(dottedImage.blob)
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })

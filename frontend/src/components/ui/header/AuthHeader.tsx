@@ -27,7 +27,7 @@ export const AuthHeader: FC = () => {
   return (
     <StyledHeaderWrapper>
       <StyledLogoWrapper>
-        <img src="svg/logo-transparent-background.svg" alt="TAoSK ロゴ" />
+        <StyledLogo src="svg/logo-transparent-background.svg" alt="TAoSK ロゴ" />
       </StyledLogoWrapper>
 
       <StyledButtonsWrapper>
@@ -60,6 +60,9 @@ const StyledHeaderWrapper = styled.div`
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
+  height: ${calculateVwBasedOnFigma(43)};
+`
+const StyledLogo = styled.img`
   height: ${calculateVwBasedOnFigma(43)};
 `
 const StyledButtonsWrapper = styled.div`

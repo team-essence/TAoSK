@@ -5,6 +5,12 @@ type UseWatchInnerAspectReturn = {
   innerHeight: number
 }
 
+/**
+ * 画面サイズの変更を検知して、window.innerWidth, window.innerHeight を state で返す
+ * @returns { Object } returns
+ * @returns { number } returns.innerWidth - window.innerWidth の state
+ * @returns { number } returns.innerHeight- window.innerHeight の state
+ */
 export const useWatchInnerAspect = (): UseWatchInnerAspectReturn => {
   const [innerWidth, setInnerWidth] = useState<number>(0)
   const [innerHeight, setInnerHeight] = useState<number>(0)

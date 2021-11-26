@@ -7,9 +7,22 @@ type UseTextItemsReturn = {
   onChange: ChangeEventHandler<HTMLInputElement>
   onKeyPress: KeyboardEventHandler<HTMLInputElement>
   onClickAddButton: () => void
-  onClickCrossButton: (item: string) => void
+  onClickDeleteItemButton: (item: string) => void
 }
 
+/**
+ * inputタグに文字列を入力してエンターを押すとアイテムが増える仕組みを実装するフック
+ * @param {number} maxTextLength - 最大文字数
+ * @param {number} maxItems - 最大アイテム数
+ * @returns returns
+ * @returns returns.value - inputタグのvalue
+ * @returns returns.items - 追加したアイテム
+ * @returns returns.isDisabled - これ以上アイテムを追加できなくするか
+ * @returns returns.onChange
+ * @returns returns.onKeyPress
+ * @returns returns.onClickAddButton
+ * @returns returns.onClickDeleteItemButton
+ */
 export const useTextItems = (maxTextLength: number, maxItems: number): UseTextItemsReturn => {
   const [items, setItems] = useState<string[]>([])
   const [value, setValue] = useState<string>('')
@@ -39,7 +52,7 @@ export const useTextItems = (maxTextLength: number, maxItems: number): UseTextIt
       onClickAddButton()
     }
   }
-  const onClickCrossButton = (item: string) => {
+  const onClickDeleteItemButton = (item: string) => {
     const index = items.indexOf(item)
     items.splice(index, 1)
     setItems(items.slice())
@@ -50,5 +63,13 @@ export const useTextItems = (maxTextLength: number, maxItems: number): UseTextIt
     setIsDisabled(shouldDisabled)
   }, [items])
 
-  return { value, items, isDisabled, onChange, onKeyPress, onClickAddButton, onClickCrossButton }
+  return {
+    value,
+    items,
+    isDisabled,
+    onChange,
+    onKeyPress,
+    onClickAddButton,
+    onClickDeleteItemButton,
+  }
 }

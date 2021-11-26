@@ -10,6 +10,11 @@ type UseSignInFormReturn<T> = {
   isDisabled: boolean
 }
 
+/**
+ * react-hook-formを使ったログイン処理の初期設定を行う
+ * @returns {boolean} isDisabled - ログインボタンをdisabledにするか
+ * @returns {Object} { register, handleSubmit, getValues } - react-hook-fromの公式ページを参照
+ */
 export const useSignInForm = (): UseSignInFormReturn<FormInputs> => {
   const {
     register,
