@@ -7,7 +7,7 @@ import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
 import { useImageResize } from 'hooks/useImageResize'
-import { useConvertToDottedImage } from 'hooks/useConvertToDottedImage'
+import { useDataUrlToBlob } from 'hooks/useDataUrlToBlob'
 import { useBlobToFile } from 'hooks/useBlobToFile'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
@@ -27,11 +27,11 @@ export const SignUp: FC = () => {
   const [interests, setInterests] = useState<string[]>([])
   const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
     SIGN_UP_CAMERA,
-    60,
+    300,
   )
-  const { dottedImage } = useConvertToDottedImage(imageUrl, 50, canvasContext)
+  const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
   const { innerWidth } = useWatchInnerAspect()
-  const { fileData } = useBlobToFile(dottedImage.blob)
+  const { fileData } = useBlobToFile(blobData)
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })
 
   const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
@@ -54,7 +54,7 @@ export const SignUp: FC = () => {
           <StyledH1>新規登録書</StyledH1>
           <StyledFormWrapper>
             <StyledImageInputField
-              dottedImage={dottedImage.URLScheme}
+              dottedImage={imageUrl}
               defaultSrc={SIGN_UP_CAMERA}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
