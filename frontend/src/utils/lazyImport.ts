@@ -5,6 +5,10 @@ import React, { FC } from 'react'
  *
  * @param {() => Promise<I>} factory
  * @param {K} name
+* @example
+  ```js
+    const { MyPage } = lazyImport(() => import('pages/mypage/MyPage'), 'MyPage')
+  ```
  */
 export const lazyImport = <
   T extends React.ComponentType<FC>,
