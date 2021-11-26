@@ -1,12 +1,11 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type Props = {}
 
 export const ProjectListHeader: FC = () => {
-  const navigate = useNavigate()
-
   return (
     <StyledHeaderWrapper>
       <StyledLogoWrapper>
@@ -38,20 +37,20 @@ const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 28px;
+  padding: 0 ${calculateVwBasedOnFigma(28)};
   width: 100vw;
-  height: 70px;
+  height: ${({ theme }) => theme.HEADER_HEIGHT};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
-  height: 43px;
+  height: ${calculateVwBasedOnFigma(43)};
 `
 
 const StyledBellWrapper = styled.div`
-  margin-right: 16px;
+  margin-right: ${calculateVwBasedOnFigma(16)};
   position: relative;
   display: flex;
   justify-content: center;
@@ -61,10 +60,10 @@ const StyledBellWrapper = styled.div`
 
 const StyledNotificationIcon = styled.div`
   position: absolute;
-  top: -2px;
-  right: 1px;
-  width: 9px;
-  height: 9px;
+  top: ${calculateVwBasedOnFigma(-2)};
+  right: ${calculateVwBasedOnFigma(1)};
+  width: ${calculateVwBasedOnFigma(9)};
+  height: ${calculateVwBasedOnFigma(9)};
   background: ${({ theme }) => theme.COLORS.DODGER_BLUE};
   border: solid 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 50%;
@@ -73,18 +72,18 @@ const StyledNotificationIcon = styled.div`
 const StyledUserMenuIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 0 4px;
+  gap: 0 ${calculateVwBasedOnFigma(4)};
   cursor: pointer;
 `
 
 const StyledUserMenuIcon = styled.div`
-  width: 32px;
-  height: 32px;
+  width: ${calculateVwBasedOnFigma(32)};
+  height: ${calculateVwBasedOnFigma(32)};
   border-radius: 50%;
 
   img {
-    width: 32px;
-    height: 32px;
+    width: ${calculateVwBasedOnFigma(32)};
+    height: ${calculateVwBasedOnFigma(32)};
     border-radius: 50%;
     object-fit: cover;
   }

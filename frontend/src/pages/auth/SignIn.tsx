@@ -133,10 +133,10 @@ const StyledLink = styled(Link)`
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: fixed;
-  top: 0;
+  top: ${({ theme }) => theme.HEADER_HEIGHT};
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
   background-image: url('register-background.png');
   background-size: cover;
   background-position: 50% 100%;

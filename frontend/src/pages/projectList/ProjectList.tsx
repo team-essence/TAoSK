@@ -90,21 +90,22 @@ export const ProjectList: FC = () => {
   if (!currentUser) return <Navigate to="/signup" />
 
   return (
-    <StyledProjectListPageContainer>
+    <>
       <ProjectListHeader />
+      <StyledProjectListPageContainer>
+        <StyledProjectListContainer>
+          <StyledProjectListWrapper>
+            <StyledProjectCreateButton />
 
-      <StyledProjectListContainer>
-        <StyledProjectListWrapper>
-          <StyledProjectCreateButton />
+            <StyledProjectList>
+              <StyledProject></StyledProject>
+            </StyledProjectList>
+          </StyledProjectListWrapper>
+        </StyledProjectListContainer>
 
-          <StyledProjectList>
-            <StyledProject></StyledProject>
-          </StyledProjectList>
-        </StyledProjectListWrapper>
-      </StyledProjectListContainer>
-
-      <StyledProjectDetailContainer></StyledProjectDetailContainer>
-      {/* <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
+        <StyledProjectDetailContainer></StyledProjectDetailContainer>
+        <StyledProjectListBackground />
+        {/* <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧</p>
 
       {invitations.data?.invitations.map((invitation, index) => (
@@ -165,27 +166,22 @@ export const ProjectList: FC = () => {
           プロジェクト作成するよボタン
         </button> */}
 
-      {/* <MonsterAvatar />
+        {/* <MonsterAvatar />
       </TestModalContainer> */}
-    </StyledProjectListPageContainer>
+      </StyledProjectListPageContainer>
+    </>
   )
 }
 
 const StyledProjectListPageContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  background: url('images/project-list-page_background.webp');
-  background-attachment: fixed;
-  background-position: center;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
   display: flex;
+  width: 100%;
 `
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  top: ${calculateVwBasedOnFigma(72)};
-  left: 0;
+  margin-top: ${calculateVwBasedOnFigma(3)};
   width: ${calculateVwBasedOnFigma(437)};
   height: ${calculateVwBasedOnFigma(770)};
   background: url('project-list_background.png');
@@ -215,14 +211,28 @@ const StyledProjectList = styled.ul``
 const StyledProject = styled.li``
 
 const StyledProjectDetailContainer = styled.div`
+  position: relative;
+  margin-top: ${calculateVwBasedOnFigma(3)};
+  width: ${calculateVwBasedOnFigma(971)};
+  height: ${calculateVwBasedOnFigma(823)};
   background: url('project-detail_background.png');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  width: ${calculateVwBasedOnFigma(971)};
-  height: ${calculateVwBasedOnFigma(823)};
-  position: relative;
-  top: ${calculateVwBasedOnFigma(72)};
+`
+
+const StyledProjectListBackground = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+  position: fixed;
+  top: ${({ theme }) => theme.HEADER_HEIGHT};
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
+  background: url('images/project-list-page_background.webp');
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 `
 
 const TestModalContainer = styled.div`

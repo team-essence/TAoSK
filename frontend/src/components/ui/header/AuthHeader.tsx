@@ -54,7 +54,7 @@ const StyledHeaderWrapper = styled.div`
   align-items: center;
   padding: 0 ${calculateVwBasedOnFigma(28)};
   width: 100vw;
-  height: ${calculateVwBasedOnFigma(70)};
+  height: ${({ theme }) => theme.HEADER_HEIGHT};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 const StyledLogoWrapper = styled.div`
