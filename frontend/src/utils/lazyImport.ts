@@ -5,7 +5,8 @@ import React, { FC } from 'react'
  *
  * @param {() => Promise<I>} factory
  * @param {K} name
-* @example
+ * @return {*}  
+ * @example
   ```js
     const { MyPage } = lazyImport(() => import('pages/mypage/MyPage'), 'MyPage')
   ```
