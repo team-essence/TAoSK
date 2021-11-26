@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
 import { SIGN_UP_CAMERA } from 'consts/defaultImages'
 import { occupationList } from 'consts/occupationList'
-import { useNavigateUser } from 'hooks/useNavigateUser'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
@@ -23,15 +22,14 @@ import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
-  useNavigateUser()
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
-  const { canvasContext, resizedImageStr, initializeUploadImg, handleUploadImg } = useImageResize(
+  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
     SIGN_UP_CAMERA,
     60,
   )
-  const { dottedImage } = useConvertToDottedImage(resizedImageStr, 50, canvasContext)
+  const { dottedImage } = useConvertToDottedImage(imageUrl, 50, canvasContext)
   const { innerWidth } = useWatchInnerAspect()
   const { fileData } = useBlobToFile(dottedImage.blob)
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })

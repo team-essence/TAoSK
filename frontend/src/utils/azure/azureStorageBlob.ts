@@ -5,10 +5,21 @@ const containerName = 'haltokyo-container'
 const sasToken = env.getAzureStorageApiEndpoint().sasToken
 const storageAccountName = env.getAzureStorageApiEndpoint().storageAccountName
 
+/**
+ * AzureStorageに接続されているか
+ *
+ * @return {boolean}
+ */
 export const isStorageConfigured = () => {
   return !storageAccountName || !sasToken ? false : true
 }
 
+/**
+ * storageの画像を取得
+ *
+ * @param {ContainerClient} containerClient
+ * @return {*}
+ */
 const getBlobsInContainer = async (containerClient: ContainerClient) => {
   const returnedBlobUrls: string[] = []
 
@@ -21,6 +32,12 @@ const getBlobsInContainer = async (containerClient: ContainerClient) => {
   return returnedBlobUrls
 }
 
+/**
+ * storageに画像を保存
+ *
+ * @param {ContainerClient} containerClient
+ * @param {File} file
+ */
 const createBlobInContainer = async (containerClient: ContainerClient, file: File) => {
   const blobClient = containerClient.getBlockBlobClient(file.name)
   const options = { blobHTTPHeaders: { blobContentType: file.type } }
@@ -28,6 +45,12 @@ const createBlobInContainer = async (containerClient: ContainerClient, file: Fil
   await blobClient.uploadData(file, options)
 }
 
+/**
+ * アップロード完了後に画像を取得
+ *
+ * @param {File} file
+ * @return {*}
+ */
 export const uploadFileToBlob = async (file: File | null): Promise<string[]> => {
   if (!file) return []
 

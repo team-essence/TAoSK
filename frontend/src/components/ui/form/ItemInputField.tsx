@@ -20,8 +20,15 @@ type Props = {
 
 export const ItemInputField: FC<Props> = props => {
   const { className, label, placeholder, inputAspect, setItems } = props
-  const { value, items, isDisabled, onChange, onKeyPress, onClickAddButton, onClickCrossButton } =
-    useTextItems(max.TEXT_LENGTH, max.ITEMS)
+  const {
+    value,
+    items,
+    isDisabled,
+    onChange,
+    onKeyPress,
+    onClickAddButton,
+    onClickDeleteItemButton,
+  } = useTextItems(max.TEXT_LENGTH, max.ITEMS)
 
   useEffect(() => {
     setItems(items.slice())
@@ -65,7 +72,7 @@ export const ItemInputField: FC<Props> = props => {
       </StyledRow>
       <StyledItemsWrapper width={inputAspect.width}>
         {items.map((item, index) => (
-          <InputItem itemName={item} key={index} onClick={() => onClickCrossButton(item)} />
+          <InputItem itemName={item} key={index} onClick={() => onClickDeleteItemButton(item)} />
         ))}
       </StyledItemsWrapper>
     </StyledWrapper>

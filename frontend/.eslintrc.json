@@ -51,6 +51,7 @@
     "no-unreachable": "warn",
     // TypeScirpt なので prop-types は要らない
     "react/prop-types": "off",
+    "no-trailing-spaces": ["error", { "ignoreComments": true }],
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/ban-types": [
       "warn",

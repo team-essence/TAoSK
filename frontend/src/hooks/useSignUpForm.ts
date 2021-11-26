@@ -22,6 +22,17 @@ type UseSignUpFormReturn<T> = {
   trigger: UseFormTrigger<T>
 }
 
+/**
+ * react-hook-formを使った登録処理の初期設定を行う
+ * @returns {boolean} isDisabled - 登録ボタンをdisabledにするか
+ * @returns {Object} {
+ *  register,
+ *  handleSubmit,
+ *  getValues,
+ *  errors,
+ *  trigger
+ *  } - react-hook-fromの公式ページを参照
+ */
 export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
   const {
     register,
