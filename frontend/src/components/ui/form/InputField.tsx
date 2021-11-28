@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type StyledBoxProps = {
   width?: string
@@ -37,7 +37,7 @@ export const InputField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateVwBasedOnFigma(24)}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -58,7 +58,9 @@ export const InputField: FC<Props> = props => {
 }
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
-  margin-bottom: ${({ marginBottom }) => marginBottom};
+  ${({ marginBottom }) => generateStyleBasedOnFigma`
+      margin-bottom: ${marginBottom};
+  `}
 `
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${({ color }) => color};
@@ -70,14 +72,18 @@ StyledLabel.defaultProps = {
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
 const StyledInputWrapper = styled.div<StyledBoxProps>`
-  margin-top: ${calculateVwBasedOnFigma(4)};
+  ${generateStyleBasedOnFigma`
+    margin-top; 4px;
+  `}
   input {
-    width: ${({ width }) => width};
-    height: ${({ height }) => height};
-    padding-left: ${calculateVwBasedOnFigma(8)};
     border: ${({ border }) => border};
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
+    ${({ width, height }) => generateStyleBasedOnFigma`
+      width: ${width};
+      height: ${height};
+      padding-left: 8px;
+    `}
     &::placeholder {
       color: ${({ theme }) => theme.COLORS.GRAY};
     }
@@ -85,7 +91,7 @@ const StyledInputWrapper = styled.div<StyledBoxProps>`
 `
 StyledInputWrapper.defaultProps = {
   width: '100%',
-  height: calculateVwBasedOnFigma(40),
+  height: '40px',
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),

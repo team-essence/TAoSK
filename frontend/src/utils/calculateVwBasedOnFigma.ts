@@ -20,7 +20,7 @@ export const generateStyleBasedOnFigma = (
   targetStyleArray: TemplateStringsArray,
   ...interpolations: (string | undefined)[]
 ): FlattenSimpleInterpolation => {
-  const commaRegexp = /,(?=\d+px,)|(?<=,\d+px),/g // cssに適用されるinterpolationsの周りにカンマがついてしまうので、それを取り除く
+  const commaRegexp = /,(?=\d+(px|%),)|(?<=,\d+(px|%)),/g // cssに適用されるinterpolationsの周りにカンマがついてしまうので、それを取り除く
   const targetStyle = `${css(targetStyleArray, ...interpolations)}`.replace(commaRegexp, '')
   const oneLineStyle = targetStyle.replace(/\r\n|\n|\r/g, '')
   const declarations: string[] = oneLineStyle.split(';')
