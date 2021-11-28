@@ -15,12 +15,6 @@ export class NewTaskInput {
   @MaxLength(1024)
   overview: string;
 
-  //説明
-  @Field()
-  @IsString()
-  @MaxLength(255)
-  explanation: string;
-
   //技術力
   @Field()
   @IsInt()

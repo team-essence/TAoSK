@@ -69,7 +69,6 @@ type Task {
   id: ID!
   title: String!
   overview: String!
-  explanation: String!
   technology: Float!
   achievement: Float!
   solution: Float!
@@ -273,7 +272,6 @@ input UpdateTask {
 input NewTaskInput {
   title: String!
   overview: String!
-  explanation: String!
   technology: Float!
   achievement: Float!
   solution: Float!

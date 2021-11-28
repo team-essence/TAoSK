@@ -39,14 +39,6 @@ export class Task {
   @Field()
   overview: string;
 
-  //説明
-  @Column({
-    type: 'varchar',
-    length: 255,
-  })
-  @Field()
-  explanation: string;
-
   //技術力
   @Column({ type: 'int' })
   @Field()

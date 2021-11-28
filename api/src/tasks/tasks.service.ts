@@ -63,7 +63,6 @@ export class TasksService {
     const task = this.taskRepository.create({
       title: newTask.title,
       overview: newTask.overview,
-      explanation: newTask.explanation,
       technology: newTask.technology,
       achievement: newTask.achievement,
       solution: newTask.solution,
