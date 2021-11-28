@@ -5,7 +5,7 @@ import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
 import styled from 'styled-components'
@@ -38,7 +38,7 @@ export const SignIn: FC = () => {
 
             <StyledSignInButton
               text="ログイン"
-              aspect={{ width: calculateVwBasedOnFigma(120), height: calculateVwBasedOnFigma(32) }}
+              aspect={{ width: '120px', height: '32px' }}
               outerBgColor={
                 isDisabled
                   ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
@@ -88,29 +88,37 @@ const StyledSignIn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${calculateVwBasedOnFigma(730)};
   height: 100%;
-  margin: ${calculateVwBasedOnFigma(113)} 0;
-  padding: ${calculateVwBasedOnFigma(30)} 0 ${calculateVwBasedOnFigma(46)};
   background-image: url('sign-in-paper.png');
   background-size: 100% 100%;
+  ${generateStyleBasedOnFigma`
+    margin: 113px 0;
+    padding: 30px 0 46px;
+    width: 730px;
+  `}
 `
 const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: ${calculateVwBasedOnFigma(480)};
+  ${generateStyleBasedOnFigma`
+    width: 480px;
+  `}
 `
 const StyledLogoImg = styled.img`
-  height: ${calculateVwBasedOnFigma(170)};
+  ${generateStyleBasedOnFigma`
+    height: 170px;
+  `}
 `
 const StyledParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${calculateVwBasedOnFigma(13)};
-  margin-top: ${calculateVwBasedOnFigma(24)};
+  ${generateStyleBasedOnFigma`
+    gap: 13px;
+    margin-top: 24px;
+  `}
 `
 const StyledTextLineWrapper = styled.div`
   display: flex;

@@ -5,7 +5,7 @@ import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>
@@ -52,8 +52,8 @@ export const ItemInputField: FC<Props> = props => {
         <CoarseButton
           text="追加"
           aspect={{
-            width: calculateVwBasedOnFigma(64),
-            height: calculateVwBasedOnFigma(40),
+            width: '64px',
+            height: '40px',
           }}
           outerBgColor={
             isDisabled
@@ -88,23 +88,29 @@ const StyledRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: ${calculateVwBasedOnFigma(16)};
-  margin-top: ${calculateVwBasedOnFigma(4)};
+  ${generateStyleBasedOnFigma`
+    gap: 16px;
+    margin-top: 4px;
+  `}
 `
 const StyledItemsNum = styled.span`
-  padding-left: ${calculateVwBasedOnFigma(8)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  ${generateStyleBasedOnFigma`
+    padding-left: 8px;
+  `}
 `
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
   color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
 `
 const StyledInput = styled.input<InputAspectStyles>`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
-  padding-left: ${calculateVwBasedOnFigma(8)};
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
+  ${({ width, height }) => generateStyleBasedOnFigma`
+    width: ${width};
+    height: ${height};
+    padding-left: 8px;
+  `}
   &::placeholder {
     color: ${({ theme }) => theme.COLORS.GRAY};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
@@ -114,7 +120,9 @@ const StyledItemsWrapper = styled.div<{ width: string }>`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: ${calculateVwBasedOnFigma(12)};
-  margin-top: ${calculateVwBasedOnFigma(12)};
-  width: ${({ width }) => width};
+  ${({ width }) => generateStyleBasedOnFigma`
+    gap: 12px;
+    margin-top: 12px;
+    width: ${width};
+  `}
 `
