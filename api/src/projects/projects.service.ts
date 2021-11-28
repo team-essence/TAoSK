@@ -127,38 +127,7 @@ export class ProjectsService {
       .leftJoinAndSelect('groups.user', 'groupsUser')
       .where('project.id=:id', { id })
       .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
-      // .select('project')
-      // .addSelect('monster')
-      // .addSelect('specie')
-      // .addSelect('invitations')
-      // .addSelect('lists')
-      // .addSelect('listSorts')
-      // .addSelect('tasks')
-      // .addSelect('allocations')
-      // .addSelect('chats')
-      // .addSelect('allocationsUser')
-      // .addSelect('gameLogs')
-      // .addSelect('groups')
-      // .addSelect('groupsUser')
-      // .addSelect('COUNT(chats.id) as chatCount')
-      // .groupBy('project.id')
       .getOne();
-
-    // .findOne(id, {
-    //   relations: [
-    //     'monster',
-    //     'monster.specie',
-    //     'invitations',
-    //     'lists',
-    //     'lists.listSorts',
-    //     'lists.tasks',
-    //     'lists.tasks.allocations',
-    //     'lists.tasks.allocations.user',
-    //     'gameLogs',
-    //     'groups',
-    //     'groups.user',
-    //   ],
-    // });
 
     if (!project) throw new NotFoundException();
 
