@@ -65,6 +65,7 @@ export const theme = {
     MINE_SHAFT2: '#333333',
     ZINNWALDITE: '#EAC4A6',
     MONDO: '#463E29',
+    SHIP_GRAY: '#38373C',
   },
 } as const
 

@@ -21,6 +21,7 @@ import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
 import { ICON_TYPE, UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { UserCount } from 'components/ui/avatar/UserCount'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -102,15 +103,15 @@ export const ProjectList: FC = () => {
 
   if (!currentUser) return <Navigate to="/signup" />
 
-  // if (!userData.data) return <Loading />
-
   return (
     <>
       <ProjectListHeader />
       <StyledProjectListPageContainer>
         <StyledProjectListContainer>
           <StyledProjectListWrapper>
-            <StyledProjectCreateButton />
+            <StyledProjectCreateButton>
+              <img src="create-project_button.png" alt="プロジェクト作成" />
+            </StyledProjectCreateButton>
 
             <StyledProjectList>
               <StyledProject></StyledProject>
@@ -153,15 +154,22 @@ export const ProjectList: FC = () => {
 
             <StyledProjectInfoContainer>
               {projectInfoTitle('特徴')}
-              <p>
+              <p style={{ marginBottom: 12 }}>
                 モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。
               </p>
               {projectInfoTitle('依頼内容')}
-              <p>
+              <p style={{ marginBottom: 12 }}>
                 依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。
               </p>
               {projectInfoTitle('パーティーメンバー')}
-              <UserAvatarIcon iconType={ICON_TYPE.LIST} />
+              <StyledPartyContainer>
+                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
+                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
+                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
+                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
+                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
+                <UserCount userCount={3} />
+              </StyledPartyContainer>
             </StyledProjectInfoContainer>
           </StyledProjectDetail>
         </StyledProjectDetailContainer>
@@ -238,6 +246,7 @@ const StyledProjectListPageContainer = styled.div`
   padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
   display: flex;
   width: 100%;
+  color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
 `
 
 const StyledProjectListContainer = styled.div`
@@ -262,10 +271,11 @@ const StyledProjectListWrapper = styled.div`
 `
 
 const StyledProjectCreateButton = styled.button`
-  width: 100%;
-  height: ${calculateVhBasedOnFigma(60)};
-  background: url('svg/create-project_button.svg') center center no-repeat;
-  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: ${calculateVwBasedOnFigma(314)};
 `
 
 const StyledProjectList = styled.ul``
@@ -415,6 +425,11 @@ const StyledProjectInfoTitleContainer = styled.div`
 const StyledProjectInfoTitle = styled.h3`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+`
+
+const StyledPartyContainer = styled.div`
+  display: flex;
+  gap: 0 ${calculateVwBasedOnFigma(6)};
 `
 
 const TestModalContainer = styled.div`
