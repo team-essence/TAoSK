@@ -20,7 +20,7 @@ export const generateStyleBasedOnFigma = (
   targetStyleArray: TemplateStringsArray,
   ...interpolations: (string | undefined)[]
 ): FlattenSimpleInterpolation => {
-  const commaRegexp = /,(?=\d+(px|%),)|(?<=,\d+(px|%)),/g // cssに適用されるinterpolationsの周りにカンマがついてしまうので、それを取り除く
+  const commaRegexp = /,(?=\d+(?:\.\d+)?(px|%),)|(?<=,\d+(?:\.\d+)?(px|%)),/g // cssに適用されるinterpolationsの周りにカンマがついてしまうので、それを取り除く
   const targetStyle = `${css(targetStyleArray, ...interpolations)}`.replace(commaRegexp, '')
   const oneLineStyle = targetStyle.replace(/\r\n|\n|\r/g, '')
   const declarations: string[] = oneLineStyle.split(';')
@@ -35,7 +35,7 @@ export const generateStyleBasedOnFigma = (
 }
 
 const convertAllPxIntoVwReducer = (preDeclaration: string, declaration: string) => {
-  const pxStrArray = declaration.match(/\d+(?=px)/g)
+  const pxStrArray = declaration.match(/\d+(?:\.\d+)?(?=px)/g)
   if (!pxStrArray || !pxStrArray[0]) return preDeclaration + ''
   const vwDeclaration = pxStrArray.reduce(convertPxIntoVwReducer, declaration)
   return preDeclaration + vwDeclaration + ';'

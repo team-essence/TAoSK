@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CrossButton } from 'components/ui/button/CrossButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type Props = {
   className?: string
@@ -51,29 +51,36 @@ const StyledTextWrapper = styled.div`
   align-items: center;
 `
 const StyledText = styled.span`
-  padding: ${calculateVwBasedOnFigma(2)} ${calculateVwBasedOnFigma(10)};
+  ${generateStyleBasedOnFigma`
+    padding: 2px 10px;
+  `}
 `
 const StyledCrossButton = styled(CrossButton)`
   height: 100%;
-  padding: ${calculateVwBasedOnFigma(10)} ${calculateVwBasedOnFigma(7)}
-    ${calculateVwBasedOnFigma(10)} 0;
+  ${generateStyleBasedOnFigma`
+    padding: 10px 7px 10px 0;
+  `}
   svg {
-    width: ${calculateVwBasedOnFigma(8)};
-    height: ${calculateVwBasedOnFigma(8)};
+    ${generateStyleBasedOnFigma`
+      width: 8px;
+      height: 8px;
+    `}
   }
 `
 const StyledInnerBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
   opacity: 0.8;
-  top: calc(50% + ${calculateVwBasedOnFigma(0.5)});
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  width: calc(100% - ${calculateVwBasedOnFigma(4)});
-  height: calc(100% - ${calculateVwBasedOnFigma(4)});
   border-radius: 2px;
   background-image: url('light-grain.png');
   background-size: cover;
+  ${generateStyleBasedOnFigma`
+    top: calc(50% + 0.5px);
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+  `}
 `
