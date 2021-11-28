@@ -62,6 +62,9 @@ export const theme = {
     SEA_PINK: '#EFACAC',
     TOTEM_POLE: '#AC0D0D',
     SILVER2: '#C3C2C2',
+    MINE_SHAFT2: '#333333',
+    ZINNWALDITE: '#EAC4A6',
+    MONDO: '#463E29',
   },
 } as const
 

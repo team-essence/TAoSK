@@ -20,6 +20,7 @@ import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
+import { ICON_TYPE, UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -160,6 +161,7 @@ export const ProjectList: FC = () => {
                 依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。
               </p>
               {projectInfoTitle('パーティーメンバー')}
+              <UserAvatarIcon iconType={ICON_TYPE.LIST} />
             </StyledProjectInfoContainer>
           </StyledProjectDetail>
         </StyledProjectDetailContainer>
