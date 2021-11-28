@@ -12,7 +12,7 @@ export class NewTaskInput {
   //概要
   @Field()
   @IsString()
-  @MaxLength(255)
+  @MaxLength(1024)
   overview: string;
 
   //説明

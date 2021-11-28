@@ -34,7 +34,7 @@ export class Task {
   //概要
   @Column({
     type: 'varchar',
-    length: 255,
+    length: 1024,
   })
   @Field()
   overview: string;
