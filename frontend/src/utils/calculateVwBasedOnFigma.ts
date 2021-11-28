@@ -2,19 +2,27 @@ import { css, FlattenSimpleInterpolation } from 'styled-components'
 
 const FIGMA_WIDTH_PX = 1440
 
-type pxStr = `${number}px`
-export const calculateVwBasedOnFigma = (px: number | pxStr) => {
-  const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
-
-  return `${(numPx / FIGMA_WIDTH_PX) * 100}vw`
-}
-
 /**
  * Figma の画面設計で使われている画面の width = 1440px に基づき、
  * 画面サイズ 1440px 未満の場合は Figma 上のサイズを vw に変換して表示し、
  * 1440px以上の場合は画面設計通りのサイズを表示する styled-component の css を生成する。
- * @param {TemplateStringsArray} targetStyle - TemplateStringsArray。バッククォートで指定する
+ * @param {TemplateStringsArray} targetStyleArray - TemplateStringsArray。バッククォートで指定する
+ * @param {(...(string | undefined)[])} interpolations - ドル記号と波括弧で囲われたプレースホルダー
  * @returns {FlattenSimpleInterpolation} - 生成されたcss
+ * @example
+ * 下記が生成される
+ * \@media screen and (max-width: 1440px) { width: 25vw; }
+ * width: 360px;
+    ```tsx
+      <StyledDiv width='360px'>
+
+      const StyledDiv = styled.div<{ width: string }>`
+        ${({ width }) => generateStyleBasedOnFigma`
+          width: ${width};
+        `}
+      `
+    }
+    ```
  */
 export const generateStyleBasedOnFigma = (
   targetStyleArray: TemplateStringsArray,
