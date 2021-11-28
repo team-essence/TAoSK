@@ -4,14 +4,14 @@
  * @param {number} listIndex
  * @param {number} listLength
  * @param {string} param
- * @return {string} file path
+ * @return {string} filePath
  */
-export const changeWeapon = (listIndex: number, listLength: number, param: string) => {
+export const changeWeaponImage = (listIndex: number, listLength: number, param: string) => {
   let filePath = ''
   if (listIndex === 0) {
-    filePath = `/images/weapon/${param}.svg`
+    filePath = `/svg/weapon/${param}.svg`
   } else if (listIndex < listLength && listIndex !== listLength - 1) {
-    filePath = `/images/weapon/progress-${param}.svg`
+    filePath = `/svg/weapon/progress-${param}.svg`
   } else {
     filePath = ''
   }

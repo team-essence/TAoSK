@@ -1,14 +1,11 @@
 import React, { FC } from 'react'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { Task } from 'types/task'
-import { useChangeDeadlineImage } from 'hooks/useChangeDeadlineImage'
-import { changeWeapon } from 'utils/changeWeapon'
+import { changeWeaponImage } from 'utils/changeWeaponImage'
+import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import styled from 'styled-components'
 
-type Props = {
-  listIndex: number
-  listLength: number
-} & Omit<Task, 'vertical_sort'>
+type Props = { listIndex: number; listLength: number } & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FC<Props> = ({
   title,
@@ -22,8 +19,6 @@ export const TaskCard: FC<Props> = ({
   listLength,
   end_date,
 }) => {
-  const deadlineImage = useChangeDeadlineImage(end_date)
-
   const params = [
     { param: 'technology', value: technology },
     { param: 'achievement', value: achievement },
@@ -40,9 +35,12 @@ export const TaskCard: FC<Props> = ({
         <StyledTitle>{title}</StyledTitle>
         <StyledFlexContainer>
           <div>
-            <img src={deadlineImage} alt="warning" width="14" />
+            <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
           </div>
-          <StyledWeaponImage src={changeWeapon(listIndex, listLength, max.param)} alt="weapon" />
+          <StyledWeaponImage
+            src={changeWeaponImage(listIndex, listLength, max.param)}
+            alt="weapon"
+          />
         </StyledFlexContainer>
       </StyledInnerWrap>
     </StyledContainer>
@@ -75,6 +73,11 @@ const StyledTitle = styled.h3`
 const StyledWeaponImage = styled.img`
   aspect-ratio: 1 / 1;
   width: ${calculateVwBasedOnFigma(37)};
+`
+
+const StyledDeadlineImage = styled.img`
+  aspect-ratio: 1 / 1;
+  width: ${calculateVwBasedOnFigma(14)};
 `
 
 const StyledFlexContainer = styled.div`
