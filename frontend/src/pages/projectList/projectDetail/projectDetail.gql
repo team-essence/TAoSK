@@ -29,15 +29,14 @@ query GetProject($id: Float!) {
 
       tasks {
         id
+        title
         overview
-        explanation
         technology
         achievement
         solution
         motivation
         plan
         design
-        weight
         vertical_sort
         end_date
 
@@ -87,15 +86,14 @@ query GetListsByProjectId($projectId: String!) {
 
     tasks {
       id
+      title
       overview
-      explanation
       technology
       achievement
       solution
       motivation
       plan
       design
-      weight
       vertical_sort
       end_date
 
@@ -139,15 +137,14 @@ mutation CreateList($name: String!, $project_id: Float!, $task_list: Float!) {
 
     tasks {
       id
+      title
       overview
-      explanation
       technology
       achievement
       solution
       motivation
       plan
       design
-      weight
       vertical_sort
       end_date
 

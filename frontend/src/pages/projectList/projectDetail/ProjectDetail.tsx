@@ -1,5 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Navigate, NavLink, useParams } from 'react-router-dom'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+  resetServerContext,
+} from 'react-beautiful-dnd'
+import styled from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import {
@@ -11,25 +19,18 @@ import {
   useCreateListMutation,
   useUpdateListSortMutation,
 } from './projectDetail.gen'
-import styled from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
-import { group } from 'console'
+import date from 'utils/date/date'
+import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
-import toast from 'utils/toast/toast'
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-  resetServerContext,
-} from 'react-beautiful-dnd'
-import { listType, tasksType } from 'types/list'
+import { List } from 'types/list'
+import { Task } from 'types/task'
 import { UpdateTask } from 'types/graphql.gen'
-import date from 'utils/date/date'
 import { DropType } from 'consts/dropType'
+import { TaskCard } from 'components/ui/card/TaskCard'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -43,7 +44,7 @@ export const ProjectDetail: FC = () => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
       })
 
-      const sortList: listType[] = data.getProjectById.lists.map(list => {
+      const sortList: List[] = data.getProjectById.lists.map(list => {
         const tasks = list.tasks.map(task => {
           const allocations = task.allocations.map(allocation => {
             return {
@@ -55,15 +56,14 @@ export const ProjectDetail: FC = () => {
 
           return {
             id: task.id,
+            title: task.title,
             overview: task.overview,
-            explanation: task.explanation,
             technology: task.technology,
             achievement: task.achievement,
             solution: task.solution,
             motivation: task.motivation,
             plan: task.plan,
             design: task.design,
-            weight: task.weight,
             vertical_sort: task.vertical_sort,
             end_date: task.end_date,
             allocations,
@@ -132,22 +132,21 @@ export const ProjectDetail: FC = () => {
 
         return {
           id: task.id,
+          title: task.title,
           overview: task.overview,
-          explanation: task.explanation,
           technology: task.technology,
           achievement: task.achievement,
           solution: task.solution,
           motivation: task.motivation,
           plan: task.plan,
           design: task.design,
-          weight: task.weight,
           vertical_sort: task.vertical_sort,
           end_date: task.end_date,
           allocations,
         }
       })
 
-      const newList: listType = {
+      const newList: List = {
         id: newListData.id,
         list_id: newListData.list_id,
         sort_id: newListData.listSorts[0].id,
@@ -192,7 +191,7 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const [list, setList] = useState<listType[]>([])
+  const [list, setList] = useState<List[]>([])
   const debouncedInputText = useDebounce(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
@@ -258,19 +257,19 @@ export const ProjectDetail: FC = () => {
     setSelectUserIds(selectUserIds => [...selectUserIds, userId])
   }
 
-  const removeFromList = (list: tasksType[], index: number): [tasksType, tasksType[]] => {
+  const removeFromList = (list: Task[], index: number): [Task, Task[]] => {
     const result = Array.from(list)
     const [removed] = result.splice(index, 1)
     return [removed, result]
   }
 
-  const addToList = (list: tasksType[], index: number, element: tasksType) => {
+  const addToList = (list: Task[], index: number, element: Task) => {
     const result = Array.from(list)
     result.splice(index, 0, element)
     return result
   }
 
-  const reorder = (array: listType[], startIndex: number, endIndex: number) => {
+  const reorder = (array: List[], startIndex: number, endIndex: number) => {
     const result = Array.from(array)
 
     const previousItem = result[endIndex]
@@ -374,15 +373,16 @@ export const ProjectDetail: FC = () => {
     addTask({
       variables: {
         newTask: {
+          title:
+            '心拍数と集中力を測定してfirestore上に送れるようにする心拍数と集中力を測定してfirestore上に送れるようにする',
           overview: 'hoge',
-          explanation: 'hogehoge',
-          technology: 0,
-          achievement: 0,
-          solution: 0,
-          motivation: 0,
-          plan: 0,
-          design: 0,
-          weight: 0,
+          // 一旦ステータスはランダムにした
+          technology: Math.floor(Math.random() * 11),
+          achievement: Math.floor(Math.random() * 11),
+          solution: Math.floor(Math.random() * 11),
+          motivation: Math.floor(Math.random() * 11),
+          plan: Math.floor(Math.random() * 11),
+          design: Math.floor(Math.random() * 11),
           vertical_sort: list[list_id].tasks.length,
           end_date: '2021-12-23',
           project_id: id as string,
@@ -518,7 +518,7 @@ export const ProjectDetail: FC = () => {
                                 ref={listProvided.innerRef}
                                 {...listProvided.droppableProps}
                                 style={{
-                                  width: '300px',
+                                  width: '400px',
                                   border: 'solid',
                                   minHeight: '300px',
                                   padding: '20px',
@@ -533,8 +533,31 @@ export const ProjectDetail: FC = () => {
                                         ref={taskProvided.innerRef}
                                         {...taskProvided.draggableProps}
                                         {...taskProvided.dragHandleProps}>
-                                        <div>
+                                        <TaskCard
+                                          listIndex={listIndex}
+                                          listLength={length}
+                                          id={task.id}
+                                          title={task.title}
+                                          overview={task.overview}
+                                          technology={task.technology}
+                                          achievement={task.achievement}
+                                          solution={task.solution}
+                                          motivation={task.motivation}
+                                          design={task.design}
+                                          plan={task.plan}
+                                          allocations={task.allocations}
+                                          end_date={task.end_date}
+                                        />
+                                        {/* <div>
                                           <h2>{task.overview}</h2>
+                                        </div>
+                                        <div>
+                                          <p>{task.solution}</p>
+                                          <p>{task.technology}</p>
+                                          <p>{task.achievement}</p>
+                                          <p>{task.allocations}</p>
+                                          <p>{task.design}</p>
+                                          <p>{task.plan}</p>
                                         </div>
                                         <div>
                                           <h4>期限</h4>
@@ -545,7 +568,7 @@ export const ProjectDetail: FC = () => {
                                               ? 'yellow'
                                               : 'ノーマル'}
                                           </p>
-                                        </div>
+                                        </div> */}
                                       </li>
                                     )}
                                   </Draggable>
