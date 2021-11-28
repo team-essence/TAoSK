@@ -13,16 +13,21 @@ export const calculateVwBasedOnFigma = (px: number | pxStr) => {
  * Figma の画面設計で使われている画面の width = 1440px に基づき、
  * 画面サイズ 1440px 未満の場合は Figma 上のサイズを vw に変換して表示し、
  * 1440px以上の場合は画面設計通りのサイズを表示する styled-component の css を生成する。
- * @param {string} targetStyle - string
- * @returns {ThemedCssFunction<DefaultTheme>} -
+ * @param {TemplateStringsArray} targetStyle - TemplateStringsArray。バッククォートで指定する
+ * @returns {FlattenSimpleInterpolation} - 生成されたcss
  */
-export const generateStyleBasedOnFigma = (targetStyle: string): FlattenSimpleInterpolation => {
+export const generateStyleBasedOnFigma = (
+  targetStyleArray: TemplateStringsArray,
+  ...interpolations: (string | undefined)[]
+): FlattenSimpleInterpolation => {
+  const commaRegexp = /,(?=\d+px,)|(?<=,\d+px),/g // cssに適用されるinterpolationsの周りにカンマがついてしまうので、それを取り除く
+  const targetStyle = `${css(targetStyleArray, ...interpolations)}`.replace(commaRegexp, '')
   const oneLineStyle = targetStyle.replace(/\r\n|\n|\r/g, '')
-  const declarations = oneLineStyle.split(';')
+  const declarations: string[] = oneLineStyle.split(';')
   const vwDeclarations: string = declarations.reduce(convertAllPxIntoVwReducer, '')
 
   return css`
-    @media (max-width: ${FIGMA_WIDTH_PX}px) {
+    @media screen and (max-width: ${FIGMA_WIDTH_PX}px) {
       ${vwDeclarations}
     }
     ${targetStyle}
