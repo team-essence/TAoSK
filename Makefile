@@ -24,6 +24,8 @@ init-database:
 	docker compose exec db-server mysql -u root -p -e'CREATE DATABASE IF NOT EXISTS taosk_db; GRANT ALL PRIVILEGES ON taosk_db.* TO develop@"%";'
 sql:
 	docker compose exec db-server bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+seeding-run:
+	cd api && yarn build && cd .. && docker compose exec api-server bash -c "yarn run typeorm:seed:run"
 create-model:
 	cd api && nest g mo ${name}
 create-resolver:
