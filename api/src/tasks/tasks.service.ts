@@ -61,6 +61,7 @@ export class TasksService {
     if (!list) throw new NotFoundException();
 
     const task = this.taskRepository.create({
+      title: newTask.title,
       overview: newTask.overview,
       explanation: newTask.explanation,
       technology: newTask.technology,
@@ -69,7 +70,6 @@ export class TasksService {
       motivation: newTask.motivation,
       plan: newTask.plan,
       design: newTask.design,
-      weight: newTask.weight,
       vertical_sort: newTask.vertical_sort,
       end_date: new Date(newTask.end_date),
       project,

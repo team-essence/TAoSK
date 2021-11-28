@@ -3,6 +3,12 @@ import { MaxLength, IsString, IsInt, IsDate } from 'class-validator';
 
 @InputType()
 export class NewTaskInput {
+  //タイトル
+  @Field()
+  @IsString()
+  @MaxLength(255)
+  title: string;
+
   //概要
   @Field()
   @IsString()
@@ -44,11 +50,6 @@ export class NewTaskInput {
   @Field()
   @IsInt()
   design: number;
-
-  //重み
-  @Field()
-  @IsInt()
-  weight: number;
 
   //縦並び順
   @Field()

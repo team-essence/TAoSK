@@ -23,6 +23,14 @@ export class Task {
   @Field(() => ID)
   id: number;
 
+  //タイトル
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
+  @Field()
+  title: string;
+
   //概要
   @Column({
     type: 'varchar',
@@ -68,11 +76,6 @@ export class Task {
   @Column({ type: 'int' })
   @Field()
   design: number;
-
-  //重み
-  @Column({ type: 'int', unsigned: true })
-  @Field()
-  weight: number;
 
   //縦並び順
   @Column({ type: 'int' })

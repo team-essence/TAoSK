@@ -67,6 +67,7 @@ type Allocation {
 
 type Task {
   id: ID!
+  title: String!
   overview: String!
   explanation: String!
   technology: Float!
@@ -75,7 +76,6 @@ type Task {
   motivation: Float!
   plan: Float!
   design: Float!
-  weight: Float!
   vertical_sort: Float!
   end_date: DateTime!
   project: Project!
@@ -271,6 +271,7 @@ input UpdateTask {
 }
 
 input NewTaskInput {
+  title: String!
   overview: String!
   explanation: String!
   technology: Float!
@@ -279,7 +280,6 @@ input NewTaskInput {
   motivation: Float!
   plan: Float!
   design: Float!
-  weight: Float!
   vertical_sort: Float!
   end_date: String!
   project_id: String!
