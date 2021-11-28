@@ -80,6 +80,7 @@ type Task {
   project: Project!
   list: List!
   chats: [Chat!]!
+  chatCount: Float!
   allocations: [Allocation!]!
   created_at: DateTime!
   updated_at: DateTime!

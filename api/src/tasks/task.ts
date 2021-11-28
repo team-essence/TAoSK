@@ -96,6 +96,9 @@ export class Task {
   @Field(() => [Chat])
   chats: Chat[];
 
+  @Field()
+  chatCount: number;
+
   @OneToMany(() => Allocation, (allocation) => allocation.task)
   @Field(() => [Allocation])
   allocations: Allocation[];
