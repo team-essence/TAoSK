@@ -54,9 +54,9 @@ const StyledHeaderWrapper = styled.div`
   align-items: center;
   width: 100vw;
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-  ${generateStyleBasedOnFigma`
+  ${({ theme }) => generateStyleBasedOnFigma`
     padding: 0 28px;
-    height: 70px;
+    height: ${theme.HEADER_HEIGHT};
   `}
 `
 const StyledLogoWrapper = styled.div`

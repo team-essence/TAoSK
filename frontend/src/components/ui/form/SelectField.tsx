@@ -83,8 +83,10 @@ const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
 `
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${({ color }) => color};
-  font-size: ${({ fontSize }) => fontSize};
   ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ fontSize }) => generateStyleBasedOnFigma`
+    font-size: ${fontSize};
+  `}
 `
 StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
@@ -118,13 +120,16 @@ const StyledSelect = styled.select<StyledSelectProps>`
   border-radius: ${({ borderRadius }) => borderRadius};
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ color }) => color};
-  ${({ width, height }) => generateStyleBasedOnFigma`
+  ${({ width, height, theme }) => generateStyleBasedOnFigma`
     width: ${width};
     height: ${height};
     padding-left: 8px;
+    font-size: ${theme.FONT_SIZES.SIZE_14};
   `}
   &::placeholder {
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+    ${({ theme }) => generateStyleBasedOnFigma`
+      font-size: ${theme.FONT_SIZES.SIZE_14};
+    `}
   }
 `
 StyledSelect.defaultProps = {
@@ -136,7 +141,9 @@ StyledSelect.defaultProps = {
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+  `}
 `
 const StyledRequiredSpan = styled.span`
   display: inline-block;

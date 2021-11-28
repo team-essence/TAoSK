@@ -203,7 +203,9 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    padding-top: ${theme.HEADER_HEIGHT};
+  `}
   input {
     cursor: url('feather-pen.png') 10 124, pointer;
   }
@@ -227,9 +229,6 @@ const StyledLogoImg = styled.img`
   `}
 `
 const StyledH1 = styled.h1`
-  ${generateStyleBasedOnFigma`
-      margin: 33px 0;
-  `}
   background: -webkit-linear-gradient(
     top,
     ${({ theme }) => theme.COLORS.TENN},
@@ -238,8 +237,11 @@ const StyledH1 = styled.h1`
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_40};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    margin: 33px 0;
+    font-size: ${theme.FONT_SIZES.SIZE_40};
+  `}
 `
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -282,10 +284,10 @@ const StyledBackground = styled.div`
   background-position: 50% 100%;
 `
 const StyledTerms = styled.p`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
-  ${generateStyleBasedOnFigma`
+  ${({ theme }) => generateStyleBasedOnFigma`
     margin: 24px 0;
+    font-size: ${theme.FONT_SIZES.SIZE_14};
   `}
 `
 const StyledTermsLink = styled(Link)`

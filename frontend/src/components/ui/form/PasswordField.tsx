@@ -69,7 +69,7 @@ const StyledWrapper = styled.div`
 const StyledCoarseButton = styled(CoarseButton)`
   position: absolute;
   ${generateStyleBasedOnFigma`
-    top: 36px;
+    top: 40px;
     right: 7px;
   `}
 `

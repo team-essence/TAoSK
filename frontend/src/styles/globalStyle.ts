@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -39,7 +40,6 @@ export const GlobalStyle = createGlobalStyle`
   }
   html {
     box-sizing: border-box;
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.7;
@@ -54,7 +54,10 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Mplus1Code', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
     font-weight: 500;
-    }
+    ${({ theme }) => generateStyleBasedOnFigma`
+      font-size: ${theme.FONT_SIZES.SIZE_16};
+    `}
+  }
 
   img {
     max-width: 100%;

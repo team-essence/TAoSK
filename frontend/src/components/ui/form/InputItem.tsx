@@ -31,8 +31,10 @@ const StyledOuterWrapper = styled.div`
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   background-image: url('grain.png');
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+  `}
 `
 const StyledOuterMask = styled.div`
   position: relative;

@@ -81,8 +81,10 @@ export const ItemInputField: FC<Props> = props => {
 
 const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+  `}
 `
 const StyledRow = styled.div`
   display: flex;
@@ -94,9 +96,9 @@ const StyledRow = styled.div`
   `}
 `
 const StyledItemsNum = styled.span`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
-  ${generateStyleBasedOnFigma`
+  ${({ theme }) => generateStyleBasedOnFigma`
     padding-left: 8px;
+    font-size: ${theme.FONT_SIZES.SIZE_12};
   `}
 `
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
@@ -113,7 +115,9 @@ const StyledInput = styled.input<InputAspectStyles>`
   `}
   &::placeholder {
     color: ${({ theme }) => theme.COLORS.GRAY};
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+    ${({ theme }) => generateStyleBasedOnFigma`
+      font-size: ${theme.FONT_SIZES.SIZE_14};
+    `}
   }
 `
 const StyledItemsWrapper = styled.div<{ width: string }>`

@@ -63,11 +63,11 @@ const StyledButton = styled.button<Aspect & FontColor & BgImageUrl>`
   border-radius: 2px;
   background-image: url(${({ bgSrc }) => bgSrc});
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
-  ${({ width, height }) => generateStyleBasedOnFigma`
+  ${({ width, height, theme }) => generateStyleBasedOnFigma`
     width: ${width};
     height: ${height};
+    font-size: ${theme.FONT_SIZES.SIZE_14};
   `}
 `
 const StyledOuterMask = styled.div<BgColor>`

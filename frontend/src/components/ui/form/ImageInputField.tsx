@@ -65,9 +65,11 @@ const StyledAllWrapper = styled.div`
 `
 const StyledLabel = styled.label`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
   cursor: pointer;
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+  `}
 `
 const StyledImageWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.COLORS.CHOCOLATE};
@@ -98,8 +100,8 @@ const StyledCoarseButton = styled(CoarseButton)`
 `
 const StyledDeleteButton = styled.button`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  ${generateStyleBasedOnFigma`
+  ${({ theme }) => generateStyleBasedOnFigma`
     margin: 4px 0;
+    font-size: ${theme.FONT_SIZES.SIZE_14};
   `}
 `

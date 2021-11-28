@@ -64,8 +64,10 @@ const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
 `
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${({ color }) => color};
-  font-size: ${({ fontSize }) => fontSize};
-  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ fontSize }) => generateStyleBasedOnFigma`
+    font-size: ${fontSize};
+  `}
 `
 StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
@@ -73,7 +75,7 @@ StyledLabel.defaultProps = {
 }
 const StyledInputWrapper = styled.div<StyledBoxProps>`
   ${generateStyleBasedOnFigma`
-    margin-top; 4px;
+    margin-top: 4px;
   `}
   input {
     border: ${({ border }) => border};
@@ -86,6 +88,9 @@ const StyledInputWrapper = styled.div<StyledBoxProps>`
     `}
     &::placeholder {
       color: ${({ theme }) => theme.COLORS.GRAY};
+      ${({ theme }) => generateStyleBasedOnFigma`
+        font-size: ${theme.FONT_SIZES.SIZE_14};
+      `}
     }
   }
 `
@@ -98,7 +103,9 @@ StyledInputWrapper.defaultProps = {
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+  `}
 `
 const StyledRequiredSpan = styled.span`
   display: inline-block;

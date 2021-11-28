@@ -79,7 +79,9 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    padding-top: ${theme.HEADER_HEIGHT};
+  `}
   input {
     cursor: url('feather-pen.png') 10 124, pointer;
   }
@@ -127,14 +129,18 @@ const StyledTextLineWrapper = styled.div`
 `
 const StyledP = styled.p`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.NORMAL};
   text-align: center;
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+  `}
 `
 const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.TIA_MARIA};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+  `}
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -151,6 +157,8 @@ const StyledSignInButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ theme }) => generateStyleBasedOnFigma`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+  `}
 `
