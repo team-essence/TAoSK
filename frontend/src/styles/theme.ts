@@ -1,8 +1,9 @@
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import 'styled-components'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 
 export const theme = {
-  HEADER_HEIGHT: calculateVwBasedOnFigma('70px'),
+  HEADER_HEIGHT: calculateVhBasedOnFigma('70px'),
   Z_INDEX: {
     INDEX_MINUS_1: -1,
     INDEX_1: 1,
@@ -60,6 +61,7 @@ export const theme = {
     TIA_MARIA: '#D94B0E',
     SEA_PINK: '#EFACAC',
     TOTEM_POLE: '#AC0D0D',
+    SILVER2: '#C3C2C2',
   },
 } as const
 

@@ -9,7 +9,7 @@ import {
 } from './projectList.gen'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
-import { Rating } from 'react-simple-star-rating'
+import { Rating, RatingView } from 'react-simple-star-rating'
 import styled from 'styled-components'
 import logger from 'utils/debugger/logger'
 import date from 'utils/date/date'
@@ -18,6 +18,8 @@ import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { Loading } from 'components/ui/loading/Loading'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -87,7 +89,19 @@ export const ProjectList: FC = () => {
     })
   }
 
+  const projectInfoTitle = (title: string) => {
+    return (
+      <StyledProjectInfoTitleContainer>
+        <img src="/svg/project-detail_title-arrow_left.svg" alt="左矢印" />
+        <StyledProjectInfoTitle>{title}</StyledProjectInfoTitle>
+        <img src="/svg/project-detail_title-arrow_right.svg" alt="右矢印" />
+      </StyledProjectInfoTitleContainer>
+    )
+  }
+
   if (!currentUser) return <Navigate to="/signup" />
+
+  // if (!userData.data) return <Loading />
 
   return (
     <>
@@ -103,7 +117,52 @@ export const ProjectList: FC = () => {
           </StyledProjectListWrapper>
         </StyledProjectListContainer>
 
-        <StyledProjectDetailContainer></StyledProjectDetailContainer>
+        <StyledProjectDetailContainer>
+          <StyledProjectDetail>
+            <StyledProjectTitleContainer>
+              <StyledProjectTitle>タイトル</StyledProjectTitle>
+
+              <StyledProjectOptionContainer>
+                <StyledProjectOption />
+              </StyledProjectOptionContainer>
+            </StyledProjectTitleContainer>
+
+            <StyledMonsterContainer>
+              <MonsterAvatar />
+
+              <StyledMonsterStatusContainer>
+                <StyledMonsterStatus>
+                  <h4>種族</h4>
+                  <p>ドラゴン</p>
+                </StyledMonsterStatus>
+                <StyledMonsterStatus>
+                  <h4>危険度</h4>
+                  <RatingContainer>
+                    <RatingView ratingValue={6}>
+                      <img src="/svg/star.svg" alt="スター" />
+                    </RatingView>
+                  </RatingContainer>
+                </StyledMonsterStatus>
+                <StyledMonsterStatus>
+                  <h4>制限期限</h4>
+                  <p>{date.formatDay('2021/12/12')}</p>
+                </StyledMonsterStatus>
+              </StyledMonsterStatusContainer>
+            </StyledMonsterContainer>
+
+            <StyledProjectInfoContainer>
+              {projectInfoTitle('特徴')}
+              <p>
+                モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。
+              </p>
+              {projectInfoTitle('依頼内容')}
+              <p>
+                依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。
+              </p>
+              {projectInfoTitle('パーティーメンバー')}
+            </StyledProjectInfoContainer>
+          </StyledProjectDetail>
+        </StyledProjectDetailContainer>
         <StyledProjectListBackground />
         {/* <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
       <p>プロジェクト一覧</p>
@@ -166,7 +225,7 @@ export const ProjectList: FC = () => {
           プロジェクト作成するよボタン
         </button> */}
 
-        {/* <MonsterAvatar />
+        {/*
       </TestModalContainer> */}
       </StyledProjectListPageContainer>
     </>
@@ -181,27 +240,28 @@ const StyledProjectListPageContainer = styled.div`
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  margin-top: ${calculateVwBasedOnFigma(3)};
+  margin-top: ${calculateVhBasedOnFigma(3)};
   width: ${calculateVwBasedOnFigma(437)};
-  height: ${calculateVwBasedOnFigma(770)};
+  height: ${calculateVhBasedOnFigma(770)};
   background: url('project-list_background.png');
-  background-position: center;
+  background-position: cover;
   background-size: cover;
   background-repeat: no-repeat;
 `
 
 const StyledProjectListWrapper = styled.div`
+  position: absolute;
   top: ${calculateVwBasedOnFigma(120)};
-  left: ${calculateVwBasedOnFigma(8)};
-  position: relative;
-  width: ${calculateVwBasedOnFigma(396)};
-  height: ${calculateVwBasedOnFigma(564)};
+  left: 50%;
+  transform: translateX(-54%);
+  width: ${calculateVwBasedOnFigma(356)};
+  height: ${calculateVhBasedOnFigma(564)};
   background: #fff;
 `
 
 const StyledProjectCreateButton = styled.button`
-  width: ${calculateVwBasedOnFigma(396)};
-  height: ${calculateVwBasedOnFigma(60)};
+  width: 100%;
+  height: ${calculateVhBasedOnFigma(60)};
   background: url('svg/create-project_button.svg') center center no-repeat;
   background-size: cover;
 `
@@ -212,12 +272,12 @@ const StyledProject = styled.li``
 
 const StyledProjectDetailContainer = styled.div`
   position: relative;
-  margin-top: ${calculateVwBasedOnFigma(3)};
+  margin-top: ${calculateVhBasedOnFigma(3)};
   width: ${calculateVwBasedOnFigma(971)};
-  height: ${calculateVwBasedOnFigma(823)};
+  height: ${calculateVhBasedOnFigma(823)};
   background: url('project-detail_background.png');
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 `
 
@@ -230,9 +290,129 @@ const StyledProjectListBackground = styled.div`
   height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
   background: url('images/project-list-page_background.webp');
   background-attachment: fixed;
-  background-position: center;
+  background-position: cover;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+`
+
+const StyledProjectDetail = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: ${calculateVhBasedOnFigma(800)};
+  height: ${calculateVhBasedOnFigma(662)};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+`
+
+const StyledProjectTitleContainer = styled.div`
+  grid-row: 1 / 2;
+  grid-column: 1 / 3;
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const StyledProjectTitle = styled.h2`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_24};
+`
+
+const StyledProjectOptionContainer = styled.div`
+  margin-right: ${calculateVhBasedOnFigma(12)};
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+const StyledProjectOption = styled.div`
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.COLORS.BLACK};
+
+  &::before {
+    content: '';
+    position: absolute;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.COLORS.BLACK};
+  }
+
+  &::after {
+    content: '';
+    left: 10px;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.COLORS.BLACK};
+  }
+`
+
+const StyledMonsterContainer = styled.div`
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+`
+
+const StyledMonsterStatusContainer = styled.div`
+  width: ${calculateVhBasedOnFigma(346)};
+  border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+`
+
+const StyledMonsterStatus = styled.div`
+  padding: ${calculateVhBasedOnFigma(6)} 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:nth-child(2) {
+    border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+    border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+  }
+`
+
+const RatingContainer = styled.div`
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`
+
+const StyledProjectInfoContainer = styled.div`
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+
+  p {
+    text-align: justify;
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  }
+`
+
+const StyledProjectInfoTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    opacity: 0.2;
+    width: ${calculateVwBasedOnFigma(98)};
+  }
+`
+
+const StyledProjectInfoTitle = styled.h3`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
 `
 
 const TestModalContainer = styled.div`

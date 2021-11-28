@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 
 type Props = {}
 
@@ -64,10 +65,10 @@ const StyledBellWrapper = styled.div`
 
 const StyledNotificationIcon = styled.div`
   position: absolute;
-  top: ${calculateVwBasedOnFigma(-2)};
+  top: ${calculateVhBasedOnFigma(-2)};
   right: ${calculateVwBasedOnFigma(1)};
-  width: ${calculateVwBasedOnFigma(9)};
-  height: ${calculateVwBasedOnFigma(9)};
+  width: 9px;
+  height: 9px;
   background: ${({ theme }) => theme.COLORS.DODGER_BLUE};
   border: solid 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 50%;
