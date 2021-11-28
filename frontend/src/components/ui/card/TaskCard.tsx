@@ -1,10 +1,14 @@
 import React, { FC } from 'react'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { Task } from 'types/task'
+import { useChangeDeadlineImage } from 'hooks/useChangeDeadlineImage'
 import { changeWeapon } from 'utils/changeWeapon'
 import styled from 'styled-components'
 
-type Props = { listIndex: number; listLength: number } & Omit<Task, 'vertical_sort'>
+type Props = {
+  listIndex: number
+  listLength: number
+} & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FC<Props> = ({
   title,
@@ -16,8 +20,11 @@ export const TaskCard: FC<Props> = ({
   plan,
   listIndex,
   listLength,
+  end_date,
 }) => {
-  const parameters = [
+  const deadlineImage = useChangeDeadlineImage(end_date)
+
+  const params = [
     { param: 'technology', value: technology },
     { param: 'achievement', value: achievement },
     { param: 'solution', value: solution },
@@ -25,13 +32,18 @@ export const TaskCard: FC<Props> = ({
     { param: 'design', value: design },
     { param: 'plan', value: plan },
   ]
-  const max = parameters.reduce((a, b) => (a.value > b.value ? a : b))
+  const max = params.reduce((a, b) => (a.value > b.value ? a : b))
 
   return (
     <StyledContainer>
       <StyledInnerWrap>
         <StyledTitle>{title}</StyledTitle>
-        <StyledWeaponImage src={changeWeapon(listIndex, listLength, max.param)} alt="weapon" />
+        <StyledFlexContainer>
+          <div>
+            <img src={deadlineImage} alt="warning" width="14" />
+          </div>
+          <StyledWeaponImage src={changeWeapon(listIndex, listLength, max.param)} alt="weapon" />
+        </StyledFlexContainer>
       </StyledInnerWrap>
     </StyledContainer>
   )
@@ -46,6 +58,7 @@ const StyledContainer = styled.div`
   white-space: normal;
 `
 const StyledInnerWrap = styled.div`
+  padding: ${calculateVwBasedOnFigma(8)} ${calculateVwBasedOnFigma(6)};
   border: 2px solid ${({ theme }) => theme.COLORS.CARARRA};
   border-radius: 4px;
 `
@@ -62,4 +75,9 @@ const StyledTitle = styled.h3`
 const StyledWeaponImage = styled.img`
   aspect-ratio: 1 / 1;
   width: ${calculateVwBasedOnFigma(37)};
+`
+
+const StyledFlexContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `

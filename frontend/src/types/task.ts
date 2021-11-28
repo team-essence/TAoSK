@@ -15,6 +15,6 @@ export type Task = {
   plan: number
   design: number
   vertical_sort: number
-  end_date: any // FIXME 最初からあったのであとで修正
+  end_date: string
   allocations: Allocation[]
 }

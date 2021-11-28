@@ -384,7 +384,7 @@ export const ProjectDetail: FC = () => {
           plan: Math.floor(Math.random() * 11),
           design: Math.floor(Math.random() * 11),
           vertical_sort: list[list_id].tasks.length,
-          end_date: '2021-12-23',
+          end_date: '2021/12/30',
           project_id: id as string,
           list_id: String(list_id),
         },
@@ -548,27 +548,6 @@ export const ProjectDetail: FC = () => {
                                           allocations={task.allocations}
                                           end_date={task.end_date}
                                         />
-                                        {/* <div>
-                                          <h2>{task.overview}</h2>
-                                        </div>
-                                        <div>
-                                          <p>{task.solution}</p>
-                                          <p>{task.technology}</p>
-                                          <p>{task.achievement}</p>
-                                          <p>{task.allocations}</p>
-                                          <p>{task.design}</p>
-                                          <p>{task.plan}</p>
-                                        </div>
-                                        <div>
-                                          <h4>期限</h4>
-                                          <p>
-                                            {date.isYesterday(task.end_date)
-                                              ? 'red'
-                                              : date.isThreeDaysAgo(task.end_date)
-                                              ? 'yellow'
-                                              : 'ノーマル'}
-                                          </p>
-                                        </div> */}
                                       </li>
                                     )}
                                   </Draggable>
