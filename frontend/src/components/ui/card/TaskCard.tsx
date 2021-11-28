@@ -6,7 +6,11 @@ import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
-type Props = { listIndex: number; listLength: number } & Omit<Task, 'vertical_sort'>
+type Props = {
+  listIndex: number
+  listLength: number
+  isDragging: boolean
+} & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FC<Props> = ({
   title,
@@ -18,6 +22,7 @@ export const TaskCard: FC<Props> = ({
   plan,
   listIndex,
   listLength,
+  isDragging,
   end_date,
 }) => {
   const params = [
@@ -31,7 +36,7 @@ export const TaskCard: FC<Props> = ({
   const max = params.reduce((a, b) => (a.value > b.value ? a : b))
 
   return (
-    <StyledContainer>
+    <StyledContainer isDragging={isDragging}>
       <StyledInnerWrap>
         <StyledTitle>{title}</StyledTitle>
         <StyledFlexContainer>
@@ -54,14 +59,27 @@ export const TaskCard: FC<Props> = ({
   )
 }
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ isDragging: boolean }>`
   height: auto;
   padding: ${calculateVwBasedOnFigma(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   white-space: normal;
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+  ${({ isDragging }) =>
+    isDragging
+      ? css`
+          transform: rotate(3deg);
+          transform-origin: 0 0;
+        `
+      : css`
+          transform: rotate(0);
+          transform-origin: 0 0;
+        `}
 `
+
 const StyledInnerWrap = styled.div`
   padding: ${calculateVwBasedOnFigma(8)} ${calculateVwBasedOnFigma(6)};
   border: 2px solid ${({ theme }) => theme.COLORS.CARARRA};
