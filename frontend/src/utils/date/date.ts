@@ -1,4 +1,4 @@
-import { isAfter, formatDistanceToNow, differenceInDays, differenceInCalendarDays } from 'date-fns'
+import { isAfter, formatDistanceToNow, differenceInDays, format } from 'date-fns'
 import ja from 'date-fns/locale/ja'
 
 type PropsDate = Date | string | number
@@ -54,5 +54,9 @@ export default class date {
    */
   public static isThreeDaysAgo = (date: PropsDate): boolean => {
     return differenceInDays(new Date(), new Date(date)) >= -3 ? true : false
+  }
+
+  public static formatDate = (date: PropsDate) => {
+    return format(new Date(date), 'MM月dd日')
   }
 }

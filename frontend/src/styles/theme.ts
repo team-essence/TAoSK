@@ -63,6 +63,9 @@ export const theme = {
     LINEN: '#FEFDF9',
     CARARRA: '#EAE7E0',
     SHIP_GRAY: '#38373C',
+    OLIVE_GREEN: '#A9BA65',
+    SHIP_COVE: '#657DBA',
+    BOULDER: '#7B7B7B',
   },
 } as const
 
