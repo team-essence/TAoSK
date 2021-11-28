@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 import styled from 'styled-components'
 
 export const NotFound: FC = () => {

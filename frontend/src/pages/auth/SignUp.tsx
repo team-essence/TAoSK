@@ -17,7 +17,7 @@ import { SelectField } from 'components/ui/form/SelectField'
 import { ItemInputField } from 'components/ui/form/ItemInputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 

@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 
 type StyledBoxProps = {
   width?: string

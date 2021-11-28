@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 
 export const GlobalStyle = createGlobalStyle`
   @font-face {

@@ -5,7 +5,7 @@ import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>

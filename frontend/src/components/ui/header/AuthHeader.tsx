@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
 import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 import { useNavigate } from 'react-router-dom'
 
 export const AuthHeader: FC = () => {

@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 import { theme } from 'styles/theme'
 
 type Props = {

@@ -1,7 +1,7 @@
 import React, { FC, MouseEvent } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
-import { generateStyleBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 
 type BgSrc = 'grain.png' | 'light-grain.png'
 type Props = {
