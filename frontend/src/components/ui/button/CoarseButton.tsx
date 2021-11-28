@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 
 type BgSrc = 'grain.png' | 'light-grain.png'
@@ -53,7 +53,7 @@ type BgColor = Record<'bgColor', string>
 type BgImageUrl = Record<'bgSrc', string>
 type Border = Record<'border', string>
 
-const centeringFlexStyle = `
+const centeringFlexStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
