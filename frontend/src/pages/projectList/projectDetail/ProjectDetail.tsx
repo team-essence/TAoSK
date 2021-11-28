@@ -536,6 +536,7 @@ export const ProjectDetail: FC = () => {
                                         <TaskCard
                                           listIndex={listIndex}
                                           listLength={length}
+                                          isDragging={snapshot.isDragging}
                                           id={task.id}
                                           title={task.title}
                                           overview={task.overview}
