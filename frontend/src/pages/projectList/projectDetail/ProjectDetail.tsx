@@ -295,7 +295,7 @@ export const ProjectDetail: FC = () => {
     const listCopy = [...list]
 
     if (type === DropType.COLUMN) {
-      if (destinationIndex === 2 || destinationIndex === 0) return
+      if (destinationIndex === list.length - 1 || destinationIndex === 0) return
       const result = reorder(listCopy, sourceIndex, destinationIndex)
       setList(result)
       const updateListSort = result.map((list, index) => {
@@ -504,7 +504,7 @@ export const ProjectDetail: FC = () => {
                       draggableId={`column-${list.id}`}
                       index={listIndex}
                       key={list.id}
-                      isDragDisabled={listIndex === 0 || length - 1 === listIndex ? true : false}>
+                      isDragDisabled={listIndex === 0 || length - 1 === listIndex}>
                       {provided => (
                         <div
                           ref={provided.innerRef}
