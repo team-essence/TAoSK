@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CrossButton } from 'components/ui/button/CrossButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type Props = {
   className?: string
@@ -31,10 +31,8 @@ const StyledOuterWrapper = styled.div`
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   background-image: url('grain.png');
   color: ${({ color }) => color};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
-  ${({ theme }) => generateStyleBasedOnFigma`
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
 `
 const StyledOuterMask = styled.div`
   position: relative;
@@ -53,36 +51,29 @@ const StyledTextWrapper = styled.div`
   align-items: center;
 `
 const StyledText = styled.span`
-  ${generateStyleBasedOnFigma`
-    padding: 2px 10px;
-  `}
+  padding: ${calculateVwBasedOnFigma(2)} ${calculateVwBasedOnFigma(10)};
 `
 const StyledCrossButton = styled(CrossButton)`
   height: 100%;
-  ${generateStyleBasedOnFigma`
-    padding: 10px 7px 10px 0;
-  `}
+  padding: ${calculateVwBasedOnFigma(10)} ${calculateVwBasedOnFigma(7)}
+    ${calculateVwBasedOnFigma(10)} 0;
   svg {
-    ${generateStyleBasedOnFigma`
-      width: 8px;
-      height: 8px;
-    `}
+    width: ${calculateVwBasedOnFigma(8)};
+    height: ${calculateVwBasedOnFigma(8)};
   }
 `
 const StyledInnerBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
   opacity: 0.8;
+  top: calc(50% + ${calculateVwBasedOnFigma(0.5)});
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
+  width: calc(100% - ${calculateVwBasedOnFigma(4)});
+  height: calc(100% - ${calculateVwBasedOnFigma(4)});
   border-radius: 2px;
   background-image: url('light-grain.png');
   background-size: cover;
-  ${generateStyleBasedOnFigma`
-    top: calc(50% + 0.5px);
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
-  `}
 `

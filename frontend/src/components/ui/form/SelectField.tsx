@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type StyledSelectProps = {
   width?: string
@@ -46,7 +46,7 @@ export const SelectField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateVwBasedOnFigma(24)}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -78,16 +78,12 @@ export const SelectField: FC<Props> = props => {
 }
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
-  ${({ marginBottom }) => generateStyleBasedOnFigma`
-    margin-bottom: ${marginBottom};
-  `}
+  margin-bottom: ${({ marginBottom }) => marginBottom};
 `
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${({ color }) => color};
+  font-size: ${({ fontSize }) => fontSize};
   ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
-  ${({ fontSize }) => generateStyleBasedOnFigma`
-    font-size: ${fontSize};
-  `}
 `
 StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
@@ -95,56 +91,45 @@ StyledLabel.defaultProps = {
 }
 const StyledSelectWrapper = styled.div<{ height?: string }>`
   position: relative;
-  ${generateStyleBasedOnFigma`
-    margin-top: 4px;
-  `}
+  margin-top: ${calculateVwBasedOnFigma(4)};
 
   &:after {
     content: '';
     position: absolute;
-    ${({ height, theme }) => generateStyleBasedOnFigma`
-      top: calc(${height} / 2 - 2px);
-      right: 14px;
-      border-top: 7px solid ${theme.COLORS.CHOCOLATE};
-      border-right: 6px solid transparent;
-      border-left: 6px solid transparent;
-    `}
+    top: calc(${({ height }) => height} / 2 - ${calculateVwBasedOnFigma(2)});
+    right: ${calculateVwBasedOnFigma(14)};
+    border-top: ${calculateVwBasedOnFigma(7)} solid ${({ theme }) => theme.COLORS.CHOCOLATE};
+    border-right: ${calculateVwBasedOnFigma(6)} solid transparent;
+    border-left: ${calculateVwBasedOnFigma(6)} solid transparent;
   }
 `
 StyledSelectWrapper.defaultProps = {
-  height: '40px',
+  height: calculateVwBasedOnFigma(40),
 }
 const StyledSelect = styled.select<StyledSelectProps>`
   -webkit-appearance: none;
   appearance: none;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
+  padding-left: ${calculateVwBasedOnFigma(8)};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ color }) => color};
-  ${({ width, height, theme }) => generateStyleBasedOnFigma`
-    width: ${width};
-    height: ${height};
-    padding-left: 8px;
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
   &::placeholder {
-    ${({ theme }) => generateStyleBasedOnFigma`
-      font-size: ${theme.FONT_SIZES.SIZE_14};
-    `}
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
 `
 StyledSelect.defaultProps = {
-  width: '480px',
-  height: '40px',
+  width: `min(33.33vw, ${calculateVwBasedOnFigma(480)})`,
+  height: calculateVwBasedOnFigma(40),
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
-  ${({ theme }) => generateStyleBasedOnFigma`
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
 const StyledRequiredSpan = styled.span`
   display: inline-block;

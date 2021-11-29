@@ -1,7 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { theme } from 'styles/theme'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
 
 type BgSrc = 'grain.png' | 'light-grain.png'
 type Props = {
@@ -54,21 +53,19 @@ type BgColor = Record<'bgColor', string>
 type BgImageUrl = Record<'bgSrc', string>
 type Border = Record<'border', string>
 
-const centeringFlexStyle = css`
+const centeringFlexStyle = `
   display: flex;
   justify-content: center;
   align-items: center;
 `
 const StyledButton = styled.button<Aspect & FontColor & BgImageUrl>`
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   border-radius: 2px;
   background-image: url(${({ bgSrc }) => bgSrc});
   color: ${({ color }) => color};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
-  ${({ width, height, theme }) => generateStyleBasedOnFigma`
-    width: ${width};
-    height: ${height};
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
 `
 const StyledOuterMask = styled.div<BgColor>`
   ${centeringFlexStyle}

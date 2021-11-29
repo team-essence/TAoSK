@@ -5,7 +5,7 @@ import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
 import styled from 'styled-components'
@@ -38,7 +38,7 @@ export const SignIn: FC = () => {
 
             <StyledSignInButton
               text="ログイン"
-              aspect={{ width: '120px', height: '32px' }}
+              aspect={{ width: calculateVwBasedOnFigma(120), height: calculateVwBasedOnFigma(32) }}
               outerBgColor={
                 isDisabled
                   ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
@@ -79,9 +79,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  ${({ theme }) => generateStyleBasedOnFigma`
-    padding-top: ${theme.HEADER_HEIGHT};
-  `}
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
   input {
     cursor: url('feather-pen.png') 10 124, pointer;
   }
@@ -90,37 +88,29 @@ const StyledSignIn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: ${calculateVwBasedOnFigma(730)};
   height: 100%;
+  margin: ${calculateVwBasedOnFigma(113)} 0;
+  padding: ${calculateVwBasedOnFigma(30)} 0 ${calculateVwBasedOnFigma(46)};
   background-image: url('sign-in-paper.png');
   background-size: 100% 100%;
-  ${generateStyleBasedOnFigma`
-    margin: 113px 0;
-    padding: 30px 0 46px;
-    width: 730px;
-  `}
 `
 const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  ${generateStyleBasedOnFigma`
-    width: 480px;
-  `}
+  width: ${calculateVwBasedOnFigma(480)};
 `
 const StyledLogoImg = styled.img`
-  ${generateStyleBasedOnFigma`
-    height: 170px;
-  `}
+  height: ${calculateVwBasedOnFigma(170)};
 `
 const StyledParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  ${generateStyleBasedOnFigma`
-    gap: 13px;
-    margin-top: 24px;
-  `}
+  gap: ${calculateVwBasedOnFigma(13)};
+  margin-top: ${calculateVwBasedOnFigma(24)};
 `
 const StyledTextLineWrapper = styled.div`
   display: flex;
@@ -129,18 +119,14 @@ const StyledTextLineWrapper = styled.div`
 `
 const StyledP = styled.p`
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.NORMAL};
   text-align: center;
-  ${({ theme }) => generateStyleBasedOnFigma`
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
 `
 const StyledLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.TIA_MARIA};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
-  ${({ theme }) => generateStyleBasedOnFigma`
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -157,8 +143,6 @@ const StyledSignInButton = styled(CoarseButton)`
   display: block;
   margin: 0 auto;
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
-  ${({ theme }) => generateStyleBasedOnFigma`
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
 `

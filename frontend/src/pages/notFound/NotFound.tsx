@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import styled from 'styled-components'
 
 export const NotFound: FC = () => {
@@ -37,14 +37,12 @@ const StyledContainer = styled.div`
 `
 const StyledNotFoundContainer = styled.div`
   position: relative;
+  top: ${calculateVwBasedOnFigma(140)};
   min-height: 536px;
   width: 1050px;
   padding: 0 20px;
   margin: 0 auto;
   background: url('/images/notfound.png') 40px top no-repeat;
-  ${generateStyleBasedOnFigma`
-    top: 140px;
-  `}
 `
 
 const StyledH1 = styled.h1`

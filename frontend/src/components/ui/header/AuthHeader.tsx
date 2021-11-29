@@ -2,14 +2,14 @@ import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
 import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { useNavigate } from 'react-router-dom'
 
 export const AuthHeader: FC = () => {
   const navigate = useNavigate()
   const commonButtonProps = {
-    width: '120px',
-    height: '40px',
+    width: calculateVwBasedOnFigma(120),
+    height: calculateVwBasedOnFigma(40),
     borderRadius: '2px',
   }
   const registerButtonProps = {
@@ -52,32 +52,24 @@ const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 ${calculateVwBasedOnFigma(28)};
   width: 100vw;
+  height: ${calculateVwBasedOnFigma(70)};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-  ${({ theme }) => generateStyleBasedOnFigma`
-    padding: 0 28px;
-    height: ${theme.HEADER_HEIGHT};
-  `}
 `
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
+  height: ${calculateVwBasedOnFigma(43)};
   cursor: pointer;
-  ${generateStyleBasedOnFigma`
-    height: 43px;
-  `}
 `
 const StyledLogo = styled.img`
-  ${generateStyleBasedOnFigma`
-    height: 43px;
-  `}
+  height: ${calculateVwBasedOnFigma(43)};
 `
 const StyledButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: ${calculateVwBasedOnFigma(14)};
   height: 100%;
-  ${generateStyleBasedOnFigma`
-    gap: 14px;
-  `}
 `

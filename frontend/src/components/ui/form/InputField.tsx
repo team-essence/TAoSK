@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { generateStyleBasedOnFigma } from 'utils/generateStyleBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type StyledBoxProps = {
   width?: string
@@ -39,7 +39,7 @@ export const InputField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : '24px'}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateVwBasedOnFigma(24)}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -61,16 +61,12 @@ export const InputField: FC<Props> = props => {
 }
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
-  ${({ marginBottom }) => generateStyleBasedOnFigma`
-      margin-bottom: ${marginBottom};
-  `}
+  margin-bottom: ${({ marginBottom }) => marginBottom};
 `
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${({ color }) => color};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
-  ${({ fontSize }) => generateStyleBasedOnFigma`
-    font-size: ${fontSize};
-  `}
+  font-size: ${({ fontSize }) => fontSize};
+  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
@@ -78,38 +74,29 @@ StyledLabel.defaultProps = {
 }
 const StyledInputWrapper = styled.div<StyledBoxProps>`
   position: relative;
-  ${generateStyleBasedOnFigma`
-    margin-top: 4px;
-  `}
+  margin-top: ${calculateVwBasedOnFigma(4)};
   input {
+    width: ${({ width }) => width};
+    height: ${({ height }) => height};
+    padding-left: ${calculateVwBasedOnFigma(8)};
     border: ${({ border }) => border};
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
-    ${({ width, height }) => generateStyleBasedOnFigma`
-      width: ${width};
-      height: ${height};
-      padding-left: 8px;
-    `}
     &::placeholder {
       color: ${({ theme }) => theme.COLORS.GRAY};
-      ${({ theme }) => generateStyleBasedOnFigma`
-        font-size: ${theme.FONT_SIZES.SIZE_14};
-      `}
     }
   }
 `
 StyledInputWrapper.defaultProps = {
   width: '100%',
-  height: '40px',
+  height: calculateVwBasedOnFigma(40),
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
-  ${({ theme }) => generateStyleBasedOnFigma`
-    font-size: ${theme.FONT_SIZES.SIZE_14};
-  `}
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
 const StyledRequiredSpan = styled.span`
   display: inline-block;
