@@ -5,6 +5,8 @@ import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComment } from '@fortawesome/free-regular-svg-icons'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
@@ -65,6 +67,12 @@ export const TaskCard: FC<Props> = ({
                   </StyledDateContainer>
                 </>
               )}
+              {chatCount !== 0 && (
+                <StyledCommentContainer>
+                  <StyledFontAwesomeIcon icon={faComment} />
+                  <StyledChatCount>{chatCount}</StyledChatCount>
+                </StyledCommentContainer>
+              )}
             </StyledFootContainer>
           </div>
           <StyledWeaponImageContainer>
@@ -112,6 +120,7 @@ const StyledTitle = styled.h3`
   overflow: hidden;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
+  margin-bottom: ${calculateVwBasedOnFigma(8)};
 `
 const StyledWeaponImage = styled.img`
   aspect-ratio: 1 / 1;
@@ -130,6 +139,14 @@ const StyledDate = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_10};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  color: ${({ theme }) => theme.COLORS.GRAY};
+`
+const StyledChatCount = styled.p`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  color: ${({ theme }) => theme.COLORS.GRAY};
+`
 const StyledWeaponImageContainer = styled.div`
   display: grid;
   place-items: center;
@@ -147,7 +164,17 @@ const StyledFlexContainer = styled.div`
 const StyledAvatarContainer = styled.div`
   display: flex;
   gap: ${calculateVwBasedOnFigma(2)};
-  padding: ${calculateVwBasedOnFigma(8)} 0;
+`
+const StyledCommentContainer = styled.div`
+  display: flex;
+  gap: ${calculateVwBasedOnFigma(4)};
+  align-items: center;
+`
+const StyledFootContainer = styled.div`
+  display: flex;
+  gap: ${calculateVwBasedOnFigma(4)};
+  align-items: center;
+  padding-top: ${calculateVwBasedOnFigma(8)};
 `
 const StyledDateContainer = styled.div<{ listIndex: number; listLength: number }>`
   display: flex;
@@ -168,9 +195,4 @@ const StyledDateContainer = styled.div<{ listIndex: number; listLength: number }
       : css`
           background-color: ${({ theme }) => theme.COLORS.BOULDER};
         `}
-`
-const StyledFootContainer = styled.div`
-  display: flex;
-  gap: ${calculateVwBasedOnFigma(4)};
-  align-items: center;
 `
