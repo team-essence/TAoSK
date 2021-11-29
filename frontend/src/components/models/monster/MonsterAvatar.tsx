@@ -10,7 +10,7 @@ import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 export const MonsterAvatar: VFC = () => {
   return (
     <StyledMonsterAvatarContainer>
-      <Canvas camera={{ fov: 3.8, position: [12, 10, 12] }}>
+      <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>
         <OrbitControls enablePan={false} />
 
         <Suspense fallback={null}>
@@ -27,4 +27,9 @@ export const MonsterAvatar: VFC = () => {
 const StyledMonsterAvatarContainer = styled.div`
   width: ${calculateVhBasedOnFigma(346)};
   height: ${calculateVhBasedOnFigma(346)};
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 `

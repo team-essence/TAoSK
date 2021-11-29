@@ -6,38 +6,85 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 type Props = {
   iconType: ICON_TYPE
+  iconImage: string
+  size: number | `${number}px`
+  closeFunc?: () => void
 }
 
 export const ICON_TYPE = {
   LIST: 'list',
-  TASK: 'Task',
+  TASK_AND_MODAL: 'Task and modal',
 } as const
 type ICON_TYPE = typeof ICON_TYPE[keyof typeof ICON_TYPE]
 
-export const UserAvatarIcon: FC<Props> = ({ iconType }) => {
-  if (iconType === ICON_TYPE.LIST) return <StyledUserAvatarIconListContainer />
+export const UserAvatarIcon: FC<Props> = ({ iconType, iconImage, size, closeFunc }) => {
+  if (iconType === ICON_TYPE.LIST)
+    return (
+      <StyledUserAvatarIconContainer>
+        {closeFunc && (
+          <StyledUserCloseButton onClick={closeFunc}>
+            <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
+          </StyledUserCloseButton>
+        )}
+        <StyledUserAvatarIconListContainer iconImage={iconImage} size={size} />
+      </StyledUserAvatarIconContainer>
+    )
 
-  return <StyledUserAvatarIconTaskContainer />
+  return (
+    <StyledUserAvatarIconContainer>
+      {closeFunc && (
+        <StyledUserCloseButton onClick={closeFunc}>
+          <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
+        </StyledUserCloseButton>
+      )}
+      <StyledUserAvatarIconTaskAndListContainer iconImage={iconImage} size={size} />
+    </StyledUserAvatarIconContainer>
+  )
 }
 
-const StyledUserAvatarIconListContainer = styled.div`
-  width: ${calculateVhBasedOnFigma(50)};
-  height: ${calculateVhBasedOnFigma(50)};
+const StyledUserAvatarIconContainer = styled.div`
+  position: relative;
+`
+
+const StyledUserCloseButton = styled.button`
+  position: absolute;
+  width: ${calculateVwBasedOnFigma(14)};
+  height: ${calculateVwBasedOnFigma(14)};
+  top: -4px;
+  right: -4px;
+
+  img {
+    display: block;
+    width: ${calculateVwBasedOnFigma(14)};
+    height: ${calculateVwBasedOnFigma(14)};
+    object-fit: contain;
+  }
+`
+
+const StyledUserAvatarIconListContainer = styled.div<{
+  iconImage: string
+  size: number | `${number}px`
+}>`
+  width: ${({ size }) => calculateVhBasedOnFigma(size)};
+  height: ${({ size }) => calculateVhBasedOnFigma(size)};
   border-radius: 4px;
   box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
-  background: url('https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg');
+  background: url(${({ iconImage }) => iconImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 `
 
-const StyledUserAvatarIconTaskContainer = styled.div`
-  width: ${calculateVwBasedOnFigma(24)};
-  height: ${calculateVwBasedOnFigma(24)};
-  border-radius: 4px;
+const StyledUserAvatarIconTaskAndListContainer = styled.div<{
+  iconImage: string
+  size: number | `${number}px`
+}>`
+  width: ${({ size }) => calculateVhBasedOnFigma(size)};
+  height: ${({ size }) => calculateVhBasedOnFigma(size)};
+  border-radius: 2px;
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
-  background: url('https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg');
+  background: url(${({ iconImage }) => iconImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

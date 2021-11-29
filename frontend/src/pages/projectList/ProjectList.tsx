@@ -21,7 +21,7 @@ import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
 import { ICON_TYPE, UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
-import { UserCount } from 'components/ui/avatar/UserCount'
+import { STYLE_TYPE, UserCount } from 'components/ui/avatar/UserCount'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -154,21 +154,41 @@ export const ProjectList: FC = () => {
 
             <StyledProjectInfoContainer>
               {projectInfoTitle('特徴')}
-              <p style={{ marginBottom: 12 }}>
+              <StyledStyledProjectInfoText>
                 モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。モンスターの特徴を説明。
-              </p>
+              </StyledStyledProjectInfoText>
               {projectInfoTitle('依頼内容')}
-              <p style={{ marginBottom: 12 }}>
+              <StyledStyledProjectInfoText>
                 依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。依頼内容を説明。
-              </p>
+              </StyledStyledProjectInfoText>
               {projectInfoTitle('パーティーメンバー')}
               <StyledPartyContainer>
-                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
-                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
-                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
-                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
-                <UserAvatarIcon iconType={ICON_TYPE.LIST} />
-                <UserCount userCount={3} />
+                <UserAvatarIcon
+                  iconType={ICON_TYPE.LIST}
+                  iconImage="https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg"
+                  size={50}
+                />
+                <UserAvatarIcon
+                  iconType={ICON_TYPE.LIST}
+                  iconImage="https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg"
+                  size={50}
+                />
+                <UserAvatarIcon
+                  iconType={ICON_TYPE.LIST}
+                  iconImage="https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg"
+                  size={50}
+                />
+                <UserAvatarIcon
+                  iconType={ICON_TYPE.LIST}
+                  iconImage="https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg"
+                  size={50}
+                />
+                <UserAvatarIcon
+                  iconType={ICON_TYPE.TASK_AND_MODAL}
+                  iconImage="https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg"
+                  size={50}
+                />
+                <UserCount userCount={3} styleType={STYLE_TYPE.LIST} />
               </StyledPartyContainer>
             </StyledProjectInfoContainer>
           </StyledProjectDetail>
@@ -404,11 +424,12 @@ const RatingContainer = styled.div`
 const StyledProjectInfoContainer = styled.div`
   grid-row: 2 / 3;
   grid-column: 2 / 3;
+`
 
-  p {
-    text-align: justify;
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  }
+const StyledStyledProjectInfoText = styled.p`
+  margin-bottom: ${calculateVhBasedOnFigma(12)};
+  text-align: justify;
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
 `
 
 const StyledProjectInfoTitleContainer = styled.div`
