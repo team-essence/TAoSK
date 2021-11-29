@@ -32,6 +32,7 @@ query Users($id: String!) {
           user {
             name
             icon_image
+            occupation_id
           }
         }
 

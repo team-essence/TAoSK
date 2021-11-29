@@ -66,6 +66,10 @@ export const theme = {
     ZINNWALDITE: '#EAC4A6',
     MONDO: '#463E29',
     SHIP_GRAY: '#38373C',
+    FALU_RED: '#7B1616',
+    COCOA_BROWN: '#342422',
+    COCOA_BROWN2: '#4A201F',
+    SLIVER3: '#BBBBBB',
   },
 } as const
 

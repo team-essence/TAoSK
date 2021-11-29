@@ -1,49 +1,83 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
+import { useHover } from 'hooks/useHover'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
 
 type Props = {
-  iconType: ICON_TYPE
+  avatarStyleType: AVATAR_STYLE_TYPE
   iconImage: string
-  size: number | `${number}px`
-  closeFunc?: () => void
+  name?: string
+  occupation?: string
+  btnFunc?: () => void
 }
 
-export const ICON_TYPE = {
-  LIST: 'list',
-  TASK_AND_MODAL: 'Task and modal',
-} as const
-type ICON_TYPE = typeof ICON_TYPE[keyof typeof ICON_TYPE]
+export const UserAvatarIcon: FC<Props> = ({
+  avatarStyleType,
+  iconImage,
+  btnFunc,
+  name,
+  occupation,
+}) => {
+  const [hovered, eventHoverHandlers] = useHover()
 
-export const UserAvatarIcon: FC<Props> = ({ iconType, iconImage, size, closeFunc }) => {
-  if (iconType === ICON_TYPE.LIST)
+  if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
-      <StyledUserAvatarIconContainer>
-        {closeFunc && (
-          <StyledUserCloseButton onClick={closeFunc}>
+      <StyledUserAvatarIconContainer size={50} {...eventHoverHandlers}>
+        <StyledUserAvatarIconListContainer iconImage={iconImage} size={50} />
+
+        {hovered && (
+          <StyledPopupUserInfoContainer bottom={66}>
+            <StyledPopupUserIconContainer>
+              <img src={iconImage} />
+            </StyledPopupUserIconContainer>
+
+            <StyledPopupUserContainer>
+              <StyledPopupUserName>{name}</StyledPopupUserName>
+              <StyledPopupUserOccupation>{occupation}</StyledPopupUserOccupation>
+            </StyledPopupUserContainer>
+          </StyledPopupUserInfoContainer>
+        )}
+      </StyledUserAvatarIconContainer>
+    )
+  else if (avatarStyleType === AVATAR_STYLE.TASK)
+    return (
+      <StyledUserAvatarIconContainer size={24}>
+        <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={24} />
+      </StyledUserAvatarIconContainer>
+    )
+  else
+    return (
+      <StyledUserAvatarIconContainer size={40} {...eventHoverHandlers}>
+        {btnFunc && (
+          <StyledUserCloseButton onClick={btnFunc}>
             <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
           </StyledUserCloseButton>
         )}
-        <StyledUserAvatarIconListContainer iconImage={iconImage} size={size} />
+        <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={40} />
+
+        {hovered && (
+          <StyledPopupUserInfoContainer bottom={66}>
+            <StyledPopupUserIconContainer>
+              <img src={iconImage} />
+            </StyledPopupUserIconContainer>
+
+            <StyledPopupUserContainer>
+              <StyledPopupUserName>{name}</StyledPopupUserName>
+              <StyledPopupUserOccupation>{occupation}</StyledPopupUserOccupation>
+            </StyledPopupUserContainer>
+          </StyledPopupUserInfoContainer>
+        )}
       </StyledUserAvatarIconContainer>
     )
-
-  return (
-    <StyledUserAvatarIconContainer>
-      {closeFunc && (
-        <StyledUserCloseButton onClick={closeFunc}>
-          <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
-        </StyledUserCloseButton>
-      )}
-      <StyledUserAvatarIconTaskAndListContainer iconImage={iconImage} size={size} />
-    </StyledUserAvatarIconContainer>
-  )
 }
 
-const StyledUserAvatarIconContainer = styled.div`
+const StyledUserAvatarIconContainer = styled.div<{ size: number }>`
   position: relative;
+  width: ${({ size }) => calculateVhBasedOnFigma(size)};
+  height: ${({ size }) => calculateVhBasedOnFigma(size)};
 `
 
 const StyledUserCloseButton = styled.button`
@@ -63,7 +97,7 @@ const StyledUserCloseButton = styled.button`
 
 const StyledUserAvatarIconListContainer = styled.div<{
   iconImage: string
-  size: number | `${number}px`
+  size: number
 }>`
   width: ${({ size }) => calculateVhBasedOnFigma(size)};
   height: ${({ size }) => calculateVhBasedOnFigma(size)};
@@ -76,9 +110,9 @@ const StyledUserAvatarIconListContainer = styled.div<{
   background-repeat: no-repeat;
 `
 
-const StyledUserAvatarIconTaskAndListContainer = styled.div<{
+const StyledUserAvatarIconTaskContainer = styled.div<{
   iconImage: string
-  size: number | `${number}px`
+  size: number
 }>`
   width: ${({ size }) => calculateVhBasedOnFigma(size)};
   height: ${({ size }) => calculateVhBasedOnFigma(size)};
@@ -88,4 +122,48 @@ const StyledUserAvatarIconTaskAndListContainer = styled.div<{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+`
+
+const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
+  position: absolute;
+  bottom: ${({ bottom }) => calculateVhBasedOnFigma(-bottom)};
+  left: -20%;
+  width: ${calculateVhBasedOnFigma(240)};
+  height: ${calculateVhBasedOnFigma(60)};
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
+  background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT2, 0.9)};
+  border-radius: 4px;
+  display: flex;
+  gap: 0px 4px;
+  align-items: center;
+`
+
+const StyledPopupUserContainer = styled.div``
+
+const StyledPopupUserName = styled.p`
+  color: ${({ theme }) => theme.COLORS.WHITE};
+  font-size: ${calculateVhBasedOnFigma(16)};
+`
+
+const StyledPopupUserOccupation = styled.p`
+  color: ${({ theme }) => theme.COLORS.WHITE};
+  font-size: ${calculateVhBasedOnFigma(12)};
+`
+
+const StyledPopupUserIconContainer = styled.div`
+  margin: 0;
+  position: relative;
+  left: -2px;
+  width: ${calculateVhBasedOnFigma(60)};
+  height: ${calculateVhBasedOnFigma(60)};
+
+  img {
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+    border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
+    border-radius: 4px;
+    width: ${calculateVhBasedOnFigma(60)};
+    height: ${calculateVhBasedOnFigma(60)};
+    object-fit: cover;
+  }
 `
