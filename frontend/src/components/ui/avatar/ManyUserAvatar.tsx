@@ -2,8 +2,8 @@ import { AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
+import { avatarGroups } from 'types/avatarGroups'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { UserAvatarIcon } from './UserAvatarIcon'
 
@@ -11,16 +11,7 @@ type Props = {
   avatarStyleType: AVATAR_STYLE_TYPE
   btnFunc?: () => void
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  groups: {
-    __typename?: 'Group' | undefined
-    id: string
-    user: {
-      __typename?: 'User' | undefined
-      name: string
-      icon_image: string
-      occupation_id: number
-    }
-  }[]
+  groups: avatarGroups
 }
 
 export const ManyUserAvatar: FC<Props> = ({ avatarStyleType, btnFunc, groups, onClick }) => {

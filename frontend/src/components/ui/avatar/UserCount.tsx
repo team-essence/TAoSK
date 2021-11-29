@@ -5,22 +5,12 @@ import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
-import logger from 'utils/debugger/logger'
-import { Group } from 'types/graphql.gen'
+import { avatarGroups } from 'types/avatarGroups'
 
 type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE_TYPE
-  groups: {
-    __typename?: 'Group' | undefined
-    id: string
-    user: {
-      __typename?: 'User' | undefined
-      name: string
-      icon_image: string
-      occupation_id: number
-    }
-  }[]
+  groups: avatarGroups
 }
 
 export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups }) => {
