@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 
 type StyledBoxProps = {
   width?: string
@@ -39,7 +39,7 @@ export const InputField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateVwBasedOnFigma(24)}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigma(24)}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : color}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -74,11 +74,11 @@ StyledLabel.defaultProps = {
 }
 const StyledInputWrapper = styled.div<StyledBoxProps>`
   position: relative;
-  margin-top: ${calculateVwBasedOnFigma(4)};
+  margin-top: ${calculateMinSizeBasedOnFigma(4)};
   input {
     width: ${({ width }) => width};
     height: ${({ height }) => height};
-    padding-left: ${calculateVwBasedOnFigma(8)};
+    padding-left: ${calculateMinSizeBasedOnFigma(8)};
     border: ${({ border }) => border};
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
@@ -90,7 +90,7 @@ const StyledInputWrapper = styled.div<StyledBoxProps>`
 `
 StyledInputWrapper.defaultProps = {
   width: '100%',
-  height: calculateVwBasedOnFigma(40),
+  height: calculateMinSizeBasedOnFigma(40),
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),

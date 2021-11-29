@@ -5,7 +5,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
 import type { FieldProps } from 'types/fieldProps'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 
 type StyledBoxProps = {
   width?: string
@@ -41,8 +41,8 @@ export const PasswordField: FC<Props> = ({
         <StyledCoarseButton
           text={shouldShowPassword ? '非表示' : '表示'}
           aspect={{
-            width: calculateVwBasedOnFigma(53),
-            height: calculateVwBasedOnFigma(30),
+            width: calculateMinSizeBasedOnFigma(53),
+            height: calculateMinSizeBasedOnFigma(30),
           }}
           outerBgColor={
             value
@@ -68,6 +68,6 @@ const StyledWrapper = styled.div`
 `
 const StyledCoarseButton = styled(CoarseButton)`
   position: absolute;
-  top: ${calculateVwBasedOnFigma(5)};
-  right: ${calculateVwBasedOnFigma(7)};
+  top: ${calculateMinSizeBasedOnFigma(5)};
+  right: ${calculateMinSizeBasedOnFigma(7)};
 `

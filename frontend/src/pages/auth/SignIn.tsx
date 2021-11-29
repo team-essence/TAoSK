@@ -5,7 +5,7 @@ import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
 import styled from 'styled-components'
@@ -38,7 +38,10 @@ export const SignIn: FC = () => {
 
             <StyledSignInButton
               text="ログイン"
-              aspect={{ width: calculateVwBasedOnFigma(120), height: calculateVwBasedOnFigma(32) }}
+              aspect={{
+                width: calculateMinSizeBasedOnFigma(120),
+                height: calculateMinSizeBasedOnFigma(32),
+              }}
               outerBgColor={
                 isDisabled
                   ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
@@ -88,10 +91,10 @@ const StyledSignIn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${calculateVwBasedOnFigma(730)};
+  width: ${calculateMinSizeBasedOnFigma(730)};
   height: 100%;
-  margin: ${calculateVwBasedOnFigma(113)} 0;
-  padding: ${calculateVwBasedOnFigma(30)} 0 ${calculateVwBasedOnFigma(46)};
+  margin: ${calculateMinSizeBasedOnFigma(113)} 0;
+  padding: ${calculateMinSizeBasedOnFigma(30)} 0 ${calculateMinSizeBasedOnFigma(46)};
   background-image: url('sign-in-paper.png');
   background-size: 100% 100%;
 `
@@ -99,18 +102,18 @@ const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: ${calculateVwBasedOnFigma(480)};
+  width: ${calculateMinSizeBasedOnFigma(480)};
 `
 const StyledLogoImg = styled.img`
-  height: ${calculateVwBasedOnFigma(170)};
+  height: ${calculateMinSizeBasedOnFigma(170)};
 `
 const StyledParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${calculateVwBasedOnFigma(13)};
-  margin-top: ${calculateVwBasedOnFigma(24)};
+  gap: ${calculateMinSizeBasedOnFigma(13)};
+  margin-top: ${calculateMinSizeBasedOnFigma(24)};
 `
 const StyledTextLineWrapper = styled.div`
   display: flex;
