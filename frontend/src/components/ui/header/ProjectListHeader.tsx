@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 type Props = {}
 
@@ -65,7 +65,7 @@ const StyledBellWrapper = styled.div`
 
 const StyledNotificationIcon = styled.div`
   position: absolute;
-  top: ${calculateVhBasedOnFigma(-2)};
+  top: ${calculateMinSizeBasedOnFigmaHeight(-2)};
   right: ${calculateVwBasedOnFigma(1)};
   width: 9px;
   height: 9px;

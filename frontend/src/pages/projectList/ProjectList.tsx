@@ -8,7 +8,7 @@ import date from 'utils/date/date'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { Loading } from 'components/ui/loading/Loading'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
@@ -168,9 +168,9 @@ const StyledProjectListPageContainer = styled.div`
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  margin-top: ${calculateVhBasedOnFigma(3)};
+  margin-top: ${calculateMinSizeBasedOnFigmaHeight(3)};
   width: ${calculateVwBasedOnFigma(437)};
-  height: ${calculateVhBasedOnFigma(770)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(770)};
   background: url('project-list_background.png');
   background-position: cover;
   background-size: cover;
@@ -183,7 +183,7 @@ const StyledProjectListWrapper = styled.div`
   left: 50%;
   transform: translateX(-54%);
   width: ${calculateVwBasedOnFigma(356)};
-  height: ${calculateVhBasedOnFigma(564)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(564)};
   background: #fff;
 `
 
@@ -198,9 +198,8 @@ const StyledProjectList = styled.ul``
 const StyledProject = styled.li``
 
 const StyledProjectDetailContainer = styled.div`
-  margin-top: ${calculateVhBasedOnFigma(3)};
   width: ${calculateVwBasedOnFigma(971)};
-  height: ${calculateVhBasedOnFigma(823)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(823)};
   background: url('svg/project-detail_background.svg');
   background-position: center;
   background-size: contain;
@@ -225,10 +224,10 @@ const StyledProjectListBackground = styled.div`
 `
 
 const StyledProjectDetail = styled.div`
-  width: ${calculateVhBasedOnFigma(813)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(813)};
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr ${calculateVhBasedOnFigma(40)} auto;
+  grid-template-rows: auto 1fr ${calculateMinSizeBasedOnFigmaHeight(40)} auto;
 `
 
 const StyledComplicateButtonContainer = styled.div`
@@ -249,11 +248,11 @@ const StyledProjectTitleContainer = styled.div`
 `
 
 const StyledProjectTitle = styled.h2`
-  font-size: ${calculateVhBasedOnFigma(24)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(24)};
 `
 
 const StyledProjectOptionContainer = styled.div`
-  margin-right: ${calculateVhBasedOnFigma(12)};
+  margin-right: ${calculateMinSizeBasedOnFigmaHeight(12)};
   width: 28px;
   height: 28px;
   display: flex;
@@ -296,17 +295,17 @@ const StyledMonsterContainer = styled.div`
 `
 
 const StyledMonsterStatusContainer = styled.div`
-  width: ${calculateVhBasedOnFigma(346)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(346)};
   border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
   border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
 `
 
 const StyledMonsterStatus = styled.div`
-  padding: ${calculateVhBasedOnFigma(6)} 0px;
+  padding: ${calculateMinSizeBasedOnFigmaHeight(6)} 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: ${calculateVhBasedOnFigma(16)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
 
   &:nth-child(2) {
     border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
@@ -328,9 +327,9 @@ const StyledProjectInfoContainer = styled.div`
 `
 
 const StyledStyledProjectInfoText = styled.p`
-  margin-bottom: ${calculateVhBasedOnFigma(12)};
+  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(12)};
   text-align: justify;
-  font-size: ${calculateVhBasedOnFigma(16)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
 `
 
 const StyledProjectInfoTitleContainer = styled.div`
@@ -345,7 +344,7 @@ const StyledProjectInfoTitleContainer = styled.div`
 `
 
 const StyledProjectInfoTitle = styled.h3`
-  font-size: ${calculateVhBasedOnFigma(16)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
 `
 

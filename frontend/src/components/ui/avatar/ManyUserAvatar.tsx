@@ -3,7 +3,7 @@ import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { avatarGroups } from 'types/avatarGroups'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { UserAvatarIcon } from './UserAvatarIcon'
 
@@ -12,11 +12,18 @@ type Props = {
   btnFunc?: () => void
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   groups: avatarGroups
+  className?: string
 }
 
-export const ManyUserAvatar: FC<Props> = ({ avatarStyleType, btnFunc, groups, onClick }) => {
+export const ManyUserAvatar: FC<Props> = ({
+  avatarStyleType,
+  btnFunc,
+  groups,
+  onClick,
+  className,
+}) => {
   return (
-    <StyledManyUserAvatarContainer onClick={event => onClick(event)}>
+    <StyledManyUserAvatarContainer onClick={event => onClick(event)} className={className}>
       {groups.map((group, index) => {
         if (index <= 4) return
 
@@ -41,13 +48,17 @@ export const ManyUserAvatar: FC<Props> = ({ avatarStyleType, btnFunc, groups, on
 const StyledManyUserAvatarContainer = styled.div`
   position: absolute;
   padding: 12px;
-  top: 48px;
-  right: ${calculateVhBasedOnFigma(0)};
-  border: solid 1px ${({ theme }) => theme.COLORS.SLIVER3};
-  box-shadow: 0px 1px 4px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
+  top: ${calculateMinSizeBasedOnFigmaHeight(56)};
+  right: ${calculateMinSizeBasedOnFigmaHeight(-12)};
   display: grid;
   gap: 12px 0;
   grid-template-columns: auto auto auto auto auto auto;
+
+  ${({ theme }) => css`
+    background: ${theme.COLORS.BLACK_WHITE};
+    border: solid 1px ${theme.COLORS.SLIVER3};
+    box-shadow: 0px 1px 4px ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
+  `}
 `
 
 const StyledManyUserAvatar = styled.div<{ isGap: boolean }>`

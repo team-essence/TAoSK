@@ -1,9 +1,9 @@
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import 'styled-components'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 export const theme = {
-  HEADER_HEIGHT: calculateVhBasedOnFigma('70px'),
+  HEADER_HEIGHT: calculateMinSizeBasedOnFigmaHeight('70px'),
   Z_INDEX: {
     INDEX_MINUS_1: -1,
     INDEX_1: 1,
@@ -70,6 +70,7 @@ export const theme = {
     COCOA_BROWN: '#342422',
     COCOA_BROWN2: '#4A201F',
     SLIVER3: '#BBBBBB',
+    BLACK_WHITE: '#FFFEF9',
   },
 } as const
 

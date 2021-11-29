@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
@@ -11,10 +11,11 @@ type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE_TYPE
   groups: avatarGroups
+  className?: string
 }
 
-export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups }) => {
-  const [isPopUp, setIsPopUp] = useState(false)
+export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, className }) => {
+  const [isPopup, setIsPopUp] = useState(false)
 
   const closeModal = useCallback(event => {
     setIsPopUp(false)
@@ -28,19 +29,19 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups }) => 
   }, [closeModal])
 
   const handlePopUp = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    setIsPopUp(isPopup => !isPopUp)
+    setIsPopUp(isPopup => !isPopup)
     document.addEventListener('click', closeModal)
     event.stopPropagation()
   }
 
   if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
-      <StyledUserCountContainer>
+      <StyledUserCountContainer className={className}>
         <StyledUserCountListContainer onClick={handlePopUp}>
           <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
         </StyledUserCountListContainer>
 
-        {isPopUp && (
+        {isPopup && (
           <ManyUserAvatar
             groups={groups}
             avatarStyleType={avatarStyleType}
@@ -51,12 +52,12 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups }) => 
     )
   else if (avatarStyleType === AVATAR_STYLE.MODAL)
     return (
-      <StyledUserCountContainer>
+      <StyledUserCountContainer className={className}>
         <StyledUserCountModalContainer onClick={handlePopUp}>
           <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
         </StyledUserCountModalContainer>
 
-        {isPopUp && (
+        {isPopup && (
           <ManyUserAvatar
             groups={groups}
             avatarStyleType={avatarStyleType}
@@ -67,7 +68,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups }) => 
     )
   else
     return (
-      <StyledUserCountTaskContainer>
+      <StyledUserCountTaskContainer className={className}>
         <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
       </StyledUserCountTaskContainer>
     )
@@ -79,8 +80,8 @@ const StyledUserCountContainer = styled.div`
 `
 
 const StyledUserCountListContainer = styled.div`
-  width: ${calculateVhBasedOnFigma(50)};
-  height: ${calculateVhBasedOnFigma(50)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(50)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(50)};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: ${({ theme }) => theme.COLORS.MINE_SHAFT2};
   border-radius: 4px;

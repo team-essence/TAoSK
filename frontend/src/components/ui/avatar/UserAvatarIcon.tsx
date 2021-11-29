@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useHover } from 'hooks/useHover'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
@@ -11,6 +11,7 @@ type Props = {
   iconImage: string
   name?: string
   occupation?: string
+  className?: string
   btnFunc?: () => void
 }
 
@@ -20,12 +21,13 @@ export const UserAvatarIcon: FC<Props> = ({
   btnFunc,
   name,
   occupation,
+  className,
 }) => {
   const [hovered, eventHoverHandlers] = useHover()
 
   if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
-      <StyledUserAvatarIconContainer size={50} {...eventHoverHandlers}>
+      <StyledUserAvatarIconContainer size={50} {...eventHoverHandlers} className={className}>
         <StyledUserAvatarIconListContainer iconImage={iconImage} size={50} />
 
         {hovered && (
@@ -44,13 +46,13 @@ export const UserAvatarIcon: FC<Props> = ({
     )
   else if (avatarStyleType === AVATAR_STYLE.TASK)
     return (
-      <StyledUserAvatarIconContainer size={24}>
+      <StyledUserAvatarIconContainer size={24} className={className}>
         <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={24} />
       </StyledUserAvatarIconContainer>
     )
   else
     return (
-      <StyledUserAvatarIconContainer size={40} {...eventHoverHandlers}>
+      <StyledUserAvatarIconContainer size={40} {...eventHoverHandlers} className={className}>
         {btnFunc && (
           <StyledUserCloseButton onClick={btnFunc}>
             <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
@@ -76,8 +78,8 @@ export const UserAvatarIcon: FC<Props> = ({
 
 const StyledUserAvatarIconContainer = styled.div<{ size: number }>`
   position: relative;
-  width: ${({ size }) => calculateVhBasedOnFigma(size)};
-  height: ${({ size }) => calculateVhBasedOnFigma(size)};
+  width: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
+  height: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
 `
 
 const StyledUserCloseButton = styled.button`
@@ -99,8 +101,8 @@ const StyledUserAvatarIconListContainer = styled.div<{
   iconImage: string
   size: number
 }>`
-  width: ${({ size }) => calculateVhBasedOnFigma(size)};
-  height: ${({ size }) => calculateVhBasedOnFigma(size)};
+  width: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
+  height: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
   border-radius: 4px;
   box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
@@ -114,8 +116,8 @@ const StyledUserAvatarIconTaskContainer = styled.div<{
   iconImage: string
   size: number
 }>`
-  width: ${({ size }) => calculateVhBasedOnFigma(size)};
-  height: ${({ size }) => calculateVhBasedOnFigma(size)};
+  width: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
+  height: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
   border-radius: 2px;
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   background: url(${({ iconImage }) => iconImage});
@@ -126,10 +128,10 @@ const StyledUserAvatarIconTaskContainer = styled.div<{
 
 const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
   position: absolute;
-  bottom: ${({ bottom }) => calculateVhBasedOnFigma(-bottom)};
+  bottom: ${({ bottom }) => calculateMinSizeBasedOnFigmaHeight(-bottom)};
   left: -20%;
-  width: ${calculateVhBasedOnFigma(240)};
-  height: ${calculateVhBasedOnFigma(60)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(240)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(60)};
   box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT2, 0.9)};
@@ -143,27 +145,27 @@ const StyledPopupUserContainer = styled.div``
 
 const StyledPopupUserName = styled.p`
   color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${calculateVhBasedOnFigma(16)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
 `
 
 const StyledPopupUserOccupation = styled.p`
   color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${calculateVhBasedOnFigma(12)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(12)};
 `
 
 const StyledPopupUserIconContainer = styled.div`
   margin: 0;
   position: relative;
   left: -2px;
-  width: ${calculateVhBasedOnFigma(60)};
-  height: ${calculateVhBasedOnFigma(60)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(60)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(60)};
 
   img {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
     border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
     border-radius: 4px;
-    width: ${calculateVhBasedOnFigma(60)};
-    height: ${calculateVhBasedOnFigma(60)};
+    width: ${calculateMinSizeBasedOnFigmaHeight(60)};
+    height: ${calculateMinSizeBasedOnFigmaHeight(60)};
     object-fit: cover;
   }
 `

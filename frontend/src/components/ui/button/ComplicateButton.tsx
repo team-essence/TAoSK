@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type Props = {
@@ -26,10 +26,10 @@ export const ComplicateButton: FC<Props> = ({ buttonColorType, text, onClick }) 
 
 const StyledComplicateButton = styled.button`
   position: relative;
-  width: ${calculateVhBasedOnFigma(314)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(314)};
 
   img {
-    width: ${calculateVhBasedOnFigma(314)};
+    width: ${calculateMinSizeBasedOnFigmaHeight(314)};
     display: block;
     object-fit: contain;
   }
@@ -40,7 +40,7 @@ const StyledComplicateButtonText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -60%);
-  font-size: ${calculateVhBasedOnFigma(20)};
+  font-size: ${calculateMinSizeBasedOnFigmaHeight(20)};
 
   ${({ theme }) => css`
     width: 100%;
