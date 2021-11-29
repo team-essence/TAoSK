@@ -56,6 +56,7 @@ export const SelectField: FC<Props> = props => {
               {...registration}
               {...selectAttributes}
               color={!value ? theme.COLORS.GRAY : undefined}
+              border={shouldShowError ? `solid 1px ${errorColor}` : undefined}
               onChange={onChange}
               onBlur={onBlur}>
               {options.map((option, index) => (

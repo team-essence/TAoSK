@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, useState, FocusEvent } from 'react'
+import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
@@ -11,6 +11,7 @@ type StyledBoxProps = {
   border?: string
   borderRadius?: string
   backgroundColor?: string
+  children?: ReactNode
 }
 type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledBoxProps>
 
@@ -26,6 +27,7 @@ export const InputField: FC<Props> = props => {
     error,
     required = true,
     color,
+    children,
     ...inputAttributes
   } = props
 
@@ -45,6 +47,7 @@ export const InputField: FC<Props> = props => {
             {...inputStyles}
             border={shouldShowError ? `solid 1px ${errorColor}` : undefined}>
             <input {...registration} {...inputAttributes} onBlur={onBlur} />
+            {children}
           </StyledInputWrapper>
         </StyledLabel>
       </StyledLabelWrapper>
@@ -74,6 +77,7 @@ StyledLabel.defaultProps = {
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
 const StyledInputWrapper = styled.div<StyledBoxProps>`
+  position: relative;
   ${generateStyleBasedOnFigma`
     margin-top: 4px;
   `}
