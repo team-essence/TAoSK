@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 type Props = {
   buttonColorType: BUTTON_COLOR_TYPE

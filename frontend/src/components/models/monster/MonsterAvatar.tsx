@@ -5,7 +5,6 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './DragonIdle'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import styled from 'styled-components'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 export const MonsterAvatar: VFC = () => {
   return (

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import date from 'utils/date/date'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { Loading } from 'components/ui/loading/Loading'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
@@ -169,7 +169,7 @@ const StyledProjectListPageContainer = styled.div`
 const StyledProjectListContainer = styled.div`
   position: relative;
   margin-top: ${calculateMinSizeBasedOnFigmaHeight(3)};
-  width: ${calculateVwBasedOnFigma(437)};
+  width: ${calculateMinSizeBasedOnFigma(437)};
   height: ${calculateMinSizeBasedOnFigmaHeight(770)};
   background: url('project-list_background.png');
   background-position: cover;
@@ -179,10 +179,10 @@ const StyledProjectListContainer = styled.div`
 
 const StyledProjectListWrapper = styled.div`
   position: absolute;
-  top: ${calculateVwBasedOnFigma(120)};
+  top: ${calculateMinSizeBasedOnFigma(120)};
   left: 50%;
   transform: translateX(-54%);
-  width: ${calculateVwBasedOnFigma(356)};
+  width: ${calculateMinSizeBasedOnFigma(356)};
   height: ${calculateMinSizeBasedOnFigmaHeight(564)};
   background: #fff;
 `
@@ -198,7 +198,7 @@ const StyledProjectList = styled.ul``
 const StyledProject = styled.li``
 
 const StyledProjectDetailContainer = styled.div`
-  width: ${calculateVwBasedOnFigma(971)};
+  width: ${calculateMinSizeBasedOnFigma(971)};
   height: ${calculateMinSizeBasedOnFigmaHeight(823)};
   background: url('svg/project-detail_background.svg');
   background-position: center;
@@ -339,7 +339,7 @@ const StyledProjectInfoTitleContainer = styled.div`
 
   img {
     opacity: 0.2;
-    width: ${calculateVwBasedOnFigma(98)};
+    width: ${calculateMinSizeBasedOnFigma(98)};
   }
 `
 
@@ -350,5 +350,5 @@ const StyledProjectInfoTitle = styled.h3`
 
 const StyledPartyContainer = styled.div`
   display: flex;
-  gap: 0 ${calculateVwBasedOnFigma(6)};
+  gap: 0 ${calculateMinSizeBasedOnFigma(6)};
 `

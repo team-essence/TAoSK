@@ -1,6 +1,5 @@
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import 'styled-components'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 export const theme = {
   HEADER_HEIGHT: calculateMinSizeBasedOnFigma('70px'),
