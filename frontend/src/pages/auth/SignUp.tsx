@@ -17,7 +17,7 @@ import { SelectField } from 'components/ui/form/SelectField'
 import { ItemInputField } from 'components/ui/form/ItemInputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 
@@ -60,15 +60,15 @@ export const SignUp: FC = () => {
               handleUploadImg={handleUploadImg}
               margin={
                 innerWidth <= 1210
-                  ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
-                  : `0 0 ${calculateVwBasedOnFigma(24)} 0`
+                  ? `0 auto ${calculateMinSizeBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateMinSizeBasedOnFigma(24)} 0`
               }
             />
             <StyledRightColumn
               margin={
                 innerWidth <= 1210
-                  ? `0 auto ${calculateVwBasedOnFigma(24)} auto`
-                  : `0 0 ${calculateVwBasedOnFigma(24)} 0`
+                  ? `0 auto ${calculateMinSizeBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateMinSizeBasedOnFigma(24)} 0`
               }>
               <InputField
                 label="冒険者名"
@@ -157,8 +157,8 @@ export const SignUp: FC = () => {
                 items={certifications}
                 setItems={setCertifications}
                 inputAspect={{
-                  width: calculateVwBasedOnFigma(400),
-                  height: calculateVwBasedOnFigma(40),
+                  width: calculateMinSizeBasedOnFigma(400),
+                  height: calculateMinSizeBasedOnFigma(40),
                 }}
                 placeholder="保有資格を入力してください"
               />
@@ -167,8 +167,8 @@ export const SignUp: FC = () => {
                 items={interests}
                 setItems={setInterests}
                 inputAspect={{
-                  width: calculateVwBasedOnFigma(400),
-                  height: calculateVwBasedOnFigma(40),
+                  width: calculateMinSizeBasedOnFigma(400),
+                  height: calculateMinSizeBasedOnFigma(40),
                 }}
                 placeholder="興味のあることを入力してください"
               />
@@ -182,8 +182,8 @@ export const SignUp: FC = () => {
               <StyledSignUpButton
                 text="登録"
                 aspect={{
-                  width: calculateVwBasedOnFigma(120),
-                  height: calculateVwBasedOnFigma(32),
+                  width: calculateMinSizeBasedOnFigma(120),
+                  height: calculateMinSizeBasedOnFigma(32),
                 }}
                 outerBgColor={
                   isDisabled
@@ -221,18 +221,18 @@ const StyledSignUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${calculateVwBasedOnFigma(840)};
+  width: ${calculateMinSizeBasedOnFigma(840)};
   height: 100%;
-  margin: ${calculateVwBasedOnFigma(26)} 0;
-  padding: ${calculateVwBasedOnFigma(64)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(26)} 0;
+  padding: ${calculateMinSizeBasedOnFigma(64)} 0;
   background-image: url('contract-paper.png');
   background-size: 100% 100%;
 `
 const StyledLogoImg = styled.img`
-  height: ${calculateVwBasedOnFigma(108)};
+  height: ${calculateMinSizeBasedOnFigma(108)};
 `
 const StyledH1 = styled.h1`
-  margin: ${calculateVwBasedOnFigma(33)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(33)} 0;
   background: -webkit-linear-gradient(
     top,
     ${({ theme }) => theme.COLORS.TENN},
@@ -249,13 +249,13 @@ const StyledFormWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  width: ${calculateVwBasedOnFigma(706)};
+  width: ${calculateMinSizeBasedOnFigma(706)};
 `
 const StyledRightColumn = styled.div.attrs<{ margin: string }>(({ margin }) => ({
   margin,
 }))<{ margin: string }>`
   margin: ${({ margin }) => margin};
-  width: ${calculateVwBasedOnFigma(480)};
+  width: ${calculateMinSizeBasedOnFigma(480)};
 `
 const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(({ margin }) => ({
   margin,
@@ -263,7 +263,7 @@ const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(
   margin: ${({ margin }) => margin};
 `
 const StyledItemInputField = styled(ItemInputField)`
-  margin-bottom: ${calculateVwBasedOnFigma(24)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(24)};
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -277,7 +277,7 @@ const StyledBackground = styled.div`
   background-position: 50% 100%;
 `
 const StyledTerms = styled.p`
-  margin: ${calculateVwBasedOnFigma(24)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(24)} 0;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
 `
