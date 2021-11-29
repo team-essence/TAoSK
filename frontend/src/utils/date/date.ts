@@ -17,7 +17,7 @@ export default class date {
     const yyyy = today.getFullYear()
     const mm = ('0' + (today.getMonth() + 1)).slice(-2)
     const dd = ('0' + today.getDate()).slice(-2)
-    return `${yyyy}/${mm}/${dd}`
+    return `${yyyy}-${mm}-${dd}`
   }
 
   /**

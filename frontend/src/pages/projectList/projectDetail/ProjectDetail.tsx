@@ -30,7 +30,7 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { UpdateTask } from 'types/graphql.gen'
 import { DropType } from 'consts/dropType'
-import { TaskCard } from 'components/ui/card/TaskCard'
+import { TaskCard } from 'components/models/task/TaskCard'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -66,6 +66,7 @@ export const ProjectDetail: FC = () => {
             design: task.design,
             vertical_sort: task.vertical_sort,
             end_date: task.end_date,
+            chatCount: task.chatCount,
             allocations,
           }
         })
@@ -142,6 +143,7 @@ export const ProjectDetail: FC = () => {
           design: task.design,
           vertical_sort: task.vertical_sort,
           end_date: task.end_date,
+          chatCount: task.chatCount,
           allocations,
         }
       })
@@ -294,7 +296,14 @@ export const ProjectDetail: FC = () => {
     const listCopy = [...list]
 
     if (type === DropType.COLUMN) {
-      if (destinationIndex === list.length - 1 || destinationIndex === 0) return
+      if (destinationIndex === 0) {
+        toast.warning('未着手は固定されています')
+        return
+      }
+      if (destinationIndex === list.length - 1) {
+        toast.warning('完了は固定されています')
+        return
+      }
       const result = reorder(listCopy, sourceIndex, destinationIndex)
       setList(result)
       const updateListSort = result.map((list, index) => {
@@ -547,6 +556,7 @@ export const ProjectDetail: FC = () => {
                                           design={task.design}
                                           plan={task.plan}
                                           allocations={task.allocations}
+                                          chatCount={task.chatCount}
                                           end_date={task.end_date}
                                         />
                                       </li>

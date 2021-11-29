@@ -39,6 +39,7 @@ query GetProject($id: Float!) {
         design
         vertical_sort
         end_date
+        chatCount
 
         allocations {
           id
@@ -96,6 +97,7 @@ query GetListsByProjectId($projectId: String!) {
       design
       vertical_sort
       end_date
+      chatCount
 
       allocations {
         id
@@ -147,6 +149,7 @@ mutation CreateList($name: String!, $project_id: Float!, $task_list: Float!) {
       design
       vertical_sort
       end_date
+      chatCount
 
       allocations {
         id

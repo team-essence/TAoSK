@@ -23,6 +23,7 @@ export const TaskCard: FC<Props> = ({
   listIndex,
   listLength,
   isDragging,
+  chatCount,
   end_date,
 }) => {
   const params = [
@@ -41,11 +42,15 @@ export const TaskCard: FC<Props> = ({
         <StyledTitle>{title}</StyledTitle>
         <StyledFlexContainer>
           <StyledFootContainer>
-            <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
-            <StyledDateContainer listIndex={listIndex} listLength={listLength}>
-              <StyledClockImage src="/svg/clock.svg" alt="clock" />
-              <StyledDate>{date.formatDate(end_date)}</StyledDate>
-            </StyledDateContainer>
+            {end_date && (
+              <>
+                <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
+                <StyledDateContainer listIndex={listIndex} listLength={listLength}>
+                  <StyledClockImage src="/svg/clock.svg" alt="clock" />
+                  <StyledDate>{date.formatDate(end_date)}</StyledDate>
+                </StyledDateContainer>
+              </>
+            )}
           </StyledFootContainer>
           <StyledWeaponImageContainer>
             <StyledWeaponImage

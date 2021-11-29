@@ -16,5 +16,6 @@ export type Task = {
   design: number
   vertical_sort: number
   end_date: string
+  chatCount: number
   allocations: Allocation[]
 }
