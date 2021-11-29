@@ -1,8 +1,10 @@
 import React, { FC } from 'react'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { Task } from 'types/task'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
+import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { UserCount } from 'components/ui/avatar/UserCount'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
@@ -24,6 +26,7 @@ export const TaskCard: FC<Props> = ({
   listLength,
   isDragging,
   chatCount,
+  allocations,
   end_date,
 }) => {
   const params = [
@@ -35,23 +38,35 @@ export const TaskCard: FC<Props> = ({
     { param: 'plan', value: plan },
   ]
   const max = params.reduce((a, b) => (a.value > b.value ? a : b))
+  const assignedUsers = allocations.map((item, index, array) =>
+    index < 6 ? (
+      <UserAvatarIcon iconType="Task and modal" iconImage={item.icon_image} size={24} />
+    ) : (
+      index === array.length - 1 && <UserCount userCount={array.length - 6} styleType="task" />
+    ),
+  )
 
   return (
     <StyledContainer isDragging={isDragging}>
       <StyledInnerWrap>
         <StyledTitle>{title}</StyledTitle>
         <StyledFlexContainer>
-          <StyledFootContainer>
-            {end_date && (
-              <>
-                <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
-                <StyledDateContainer listIndex={listIndex} listLength={listLength}>
-                  <StyledClockImage src="/svg/clock.svg" alt="clock" />
-                  <StyledDate>{date.formatDate(end_date)}</StyledDate>
-                </StyledDateContainer>
-              </>
+          <div>
+            {allocations.length !== 0 && (
+              <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
             )}
-          </StyledFootContainer>
+            <StyledFootContainer>
+              {end_date && (
+                <>
+                  <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
+                  <StyledDateContainer listIndex={listIndex} listLength={listLength}>
+                    <StyledClockImage src="/svg/clock.svg" alt="clock" />
+                    <StyledDate>{date.formatDate(end_date)}</StyledDate>
+                  </StyledDateContainer>
+                </>
+              )}
+            </StyledFootContainer>
+          </div>
           <StyledWeaponImageContainer>
             <StyledWeaponImage
               src={changeWeaponImage(listIndex, listLength, max.param)}
@@ -128,6 +143,11 @@ const StyledFlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+`
+const StyledAvatarContainer = styled.div`
+  display: flex;
+  gap: ${calculateVwBasedOnFigma(2)};
+  padding: ${calculateVwBasedOnFigma(8)} 0;
 `
 const StyledDateContainer = styled.div<{ listIndex: number; listLength: number }>`
   display: flex;
