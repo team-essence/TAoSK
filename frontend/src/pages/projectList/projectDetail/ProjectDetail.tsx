@@ -30,6 +30,7 @@ import { listType, tasksType } from 'types/list'
 import { UpdateTask } from 'types/graphql.gen'
 import date from 'utils/date/date'
 import { DropType } from 'consts/dropType'
+import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -115,6 +116,7 @@ export const ProjectDetail: FC = () => {
       toast.error('タスクの作成失敗しました')
     },
   })
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
@@ -511,7 +513,8 @@ export const ProjectDetail: FC = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}>
                           <h2>{list.title}</h2>
-                          <button onClick={() => handleAddTask(listIndex + 1)}>追加</button>
+                          <button onClick={() => setShouldShowModal(true)}>追加</button>
+                          {/* <button onClick={() => handleAddTask(listIndex + 1)}>追加</button> */}
                           <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
                             {listProvided => (
                               <ul
@@ -569,6 +572,8 @@ export const ProjectDetail: FC = () => {
       <ProjectDetailRightContainer>
         <p>右側</p>
       </ProjectDetailRightContainer>
+
+      <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
     </ProjectDetailContainer>
   )
 }
