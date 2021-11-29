@@ -83,6 +83,7 @@ const StyledInputWrapper = styled.div<StyledBoxProps>`
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
     &::placeholder {
+      font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
       color: ${({ theme }) => theme.COLORS.GRAY};
     }
   }

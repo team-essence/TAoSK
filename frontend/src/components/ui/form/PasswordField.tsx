@@ -37,28 +37,28 @@ export const PasswordField: FC<Props> = ({
         {...inputFieldProps}
         registration={registration}
         type={shouldShowPassword ? 'text' : 'password'}
-        onChange={onChange}
-      />
-      <StyledCoarseButton
-        text={shouldShowPassword ? '非表示' : '表示'}
-        aspect={{
-          width: calculateVwBasedOnFigma(53),
-          height: calculateVwBasedOnFigma(30),
-        }}
-        outerBgColor={
-          value
-            ? convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
-            : convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-        }
-        innerBgColor={
-          value
-            ? convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
-            : convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-        }
-        color={!value ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
-        onClick={() => setShouldShowPassword(!shouldShowPassword)}
-        isDisabled={!value}
-      />
+        onChange={onChange}>
+        <StyledCoarseButton
+          text={shouldShowPassword ? '非表示' : '表示'}
+          aspect={{
+            width: calculateVwBasedOnFigma(53),
+            height: calculateVwBasedOnFigma(30),
+          }}
+          outerBgColor={
+            value
+              ? convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
+              : convertIntoRGBA(theme.COLORS.ALTO, 0.55)
+          }
+          innerBgColor={
+            value
+              ? convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
+              : convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
+          }
+          color={!value ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
+          onClick={() => setShouldShowPassword(!shouldShowPassword)}
+          isDisabled={!value}
+        />
+      </InputField>
     </StyledWrapper>
   )
 }

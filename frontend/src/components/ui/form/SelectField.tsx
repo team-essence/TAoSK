@@ -121,7 +121,7 @@ const StyledSelect = styled.select<StyledSelectProps>`
   }
 `
 StyledSelect.defaultProps = {
-  width: `min(33.33vw, ${calculateVwBasedOnFigma(480)})`,
+  width: calculateVwBasedOnFigma(480),
   height: calculateVwBasedOnFigma(40),
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
