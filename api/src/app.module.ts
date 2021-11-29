@@ -73,6 +73,7 @@ import { GameLogsModule } from './game-logs/game-logs.module';
         GameLog,
       ],
       synchronize: true,
+      keepConnectionAlive: true,
     }),
     UsersModule,
     CertificationsModule,
