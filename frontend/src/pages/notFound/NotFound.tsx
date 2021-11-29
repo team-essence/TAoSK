@@ -1,8 +1,11 @@
 import React, { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import styled from 'styled-components'
 
 export const NotFound: FC = () => {
+  const navigate = useNavigate()
   return (
     <StyledContainer>
       <AuthHeader />
@@ -17,6 +20,11 @@ export const NotFound: FC = () => {
             <br />
             ページが移動もしくは削除されているかもしれません。
           </p>
+          <StyledButtonContainer>
+            <StyledGorgeousButton onClick={() => navigate('/')}>
+              <p>トップへ戻る</p>
+            </StyledGorgeousButton>
+          </StyledButtonContainer>
         </StyledTextContainer>
       </StyledNotFoundContainer>
     </StyledContainer>
@@ -29,7 +37,7 @@ const StyledContainer = styled.div`
 `
 const StyledNotFoundContainer = styled.div`
   position: relative;
-  top: 16vh;
+  top: ${calculateMinSizeBasedOnFigma(140)};
   min-height: 536px;
   width: 1050px;
   padding: 0 20px;
@@ -41,20 +49,41 @@ const StyledH1 = styled.h1`
   position: absolute;
   top: 64px;
   left: 200px;
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_60};
+  font-size: 60px;
 `
 const StyledH2 = styled.h2`
   position: absolute;
   top: 148px;
   left: 230px;
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_18};
+  font-size: 18px;
 `
 const StyledTextContainer = styled.div`
   position: absolute;
   top: 200px;
   left: 150px;
-  width: 400px;
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
-  line-height: 2;
+  width: 410px;
+  font-size: 12px;
+  line-height: 2.2;
   text-align: center;
+`
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+`
+
+const StyledGorgeousButton = styled.button`
+  display: grid;
+  place-items: center;
+  width: 226px;
+  height: 54px;
+  border: none;
+  background: url('/images/back-home-bg.png');
+  margin-right: 32px;
+  p {
+    color: #fff;
+    font-size: 15px;
+    padding-bottom: 3.5px;
+  }
 `
