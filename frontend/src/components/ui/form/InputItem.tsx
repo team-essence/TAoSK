@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { CrossIcon } from 'components/ui/button/CrossButton'
+import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'

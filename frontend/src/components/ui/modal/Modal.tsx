@@ -1,7 +1,7 @@
 import React, { FC, Dispatch, SetStateAction, ReactNode } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
-import { CrossIcon } from 'components/ui/button/CrossButton'
+import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import styled from 'styled-components'
 
 type Props = {
