@@ -8,12 +8,10 @@ import {
   UseFormTrigger,
 } from 'react-hook-form'
 
-type FormInputs = Record<
-  'name' | 'company' | 'occupation' | 'email' | 'password' | 're-password',
-  string
->
+// TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
+type FormInputs = Record<'title' | 'overview' | 'date', string>
 
-type UseSignUpFormReturn<T> = {
+type UseTaskCreateFormReturn<T> = {
   register: UseFormRegister<T>
   handleSubmit: UseFormHandleSubmit<T>
   getValues: UseFormGetValues<T>
@@ -23,7 +21,7 @@ type UseSignUpFormReturn<T> = {
 }
 
 /**
- * react-hook-formを使った登録処理の初期設定を行う
+ * react-hook-formを使ったタスク追加処理の初期設定を行う
  * @returns {boolean} isDisabled - 登録ボタンをdisabledにするか
  * @returns {Object} {
  *  register,
@@ -33,7 +31,7 @@ type UseSignUpFormReturn<T> = {
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
+export const useTaskCreateForm = (): UseTaskCreateFormReturn<FormInputs> => {
   const {
     register,
     handleSubmit,
@@ -42,21 +40,15 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     setValue,
     watch,
     trigger,
-  } = useForm<FormInputs>({
-    mode: 'onChange',
-  })
+  } = useForm<FormInputs>({ mode: 'onChange' })
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
 
   useEffect(() => {
     const initializeInputValues = () => {
-      setValue('name', '', { shouldValidate: true })
-      setValue('company', '', { shouldValidate: true })
-      setValue('occupation', '', { shouldValidate: true })
-      setValue('email', '', { shouldValidate: true })
-      setValue('password', '', { shouldValidate: true })
-      setValue('re-password', '', { shouldValidate: true })
+      setValue('title', '', { shouldValidate: true })
+      setValue('overview', '', { shouldValidate: true })
     }
     const hasError = Object.keys(errors).length
 

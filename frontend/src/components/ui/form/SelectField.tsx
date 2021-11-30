@@ -16,19 +16,18 @@ type Props = {
   options: Record<'value' | 'item', string>[]
 } & SelectHTMLAttributes<HTMLSelectElement>
 
-export const SelectField: FC<Props> = props => {
+export const SelectField: FC<Props> = ({
+  className,
+  options,
+  errorColor = theme.COLORS.ERROR,
+  label,
+  registration,
+  error,
+  required = true,
+  ...selectAttributes
+}) => {
   const [value, setValue] = useState<string>('')
   const [hasBlured, setHasBlured] = useState<boolean>(false)
-  const {
-    className,
-    options,
-    errorColor = theme.COLORS.ERROR,
-    label,
-    registration,
-    error,
-    required = true,
-    ...selectAttributes
-  } = props
 
   const shouldShowError = !!(hasBlured && error?.message)
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {

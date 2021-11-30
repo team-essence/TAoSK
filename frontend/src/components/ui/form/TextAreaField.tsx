@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, { FC, TextareaHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -13,9 +13,9 @@ type Props = {
   errorColor?: string
   required?: boolean
   type?: 'text' | 'email' | 'password'
-} & InputHTMLAttributes<HTMLInputElement>
+} & TextareaHTMLAttributes<HTMLTextAreaElement>
 
-export const InputField: FC<Props> = ({
+export const TextAreaField: FC<Props> = ({
   className,
   errorColor = theme.COLORS.ERROR,
   label,
@@ -23,13 +23,13 @@ export const InputField: FC<Props> = ({
   error,
   required = true,
   children,
-  ...inputAttributes
+  ...textAreaAttributes
 }) => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
 
   const shouldShowError = !!(hasBlured && error?.message)
-  const onBlur = (e: FocusEvent<HTMLInputElement>) => {
-    inputAttributes.onBlur && inputAttributes.onBlur(e)
+  const onBlur = (e: FocusEvent<HTMLTextAreaElement>) => {
+    textAreaAttributes.onBlur && textAreaAttributes.onBlur(e)
     setHasBlured(true)
   }
 
@@ -40,10 +40,10 @@ export const InputField: FC<Props> = ({
         <label color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-          <StyledInputWrapper shouldShowError={shouldShowError} errorColor={errorColor}>
-            <input {...registration} {...inputAttributes} onBlur={onBlur} />
+          <StyledTextareaWrapper shouldShowError={shouldShowError} errorColor={errorColor}>
+            <textarea {...registration} {...textAreaAttributes} onBlur={onBlur} />
             {children}
-          </StyledInputWrapper>
+          </StyledTextareaWrapper>
         </label>
       </StyledLabelWrapper>
       {shouldShowError && (
@@ -58,11 +58,11 @@ export const InputField: FC<Props> = ({
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${({ marginBottom }) => marginBottom};
 `
-const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: string }>`
+const StyledTextareaWrapper = styled.div<{ shouldShowError: boolean; errorColor: string }>`
   position: relative;
   margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
-  input {
-    padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  textarea {
+    padding: ${calculateMinSizeBasedOnFigmaWidth(9.24)} ${calculateMinSizeBasedOnFigmaWidth(8)};
     border-color: ${props => (props.shouldShowError ? props.errorColor : undefined)} !important;
   }
 `

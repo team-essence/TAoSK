@@ -1,8 +1,5 @@
 import React, { FC, MouseEvent, ReactNode } from 'react'
-import {
-  calculateMinSizeBasedOnFigmaWidth,
-  calculateMinSizeBasedOnFigmaHeight,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
@@ -42,8 +39,6 @@ const StyledWrapper = styled.div<{ shouldShow: boolean }>`
   bottom: 0;
   left: 0;
   margin: auto;
-  width: ${calculateMinSizeBasedOnFigmaWidth(790)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(709)};
   background-image: url('/svg/modal-background.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -70,6 +65,7 @@ const StyledNamePlate = styled.p`
   ${({ theme }) => strokeTextShadow('2px', theme.COLORS.BLACK)};
 `
 const StyledBackgroundDragonSymbol = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: absolute;
   top: 0;
   right: 0;
