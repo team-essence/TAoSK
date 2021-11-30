@@ -377,8 +377,8 @@ export const ProjectDetail: FC = () => {
     })
   }
 
-  const handleAddTask = async (list_id: number) => {
-    await addTask({
+  const handleAddTask = (list_id: number) => {
+    addTask({
       variables: {
         newTask: {
           title:

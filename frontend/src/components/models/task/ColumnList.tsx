@@ -5,7 +5,7 @@ import { Column } from 'components/models/task/Column'
 type Props = {
   className?: string
   lists: List[]
-  handleAddTask: (list_id: number) => Promise<void>
+  handleAddTask: (list_id: number) => void
 }
 
 export const ColumnList: FC<Props> = ({ lists, handleAddTask }) => {

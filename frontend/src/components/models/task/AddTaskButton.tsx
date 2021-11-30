@@ -5,7 +5,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import styled from 'styled-components'
 
 type Props = {
-  handleAddTask: (list_id: number) => Promise<void>
+  handleAddTask: (list_id: number) => void
 }
 
 export const AddTaskButton: FC<Props> = ({ handleAddTask }) => {

@@ -13,7 +13,7 @@ type Props = {
   className?: string
   listIndex: number
   listLength: number
-  handleAddTask: (list_id: number) => Promise<void>
+  handleAddTask: (list_id: number) => void
 } & Omit<List, 'list_id' | 'sort_id' | 'index'>
 
 export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
