@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
 type StyledSelectProps = {
   width?: string

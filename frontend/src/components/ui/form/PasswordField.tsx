@@ -5,7 +5,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
 import type { FieldProps } from 'types/fieldProps'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
 type StyledBoxProps = {
   width?: string
