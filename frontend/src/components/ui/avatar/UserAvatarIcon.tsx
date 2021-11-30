@@ -105,7 +105,7 @@ const StyledUserAvatarIconListContainer = styled.div<{
   width: ${({ size }) => calculateVhBasedOnFigma(size)};
   height: ${({ size }) => calculateVhBasedOnFigma(size)};
   border-radius: 4px;
-  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: url(${({ iconImage }) => iconImage});
   background-size: cover;
@@ -133,9 +133,9 @@ const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
   left: -20%;
   width: ${calculateVhBasedOnFigma(240)};
   height: ${calculateVhBasedOnFigma(60)};
-  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
-  background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT2, 0.9)};
+  background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT, 0.9)};
   border-radius: 4px;
   display: flex;
   gap: 0px 4px;
@@ -162,7 +162,7 @@ const StyledPopupUserIconContainer = styled.div`
   height: ${calculateVhBasedOnFigma(60)};
 
   img {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
     border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
     border-radius: 4px;
     width: ${calculateVhBasedOnFigma(60)};

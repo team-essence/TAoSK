@@ -68,7 +68,6 @@ export const theme = {
     CARARRA: '#EAE7E0',
     SHIP_GRAY: '#38373C',
     OLIVE_GREEN: '#A9BA65',
-    MINE_SHAFT2: '#333333',
     ZINNWALDITE: '#EAC4A6',
     MONDO: '#463E29',
     SHIP_COVE: '#657DBA',

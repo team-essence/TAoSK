@@ -84,7 +84,7 @@ const StyledUserCountListContainer = styled.div`
   width: ${calculateVhBasedOnFigma(50)};
   height: ${calculateVhBasedOnFigma(50)};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
-  background: ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  background: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
   display: flex;
   justify-content: center;
