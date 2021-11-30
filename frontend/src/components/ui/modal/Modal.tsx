@@ -1,5 +1,5 @@
 import React, { FC, Dispatch, SetStateAction, ReactNode } from 'react'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import styled from 'styled-components'
 
@@ -36,7 +36,7 @@ const StyledWrapper = styled.div<{ shouldShow: boolean }>`
 `
 const StyledNamePlate = styled.p`
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigma(-55 / 2)};
+  top: ${calculateMinSizeBasedOnFigmaWidth(-55 / 2)};
   left: 50%;
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
@@ -44,8 +44,8 @@ const StyledNamePlate = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigma(468)};
-  height: ${calculateMinSizeBasedOnFigma(55)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(468)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(55)};
   background-image: url('/svg/nameplate.svg');
   background-size: contain;
   background-repeat: no-repeat;

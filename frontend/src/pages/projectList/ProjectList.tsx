@@ -1,160 +1,258 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Navigate, NavLink } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuthContext } from 'providers/AuthProvider'
-import {
-  useSearchSameCompanyUsersMutation,
-  useCreateProjectMutation,
-  useUsersLazyQuery,
-  useGetInvitationsLazyQuery,
-} from './projectList.gen'
-import { useInput } from 'hooks/useInput'
-import { useDebounce } from 'hooks/useDebounce'
-import { Rating } from 'react-simple-star-rating'
+import { useUsersLazyQuery } from './projectList.gen'
 import styled from 'styled-components'
+import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { Loading } from 'components/ui/loading/Loading'
+import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
 import logger from 'utils/debugger/logger'
-import date from 'utils/date/date'
-import toast from 'utils/toast/toast'
-import { MonsterAvatar } from 'components/ui/monster/MonsterAvatar'
+import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
+import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster'
+import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
+  const router = useNavigate()
   const [getUserById, userData] = useUsersLazyQuery()
-  const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
-  const [createProject, createProjectData] = useCreateProjectMutation({
-    onCompleted(data) {
-      toast.success('プロジェクトが作成されました')
-    },
-    onError(err) {
-      toast.error('プロジェクトの作成に失敗しました')
-    },
-  })
-  const [getInvitation, invitations] = useGetInvitationsLazyQuery()
-  const projectTitle = useInput('')
-  const projectSummary = useInput('')
-  const projectDatePicker = useInput(date.getToday())
-  const [ratingStar, setRatingStar] = useState<number>(1)
-  const [selectUserIds, setSelectUserIds] = useState<string[]>([])
-  const [uid, setUid] = useState<string>('')
-
-  const projectUserName = useInput('')
-  const debouncedInputText = useDebounce(projectUserName.value, 500)
-
-  useEffect(() => {
-    searchSameCompanyUsers({
-      variables: {
-        selectUserIds: selectUserIds,
-        name: debouncedInputText,
-        company: userData.data?.user.company ? userData.data?.user.company : '',
-      },
-    })
-    logger.debug(debouncedInputText)
-  }, [debouncedInputText])
+  const [selectProject, setSelectProject] = useState(0)
 
   useEffect(() => {
     if (!currentUser) return
     getUserById({ variables: { id: currentUser.uid } })
-    getInvitation({ variables: { userId: currentUser.uid } })
-    setSelectUserIds(selectUserIds => [...selectUserIds, currentUser.uid])
-    setUid(currentUser.uid)
   }, [currentUser])
 
-  const handleStarCnt = (index: number) => {
-    setRatingStar(index)
-  }
-
-  const handleInsertSelectUserId = (userId: string) => {
-    setSelectUserIds(selectUserIds => [...selectUserIds, userId])
-  }
-
-  const tryCreateProject = async (
-    name: string,
-    overview: string,
-    difficulty: number,
-    end_date: string,
-    ids: string[],
-  ) => {
-    createProject({
-      variables: {
-        name,
-        overview,
-        difficulty,
-        end_date,
-        ids,
-      },
-    })
+  const handleTransitionToProject = (id: string) => {
+    router(`/projects/${id}`)
   }
 
   if (!currentUser) return <Navigate to="/signup" />
 
+  if (!userData.data) return <Loading />
+
   return (
-    <div>
-      <NavLink to={`/mypage/${uid}`}>マイページへ遷移</NavLink>
-      <p>プロジェクト一覧</p>
+    <>
+      <ProjectListHeader />
+      <StyledProjectListPageContainer>
+        <StyledProjectListContainer>
+          <StyledProjectListWrapper>
+            <StyledCreateProjectButton>
+              <ComplicateButton
+                buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
+                text="プロジェクト作成"
+                onClick={() => logger.debug('hoge')}
+              />
+            </StyledCreateProjectButton>
 
-      {invitations.data?.invitations.map((invitation, index) => (
-        <div key={index} style={{ border: 'solid red' }}>
-          <p>プロジェクト名: {invitation.project.name}</p>
-          <p>プロジェクトID: {invitation.project.id}</p>
-        </div>
-      ))}
-      <br />
-      <TestModalContainer>
-        <h4>プロジェクト作成モーダルの内容</h4>
-        <input
-          type="text"
-          placeholder="プロジェクト名を入力"
-          required
-          maxLength={50}
-          {...projectTitle}
-        />
-        <br />
-        <textarea placeholder="プロジェクトの概要を" required maxLength={50} {...projectSummary} />
-        <p>※期限の入力を作る必要あり。現在の日付を入れておく</p>
-        <input type="date" {...projectDatePicker} min={date.getToday()} />
-        <br />
-        <p>※難易度作る必要あり。1を入れておく</p>
-        <Rating onClick={handleStarCnt} ratingValue={ratingStar} stars={10} />
-        <br />
-        <p>※メンバーの検索作る必要あり。自分だけを入れておく</p>
-        <input type="text" {...projectUserName} />
+            <StyledProjectListScroll>
+              <StyledProjectList>
+                {userData.data.user.groups.map((group, index) => (
+                  <StyledProject key={index} onClick={() => setSelectProject(index)}>
+                    <ProjectListItem
+                      activeStatue={
+                        index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
+                      }
+                      isEnd={group.project.project_end_flg}
+                      projectTitle={group.project.name}
+                      startDate={group.project.created_at}
+                      endDate={group.project.end_date}
+                    />
+                  </StyledProject>
+                ))}
+              </StyledProjectList>
+            </StyledProjectListScroll>
+          </StyledProjectListWrapper>
+        </StyledProjectListContainer>
 
-        <p>選んだユーザ一覧</p>
-        {JSON.stringify(selectUserIds)}
+        <StyledProjectDetailContainer>
+          {!!userData.data.user.groups.length && (
+            <StyledProjectDetail>
+              <StyledProjectTitleContainer>
+                <StyledProjectTitle>
+                  {userData.data.user.groups[selectProject].project.name}
+                </StyledProjectTitle>
 
-        <p>検索結果一覧</p>
-        {debouncedInputText &&
-          searchSameCompanyUsersData.data?.searchSameCompanyUsers.map(searchSameCompanyUsers =>
-            selectUserIds.includes(searchSameCompanyUsers.id) ? (
-              <></>
-            ) : (
-              <div
-                onClick={() => handleInsertSelectUserId(searchSameCompanyUsers.id)}
-                key={searchSameCompanyUsers.id}>
-                <h2>名前: {searchSameCompanyUsers.name}</h2>
-                <p>id: {searchSameCompanyUsers.id}</p>
-              </div>
-            ),
+                <StyledProjectOptionContainer>
+                  <StyledProjectOption />
+                </StyledProjectOptionContainer>
+              </StyledProjectTitleContainer>
+
+              <ProjectListMonster
+                specie={userData.data.user.groups[selectProject].project.monster.specie.name}
+                difficulty={userData.data.user.groups[selectProject].project.difficulty}
+                limitDeadline={userData.data.user.groups[selectProject].project.end_date}
+              />
+
+              <StyledComplicateButtonContainer>
+                <ComplicateButton
+                  buttonColorType={BUTTON_COLOR_TYPE.RED}
+                  text="クエスト開始"
+                  onClick={() =>
+                    handleTransitionToProject(userData.data!.user.groups[selectProject].project.id)
+                  }
+                />
+              </StyledComplicateButtonContainer>
+
+              <ProjectListProjectInfo
+                story={userData.data.user.groups[selectProject].project.monster.story}
+                overview={userData.data.user.groups[selectProject].project.overview}
+                selectProject={selectProject}
+                groupsProject={userData.data.user.groups}
+              />
+            </StyledProjectDetail>
           )}
-        <button
-          style={{ border: 'solid' }}
-          onClick={() =>
-            tryCreateProject(
-              projectTitle.value,
-              projectSummary.value,
-              ratingStar,
-              projectDatePicker.value,
-              selectUserIds,
-            )
-          }>
-          プロジェクト作成するよボタン
-        </button>
-
-        <MonsterAvatar />
-      </TestModalContainer>
-    </div>
+        </StyledProjectDetailContainer>
+        <StyledProjectListBackground />
+      </StyledProjectListPageContainer>
+    </>
   )
 }
 
-const TestModalContainer = styled.div`
-  border: solid 1px #000;
+const StyledProjectListPageContainer = styled.div`
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  display: flex;
+  width: 100%;
+  color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
+`
+
+const StyledProjectListContainer = styled.div`
+  position: relative;
+  margin-top: ${calculateMinSizeBasedOnFigmaWidth(3)};
+  margin-left: ${calculateMinSizeBasedOnFigmaHeight(-10)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(437)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(786)};
+  background: url('svg/project-list_background.svg');
+  background-position: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+`
+
+const StyledProjectListWrapper = styled.div`
+  position: absolute;
+  top: ${calculateMinSizeBasedOnFigmaWidth(120)};
+  left: 50%;
+  transform: translateX(-52%);
+  width: ${calculateMinSizeBasedOnFigmaWidth(460)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(584)};
+`
+
+const StyledCreateProjectButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(24)};
+`
+
+const StyledProjectListScroll = styled.div`
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+  direction: rtl;
+  height: calc(100% - ${calculateMinSizeBasedOnFigmaHeight(52)});
+`
+
+const StyledProjectList = styled.ul`
+  width: ${calculateMinSizeBasedOnFigmaWidth(396)};
+`
+
+const StyledProject = styled.li`
+  cursor: pointer;
+`
+
+const StyledProjectDetailContainer = styled.div`
+  padding: 28px;
+  margin-top: ${calculateVhBasedOnFigma(28)};
+  width: ${calculateVwBasedOnFigma(977)};
+  min-height: ${calculateVhBasedOnFigma(758)};
+  background: url('svg/project-detail_background.svg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledProjectListBackground = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+  position: fixed;
+  top: ${({ theme }) => theme.HEADER_HEIGHT};
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
+  background: url('images/project-list-page_background.webp');
+  background-attachment: fixed;
+  background-position: cover;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+`
+
+const StyledProjectDetail = styled.div`
+  width: ${calculateVhBasedOnFigma(813)};
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr ${calculateVhBasedOnFigma(40)} auto;
+`
+
+const StyledComplicateButtonContainer = styled.div`
+  grid-row: 4 / 5;
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledProjectTitleContainer = styled.div`
+  grid-row: 1 / 2;
+  grid-column: 1 / 3;
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const StyledProjectTitle = styled.h2`
+  font-size: ${calculateVhBasedOnFigma(24)};
+`
+
+const StyledProjectOptionContainer = styled.div`
+  margin-right: ${calculateVhBasedOnFigma(12)};
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`
+
+const StyledProjectOption = styled.div`
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.COLORS.BLACK};
+
+  &::before {
+    content: '';
+    position: absolute;
+    right: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.COLORS.BLACK};
+  }
+
+  &::after {
+    content: '';
+    left: 10px;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.COLORS.BLACK};
+  }
 `

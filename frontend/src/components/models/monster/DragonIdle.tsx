@@ -30,13 +30,9 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group']) {
   const ref = useRef<any>()
   const { nodes, materials, animations } = useGLTF('/cg/dragonIdle.glb') as GLTFResult
   const { actions } = useAnimations<AnimationClip>(animations, group)
-  useFrame(() => {
-    if (!ref.current) return
-    ref.current.rotation.y += 0.01
-  })
   useEffect(() => {
     logger.debug(actions)
-    actions['Idle']?.play()
+    actions['eat']?.play()
   }, [actions])
   return (
     <group ref={group} {...props} dispose={null}>

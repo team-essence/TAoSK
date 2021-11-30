@@ -3,7 +3,7 @@ import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 
 type StyledSelectProps = {
   width?: string
@@ -46,7 +46,8 @@ export const SelectField: FC<Props> = props => {
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigma(24)}>
+      <StyledLabelWrapper
+        marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigmaWidth(24)}>
         <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -91,27 +92,28 @@ StyledLabel.defaultProps = {
 }
 const StyledSelectWrapper = styled.div<{ height?: string }>`
   position: relative;
-  margin-top: ${calculateMinSizeBasedOnFigma(4)};
+  margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
 
   &:after {
     content: '';
     position: absolute;
-    top: calc(${({ height }) => height} / 2 - ${calculateMinSizeBasedOnFigma(2)});
-    right: ${calculateMinSizeBasedOnFigma(14)};
-    border-top: ${calculateMinSizeBasedOnFigma(7)} solid ${({ theme }) => theme.COLORS.CHOCOLATE};
-    border-right: ${calculateMinSizeBasedOnFigma(6)} solid transparent;
-    border-left: ${calculateMinSizeBasedOnFigma(6)} solid transparent;
+    top: calc(${({ height }) => height} / 2 - ${calculateMinSizeBasedOnFigmaWidth(2)});
+    right: ${calculateMinSizeBasedOnFigmaWidth(14)};
+    border-top: ${calculateMinSizeBasedOnFigmaWidth(7)} solid
+      ${({ theme }) => theme.COLORS.CHOCOLATE};
+    border-right: ${calculateMinSizeBasedOnFigmaWidth(6)} solid transparent;
+    border-left: ${calculateMinSizeBasedOnFigmaWidth(6)} solid transparent;
   }
 `
 StyledSelectWrapper.defaultProps = {
-  height: calculateMinSizeBasedOnFigma(40),
+  height: calculateMinSizeBasedOnFigmaWidth(40),
 }
 const StyledSelect = styled.select<StyledSelectProps>`
   -webkit-appearance: none;
   appearance: none;
   width: ${({ width }) => width};
   height: ${({ height }) => height};
-  padding-left: ${calculateMinSizeBasedOnFigma(8)};
+  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -121,8 +123,8 @@ const StyledSelect = styled.select<StyledSelectProps>`
   }
 `
 StyledSelect.defaultProps = {
-  width: calculateMinSizeBasedOnFigma(480),
-  height: calculateMinSizeBasedOnFigma(40),
+  width: calculateMinSizeBasedOnFigmaWidth(480),
+  height: calculateMinSizeBasedOnFigmaWidth(40),
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
