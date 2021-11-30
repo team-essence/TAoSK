@@ -17,18 +17,6 @@ type FormInputs = Record<'title' | 'overview', string>
 
 export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, className }) => {
   const { register } = useForm<FormInputs>({ mode: 'onChange' })
-  const labelStyles = {
-    color: theme.COLORS.TOBACCO_BROWN,
-    fontSize: theme.FONT_SIZES.SIZE_16,
-  }
-  const inputStyles = {
-    width: calculateMinSizeBasedOnFigmaWidth(434),
-    height: calculateMinSizeBasedOnFigmaWidth(40),
-    border: `solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)}`,
-    borderRadius: '4px',
-    backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.84),
-    fontColor: theme.COLORS.TOBACCO_BROWN,
-  }
 
   return (
     <Modal
@@ -36,7 +24,7 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
       shouldShow={shouldShow}
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
-      <InputField
+      <StyledInputField
         label="タイトル"
         registration={register('title', {
           required: 'タイトルは必須です',
@@ -46,3 +34,18 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
     </Modal>
   )
 }
+
+const StyledInputField = styled(InputField)`
+  label {
+    color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  }
+  input {
+    width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    border: solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+    border-radius: 4px;
+    background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.84)};
+    color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+  }
+`

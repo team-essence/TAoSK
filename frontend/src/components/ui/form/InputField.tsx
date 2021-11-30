@@ -64,7 +64,7 @@ const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: st
   margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
   input {
     padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
-    border-color: ${props => (props.shouldShowError ? props.errorColor : undefined)};
+    border-color: ${props => (props.shouldShowError ? props.errorColor : undefined)} !important;
   }
 `
 const StyledErrorMessage = styled.div<{ color: string }>`

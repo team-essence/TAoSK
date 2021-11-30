@@ -18,7 +18,7 @@ import { ItemInputField } from 'components/ui/form/ItemInputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignUp: FC = () => {
@@ -40,11 +40,6 @@ export const SignUp: FC = () => {
 
   occupationOptions.unshift({ value: '', item: '選択' })
 
-  const inputStyles = {
-    border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-    borderRadius: '2px',
-  }
-
   return (
     <>
       <AuthHeader />
@@ -58,11 +53,7 @@ export const SignUp: FC = () => {
               defaultSrc={SIGN_UP_CAMERA}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
-              margin={
-                innerWidth <= 1210
-                  ? `0 auto ${calculateMinSizeBasedOnFigmaWidth(24)} auto`
-                  : `0 0 ${calculateMinSizeBasedOnFigmaWidth(24)} 0`
-              }
+              innerWidth={innerWidth}
             />
             <StyledRightColumn
               margin={
@@ -70,7 +61,7 @@ export const SignUp: FC = () => {
                   ? `0 auto ${calculateMinSizeBasedOnFigmaWidth(24)} auto`
                   : `0 0 ${calculateMinSizeBasedOnFigmaWidth(24)} 0`
               }>
-              <InputField
+              <StyledInputField
                 label="冒険者名"
                 placeholder="お名前を入力してください"
                 registration={register('name', {
@@ -83,7 +74,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['name']}
               />
-              <InputField
+              <StyledInputField
                 label="会社名"
                 placeholder="例：学校法人日本教育財団HAL"
                 registration={register('company', {
@@ -96,7 +87,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['company']}
               />
-              <InputField
+              <StyledInputField
                 label="メールアドレス"
                 placeholder="例：hal_tokyo@example.com"
                 registration={register('email', {
@@ -112,7 +103,7 @@ export const SignUp: FC = () => {
                 })}
                 error={errors['email']}
               />
-              <PasswordField
+              <StyledPasswordField
                 label="パスワード"
                 placeholder="6文字以上の半角英数字で入力してください"
                 registration={register('password', {
@@ -133,7 +124,7 @@ export const SignUp: FC = () => {
                 onChange={() => trigger('re-password')}
                 error={errors['password']}
               />
-              <PasswordField
+              <StyledPasswordField
                 label="パスワード（確認）"
                 placeholder="パスワードを再度入力してください"
                 registration={register('re-password', {
@@ -254,10 +245,43 @@ const StyledRightColumn = styled.div.attrs<{ margin: string }>(({ margin }) => (
   margin: ${({ margin }) => margin};
   width: ${calculateMinSizeBasedOnFigmaWidth(480)};
 `
-const StyledImageInputField = styled(ImageInputField).attrs<{ margin: string }>(({ margin }) => ({
-  margin,
-}))<{ margin: string }>`
-  margin: ${({ margin }) => margin};
+const formTagCss = css`
+  width: 100%;
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
+  border-radius: 2px;
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
+  border: solid 1px ${theme.COLORS.CHOCOLATE};
+  border-radius: 2px;
+  color: ${({ theme }) => theme.COLORS.BLACK};
+`
+const fieldCss = css`
+  label {
+    color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+    font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  }
+`
+const StyledInputField = styled(InputField)`
+  ${fieldCss}
+  input {
+    ${formTagCss}
+    &::placeholder {
+      font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+      color: ${({ theme }) => theme.COLORS.GRAY};
+    }
+  }
+`
+const StyledPasswordField = StyledInputField.withComponent(PasswordField)
+const StyledImageInputField = styled(ImageInputField).attrs<{ innerWidth: number }>(
+  ({ innerWidth }) => ({
+    innerWidth,
+  }),
+)<{ innerWidth: number }>`
+  margin: ${({ innerWidth }) =>
+    innerWidth <= 1210
+      ? `0 auto ${calculateMinSizeBasedOnFigmaWidth(24)} auto`
+      : `0 0 ${calculateMinSizeBasedOnFigmaWidth(24)} 0`};
 `
 const StyledItemInputField = styled(ItemInputField)`
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(24)};

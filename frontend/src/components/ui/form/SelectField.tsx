@@ -52,7 +52,7 @@ export const SelectField: FC<Props> = props => {
             <StyledSelect
               {...registration}
               {...selectAttributes}
-              color={!value ? theme.COLORS.GRAY : undefined}
+              isEmptyValue={!value}
               shouldShowError={shouldShowError}
               errorColor={errorColor}
               onChange={onChange}
@@ -73,6 +73,12 @@ export const SelectField: FC<Props> = props => {
       )}
     </div>
   )
+}
+
+type StyledSelectProps = {
+  shouldShowError: boolean
+  errorColor: string
+  isEmptyValue: boolean
 }
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
@@ -98,17 +104,18 @@ const StyledSelectWrapper = styled.div`
     border-left: ${calculateMinSizeBasedOnFigmaWidth(6)} solid transparent;
   }
 `
-const StyledSelect = styled.select<{ shouldShowError: boolean; errorColor: string }>`
+const StyledSelect = styled.select<StyledSelectProps>`
   -webkit-appearance: none;
   appearance: none;
   width: ${calculateMinSizeBasedOnFigmaWidth(480)};
   height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
+  border: solid 1px
+    ${({ theme, shouldShowError, errorColor }) =>
+      shouldShowError ? errorColor : theme.COLORS.CHOCOLATE};
   border-radius: 2px;
-  background-color: ${({ theme, shouldShowError, errorColor }) =>
-    shouldShowError ? errorColor : convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
-  color: ${({ color }) => color};
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
+  color: ${({ isEmptyValue }) => (isEmptyValue ? theme.COLORS.GRAY : theme.COLORS.BLACK)};
   &::placeholder {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
