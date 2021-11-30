@@ -2,21 +2,16 @@ import React, { FC, useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
-import { RatingView } from 'react-simple-star-rating'
 import styled from 'styled-components'
-import date from 'utils/date/date'
-import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { Loading } from 'components/ui/loading/Loading'
-import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
-import { UserCount } from 'components/ui/avatar/UserCount'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
 import logger from 'utils/debugger/logger'
-import { occupationList } from 'consts/occupationList'
-import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
+import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster'
+import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -28,16 +23,6 @@ export const ProjectList: FC = () => {
     if (!currentUser) return
     getUserById({ variables: { id: currentUser.uid } })
   }, [currentUser])
-
-  const projectInfoTitle = (title: string) => {
-    return (
-      <StyledProjectInfoTitleContainer>
-        <img src="/svg/project-detail_title-arrow_left.svg" alt="左矢印" />
-        <StyledProjectInfoTitle>{title}</StyledProjectInfoTitle>
-        <img src="/svg/project-detail_title-arrow_right.svg" alt="右矢印" />
-      </StyledProjectInfoTitleContainer>
-    )
-  }
 
   const handleTransitionToProject = (id: string) => {
     router(`/projects/${id}`)
@@ -94,31 +79,11 @@ export const ProjectList: FC = () => {
                 </StyledProjectOptionContainer>
               </StyledProjectTitleContainer>
 
-              <StyledMonsterContainer>
-                <MonsterAvatar />
-
-                <StyledMonsterStatusContainer>
-                  <StyledMonsterStatus>
-                    <h4>種族</h4>
-                    <p>{userData.data.user.groups[selectProject].project.monster.specie.name}</p>
-                  </StyledMonsterStatus>
-                  <StyledMonsterStatus>
-                    <h4>危険度</h4>
-                    <RatingContainer>
-                      <RatingView
-                        ratingValue={userData.data.user.groups[selectProject].project.difficulty}>
-                        <img src="/svg/star.svg" alt="スター" />
-                      </RatingView>
-                    </RatingContainer>
-                  </StyledMonsterStatus>
-                  <StyledMonsterStatus>
-                    <h4>制限期限</h4>
-                    <p>
-                      {date.formatDay(userData.data.user.groups[selectProject].project.end_date)}
-                    </p>
-                  </StyledMonsterStatus>
-                </StyledMonsterStatusContainer>
-              </StyledMonsterContainer>
+              <ProjectListMonster
+                specie={userData.data.user.groups[selectProject].project.monster.specie.name}
+                difficulty={userData.data.user.groups[selectProject].project.difficulty}
+                limitDeadline={userData.data.user.groups[selectProject].project.end_date}
+              />
 
               <StyledComplicateButtonContainer>
                 <ComplicateButton
@@ -130,40 +95,12 @@ export const ProjectList: FC = () => {
                 />
               </StyledComplicateButtonContainer>
 
-              <StyledProjectInfoContainer>
-                {projectInfoTitle('特徴')}
-                <StyledStyledProjectInfoText>
-                  {userData.data.user.groups[selectProject].project.monster.specie.name}
-                </StyledStyledProjectInfoText>
-                {projectInfoTitle('依頼内容')}
-                <StyledStyledProjectInfoText>
-                  {userData.data.user.groups[selectProject].project.overview}
-                </StyledStyledProjectInfoText>
-                {projectInfoTitle('パーティーメンバー')}
-                <StyledPartyContainer>
-                  {userData.data.user.groups[selectProject].project.groups.map((group, index) => {
-                    if (index > 4) return
-
-                    return (
-                      <UserAvatarIcon
-                        avatarStyleType={AVATAR_STYLE.LIST}
-                        iconImage={group.user.icon_image}
-                        name={group.user.name}
-                        occupation={occupationList[group.user.occupation_id]}
-                        key={index}
-                      />
-                    )
-                  })}
-
-                  {userData.data.user.groups[selectProject].project.groups.length > 5 && (
-                    <UserCount
-                      userCount={userData.data.user.groups[selectProject].project.groups.length - 5}
-                      groups={userData.data.user.groups[selectProject].project.groups}
-                      avatarStyleType={AVATAR_STYLE.LIST}
-                    />
-                  )}
-                </StyledPartyContainer>
-              </StyledProjectInfoContainer>
+              <ProjectListProjectInfo
+                story={userData.data.user.groups[selectProject].project.monster.story}
+                overview={userData.data.user.groups[selectProject].project.overview}
+                selectProject={selectProject}
+                groupsProject={userData.data.user.groups}
+              />
             </StyledProjectDetail>
           )}
         </StyledProjectDetailContainer>
@@ -316,68 +253,4 @@ const StyledProjectOption = styled.div`
     border-radius: 50%;
     background: ${({ theme }) => theme.COLORS.BLACK};
   }
-`
-
-const StyledMonsterContainer = styled.div`
-  grid-row: 2 / 3;
-  grid-column: 1 / 2;
-`
-
-const StyledMonsterStatusContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(346)};
-  border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
-  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
-`
-
-const StyledMonsterStatus = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaHeight(6)} 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
-
-  &:nth-child(2) {
-    border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
-    border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
-  }
-`
-
-const RatingContainer = styled.div`
-  span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`
-
-const StyledProjectInfoContainer = styled.div`
-  grid-row: 2 / 3;
-  grid-column: 2 / 3;
-`
-
-const StyledStyledProjectInfoText = styled.p`
-  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(12)};
-  text-align: justify;
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
-`
-
-const StyledProjectInfoTitleContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  img {
-    opacity: 0.2;
-    width: ${calculateMinSizeBasedOnFigma(98)};
-  }
-`
-
-const StyledProjectInfoTitle = styled.h3`
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
-  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-`
-
-const StyledPartyContainer = styled.div`
-  display: flex;
-  gap: 0 ${calculateMinSizeBasedOnFigma(6)};
 `
