@@ -47,19 +47,19 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) =
 }
 
 const StyledColumnContainer = styled.ul`
+  position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};
   min-height: ${calculateMinSizeBasedOnFigmaWidth(200)};
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
-  position: relative;
   & > * {
-    z-index: 1;
     position: relative;
+    z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   }
   &::after {
     content: '';
-    border: 2px solid #fff;
+    border: 2px solid ${({ theme }) => theme.COLORS.WHITE};
     border-radius: 3px;
     position: absolute;
     top: 0px;
