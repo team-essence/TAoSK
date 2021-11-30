@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DropType } from 'consts/dropType'
+import { theme } from 'styles/theme'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { TaskList } from 'components/models/task/TaskList'
 import styled, { css } from 'styled-components'
@@ -31,7 +33,9 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) =
                     <img src="/svg/spread.svg" alt="spread" width="12" />
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
-                <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                <StyledTaskListContainer>
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                </StyledTaskListContainer>
                 {listProvided.placeholder}
               </StyledColumnContainer>
             )}
@@ -44,12 +48,13 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) =
 
 const StyledColumnContainer = styled.ul`
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};
-  border: 1px solid ${({ theme }) => theme.COLORS.MONDO};
+  border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
 `
 const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>`
   height: ${calculateMinSizeBasedOnFigmaWidth(48)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(1)};
+  border-radius: 2px;
   ${({ listIndex, listLength }) =>
     listIndex === 0
       ? css`
@@ -62,6 +67,9 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
       : css`
           background-color: ${({ theme }) => theme.COLORS.BOULDER};
         `}
+`
+const StyledTaskListContainer = styled.div`
+  margin: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;

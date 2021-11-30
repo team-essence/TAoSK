@@ -73,6 +73,7 @@ export const theme = {
     SHIP_COVE: '#657DBA',
     BOULDER: '#7B7B7B',
     STARK_WHITE: '#EBDECD',
+    PEARL_BUSH: '#EDE5DE',
   },
 } as const
 
