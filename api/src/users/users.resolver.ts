@@ -31,6 +31,15 @@ export class UsersResolver {
     return user;
   }
 
+  @Query(() => [User])
+  public async findHrUsers(
+    @Args({ name: 'company' }) company: string,
+  ): Promise<User[]> {
+    return this.usersService.getHrAllUsers(company).catch((err) => {
+      throw err;
+    });
+  }
+
   @Mutation(() => User)
   public async addUser(
     @Args('newUser') newUser: NewUserInput,
@@ -66,6 +75,17 @@ export class UsersResolver {
   ) {
     const user = await this.usersService.updateOnlineFlag(id, isOnline);
     if (!user) throw new NotFoundException({ id, isOnline });
+
+    return user;
+  }
+
+  @Mutation(() => User)
+  public async updateMemo(
+    @Args({ name: 'id' }) id: string,
+    @Args({ name: 'memo' }) memo: string,
+  ) {
+    const user = await this.usersService.updateMemo(id, memo);
+    if (!user) throw new NotFoundException({ id, memo });
 
     return user;
   }
