@@ -1,6 +1,8 @@
 import React, { FC, MouseEvent, ReactNode } from 'react'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import {
+  calculateMinSizeBasedOnFigmaWidth,
+  calculateMinSizeBasedOnFigmaHeight,
+} from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
