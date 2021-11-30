@@ -23,5 +23,5 @@ const StyledContainer = styled.button`
   border-radius: 2px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   cursor: pointer;
-  z-index: 2;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
 `
