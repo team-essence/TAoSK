@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
@@ -7,18 +8,19 @@ import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
-import { AVATAR_STYLE } from 'consts/avatarStyle'
 
 type Props = {
   className?: string
+  taskIndex: number
   listIndex: number
   listLength: number
-  isDragging: boolean
 } & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FC<Props> = ({
+  id,
   title,
   technology,
   achievement,
@@ -26,11 +28,11 @@ export const TaskCard: FC<Props> = ({
   motivation,
   design,
   plan,
+  taskIndex,
   listIndex,
   listLength,
   chatCount,
   allocations,
-  isDragging,
   end_date,
 }) => {
   const params = [
@@ -53,44 +55,53 @@ export const TaskCard: FC<Props> = ({
   )
 
   return (
-    <StyledContainer isDragging={isDragging}>
-      <StyledInnerWrap>
-        <StyledTitle>{title}</StyledTitle>
-        <StyledFlexContainer>
-          <div>
-            {allocations.length !== 0 && (
-              <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
-            )}
-            <StyledFootContainer>
-              {end_date && (
-                <>
-                  <StyledDeadlineImage
-                    src={changeDeadlineImage(end_date, listIndex, listLength)}
-                    alt="deadline"
+    <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
+      {(taskProvided, snapshot) => (
+        <li
+          ref={taskProvided.innerRef}
+          {...taskProvided.draggableProps}
+          {...taskProvided.dragHandleProps}>
+          <StyledContainer isDragging={snapshot.isDragging}>
+            <StyledInnerWrap>
+              <StyledTitle>{title}</StyledTitle>
+              <StyledFlexContainer>
+                <div>
+                  {allocations.length !== 0 && (
+                    <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
+                  )}
+                  <StyledFootContainer>
+                    {end_date && (
+                      <>
+                        <StyledDeadlineImage
+                          src={changeDeadlineImage(end_date, listIndex, listLength)}
+                          alt="deadline"
+                        />
+                        <StyledDateContainer listIndex={listIndex} listLength={listLength}>
+                          <StyledClockImage src="/svg/clock.svg" alt="clock" />
+                          <StyledDate>{date.formatDay(end_date)}</StyledDate>
+                        </StyledDateContainer>
+                      </>
+                    )}
+                    {chatCount !== 0 && (
+                      <StyledCommentContainer>
+                        <StyledFontAwesomeIcon icon={faComment} />
+                        <StyledChatCount>{chatCount}</StyledChatCount>
+                      </StyledCommentContainer>
+                    )}
+                  </StyledFootContainer>
+                </div>
+                <StyledWeaponImageContainer>
+                  <StyledWeaponImage
+                    src={changeWeaponImage(listIndex, listLength, max.param)}
+                    alt="weapon"
                   />
-                  <StyledDateContainer listIndex={listIndex} listLength={listLength}>
-                    <StyledClockImage src="/svg/clock.svg" alt="clock" />
-                    <StyledDate>{date.formatDay(end_date)}</StyledDate>
-                  </StyledDateContainer>
-                </>
-              )}
-              {chatCount !== 0 && (
-                <StyledCommentContainer>
-                  <StyledFontAwesomeIcon icon={faComment} />
-                  <StyledChatCount>{chatCount}</StyledChatCount>
-                </StyledCommentContainer>
-              )}
-            </StyledFootContainer>
-          </div>
-          <StyledWeaponImageContainer>
-            <StyledWeaponImage
-              src={changeWeaponImage(listIndex, listLength, max.param)}
-              alt="weapon"
-            />
-          </StyledWeaponImageContainer>
-        </StyledFlexContainer>
-      </StyledInnerWrap>
-    </StyledContainer>
+                </StyledWeaponImageContainer>
+              </StyledFlexContainer>
+            </StyledInnerWrap>
+          </StyledContainer>
+        </li>
+      )}
+    </Draggable>
   )
 }
 

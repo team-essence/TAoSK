@@ -30,7 +30,7 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { UpdateTask } from 'types/graphql.gen'
 import { DropType } from 'consts/dropType'
-import { TaskCard } from 'components/models/task/TaskCard'
+import { TaskList } from 'components/models/task/TaskList'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -532,37 +532,11 @@ export const ProjectDetail: FC = () => {
                                   minHeight: '300px',
                                   padding: '20px',
                                 }}>
-                                {list.tasks.map((task, taskIndex) => (
-                                  <Draggable
-                                    key={task.id}
-                                    draggableId={`task-${task.id}`}
-                                    index={taskIndex}>
-                                    {(taskProvided, snapshot) => (
-                                      <li
-                                        ref={taskProvided.innerRef}
-                                        {...taskProvided.draggableProps}
-                                        {...taskProvided.dragHandleProps}>
-                                        <TaskCard
-                                          listIndex={listIndex}
-                                          listLength={length}
-                                          isDragging={snapshot.isDragging}
-                                          id={task.id}
-                                          title={task.title}
-                                          overview={task.overview}
-                                          technology={task.technology}
-                                          achievement={task.achievement}
-                                          solution={task.solution}
-                                          motivation={task.motivation}
-                                          design={task.design}
-                                          plan={task.plan}
-                                          allocations={task.allocations}
-                                          chatCount={task.chatCount}
-                                          end_date={task.end_date}
-                                        />
-                                      </li>
-                                    )}
-                                  </Draggable>
-                                ))}
+                                <TaskList
+                                  tasks={list.tasks}
+                                  listIndex={listIndex}
+                                  listLength={length}
+                                />
                                 {listProvided.placeholder}
                               </ul>
                             )}
