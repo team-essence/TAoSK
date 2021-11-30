@@ -4,6 +4,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
 import { UserAvatarIcon } from '../avatar/UserAvatarIcon'
 import { UserCount } from '../avatar/UserCount'
 
@@ -68,9 +69,9 @@ export const ProjectListProjectInfo: FC<Props> = ({
   return (
     <StyledProjectInfoContainer>
       {projectInfoTitle('特徴')}
-      <StyledStyledProjectInfoText>{story}</StyledStyledProjectInfoText>
+      <StyledStyledProjectInfoTextStory>{story}</StyledStyledProjectInfoTextStory>
       {projectInfoTitle('依頼内容')}
-      <StyledStyledProjectInfoText>{overview}</StyledStyledProjectInfoText>
+      <StyledStyledProjectInfoTextOverview>{overview}</StyledStyledProjectInfoTextOverview>
       {projectInfoTitle('パーティーメンバー')}
       <StyledPartyContainer>
         {groupsProject[selectProject].project.groups.map((group, index) => {
@@ -124,6 +125,14 @@ const StyledStyledProjectInfoText = styled.p`
   margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(12)};
   text-align: justify;
   font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
+`
+
+const StyledStyledProjectInfoTextStory = styled(StyledStyledProjectInfoText)`
+  height: ${calculateVhBasedOnFigma(72)};
+`
+
+const StyledStyledProjectInfoTextOverview = styled(StyledStyledProjectInfoText)`
+  height: ${calculateVhBasedOnFigma(180)};
 `
 
 const StyledPartyContainer = styled.div`
