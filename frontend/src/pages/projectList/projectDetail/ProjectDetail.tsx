@@ -523,7 +523,7 @@ export const ProjectDetail: FC = () => {
                           <button onClick={() => handleAddTask(listIndex + 1)}>追加</button>
                           <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
                             {listProvided => (
-                              <ul
+                              <div
                                 ref={listProvided.innerRef}
                                 {...listProvided.droppableProps}
                                 style={{
@@ -532,39 +532,28 @@ export const ProjectDetail: FC = () => {
                                   minHeight: '300px',
                                   padding: '20px',
                                 }}>
-                                {list.tasks.map((task, taskIndex) => (
-                                  <Draggable
-                                    key={task.id}
-                                    draggableId={`task-${task.id}`}
-                                    index={taskIndex}>
-                                    {(taskProvided, snapshot) => (
-                                      <li
-                                        ref={taskProvided.innerRef}
-                                        {...taskProvided.draggableProps}
-                                        {...taskProvided.dragHandleProps}>
-                                        <TaskCard
-                                          listIndex={listIndex}
-                                          listLength={length}
-                                          isDragging={snapshot.isDragging}
-                                          id={task.id}
-                                          title={task.title}
-                                          overview={task.overview}
-                                          technology={task.technology}
-                                          achievement={task.achievement}
-                                          solution={task.solution}
-                                          motivation={task.motivation}
-                                          design={task.design}
-                                          plan={task.plan}
-                                          allocations={task.allocations}
-                                          chatCount={task.chatCount}
-                                          end_date={task.end_date}
-                                        />
-                                      </li>
-                                    )}
-                                  </Draggable>
+                                {list.tasks.map((task, index) => (
+                                  <TaskCard
+                                    key={index}
+                                    taskIndex={index}
+                                    listIndex={listIndex}
+                                    listLength={length}
+                                    id={task.id}
+                                    title={task.title}
+                                    overview={task.overview}
+                                    technology={task.technology}
+                                    achievement={task.achievement}
+                                    solution={task.solution}
+                                    motivation={task.motivation}
+                                    design={task.design}
+                                    plan={task.plan}
+                                    allocations={task.allocations}
+                                    chatCount={task.chatCount}
+                                    end_date={task.end_date}
+                                  />
                                 ))}
                                 {listProvided.placeholder}
-                              </ul>
+                              </div>
                             )}
                           </Droppable>
                         </div>

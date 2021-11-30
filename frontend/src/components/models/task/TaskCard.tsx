@@ -7,16 +7,19 @@ import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
+import { Draggable } from 'react-beautiful-dnd'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
 type Props = {
+  className?: string
+  taskIndex: number
   listIndex: number
   listLength: number
-  isDragging: boolean
 } & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FC<Props> = ({
+  id,
   title,
   technology,
   achievement,
@@ -24,9 +27,9 @@ export const TaskCard: FC<Props> = ({
   motivation,
   design,
   plan,
+  taskIndex,
   listIndex,
   listLength,
-  isDragging,
   chatCount,
   allocations,
   end_date,
@@ -49,41 +52,50 @@ export const TaskCard: FC<Props> = ({
   )
 
   return (
-    <StyledContainer isDragging={isDragging}>
-      <StyledInnerWrap>
-        <StyledTitle>{title}</StyledTitle>
-        <StyledFlexContainer>
-          <div>
-            {allocations.length !== 0 && (
-              <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
-            )}
-            <StyledFootContainer>
-              {end_date && (
-                <>
-                  <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
-                  <StyledDateContainer listIndex={listIndex} listLength={listLength}>
-                    <StyledClockImage src="/svg/clock.svg" alt="clock" />
-                    <StyledDate>{date.formatDate(end_date)}</StyledDate>
-                  </StyledDateContainer>
-                </>
-              )}
-              {chatCount !== 0 && (
-                <StyledCommentContainer>
-                  <StyledFontAwesomeIcon icon={faComment} />
-                  <StyledChatCount>{chatCount}</StyledChatCount>
-                </StyledCommentContainer>
-              )}
-            </StyledFootContainer>
-          </div>
-          <StyledWeaponImageContainer>
-            <StyledWeaponImage
-              src={changeWeaponImage(listIndex, listLength, max.param)}
-              alt="weapon"
-            />
-          </StyledWeaponImageContainer>
-        </StyledFlexContainer>
-      </StyledInnerWrap>
-    </StyledContainer>
+    <Draggable draggableId={`task-${id}`} index={taskIndex}>
+      {(taskProvided, snapshot) => (
+        <div
+          ref={taskProvided.innerRef}
+          {...taskProvided.draggableProps}
+          {...taskProvided.dragHandleProps}>
+          <StyledContainer isDragging={snapshot.isDragging}>
+            <StyledInnerWrap>
+              <StyledTitle>{title}</StyledTitle>
+              <StyledFlexContainer>
+                <div>
+                  {allocations.length !== 0 && (
+                    <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
+                  )}
+                  <StyledFootContainer>
+                    {end_date && (
+                      <>
+                        <StyledDeadlineImage src={changeDeadlineImage(end_date)} alt="deadline" />
+                        <StyledDateContainer listIndex={listIndex} listLength={listLength}>
+                          <StyledClockImage src="/svg/clock.svg" alt="clock" />
+                          <StyledDate>{date.formatDate(end_date)}</StyledDate>
+                        </StyledDateContainer>
+                      </>
+                    )}
+                    {chatCount !== 0 && (
+                      <StyledCommentContainer>
+                        <StyledFontAwesomeIcon icon={faComment} />
+                        <StyledChatCount>{chatCount}</StyledChatCount>
+                      </StyledCommentContainer>
+                    )}
+                  </StyledFootContainer>
+                </div>
+                <StyledWeaponImageContainer>
+                  <StyledWeaponImage
+                    src={changeWeaponImage(listIndex, listLength, max.param)}
+                    alt="weapon"
+                  />
+                </StyledWeaponImageContainer>
+              </StyledFlexContainer>
+            </StyledInnerWrap>
+          </StyledContainer>
+        </div>
+      )}
+    </Draggable>
   )
 }
 
