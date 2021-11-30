@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Task } from 'types/task'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
@@ -96,7 +96,7 @@ export const TaskCard: FC<Props> = ({
 
 const StyledContainer = styled.div<{ isDragging: boolean }>`
   height: auto;
-  padding: ${calculateVwBasedOnFigma(2)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
@@ -116,7 +116,7 @@ const StyledContainer = styled.div<{ isDragging: boolean }>`
 `
 
 const StyledInnerWrap = styled.div`
-  padding: ${calculateVwBasedOnFigma(8)} ${calculateVwBasedOnFigma(6)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(6)};
   border: 2px solid ${({ theme }) => theme.COLORS.CARARRA};
   border-radius: 4px;
 `
@@ -127,20 +127,20 @@ const StyledTitle = styled.h3`
   overflow: hidden;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
-  margin-bottom: ${calculateVwBasedOnFigma(8)};
+  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledWeaponImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateVwBasedOnFigma(37)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(37)};
 `
 const StyledDeadlineImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateVwBasedOnFigma(14)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
 `
 const StyledClockImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateVwBasedOnFigma(10)};
-  margin-top: ${calculateVwBasedOnFigma(0.5)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(10)};
+  margin-top: ${calculateMinSizeBasedOnFigmaWidth(0.5)};
 `
 const StyledDate = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_10};
@@ -157,8 +157,8 @@ const StyledChatCount = styled.p`
 const StyledWeaponImageContainer = styled.div`
   display: grid;
   place-items: center;
-  width: ${calculateVwBasedOnFigma(42)};
-  height: ${calculateVwBasedOnFigma(42)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(42)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(42)};
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 4px;
   box-shadow: inset 1px -1px 5px rgba(0, 0, 0, 0.25);
@@ -170,26 +170,26 @@ const StyledFlexContainer = styled.div`
 `
 const StyledAvatarContainer = styled.div`
   display: flex;
-  gap: ${calculateVwBasedOnFigma(2)};
+  gap: ${calculateMinSizeBasedOnFigmaWidth(2)};
 `
 const StyledCommentContainer = styled.div`
   display: flex;
-  gap: ${calculateVwBasedOnFigma(4)};
+  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
   align-items: center;
 `
 const StyledFootContainer = styled.div`
   display: flex;
-  gap: ${calculateVwBasedOnFigma(4)};
+  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
   align-items: center;
-  padding-top: ${calculateVwBasedOnFigma(8)};
+  padding-top: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledDateContainer = styled.div<{ listIndex: number; listLength: number }>`
   display: flex;
-  gap: ${calculateVwBasedOnFigma(4)};
+  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  padding: 0 ${calculateVwBasedOnFigma(4)};
+  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(4)};
   ${({ listIndex, listLength }) =>
     listIndex === 0
       ? css`

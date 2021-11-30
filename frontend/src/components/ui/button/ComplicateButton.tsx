@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 type Props = {
@@ -26,10 +26,10 @@ export const ComplicateButton: FC<Props> = ({ buttonColorType, text, onClick }) 
 
 const StyledComplicateButton = styled.button`
   position: relative;
-  width: ${calculateMinSizeBasedOnFigma(314)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(314)};
 
   img {
-    width: ${calculateMinSizeBasedOnFigma(314)};
+    width: ${calculateMinSizeBasedOnFigmaWidth(314)};
     display: block;
     object-fit: contain;
   }
@@ -46,7 +46,12 @@ const StyledComplicateButtonText = styled.div`
     width: 100%;
     font-weight: ${theme.FONT_WEIGHTS.BOLD};
     color: ${theme.COLORS.WHITE};
-    background: linear-gradient(180deg, #7b1616, #342422 52.55%, #4a201f 90.8%);
+    background: linear-gradient(
+      180deg,
+      ${theme.COLORS.FALU_RED},
+      ${theme.COLORS.BITTER_COCOA_BROWN} 52.55%,
+      ${theme.COLORS.SWEET_COCOA_BROWN} 90.8%
+    );
     background-size: 100% 100%;
     -webkit-background-clip: text;
     -webkit-text-stroke: 4px transparent;

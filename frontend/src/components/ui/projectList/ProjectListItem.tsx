@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import date from 'utils/date/date'
 
@@ -50,37 +50,37 @@ export const ProjectListItem: FC<Props> = ({
 
 const StyledProjectListItemContainer = styled.div<{ activeStatue: ACTIVE_STATUS }>`
   position: relative;
-  left: ${calculateMinSizeBasedOnFigma(0)};
+  left: ${calculateMinSizeBasedOnFigmaWidth(0)};
   transition: all 0.3s cubic-bezier(0, 0.39, 0.17, 0.95);
 
   ${({ activeStatue }) =>
     activeStatue === ACTIVE_STATUS.ACTIVE &&
     css`
       transition: all 0.2s cubic-bezier(0.32, 1, 0.66, 0.99);
-      left: ${calculateMinSizeBasedOnFigma(30)};
+      left: ${calculateMinSizeBasedOnFigmaWidth(30)};
     `}
 
   ${({ activeStatue }) =>
     activeStatue === ACTIVE_STATUS.NOT_ACTIVE &&
     css`
       &:hover {
-        left: ${calculateMinSizeBasedOnFigma(10)};
+        left: ${calculateMinSizeBasedOnFigmaWidth(10)};
       }
     `}
 `
 
 const StyledDragonHeadImg = styled.img`
-  width: ${calculateMinSizeBasedOnFigma(42)};
-  height: ${calculateMinSizeBasedOnFigma(42)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(42)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(42)};
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigma(12)};
-  left: ${calculateMinSizeBasedOnFigma(16)};
+  top: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  left: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
 
 const StyledProjectInfoContainer = styled.div`
   position: absolute;
   top: 50%;
-  left: ${calculateMinSizeBasedOnFigma(76)};
+  left: ${calculateMinSizeBasedOnFigmaWidth(76)};
   transform: translateY(-64%);
 `
 

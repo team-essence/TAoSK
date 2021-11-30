@@ -4,7 +4,7 @@ import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
 import styled from 'styled-components'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { Loading } from 'components/ui/loading/Loading'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
@@ -69,7 +69,7 @@ export const ProjectList: FC = () => {
         </StyledProjectListContainer>
 
         <StyledProjectDetailContainer>
-          {userData.data.user.groups && (
+          {!!userData.data.user.groups.length && (
             <StyledProjectDetail>
               <StyledProjectTitleContainer>
                 <StyledProjectTitle>
@@ -121,9 +121,9 @@ const StyledProjectListPageContainer = styled.div`
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  margin-top: ${calculateMinSizeBasedOnFigma(3)};
+  margin-top: ${calculateMinSizeBasedOnFigmaWidth(3)};
   margin-left: ${calculateMinSizeBasedOnFigmaHeight(-10)};
-  width: ${calculateMinSizeBasedOnFigma(437)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(437)};
   height: ${calculateMinSizeBasedOnFigmaHeight(786)};
   background: url('svg/project-list_background.svg');
   background-position: cover;
@@ -133,10 +133,10 @@ const StyledProjectListContainer = styled.div`
 
 const StyledProjectListWrapper = styled.div`
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigma(120)};
+  top: ${calculateMinSizeBasedOnFigmaWidth(120)};
   left: 50%;
   transform: translateX(-52%);
-  width: ${calculateMinSizeBasedOnFigma(460)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(460)};
   height: ${calculateMinSizeBasedOnFigmaHeight(584)};
 `
 
@@ -156,7 +156,7 @@ const StyledProjectListScroll = styled.div`
 `
 
 const StyledProjectList = styled.ul`
-  width: ${calculateMinSizeBasedOnFigma(396)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(396)};
 `
 
 const StyledProject = styled.li`
@@ -209,7 +209,7 @@ const StyledComplicateButtonContainer = styled.div`
 const StyledProjectTitleContainer = styled.div`
   grid-row: 1 / 2;
   grid-column: 1 / 3;
-  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import { avatarGroups } from 'types/avatarGroups'
@@ -84,7 +84,7 @@ const StyledUserCountListContainer = styled.div`
   width: ${calculateVhBasedOnFigma(50)};
   height: ${calculateVhBasedOnFigma(50)};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
-  background: ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  background: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
   display: flex;
   justify-content: center;
@@ -93,8 +93,8 @@ const StyledUserCountListContainer = styled.div`
 `
 
 const StyledUserCountModalContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigma(40)};
-  height: ${calculateMinSizeBasedOnFigma(40)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   background: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 2px;
   display: flex;
