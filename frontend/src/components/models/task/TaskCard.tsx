@@ -146,7 +146,7 @@ const StyledWeaponImage = styled.img`
 `
 const StyledDeadlineImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(19)};
 `
 const StyledClockImage = styled.img`
   aspect-ratio: 1 / 1;

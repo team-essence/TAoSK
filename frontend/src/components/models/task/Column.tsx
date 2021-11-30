@@ -48,8 +48,25 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) =
 
 const StyledColumnContainer = styled.ul`
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  min-height: ${calculateMinSizeBasedOnFigmaWidth(200)};
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
+  background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
+  position: relative;
+  & > * {
+    z-index: 1;
+    position: relative;
+  }
+  &::after {
+    content: '';
+    border: 2px solid #fff;
+    border-radius: 3px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+  }
 `
 const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>`
   height: ${calculateMinSizeBasedOnFigmaWidth(48)};
@@ -68,8 +85,12 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
           background-color: ${({ theme }) => theme.COLORS.BOULDER};
         `}
 `
+// 改行でts-styled-pluginのエラーが出る為変数に格納
+const avoidTsStyledErr = `${calculateMinSizeBasedOnFigmaWidth(
+  16,
+)} ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(8)}`
 const StyledTaskListContainer = styled.div`
-  margin: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding: ${avoidTsStyledErr};
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;
