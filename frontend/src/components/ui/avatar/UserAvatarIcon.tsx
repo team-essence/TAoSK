@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 type Props = {
@@ -46,15 +46,15 @@ const StyledUserAvatarIconContainer = styled.div`
 `
 const StyledUserCloseButton = styled.button`
   position: absolute;
-  width: ${calculateVwBasedOnFigma(14)};
-  height: ${calculateVwBasedOnFigma(14)};
+  width: ${calculateMinSizeBasedOnFigma(14)};
+  height: ${calculateMinSizeBasedOnFigma(14)};
   top: -4px;
   right: -4px;
 
   img {
     display: block;
-    width: ${calculateVwBasedOnFigma(14)};
-    height: ${calculateVwBasedOnFigma(14)};
+    width: ${calculateMinSizeBasedOnFigma(14)};
+    height: ${calculateMinSizeBasedOnFigma(14)};
     object-fit: contain;
   }
 `

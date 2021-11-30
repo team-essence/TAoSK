@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 type Props = {
@@ -50,8 +50,8 @@ const StyledUserCountListContainer = styled.div`
 `
 
 const StyledUserCountModalContainer = styled.div`
-  width: ${calculateVwBasedOnFigma(40)};
-  height: ${calculateVwBasedOnFigma(40)};
+  width: ${calculateMinSizeBasedOnFigma(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
   background: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 2px;
   display: flex;
@@ -60,8 +60,8 @@ const StyledUserCountModalContainer = styled.div`
 `
 
 const StyledUserCountTaskContainer = styled.div`
-  width: ${calculateVwBasedOnFigma(24)};
-  height: ${calculateVwBasedOnFigma(24)};
+  width: ${calculateMinSizeBasedOnFigma(24)};
+  height: ${calculateMinSizeBasedOnFigma(24)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 2px;
   display: flex;
