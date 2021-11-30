@@ -1,42 +1,84 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBaseOnFigma'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { ManyUserAvatar } from './ManyUserAvatar'
+import { avatarGroups } from 'types/avatarGroups'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 type Props = {
   userCount: number
-  styleType: STYLE_TYPE
+  avatarStyleType: AVATAR_STYLE_TYPE
+  groups?: avatarGroups
+  className?: string
 }
 
-export const STYLE_TYPE = {
-  LIST: 'list',
-  MODAL: 'modal',
-  TASK: 'task',
-} as const
+export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, className }) => {
+  const [isPopup, setIsPopUp] = useState(false)
 
-type STYLE_TYPE = typeof STYLE_TYPE[keyof typeof STYLE_TYPE]
+  const closeModal = useCallback(event => {
+    setIsPopUp(false)
+    document.removeEventListener('click', closeModal)
+  }, [])
 
-export const UserCount: FC<Props> = ({ userCount, styleType }) => {
-  if (styleType === STYLE_TYPE.LIST)
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('click', closeModal)
+    }
+  }, [closeModal])
+
+  const handlePopUp = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setIsPopUp(isPopup => !isPopup)
+    document.addEventListener('click', closeModal)
+    event.stopPropagation()
+  }
+
+  if (avatarStyleType === AVATAR_STYLE.LIST && groups)
     return (
-      <StyledUserCountListContainer>
-        <StyledCountText styleType={styleType}>+{userCount}</StyledCountText>
-      </StyledUserCountListContainer>
+      <StyledUserCountContainer className={className}>
+        <StyledUserCountListContainer onClick={handlePopUp}>
+          <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
+        </StyledUserCountListContainer>
+
+        {isPopup && (
+          <ManyUserAvatar
+            groups={groups}
+            avatarStyleType={avatarStyleType}
+            onClick={event => event.stopPropagation()}
+          />
+        )}
+      </StyledUserCountContainer>
     )
-  else if (styleType === STYLE_TYPE.MODAL)
+  else if (avatarStyleType === AVATAR_STYLE.MODAL && groups)
     return (
-      <StyledUserCountModalContainer>
-        <StyledCountText styleType={styleType}>+{userCount}</StyledCountText>
-      </StyledUserCountModalContainer>
+      <StyledUserCountContainer className={className}>
+        <StyledUserCountModalContainer onClick={handlePopUp}>
+          <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
+        </StyledUserCountModalContainer>
+
+        {isPopup && (
+          <ManyUserAvatar
+            groups={groups}
+            avatarStyleType={avatarStyleType}
+            onClick={event => event.stopPropagation()}
+          />
+        )}
+      </StyledUserCountContainer>
     )
   else
     return (
-      <StyledUserCountTaskContainer>
-        <StyledCountText styleType={styleType}>+{userCount}</StyledCountText>
+      <StyledUserCountTaskContainer className={className}>
+        <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
       </StyledUserCountTaskContainer>
     )
 }
+
+const StyledUserCountContainer = styled.div`
+  position: relative;
+  cursor: default;
+`
 
 const StyledUserCountListContainer = styled.div`
   width: ${calculateVhBasedOnFigma(50)};
@@ -47,21 +89,23 @@ const StyledUserCountListContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `
 
 const StyledUserCountModalContainer = styled.div`
-  width: ${calculateVwBasedOnFigma(40)};
-  height: ${calculateVwBasedOnFigma(40)};
+  width: ${calculateMinSizeBasedOnFigma(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
   background: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `
 
 const StyledUserCountTaskContainer = styled.div`
-  width: ${calculateVwBasedOnFigma(24)};
-  height: ${calculateVwBasedOnFigma(24)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(24)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 2px;
   display: flex;
@@ -69,22 +113,25 @@ const StyledUserCountTaskContainer = styled.div`
   align-items: center;
 `
 
-const StyledCountText = styled.p<{ styleType: STYLE_TYPE }>`
+const StyledCountText = styled.p<{ avatarStyleType: AVATAR_STYLE_TYPE }>`
   text-align: center;
-  ${({ styleType, theme }) =>
-    styleType === STYLE_TYPE.TASK &&
+
+  ${({ avatarStyleType, theme }) =>
+    avatarStyleType === AVATAR_STYLE.TASK &&
     css`
       color: ${theme.COLORS.MINE_SHAFT};
       font-size: ${theme.FONT_SIZES.SIZE_10};
     `}
-  ${({ styleType, theme }) =>
-    styleType === STYLE_TYPE.MODAL &&
+
+  ${({ avatarStyleType, theme }) =>
+    avatarStyleType === AVATAR_STYLE.MODAL &&
     css`
       color: ${theme.COLORS.MONDO};
       font-size: ${theme.FONT_SIZES.SIZE_14};
     `}
-  ${({ styleType, theme }) =>
-    styleType === STYLE_TYPE.LIST &&
+
+  ${({ avatarStyleType, theme }) =>
+    avatarStyleType === AVATAR_STYLE.LIST &&
     css`
       color: ${theme.COLORS.WHITE};
     `}

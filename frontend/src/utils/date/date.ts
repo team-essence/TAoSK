@@ -1,4 +1,5 @@
 import { isAfter, formatDistanceToNow, differenceInDays, format } from 'date-fns'
+
 import ja from 'date-fns/locale/ja'
 
 type PropsDate = Date | string | number
@@ -8,7 +9,7 @@ export default class date {
    * get today
    *
    * @static
-   * @return {string} [yyyy-mm-ddの形で返す]
+   * @return {string} [yyyy-mm-ddの形で今日を返す]
    * @memberof date
    */
   public static getToday(): string {
@@ -56,7 +57,27 @@ export default class date {
     return differenceInDays(new Date(), new Date(date)) >= -3 ? true : false
   }
 
-  public static formatDate = (date: PropsDate) => {
+  /**
+   * format day
+   *
+   * @static
+   * @param {PropsData} date
+   * @return {string} [yyyy年MM月dd日の形に整形]
+   * @memberof date
+   */
+  public static formatDay = (date: PropsDate): string => {
     return format(new Date(date), 'yyyy年MM月dd日')
+  }
+
+  /**
+   * project span
+   *
+   * @static
+   * @param {PropsDate} startDate [プロジェクト開始日]
+   * @param {PropsDate} endDate [プロジェクト終了日]
+   * @memberof date [yyyy年MM月dd日 ~ yyyy年MM月dd日]
+   */
+  public static projectSpan = (startDate: PropsDate, endDate: PropsDate) => {
+    return `${date.formatDay(startDate)} ~ ${date.formatDay(endDate)}`
   }
 }
