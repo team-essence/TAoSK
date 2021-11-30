@@ -19,20 +19,22 @@ type Props = {
 
 export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   return (
-    <StyledWrapper className={className} shouldShow={shouldShow}>
-      <StyledCloseButton onClick={onClickCloseBtn}>
-        <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
-      </StyledCloseButton>
-      {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
-      {children}
-      <StyledBackgroundDragonSymbol />
+    <>
+      <StyledWrapper className={className} shouldShow={shouldShow}>
+        <StyledCloseButton onClick={onClickCloseBtn}>
+          <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
+        </StyledCloseButton>
+        {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
+        {children}
+        <StyledBackgroundDragonSymbol />
+      </StyledWrapper>
       <StyledOverlay shouldShow={shouldShow} onClick={onClickCloseBtn} />
-    </StyledWrapper>
+    </>
   )
 }
 
 const StyledWrapper = styled.div<{ shouldShow: boolean }>`
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_0};
+  z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
   position: absolute;
   display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
   top: 0;
@@ -102,7 +104,7 @@ const StyledCrossIcon = styled(CrossIcon)`
   }
 `
 const StyledOverlay = styled.div<{ shouldShow: boolean }>`
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+  z-index: ${({ theme }) => theme.Z_INDEX.OVERLAY};
   display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
   position: fixed;
   top: 0;

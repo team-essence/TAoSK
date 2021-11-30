@@ -5,15 +5,18 @@ import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
-type StyledBoxProps = {
+type StyledInputProps = {
   width?: string
   height?: string
   border?: string
   borderRadius?: string
   backgroundColor?: string
+  fontColor?: string
+  placeholderColor?: string
+}
+type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledInputProps> & {
   children?: ReactNode
 }
-type Props = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledBoxProps>
 
 export const InputField: FC<Props> = props => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
@@ -26,11 +29,11 @@ export const InputField: FC<Props> = props => {
     registration,
     error,
     required = true,
-    color,
     children,
     ...inputAttributes
   } = props
 
+  const color = labelStyles?.color
   const shouldShowError = hasBlured && error?.message
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
     inputAttributes.onBlur && inputAttributes.onBlur(e)
@@ -46,7 +49,7 @@ export const InputField: FC<Props> = props => {
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
           <StyledInputWrapper
             {...inputStyles}
-            border={shouldShowError ? `solid 1px ${errorColor}` : undefined}>
+            border={shouldShowError ? `solid 1px ${errorColor}` : inputStyles?.border}>
             <input {...registration} {...inputAttributes} onBlur={onBlur} />
             {children}
           </StyledInputWrapper>
@@ -67,13 +70,13 @@ const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
 const StyledLabel = styled.label<StyledLabelProps>`
   color: ${({ color }) => color};
   font-size: ${({ fontSize }) => fontSize};
-  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
 StyledLabel.defaultProps = {
   color: theme.COLORS.CHOCOLATE,
   fontSize: theme.FONT_SIZES.SIZE_16,
 }
-const StyledInputWrapper = styled.div<StyledBoxProps>`
+const StyledInputWrapper = styled.div<StyledInputProps>`
   position: relative;
   margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
   input {
@@ -83,9 +86,10 @@ const StyledInputWrapper = styled.div<StyledBoxProps>`
     border: ${({ border }) => border};
     border-radius: ${({ borderRadius }) => borderRadius};
     background-color: ${({ backgroundColor }) => backgroundColor};
+    color: ${({ fontColor }) => fontColor};
     &::placeholder {
       font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-      color: ${({ theme }) => theme.COLORS.GRAY};
+      color: ${({ placeholderColor }) => placeholderColor};
     }
   }
 `
@@ -95,6 +99,8 @@ StyledInputWrapper.defaultProps = {
   border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
   borderRadius: '2px',
   backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
+  fontColor: theme.COLORS.BLACK,
+  placeholderColor: theme.COLORS.GRAY,
 }
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};

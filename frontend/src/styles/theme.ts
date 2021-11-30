@@ -8,6 +8,8 @@ export const theme = {
     INDEX_0: 0,
     INDEX_1: 1,
     INDEX_2: 2,
+    OVERLAY: 9,
+    MODAL: 10,
     HEADER: 100,
   },
   FONT_SIZES: {
@@ -74,6 +76,7 @@ export const theme = {
     SHIP_COVE: '#657DBA',
     BOULDER: '#7B7B7B',
     DUSTY_GRAY: '#A38F98',
+    TOBACCO_BROWN: '#665545',
   },
 } as const
 

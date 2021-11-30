@@ -1,6 +1,7 @@
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 export type StyledLabelProps = { color?: string; fontSize?: string }
+
 export type FieldProps<T, U extends string, V> = {
   className?: string
   labelStyles?: StyledLabelProps
