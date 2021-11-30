@@ -57,6 +57,6 @@ export default class date {
   }
 
   public static formatDate = (date: PropsDate) => {
-    return format(new Date(date), 'MM月dd日')
+    return format(new Date(date), 'yyyy年MM月dd日')
   }
 }
