@@ -81,7 +81,6 @@ export const SignUp: FC = () => {
                   },
                   pattern: REGEX_TEXT,
                 })}
-                inputStyles={inputStyles}
                 error={errors['name']}
               />
               <InputField
@@ -95,7 +94,6 @@ export const SignUp: FC = () => {
                   },
                   pattern: REGEX_TEXT,
                 })}
-                inputStyles={inputStyles}
                 error={errors['company']}
               />
               <InputField
@@ -112,7 +110,6 @@ export const SignUp: FC = () => {
                     message: '不正なメールアドレスです',
                   },
                 })}
-                inputStyles={inputStyles}
                 error={errors['email']}
               />
               <PasswordField

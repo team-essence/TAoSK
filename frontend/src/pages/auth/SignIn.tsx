@@ -26,10 +26,6 @@ export const SignIn: FC = () => {
               label="メールアドレス"
               type="email"
               registration={register('email', { required: true })}
-              inputStyles={{
-                border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-                borderRadius: '2px',
-              }}
             />
             <PasswordField
               label="パスワード"

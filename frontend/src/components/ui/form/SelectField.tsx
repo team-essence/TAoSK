@@ -1,29 +1,26 @@
 import React, { FC, SelectHTMLAttributes, useState, FocusEvent, ChangeEvent } from 'react'
-import type { StyledLabelProps, FieldProps } from 'types/fieldProps'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
-type StyledSelectProps = {
-  width?: string
-  height?: string
-  border?: string
-  color?: string
-  borderRadius?: string
-  backgroundColor?: string
-}
-type Props = FieldProps<SelectHTMLAttributes<HTMLSelectElement>, 'select', StyledSelectProps> & {
+type Props = {
+  className?: string
+  label?: string
+  error?: FieldError | undefined
+  registration: Partial<UseFormRegisterReturn>
+  errorColor?: string
+  required?: boolean
+  type?: 'text' | 'email' | 'password'
   options: Record<'value' | 'item', string>[]
-}
+} & SelectHTMLAttributes<HTMLSelectElement>
 
 export const SelectField: FC<Props> = props => {
   const [value, setValue] = useState<string>('')
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const {
     className,
-    labelStyles,
-    selectStyles,
     options,
     errorColor = theme.COLORS.ERROR,
     label,
@@ -33,7 +30,7 @@ export const SelectField: FC<Props> = props => {
     ...selectAttributes
   } = props
 
-  const shouldShowError = hasBlured && error?.message
+  const shouldShowError = !!(hasBlured && error?.message)
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     registration?.onChange && registration.onChange(e)
     setValue(e.target.value)
@@ -48,16 +45,16 @@ export const SelectField: FC<Props> = props => {
     <div className={className}>
       <StyledLabelWrapper
         marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigmaWidth(24)}>
-        <StyledLabel {...labelStyles} color={shouldShowError ? errorColor : undefined}>
+        <StyledLabel color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
-          <StyledSelectWrapper height={selectStyles?.height}>
+          <StyledSelectWrapper>
             <StyledSelect
-              {...selectStyles}
               {...registration}
               {...selectAttributes}
               color={!value ? theme.COLORS.GRAY : undefined}
-              border={shouldShowError ? `solid 1px ${errorColor}` : undefined}
+              shouldShowError={shouldShowError}
+              errorColor={errorColor}
               onChange={onChange}
               onBlur={onBlur}>
               {options.map((option, index) => (
@@ -81,23 +78,19 @@ export const SelectField: FC<Props> = props => {
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${({ marginBottom }) => marginBottom};
 `
-const StyledLabel = styled.label<StyledLabelProps>`
-  color: ${({ color }) => color};
-  font-size: ${({ fontSize }) => fontSize};
-  ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+const StyledLabel = styled.label`
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
-StyledLabel.defaultProps = {
-  color: theme.COLORS.CHOCOLATE,
-  fontSize: theme.FONT_SIZES.SIZE_16,
-}
-const StyledSelectWrapper = styled.div<{ height?: string }>`
+const StyledSelectWrapper = styled.div`
   position: relative;
   margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
 
   &:after {
     content: '';
     position: absolute;
-    top: calc(${({ height }) => height} / 2 - ${calculateMinSizeBasedOnFigmaWidth(2)});
+    top: calc(${calculateMinSizeBasedOnFigmaWidth(20)} - ${calculateMinSizeBasedOnFigmaWidth(2)});
     right: ${calculateMinSizeBasedOnFigmaWidth(14)};
     border-top: ${calculateMinSizeBasedOnFigmaWidth(7)} solid
       ${({ theme }) => theme.COLORS.CHOCOLATE};
@@ -105,30 +98,21 @@ const StyledSelectWrapper = styled.div<{ height?: string }>`
     border-left: ${calculateMinSizeBasedOnFigmaWidth(6)} solid transparent;
   }
 `
-StyledSelectWrapper.defaultProps = {
-  height: calculateMinSizeBasedOnFigmaWidth(40),
-}
-const StyledSelect = styled.select<StyledSelectProps>`
+const StyledSelect = styled.select<{ shouldShowError: boolean; errorColor: string }>`
   -webkit-appearance: none;
   appearance: none;
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: ${calculateMinSizeBasedOnFigmaWidth(480)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  border: ${({ border }) => border};
-  border-radius: ${({ borderRadius }) => borderRadius};
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
+  border-radius: 2px;
+  background-color: ${({ theme, shouldShowError, errorColor }) =>
+    shouldShowError ? errorColor : convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   color: ${({ color }) => color};
   &::placeholder {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
 `
-StyledSelect.defaultProps = {
-  width: calculateMinSizeBasedOnFigmaWidth(480),
-  height: calculateMinSizeBasedOnFigmaWidth(40),
-  border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-  borderRadius: '2px',
-  backgroundColor: convertIntoRGBA(theme.COLORS.WHITE, 0.7),
-}
 const StyledErrorMessage = styled.div<{ color: string }>`
   color: ${({ color }) => color};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};

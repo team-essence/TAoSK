@@ -1,21 +1,22 @@
-import React, { FC, InputHTMLAttributes, useState, ChangeEvent } from 'react'
+import React, { FC, InputHTMLAttributes, ReactNode, useState, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
-import type { FieldProps } from 'types/fieldProps'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
-type StyledBoxProps = {
-  width?: string
-  height?: string
-  border?: string
-  borderRadius?: string
-  backgroundColor?: string
-}
-type InputFieldProps = FieldProps<InputHTMLAttributes<HTMLInputElement>, 'input', StyledBoxProps>
-type Props = { type?: 'text' | 'password' } & InputFieldProps
+type Props = {
+  className?: string
+  label?: string
+  error?: FieldError | undefined
+  children?: ReactNode
+  registration: Partial<UseFormRegisterReturn>
+  errorColor?: string
+  required?: boolean
+  type?: 'text' | 'password'
+} & InputHTMLAttributes<HTMLInputElement>
 
 export const PasswordField: FC<Props> = ({
   className,

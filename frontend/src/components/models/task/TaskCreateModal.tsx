@@ -42,8 +42,6 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
           required: 'タイトルは必須です',
           maxLength: { value: 255, message: '255文字以内で入力してください' },
         })}
-        labelStyles={labelStyles}
-        inputStyles={inputStyles}
       />
     </Modal>
   )
