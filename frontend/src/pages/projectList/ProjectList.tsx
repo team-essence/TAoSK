@@ -209,7 +209,7 @@ const StyledComplicateButtonContainer = styled.div`
 const StyledProjectTitleContainer = styled.div`
   grid-row: 1 / 2;
   grid-column: 1 / 3;
-  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   display: flex;
   justify-content: space-between;
   align-items: center;
