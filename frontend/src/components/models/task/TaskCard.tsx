@@ -61,7 +61,7 @@ export const TaskCard: FC<Props> = ({
           ref={taskProvided.innerRef}
           {...taskProvided.draggableProps}
           {...taskProvided.dragHandleProps}>
-          <StyledContainer isDragging={snapshot.isDragging}>
+          <StyledContainer>
             <StyledInnerWrap>
               <StyledTitle>{title}</StyledTitle>
               <StyledFlexContainer>
@@ -105,7 +105,7 @@ export const TaskCard: FC<Props> = ({
   )
 }
 
-const StyledContainer = styled.div<{ isDragging: boolean }>`
+const StyledContainer = styled.div`
   position: relative;
   height: auto;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
@@ -114,16 +114,6 @@ const StyledContainer = styled.div<{ isDragging: boolean }>`
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   white-space: normal;
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
-  ${({ isDragging }) =>
-    isDragging
-      ? css`
-          transform: rotate(3deg);
-          transform-origin: 0 0;
-        `
-      : css`
-          transform: rotate(0);
-          transform-origin: 0 0;
-        `}
 `
 
 const StyledInnerWrap = styled.div`
