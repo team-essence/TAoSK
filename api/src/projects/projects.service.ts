@@ -10,7 +10,7 @@ import { ListSort } from 'src/list-sorts/list-sort';
 import { List } from 'src/lists/list';
 import { Monster } from 'src/monsters/monster';
 import { User } from 'src/users/user';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
 import { v4 as uuidv4 } from 'uuid';
@@ -111,21 +111,23 @@ export class ProjectsService {
   }
 
   findProjectOne(id: number): Promise<Project> {
-    const project = this.projectRepository.findOne(id, {
-      relations: [
-        'monster',
-        'monster.specie',
-        'invitations',
-        'lists',
-        'lists.listSorts',
-        'lists.tasks',
-        'lists.tasks.allocations',
-        'lists.tasks.allocations.user',
-        'gameLogs',
-        'groups',
-        'groups.user',
-      ],
-    });
+    const project = this.projectRepository
+      .createQueryBuilder('project')
+      .leftJoinAndSelect('project.monster', 'monster')
+      .leftJoinAndSelect('monster.specie', 'specie')
+      .leftJoinAndSelect('project.invitations', 'invitations')
+      .leftJoinAndSelect('project.lists', 'lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect('project.gameLogs', 'gameLogs')
+      .leftJoinAndSelect('project.groups', 'groups')
+      .leftJoinAndSelect('groups.user', 'groupsUser')
+      .where('project.id=:id', { id })
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .getOne();
 
     if (!project) throw new NotFoundException();
 

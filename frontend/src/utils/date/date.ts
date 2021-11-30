@@ -1,10 +1,5 @@
-import {
-  isAfter,
-  formatDistanceToNow,
-  differenceInDays,
-  differenceInCalendarDays,
-  format,
-} from 'date-fns'
+import { isAfter, formatDistanceToNow, differenceInDays, format } from 'date-fns'
+
 import ja from 'date-fns/locale/ja'
 
 type PropsDate = Date | string | number

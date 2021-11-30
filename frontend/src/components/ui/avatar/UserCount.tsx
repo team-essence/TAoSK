@@ -6,11 +6,12 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import { avatarGroups } from 'types/avatarGroups'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE_TYPE
-  groups: avatarGroups
+  groups?: avatarGroups
   className?: string
 }
 
@@ -34,7 +35,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, class
     event.stopPropagation()
   }
 
-  if (avatarStyleType === AVATAR_STYLE.LIST)
+  if (avatarStyleType === AVATAR_STYLE.LIST && groups)
     return (
       <StyledUserCountContainer className={className}>
         <StyledUserCountListContainer onClick={handlePopUp}>
@@ -50,7 +51,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, class
         )}
       </StyledUserCountContainer>
     )
-  else if (avatarStyleType === AVATAR_STYLE.MODAL)
+  else if (avatarStyleType === AVATAR_STYLE.MODAL && groups)
     return (
       <StyledUserCountContainer className={className}>
         <StyledUserCountModalContainer onClick={handlePopUp}>
@@ -103,8 +104,8 @@ const StyledUserCountModalContainer = styled.div`
 `
 
 const StyledUserCountTaskContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigma(24)};
-  height: ${calculateMinSizeBasedOnFigma(24)};
+  width: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(24)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 2px;
   display: flex;
