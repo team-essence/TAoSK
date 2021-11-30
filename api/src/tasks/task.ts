@@ -23,21 +23,21 @@ export class Task {
   @Field(() => ID)
   id: number;
 
+  //タイトル
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
+  @Field()
+  title: string;
+
   //概要
   @Column({
     type: 'varchar',
-    length: 255,
+    length: 1024,
   })
   @Field()
   overview: string;
-
-  //説明
-  @Column({
-    type: 'varchar',
-    length: 255,
-  })
-  @Field()
-  explanation: string;
 
   //技術力
   @Column({ type: 'int' })
@@ -69,11 +69,6 @@ export class Task {
   @Field()
   design: number;
 
-  //重み
-  @Column({ type: 'int', unsigned: true })
-  @Field()
-  weight: number;
-
   //縦並び順
   @Column({ type: 'int' })
   @Field()
@@ -100,6 +95,9 @@ export class Task {
   @OneToMany(() => Chat, (chat) => chat.task)
   @Field(() => [Chat])
   chats: Chat[];
+
+  @Field()
+  chatCount: number;
 
   @OneToMany(() => Allocation, (allocation) => allocation.task)
   @Field(() => [Allocation])

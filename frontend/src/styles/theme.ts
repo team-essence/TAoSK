@@ -60,6 +60,15 @@ export const theme = {
     TIA_MARIA: '#D94B0E',
     SEA_PINK: '#EFACAC',
     TOTEM_POLE: '#AC0D0D',
+    LINEN: '#FEFDF9',
+    CARARRA: '#EAE7E0',
+    SHIP_GRAY: '#38373C',
+    OLIVE_GREEN: '#A9BA65',
+    MINE_SHAFT2: '#333333',
+    ZINNWALDITE: '#EAC4A6',
+    MONDO: '#463E29',
+    SHIP_COVE: '#657DBA',
+    BOULDER: '#7B7B7B',
   },
 } as const
 
