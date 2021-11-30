@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useHover } from 'hooks/useHover'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
@@ -85,15 +85,15 @@ const StyledUserAvatarIconContainer = styled.div<{ size: number }>`
 
 const StyledUserCloseButton = styled.button`
   position: absolute;
-  width: ${calculateMinSizeBasedOnFigma(14)};
-  height: ${calculateMinSizeBasedOnFigma(14)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(14)};
   top: -4px;
   right: -4px;
 
   img {
     display: block;
-    width: ${calculateMinSizeBasedOnFigma(14)};
-    height: ${calculateMinSizeBasedOnFigma(14)};
+    width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(14)};
     object-fit: contain;
   }
 `

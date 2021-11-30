@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 type Props = {
@@ -26,10 +26,10 @@ export const ComplicateButton: FC<Props> = ({ buttonColorType, text, onClick }) 
 
 const StyledComplicateButton = styled.button`
   position: relative;
-  width: ${calculateMinSizeBasedOnFigma(314)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(314)};
 
   img {
-    width: ${calculateMinSizeBasedOnFigma(314)};
+    width: ${calculateMinSizeBasedOnFigmaWidth(314)};
     display: block;
     object-fit: contain;
   }

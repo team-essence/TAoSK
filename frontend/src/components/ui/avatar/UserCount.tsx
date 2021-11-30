@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import { avatarGroups } from 'types/avatarGroups'
@@ -93,8 +93,8 @@ const StyledUserCountListContainer = styled.div`
 `
 
 const StyledUserCountModalContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigma(40)};
-  height: ${calculateMinSizeBasedOnFigma(40)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   background: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 2px;
   display: flex;

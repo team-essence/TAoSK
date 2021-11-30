@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 
 type Props = {}
@@ -38,7 +38,7 @@ const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 ${calculateMinSizeBasedOnFigma(28)};
+  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(28)};
   width: 100vw;
   height: ${({ theme }) => theme.HEADER_HEIGHT};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
@@ -47,15 +47,15 @@ const StyledHeaderWrapper = styled.div`
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigma(43)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(43)};
 `
 
 const StyledLogo = styled.img`
-  height: ${calculateMinSizeBasedOnFigma(43)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(43)};
 `
 
 const StyledBellWrapper = styled.div`
-  margin-right: ${calculateMinSizeBasedOnFigma(16)};
+  margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
   position: relative;
   display: flex;
   justify-content: center;
@@ -66,7 +66,7 @@ const StyledBellWrapper = styled.div`
 const StyledNotificationIcon = styled.div`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigmaHeight(-2)};
-  right: ${calculateMinSizeBasedOnFigma(1)};
+  right: ${calculateMinSizeBasedOnFigmaWidth(1)};
   width: 9px;
   height: 9px;
   background: ${({ theme }) => theme.COLORS.DODGER_BLUE};
@@ -77,18 +77,18 @@ const StyledNotificationIcon = styled.div`
 const StyledUserMenuIconWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 0 ${calculateMinSizeBasedOnFigma(4)};
+  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(4)};
   cursor: pointer;
 `
 
 const StyledUserMenuIcon = styled.div`
-  width: ${calculateMinSizeBasedOnFigma(32)};
-  height: ${calculateMinSizeBasedOnFigma(32)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(32)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(32)};
   border-radius: 50%;
 
   img {
-    width: ${calculateMinSizeBasedOnFigma(32)};
-    height: ${calculateMinSizeBasedOnFigma(32)};
+    width: ${calculateMinSizeBasedOnFigmaWidth(32)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(32)};
     border-radius: 50%;
     object-fit: cover;
   }

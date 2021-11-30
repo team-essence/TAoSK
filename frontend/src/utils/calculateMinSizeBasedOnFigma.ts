@@ -7,7 +7,7 @@ type pxStr = `${number}px`
  * @param {number | pxStr} px - number | '${number}px'
  * @returns {string} '${number}vw'
  */
-export const calculateMinSizeBasedOnFigma = (px: number | pxStr) => {
+export const calculateMinSizeBasedOnFigmaWidth = (px: number | pxStr) => {
   const FIGMA_WIDTH_PX = 1440
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
   const vw = `${(numPx / FIGMA_WIDTH_PX) * 100}vw`

@@ -1,8 +1,8 @@
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import 'styled-components'
 
 export const theme = {
-  HEADER_HEIGHT: calculateMinSizeBasedOnFigma('70px'),
+  HEADER_HEIGHT: calculateMinSizeBasedOnFigmaWidth('70px'),
   Z_INDEX: {
     INDEX_MINUS_1: -1,
     INDEX_1: 1,
@@ -10,22 +10,22 @@ export const theme = {
     HEADER: 100,
   },
   FONT_SIZES: {
-    SIZE_10: calculateMinSizeBasedOnFigma('10px'),
-    SIZE_12: calculateMinSizeBasedOnFigma('12px'),
-    SIZE_14: calculateMinSizeBasedOnFigma('14px'),
-    SIZE_16: calculateMinSizeBasedOnFigma('16px'),
-    SIZE_18: calculateMinSizeBasedOnFigma('18px'),
-    SIZE_20: calculateMinSizeBasedOnFigma('20px'),
-    SIZE_22: calculateMinSizeBasedOnFigma('22px'),
-    SIZE_24: calculateMinSizeBasedOnFigma('24px'),
-    SIZE_28: calculateMinSizeBasedOnFigma('28px'),
-    SIZE_32: calculateMinSizeBasedOnFigma('32px'),
-    SIZE_36: calculateMinSizeBasedOnFigma('36px'),
-    SIZE_40: calculateMinSizeBasedOnFigma('40px'),
-    SIZE_48: calculateMinSizeBasedOnFigma('48px'),
-    SIZE_52: calculateMinSizeBasedOnFigma('52px'),
-    SIZE_56: calculateMinSizeBasedOnFigma('56px'),
-    SIZE_60: calculateMinSizeBasedOnFigma('60px'),
+    SIZE_10: calculateMinSizeBasedOnFigmaWidth('10px'),
+    SIZE_12: calculateMinSizeBasedOnFigmaWidth('12px'),
+    SIZE_14: calculateMinSizeBasedOnFigmaWidth('14px'),
+    SIZE_16: calculateMinSizeBasedOnFigmaWidth('16px'),
+    SIZE_18: calculateMinSizeBasedOnFigmaWidth('18px'),
+    SIZE_20: calculateMinSizeBasedOnFigmaWidth('20px'),
+    SIZE_22: calculateMinSizeBasedOnFigmaWidth('22px'),
+    SIZE_24: calculateMinSizeBasedOnFigmaWidth('24px'),
+    SIZE_28: calculateMinSizeBasedOnFigmaWidth('28px'),
+    SIZE_32: calculateMinSizeBasedOnFigmaWidth('32px'),
+    SIZE_36: calculateMinSizeBasedOnFigmaWidth('36px'),
+    SIZE_40: calculateMinSizeBasedOnFigmaWidth('40px'),
+    SIZE_48: calculateMinSizeBasedOnFigmaWidth('48px'),
+    SIZE_52: calculateMinSizeBasedOnFigmaWidth('52px'),
+    SIZE_56: calculateMinSizeBasedOnFigmaWidth('56px'),
+    SIZE_60: calculateMinSizeBasedOnFigmaWidth('60px'),
   },
   FONT_WEIGHTS: {
     LIGHT: 300,

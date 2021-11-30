@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import { theme } from 'styles/theme'
 
 type Props = {
@@ -38,8 +38,8 @@ const StyledButton = styled.button<StyledButtonProps>`
   text-align: center;
 `
 StyledButton.defaultProps = {
-  width: calculateMinSizeBasedOnFigma(120),
-  height: calculateMinSizeBasedOnFigma(40),
+  width: calculateMinSizeBasedOnFigmaWidth(120),
+  height: calculateMinSizeBasedOnFigmaWidth(40),
   border: 'none',
   borderRadius: '2px',
   bgColor: theme.COLORS.DODGER_BLUE,

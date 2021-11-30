@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import styled from 'styled-components'
 
 export const NotFound: FC = () => {
@@ -37,7 +37,7 @@ const StyledContainer = styled.div`
 `
 const StyledNotFoundContainer = styled.div`
   position: relative;
-  top: ${calculateMinSizeBasedOnFigma(140)};
+  top: ${calculateMinSizeBasedOnFigmaWidth(140)};
   min-height: 536px;
   width: 1050px;
   padding: 0 20px;

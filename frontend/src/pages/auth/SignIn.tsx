@@ -5,7 +5,7 @@ import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigma'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
 import styled from 'styled-components'
@@ -39,8 +39,8 @@ export const SignIn: FC = () => {
             <StyledSignInButton
               text="ログイン"
               aspect={{
-                width: calculateMinSizeBasedOnFigma(120),
-                height: calculateMinSizeBasedOnFigma(32),
+                width: calculateMinSizeBasedOnFigmaWidth(120),
+                height: calculateMinSizeBasedOnFigmaWidth(32),
               }}
               outerBgColor={
                 isDisabled
@@ -91,10 +91,10 @@ const StyledSignIn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigma(730)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(730)};
   height: 100%;
-  margin: ${calculateMinSizeBasedOnFigma(113)} 0;
-  padding: ${calculateMinSizeBasedOnFigma(30)} 0 ${calculateMinSizeBasedOnFigma(46)};
+  margin: ${calculateMinSizeBasedOnFigmaWidth(113)} 0;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(30)} 0 ${calculateMinSizeBasedOnFigmaWidth(46)};
   background-image: url('sign-in-paper.png');
   background-size: 100% 100%;
 `
@@ -102,18 +102,18 @@ const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: ${calculateMinSizeBasedOnFigma(480)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(480)};
 `
 const StyledLogoImg = styled.img`
-  height: ${calculateMinSizeBasedOnFigma(170)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(170)};
 `
 const StyledParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${calculateMinSizeBasedOnFigma(13)};
-  margin-top: ${calculateMinSizeBasedOnFigma(24)};
+  gap: ${calculateMinSizeBasedOnFigmaWidth(13)};
+  margin-top: ${calculateMinSizeBasedOnFigmaWidth(24)};
 `
 const StyledTextLineWrapper = styled.div`
   display: flex;
