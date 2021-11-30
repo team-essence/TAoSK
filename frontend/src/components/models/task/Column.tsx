@@ -58,7 +58,7 @@ const StyledColumnContainer = styled.ul`
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
-  filter: drop-shadow(-8px 8px 2px rgba(0, 0, 0, 0.5));
+  box-shadow: -8px 8px 2px rgba(0, 0, 0, 0.5);
   &::after {
     content: '';
     border: 2px solid ${({ theme }) => theme.COLORS.WHITE};
