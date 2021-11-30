@@ -46,7 +46,12 @@ const StyledComplicateButtonText = styled.div`
     width: 100%;
     font-weight: ${theme.FONT_WEIGHTS.BOLD};
     color: ${theme.COLORS.WHITE};
-    background: linear-gradient(180deg, #7b1616, #342422 52.55%, #4a201f 90.8%);
+    background: linear-gradient(
+      180deg,
+      ${theme.COLORS.FALU_RED},
+      ${theme.COLORS.BITTER_COCOA_BROWN} 52.55%,
+      ${theme.COLORS.SWEET_COCOA_BROWN} 90.8%
+    );
     background-size: 100% 100%;
     -webkit-background-clip: text;
     -webkit-text-stroke: 4px transparent;
