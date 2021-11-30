@@ -1,21 +1,26 @@
-import React, { FC, Dispatch, SetStateAction, ReactNode } from 'react'
+import React, { FC, MouseEvent, ReactNode } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
+import { theme } from 'styles/theme'
 import styled from 'styled-components'
 
 type Props = {
   title?: string
   shouldShow: boolean
-  setShouldShow: Dispatch<SetStateAction<boolean>>
+  onClickCloseBtn: (e?: MouseEvent) => void
   className?: string
   children: ReactNode
 }
 
-export const Modal: FC<Props> = ({ title, shouldShow, setShouldShow, className, children }) => {
+export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   return (
     <StyledWrapper className={className} shouldShow={shouldShow}>
-      <CrossIcon color="" />
+      <StyledCloseButton onClick={onClickCloseBtn}>
+        <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
+      </StyledCloseButton>
       {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
       {children}
       <StyledBackgroundDragonSymbol />
@@ -31,13 +36,14 @@ const StyledWrapper = styled.div<{ shouldShow: boolean }>`
   bottom: 0;
   left: 0;
   margin: auto;
-  width: 500px;
-  height: 500px;
+  width: ${calculateMinSizeBasedOnFigmaWidth(790)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(709)};
   background-image: url('/svg/modal-background.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 `
 const StyledNamePlate = styled.p`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
   top: ${calculateMinSizeBasedOnFigmaWidth(-55 / 2)};
   left: 50%;
@@ -69,4 +75,25 @@ const StyledBackgroundDragonSymbol = styled.div`
   background-image: url('/svg/dragon-symbol.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+`
+const StyledCloseButton = styled.button`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: ${calculateMinSizeBasedOnFigmaWidth(-40 / 2)};
+  right: ${calculateMinSizeBasedOnFigmaWidth(27)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  border: solid 4px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.8)};
+  border-radius: 100%;
+  background-color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledCrossIcon = styled(CrossIcon)`
+  height: 100%;
+  svg {
+    width: ${calculateMinSizeBasedOnFigmaWidth(20)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(20)};
+  }
 `

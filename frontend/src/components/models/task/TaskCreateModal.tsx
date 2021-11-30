@@ -14,7 +14,7 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
     <Modal
       title="タスク作成"
       shouldShow={shouldShow}
-      setShouldShow={setShouldShow}
+      onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
       <h1>hoge!?</h1>
       <p>hogehoge</p>
