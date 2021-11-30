@@ -24,11 +24,13 @@ export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className
       {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
       {children}
       <StyledBackgroundDragonSymbol />
+      <StyledOverlay shouldShow={shouldShow} onClick={onClickCloseBtn} />
     </StyledWrapper>
   )
 }
 
 const StyledWrapper = styled.div<{ shouldShow: boolean }>`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_0};
   position: absolute;
   display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
   top: 0;
@@ -96,4 +98,14 @@ const StyledCrossIcon = styled(CrossIcon)`
     width: ${calculateMinSizeBasedOnFigmaWidth(20)};
     height: ${calculateMinSizeBasedOnFigmaWidth(20)};
   }
+`
+const StyledOverlay = styled.div<{ shouldShow: boolean }>`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+  display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
 `

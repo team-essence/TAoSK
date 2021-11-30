@@ -5,6 +5,7 @@ export const theme = {
   HEADER_HEIGHT: calculateMinSizeBasedOnFigmaWidth('70px'),
   Z_INDEX: {
     INDEX_MINUS_1: -1,
+    INDEX_0: 0,
     INDEX_1: 1,
     INDEX_2: 2,
     HEADER: 100,
