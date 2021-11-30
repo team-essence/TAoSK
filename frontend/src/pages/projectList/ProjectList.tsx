@@ -69,7 +69,7 @@ export const ProjectList: FC = () => {
         </StyledProjectListContainer>
 
         <StyledProjectDetailContainer>
-          {userData.data.user.groups && (
+          {!!userData.data.user.groups.length && (
             <StyledProjectDetail>
               <StyledProjectTitleContainer>
                 <StyledProjectTitle>
