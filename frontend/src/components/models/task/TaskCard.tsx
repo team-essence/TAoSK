@@ -106,14 +106,14 @@ export const TaskCard: FC<Props> = ({
 }
 
 const StyledContainer = styled.div<{ isDragging: boolean }>`
+  position: relative;
   height: auto;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   white-space: normal;
-  transform: rotate(45deg);
-  transform-origin: 0 0;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
   ${({ isDragging }) =>
     isDragging
       ? css`

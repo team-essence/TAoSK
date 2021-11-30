@@ -53,10 +53,6 @@ const StyledColumnContainer = styled.ul`
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
-  & > * {
-    position: relative;
-    z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
-  }
   &::after {
     content: '';
     border: 2px solid ${({ theme }) => theme.COLORS.WHITE};
@@ -69,6 +65,8 @@ const StyledColumnContainer = styled.ul`
   }
 `
 const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>`
+  position: relative;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   height: ${calculateMinSizeBasedOnFigmaWidth(48)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(1)};
   border-radius: 2px;
