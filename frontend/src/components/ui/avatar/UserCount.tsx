@@ -5,8 +5,8 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOn
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import { avatarGroups } from 'types/avatarGroups'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { calculateVhBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 
 type Props = {
   userCount: number

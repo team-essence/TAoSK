@@ -5,15 +5,15 @@ import { useUsersLazyQuery } from './projectList.gen'
 import styled from 'styled-components'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { Loading } from 'components/ui/loading/Loading'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
 import logger from 'utils/debugger/logger'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
 import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
-import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
+import { calculateVhBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateVwBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()

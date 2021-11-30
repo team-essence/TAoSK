@@ -3,7 +3,7 @@ import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { avatarGroups } from 'types/avatarGroups'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateVhBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { UserAvatarIcon } from './UserAvatarIcon'
 

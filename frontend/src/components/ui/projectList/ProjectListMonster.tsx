@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { RatingView } from 'react-simple-star-rating'
 import styled from 'styled-components'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import date from 'utils/date/date'
 
 type Props = {

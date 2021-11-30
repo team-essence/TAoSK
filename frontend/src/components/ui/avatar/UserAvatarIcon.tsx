@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useHover } from 'hooks/useHover'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateVhBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 
 type Props = {
   avatarStyleType: AVATAR_STYLE_TYPE
