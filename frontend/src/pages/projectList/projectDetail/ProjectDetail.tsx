@@ -20,17 +20,16 @@ import {
   useUpdateListSortMutation,
 } from './projectDetail.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import logger from 'utils/debugger/logger'
-import date from 'utils/date/date'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
-import { UpdateTask } from 'types/graphql.gen'
 import { DropType } from 'consts/dropType'
-import { TaskList } from 'components/models/task/TaskList'
+import { ColumnList } from 'components/models/task/ColumnList'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -504,49 +503,10 @@ export const ProjectDetail: FC = () => {
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{ display: 'flex' }}>
-                  {list.map((list, listIndex, { length }) => (
-                    <Draggable
-                      draggableId={`column-${list.id}`}
-                      index={listIndex}
-                      key={list.id}
-                      isDragDisabled={listIndex === 0 || length - 1 === listIndex}>
-                      {provided => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}>
-                          <h2>{list.title}</h2>
-                          <button onClick={() => handleAddTask(listIndex + 1)}>追加</button>
-                          <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
-                            {listProvided => (
-                              <ul
-                                ref={listProvided.innerRef}
-                                {...listProvided.droppableProps}
-                                style={{
-                                  width: '400px',
-                                  border: 'solid',
-                                  minHeight: '300px',
-                                  padding: '20px',
-                                }}>
-                                <TaskList
-                                  tasks={list.tasks}
-                                  listIndex={listIndex}
-                                  listLength={length}
-                                />
-                                {listProvided.placeholder}
-                              </ul>
-                            )}
-                          </Droppable>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
+                  <ColumnList lists={list} />
                   {provided.placeholder}
-                </div>
+                </StyledTaskListContainer>
               )}
             </Droppable>
           </DragDropContext>
@@ -586,4 +546,9 @@ const ProjectDetailRightContainer = styled.div`
   background: ${convertIntoRGBA('#000000', 0.5)};
   grid-row: 2 / 3;
   grid-column: 2 / 3;
+`
+
+const StyledTaskListContainer = styled.div`
+  display: flex;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
