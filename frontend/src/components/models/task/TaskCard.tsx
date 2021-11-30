@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Task } from 'types/task'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'

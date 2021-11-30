@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CrossButton } from 'components/ui/button/CrossButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   className?: string

@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import { avatarGroups } from 'types/avatarGroups'
-import { calculateVhBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigmaWidth'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   userCount: number

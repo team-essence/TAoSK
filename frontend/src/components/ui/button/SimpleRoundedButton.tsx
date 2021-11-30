@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { theme } from 'styles/theme'
 
 type Props = {
