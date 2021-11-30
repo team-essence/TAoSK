@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Task } from 'types/task'
 import { TaskCard } from 'components/models/task/TaskCard'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 type Props = {
   className?: string
@@ -15,7 +15,7 @@ export const TaskList: FC<Props> = ({ tasks, listIndex, listLength }) => {
   return (
     <>
       {tasks.map((task, index) => (
-        <StyledCardContainer key={index}>
+        <StyledContainer key={index}>
           <TaskCard
             id={task.id}
             title={task.title}
@@ -33,12 +33,12 @@ export const TaskList: FC<Props> = ({ tasks, listIndex, listLength }) => {
             listLength={listLength}
             end_date={task.end_date}
           />
-        </StyledCardContainer>
+        </StyledContainer>
       ))}
     </>
   )
 }
 
-const StyledCardContainer = styled.div`
+const StyledContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `

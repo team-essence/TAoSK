@@ -5,9 +5,10 @@ import { Column } from 'components/models/task/Column'
 type Props = {
   className?: string
   lists: List[]
+  handleAddTask: (list_id: number) => Promise<void>
 }
 
-export const ColumnList: FC<Props> = ({ lists }) => {
+export const ColumnList: FC<Props> = ({ lists, handleAddTask }) => {
   return (
     <>
       {lists.map((list, listIndex, { length }) => (
@@ -18,6 +19,7 @@ export const ColumnList: FC<Props> = ({ lists }) => {
           listLength={length}
           title={list.title}
           tasks={list.tasks}
+          handleAddTask={handleAddTask}
         />
       ))}
     </>

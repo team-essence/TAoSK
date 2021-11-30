@@ -378,7 +378,7 @@ export const ProjectDetail: FC = () => {
   }
 
   const handleAddTask = async (list_id: number) => {
-    addTask({
+    await addTask({
       variables: {
         newTask: {
           title:
@@ -504,7 +504,7 @@ export const ProjectDetail: FC = () => {
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
                 <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <ColumnList lists={list} />
+                  <ColumnList lists={list} handleAddTask={handleAddTask} />
                   {provided.placeholder}
                 </StyledTaskListContainer>
               )}

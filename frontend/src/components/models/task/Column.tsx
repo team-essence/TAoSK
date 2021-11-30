@@ -6,16 +6,17 @@ import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { TaskList } from 'components/models/task/TaskList'
+import { AddTaskButton } from 'components/models/task/AddTaskButton'
 import styled, { css } from 'styled-components'
 
 type Props = {
   className?: string
   listIndex: number
   listLength: number
-  // handleAddTask: () => void
+  handleAddTask: (list_id: number) => Promise<void>
 } & Omit<List, 'list_id' | 'sort_id' | 'index'>
 
-export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) => {
+export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
   return (
     <Draggable
       draggableId={`column-${id}`}
@@ -23,7 +24,6 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) =
       isDragDisabled={listIndex === 0 || listLength - 1 === listIndex}>
       {provided => (
         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-          {/* <button onClick={() => handleAddTask(listIndex + 1)}>追加</button> */}
           <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
             {listProvided => (
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
@@ -34,6 +34,11 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength }) =
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
+                  {listIndex === 0 && (
+                    <StyledButtonContainer>
+                      <AddTaskButton handleAddTask={handleAddTask} />
+                    </StyledButtonContainer>
+                  )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>
                 {listProvided.placeholder}
@@ -82,6 +87,9 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
       : css`
           background-color: ${({ theme }) => theme.COLORS.BOULDER};
         `}
+`
+const StyledButtonContainer = styled.div`
+  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 // 改行でts-styled-pluginのエラーが出る為変数に格納
 const avoidTsStyledErr = `${calculateMinSizeBasedOnFigmaWidth(
