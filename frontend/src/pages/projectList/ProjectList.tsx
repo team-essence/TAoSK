@@ -16,7 +16,7 @@ import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/Compli
 import logger from 'utils/debugger/logger'
 import { occupationList } from 'consts/occupationList'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { Group } from 'types/graphql.gen'
+import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -61,9 +61,23 @@ export const ProjectList: FC = () => {
               />
             </StyledCreateProjectButton>
 
-            <StyledProjectList>
-              <StyledProject></StyledProject>
-            </StyledProjectList>
+            <StyledProjectListScroll>
+              <StyledProjectList>
+                {userData.data.user.groups.map((group, index) => (
+                  <StyledProject key={index} onClick={() => setSelectProject(index)}>
+                    <ProjectListItem
+                      activeStatue={
+                        index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
+                      }
+                      isEnd={group.project.project_end_flg}
+                      projectTitle={group.project.name}
+                      startDate={group.project.created_at}
+                      endDate={group.project.end_date}
+                    />
+                  </StyledProject>
+                ))}
+              </StyledProjectList>
+            </StyledProjectListScroll>
           </StyledProjectListWrapper>
         </StyledProjectListContainer>
 
@@ -119,7 +133,7 @@ export const ProjectList: FC = () => {
               <StyledProjectInfoContainer>
                 {projectInfoTitle('特徴')}
                 <StyledStyledProjectInfoText>
-                  {userData.data.user.groups[selectProject].project.monster.story}
+                  {userData.data.user.groups[selectProject].project.monster.specie.name}
                 </StyledStyledProjectInfoText>
                 {projectInfoTitle('依頼内容')}
                 <StyledStyledProjectInfoText>
@@ -168,10 +182,11 @@ const StyledProjectListPageContainer = styled.div`
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  margin-top: ${calculateMinSizeBasedOnFigmaHeight(3)};
+  margin-top: ${calculateMinSizeBasedOnFigma(3)};
+  margin-left: ${calculateMinSizeBasedOnFigmaHeight(-10)};
   width: ${calculateMinSizeBasedOnFigma(437)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(770)};
-  background: url('project-list_background.png');
+  height: ${calculateMinSizeBasedOnFigmaHeight(786)};
+  background: url('svg/project-list_background.svg');
   background-position: cover;
   background-size: cover;
   background-repeat: no-repeat;
@@ -181,25 +196,39 @@ const StyledProjectListWrapper = styled.div`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigma(120)};
   left: 50%;
-  transform: translateX(-54%);
-  width: ${calculateMinSizeBasedOnFigma(356)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(564)};
-  background: #fff;
+  transform: translateX(-52%);
+  width: ${calculateMinSizeBasedOnFigma(460)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(584)};
 `
 
 const StyledCreateProjectButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(24)};
 `
 
-const StyledProjectList = styled.ul``
+const StyledProjectListScroll = styled.div`
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+  direction: rtl;
+  height: calc(100% - ${calculateMinSizeBasedOnFigmaHeight(52)});
+`
 
-const StyledProject = styled.li``
+const StyledProjectList = styled.ul`
+  width: ${calculateMinSizeBasedOnFigma(396)};
+`
+
+const StyledProject = styled.li`
+  cursor: pointer;
+`
 
 const StyledProjectDetailContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigma(971)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(823)};
+  padding: 28px;
+  margin-top: ${calculateMinSizeBasedOnFigmaHeight(28)};
+  width: ${calculateMinSizeBasedOnFigma(977)};
+  min-height: ${calculateMinSizeBasedOnFigmaHeight(758)};
   background: url('svg/project-detail_background.svg');
   background-position: center;
   background-size: contain;

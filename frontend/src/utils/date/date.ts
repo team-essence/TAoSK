@@ -67,10 +67,22 @@ export default class date {
    *
    * @static
    * @param {PropsData} date
-   * @return {string} [yyyy-MM-ddの形に整形]
+   * @return {string} [yyyy年MM月dd日の形に整形]
    * @memberof date
    */
   public static formatDay = (date: PropsDate): string => {
-    return format(new Date(date), 'yyyy-MM-dd')
+    return format(new Date(date), 'yyyy年MM月dd日')
+  }
+
+  /**
+   * project span
+   *
+   * @static
+   * @param {PropsDate} startDate [プロジェクト開始日]
+   * @param {PropsDate} endDate [プロジェクト終了日]
+   * @memberof date [yyyy年MM月dd日 ~ yyyy年MM月dd日]
+   */
+  public static projectSpan = (startDate: PropsDate, endDate: PropsDate) => {
+    return `${date.formatDay(startDate)} ~ ${date.formatDay(endDate)}`
   }
 }
