@@ -4,10 +4,7 @@
     "module": "esnext",
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "lib": [
-      "DOM",
-      "ES2020"
-    ],
+    "lib": ["DOM", "ES2020"],
     "jsx": "react-jsx",
     "strict": true,
     "sourceMap": true,
@@ -27,8 +24,5 @@
       "module": "CommonJS"
     }
   },
-  "include": [
-    "src",
-    "typings/gltf.d.ts"
-, "src/components/models/monster/DragonIdle.tsx"  ]
+  "include": ["src", "typings/gltf.d.ts", "src/components/models/monster/DragonIdle.tsx"]
 }
