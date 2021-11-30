@@ -2,7 +2,7 @@ import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
 import { UserAvatarIcon } from '../avatar/UserAvatarIcon'
@@ -107,7 +107,7 @@ const StyledProjectInfoTitleContainer = styled.div`
 
   img {
     opacity: 0.2;
-    width: ${calculateMinSizeBasedOnFigma(98)};
+    width: ${calculateMinSizeBasedOnFigmaWidth(98)};
   }
 `
 
@@ -137,5 +137,5 @@ const StyledStyledProjectInfoTextOverview = styled(StyledStyledProjectInfoText)`
 
 const StyledPartyContainer = styled.div`
   display: flex;
-  gap: 0 ${calculateMinSizeBasedOnFigma(6)};
+  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(6)};
 `

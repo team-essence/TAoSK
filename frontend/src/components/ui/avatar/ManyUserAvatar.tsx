@@ -56,7 +56,7 @@ const StyledManyUserAvatarContainer = styled.div`
 
   ${({ theme }) => css`
     background: ${theme.COLORS.BLACK_WHITE};
-    border: solid 1px ${theme.COLORS.SLIVER3};
+    border: solid 1px ${theme.COLORS.SILVER};
     box-shadow: 0px 1px 4px ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   `}
 `

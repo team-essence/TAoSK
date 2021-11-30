@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { useHover } from 'hooks/useHover'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
 import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
@@ -85,15 +85,15 @@ const StyledUserAvatarIconContainer = styled.div<{ size: number }>`
 
 const StyledUserCloseButton = styled.button`
   position: absolute;
-  width: ${calculateMinSizeBasedOnFigma(14)};
-  height: ${calculateMinSizeBasedOnFigma(14)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(14)};
   top: -4px;
   right: -4px;
 
   img {
     display: block;
-    width: ${calculateMinSizeBasedOnFigma(14)};
-    height: ${calculateMinSizeBasedOnFigma(14)};
+    width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(14)};
     object-fit: contain;
   }
 `
@@ -105,7 +105,7 @@ const StyledUserAvatarIconListContainer = styled.div<{
   width: ${({ size }) => calculateVhBasedOnFigma(size)};
   height: ${({ size }) => calculateVhBasedOnFigma(size)};
   border-radius: 4px;
-  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: url(${({ iconImage }) => iconImage});
   background-size: cover;
@@ -133,9 +133,9 @@ const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
   left: -20%;
   width: ${calculateVhBasedOnFigma(240)};
   height: ${calculateVhBasedOnFigma(60)};
-  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
-  background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT2, 0.9)};
+  background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT, 0.9)};
   border-radius: 4px;
   display: flex;
   gap: 0px 4px;
@@ -162,7 +162,7 @@ const StyledPopupUserIconContainer = styled.div`
   height: ${calculateVhBasedOnFigma(60)};
 
   img {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT2};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
     border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
     border-radius: 4px;
     width: ${calculateVhBasedOnFigma(60)};

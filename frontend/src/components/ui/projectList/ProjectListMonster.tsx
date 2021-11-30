@@ -45,8 +45,8 @@ const StyledMonsterContainer = styled.div`
 
 const StyledMonsterStatusContainer = styled.div`
   width: ${calculateMinSizeBasedOnFigmaHeight(346)};
-  border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
-  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+  border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER};
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
 `
 
 const StyledMonsterStatus = styled.div`
@@ -57,8 +57,8 @@ const StyledMonsterStatus = styled.div`
   font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
 
   &:nth-child(2) {
-    border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
-    border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER2};
+    border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER};
+    border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   }
 `
 
