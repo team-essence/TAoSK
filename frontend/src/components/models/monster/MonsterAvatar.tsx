@@ -3,11 +3,13 @@ import { Mesh } from 'three'
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './DragonIdle'
+import styled from 'styled-components'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
 
 export const MonsterAvatar: VFC = () => {
   return (
-    <div style={{ width: 400, height: 400 }}>
-      <Canvas camera={{ fov: 3.3, position: [12, 10, 12] }}>
+    <StyledMonsterAvatarContainer>
+      <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>
         <OrbitControls enablePan={false} />
 
         <Suspense fallback={null}>
@@ -17,6 +19,16 @@ export const MonsterAvatar: VFC = () => {
           <Environment preset="sunset" />
         </Suspense>
       </Canvas>
-    </div>
+    </StyledMonsterAvatarContainer>
   )
 }
+
+const StyledMonsterAvatarContainer = styled.div`
+  width: ${calculateVhBasedOnFigma(346)};
+  height: ${calculateVhBasedOnFigma(346)};
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+`

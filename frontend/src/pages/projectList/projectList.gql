@@ -13,6 +13,42 @@ query Users($id: String!) {
     plan
     design
     exp
+
+    groups {
+      id
+
+      project {
+        id
+        name
+        overview
+        created_at
+        end_date
+        project_end_flg
+        difficulty
+
+        groups {
+          id
+
+          user {
+            id
+            name
+            icon_image
+            occupation_id
+          }
+        }
+
+        monster {
+          id
+          name
+          story
+
+          specie {
+            id
+            name
+          }
+        }
+      }
+    }
   }
 }
 

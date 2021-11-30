@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
 
 type Props = {
   className?: string
@@ -43,9 +44,11 @@ export const TaskCard: FC<Props> = ({
   const max = params.reduce((a, b) => (a.value > b.value ? a : b))
   const assignedUsers = allocations.map((item, index, array) =>
     index < 6 ? (
-      <UserAvatarIcon iconType="Task and modal" iconImage={item.icon_image} size={24} />
+      <UserAvatarIcon avatarStyleType={AVATAR_STYLE.TASK} iconImage={item.icon_image} />
     ) : (
-      index === array.length - 1 && <UserCount userCount={array.length - 6} styleType="task" />
+      index === array.length - 1 && (
+        <UserCount userCount={array.length - 6} avatarStyleType={AVATAR_STYLE.TASK} />
+      )
     ),
   )
 
@@ -67,7 +70,7 @@ export const TaskCard: FC<Props> = ({
                   />
                   <StyledDateContainer listIndex={listIndex} listLength={listLength}>
                     <StyledClockImage src="/svg/clock.svg" alt="clock" />
-                    <StyledDate>{date.formatDate(end_date)}</StyledDate>
+                    <StyledDate>{date.formatDay(end_date)}</StyledDate>
                   </StyledDateContainer>
                 </>
               )}

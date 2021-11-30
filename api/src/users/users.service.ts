@@ -35,7 +35,16 @@ export class UsersService {
 
   getUser(id: string): Promise<User> {
     const user = this.usersRepository.findOne(id, {
-      relations: ['interests', 'certifications'],
+      relations: [
+        'interests',
+        'certifications',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+      ],
     });
     if (!user) throw new NotFoundException();
 
