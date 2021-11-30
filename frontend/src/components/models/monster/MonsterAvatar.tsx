@@ -3,8 +3,8 @@ import { Mesh } from 'three'
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './DragonIdle'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import styled from 'styled-components'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
 
 export const MonsterAvatar: VFC = () => {
   return (
@@ -24,8 +24,8 @@ export const MonsterAvatar: VFC = () => {
 }
 
 const StyledMonsterAvatarContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(346)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(346)};
+  width: ${calculateVhBasedOnFigma(346)};
+  height: ${calculateVhBasedOnFigma(346)};
   cursor: grab;
 
   &:active {

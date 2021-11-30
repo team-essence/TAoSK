@@ -3,7 +3,7 @@ import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { avatarGroups } from 'types/avatarGroups'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { UserAvatarIcon } from './UserAvatarIcon'
 
@@ -48,8 +48,8 @@ export const ManyUserAvatar: FC<Props> = ({
 const StyledManyUserAvatarContainer = styled.div`
   position: absolute;
   padding: 12px;
-  top: ${calculateMinSizeBasedOnFigmaHeight(56)};
-  right: ${calculateMinSizeBasedOnFigmaHeight(-12)};
+  top: ${calculateVhBasedOnFigma(56)};
+  right: ${calculateVhBasedOnFigma(-12)};
   display: grid;
   gap: 12px 0;
   grid-template-columns: auto auto auto auto auto auto;

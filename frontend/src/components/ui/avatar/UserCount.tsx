@@ -1,11 +1,11 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateMinSizeBasedOnFigmaHeight'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateMinSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import { avatarGroups } from 'types/avatarGroups'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
 
 type Props = {
   userCount: number
@@ -80,8 +80,8 @@ const StyledUserCountContainer = styled.div`
 `
 
 const StyledUserCountListContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(50)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(50)};
+  width: ${calculateVhBasedOnFigma(50)};
+  height: ${calculateVhBasedOnFigma(50)};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: ${({ theme }) => theme.COLORS.MINE_SHAFT2};
   border-radius: 4px;

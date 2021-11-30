@@ -12,6 +12,8 @@ import logger from 'utils/debugger/logger'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
 import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
+import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateVwBasedOnFigma } from 'utils/calculateVwBasedOnFigma'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -163,9 +165,9 @@ const StyledProject = styled.li`
 
 const StyledProjectDetailContainer = styled.div`
   padding: 28px;
-  margin-top: ${calculateMinSizeBasedOnFigmaHeight(28)};
-  width: ${calculateMinSizeBasedOnFigma(977)};
-  min-height: ${calculateMinSizeBasedOnFigmaHeight(758)};
+  margin-top: ${calculateVhBasedOnFigma(28)};
+  width: ${calculateVwBasedOnFigma(977)};
+  min-height: ${calculateVhBasedOnFigma(758)};
   background: url('svg/project-detail_background.svg');
   background-position: center;
   background-size: contain;
@@ -190,10 +192,10 @@ const StyledProjectListBackground = styled.div`
 `
 
 const StyledProjectDetail = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(813)};
+  width: ${calculateVhBasedOnFigma(813)};
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr ${calculateMinSizeBasedOnFigmaHeight(40)} auto;
+  grid-template-rows: auto 1fr ${calculateVhBasedOnFigma(40)} auto;
 `
 
 const StyledComplicateButtonContainer = styled.div`
@@ -214,11 +216,11 @@ const StyledProjectTitleContainer = styled.div`
 `
 
 const StyledProjectTitle = styled.h2`
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  font-size: ${calculateVhBasedOnFigma(24)};
 `
 
 const StyledProjectOptionContainer = styled.div`
-  margin-right: ${calculateMinSizeBasedOnFigmaHeight(12)};
+  margin-right: ${calculateVhBasedOnFigma(12)};
   width: 28px;
   height: 28px;
   display: flex;
