@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { CrossButton } from 'components/ui/button/CrossButton'
+import { CrossIcon } from 'components/ui/button/CrossButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
@@ -17,7 +17,9 @@ export const InputItem: FC<Props> = ({ className, itemName, onClick }) => {
       <StyledOuterMask>
         <StyledTextWrapper>
           <StyledText>{itemName}</StyledText>
-          <StyledCrossButton color={theme.COLORS.CHOCOLATE} onClick={onClick} />
+          <button onClick={onClick}>
+            <StyledCrossIcon color={theme.COLORS.CHOCOLATE} />
+          </button>
         </StyledTextWrapper>
         <StyledInnerBackground />
       </StyledOuterMask>
@@ -53,7 +55,7 @@ const StyledTextWrapper = styled.div`
 const StyledText = styled.span`
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)} ${calculateMinSizeBasedOnFigmaWidth(10)};
 `
-const StyledCrossButton = styled(CrossButton)`
+const StyledCrossIcon = styled(CrossIcon)`
   height: 100%;
   padding: ${calculateMinSizeBasedOnFigmaWidth(10)} ${calculateMinSizeBasedOnFigmaWidth(7)}
     ${calculateMinSizeBasedOnFigmaWidth(10)} 0;

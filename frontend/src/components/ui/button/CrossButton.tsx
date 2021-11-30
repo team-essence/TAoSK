@@ -8,9 +8,9 @@ type Props = {
   isSquared?: boolean
 }
 
-export const CrossButton: FC<Props> = ({ className, onClick, color, isSquared = true }) => {
+export const CrossIcon: FC<Props> = ({ className, onClick, color, isSquared = true }) => {
   return (
-    <StyledButton className={className} onClick={onClick}>
+    <StyledWrapper className={className} onClick={onClick}>
       {isSquared ? (
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
           <path
@@ -42,11 +42,11 @@ export const CrossButton: FC<Props> = ({ className, onClick, color, isSquared = 
           />
         </svg>
       )}
-    </StyledButton>
+    </StyledWrapper>
   )
 }
 
-const StyledButton = styled.button`
+const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

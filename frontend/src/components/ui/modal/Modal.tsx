@@ -1,6 +1,7 @@
 import React, { FC, Dispatch, SetStateAction, ReactNode } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateMinSizeBasedOnFigmaWidth'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
+import { CrossIcon } from 'components/ui/button/CrossButton'
 import styled from 'styled-components'
 
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
 export const Modal: FC<Props> = ({ title, shouldShow, setShouldShow, className, children }) => {
   return (
     <StyledWrapper className={className} shouldShow={shouldShow}>
+      <CrossIcon color="" />
       {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
       {children}
       <StyledBackgroundDragonSymbol />
