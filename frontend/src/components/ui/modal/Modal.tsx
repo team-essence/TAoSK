@@ -16,6 +16,7 @@ export const Modal: FC<Props> = ({ title, shouldShow, setShouldShow, className, 
     <StyledWrapper className={className} shouldShow={shouldShow}>
       {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
       {children}
+      <StyledBackgroundDragonSymbol />
     </StyledWrapper>
   )
 }
@@ -31,7 +32,7 @@ const StyledWrapper = styled.div<{ shouldShow: boolean }>`
   width: 500px;
   height: 500px;
   background-image: url('/svg/modal-background.svg');
-  background-size: contain;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
 `
 const StyledNamePlate = styled.p`
@@ -47,10 +48,23 @@ const StyledNamePlate = styled.p`
   width: ${calculateMinSizeBasedOnFigmaWidth(468)};
   height: ${calculateMinSizeBasedOnFigmaWidth(55)};
   background-image: url('/svg/nameplate.svg');
-  background-size: contain;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
   color: ${({ theme }) => theme.COLORS.WHITE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_20};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   ${({ theme }) => strokeTextShadow('2px', theme.COLORS.BLACK)};
+`
+const StyledBackgroundDragonSymbol = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: ${calculateMinSizeBasedOnFigmaWidth(600)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(377)};
+  background-image: url('/svg/dragon-symbol.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 `

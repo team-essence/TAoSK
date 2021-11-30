@@ -13,5 +13,5 @@ export const calculateMinSizeBasedOnFigmaHeight = (px: number | pxStr): string =
 
   const vh = `${(numPx / FIGMA_HEIGHT_PX) * 100}vh`
 
-  return `min(${numPx}px, ${vh})`
+  return `${numPx > 0 ? 'min' : 'max'}(${numPx}px, ${vh})`
 }

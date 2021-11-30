@@ -12,5 +12,5 @@ export const calculateMinSizeBasedOnFigmaWidth = (px: number | pxStr) => {
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
   const vw = `${(numPx / FIGMA_WIDTH_PX) * 100}vw`
 
-  return `min(${numPx}px, ${vw})`
+  return `${numPx > 0 ? 'min' : 'max'}(${numPx}px, ${vw})`
 }
