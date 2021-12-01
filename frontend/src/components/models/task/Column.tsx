@@ -8,6 +8,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { useInput } from 'hooks/useInput'
 import { TaskList } from 'components/models/task/TaskList'
 import { AddTaskButton } from 'components/models/task/AddTaskButton'
+import { BasicPopover } from 'components/ui/modal/Popover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
@@ -20,8 +21,16 @@ type Props = {
 
 export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
   const [isDisabled, setIsDisabled] = useState(true)
+  const [anchorEl, setAnchorEl] = useState<HTMLImageElement | null>(null)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const listTitle = useInput(title)
+
+  const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -78,7 +87,10 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                         maxLength={255}
                       />
                     </StyledTitle>
-                    <StyledSpreadIcon src="/svg/spread.svg" alt="spread" />
+                    {/* <StyledSpreadIconContainer onClick={handleClick}> */}
+                    <StyledSpreadIcon src="/svg/spread.svg" alt="spread" onClick={handleClick} />
+                    {/* </StyledSpreadIconContainer> */}
+                    <BasicPopover anchorEl={anchorEl} handleClose={handleClose} />
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
@@ -181,5 +193,8 @@ const StyledTitleTextArea = styled(TextareaAutosize)`
   }
 `
 const StyledSpreadIcon = styled.img`
+  display: block;
   width: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  cursor: pointer;
+  min-height: ${calculateMinSizeBasedOnFigmaWidth(40)};
 `
