@@ -100,6 +100,7 @@ export const ProjectDetail: FC = () => {
   })
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
+      logger.table(data.updateTaskSort)
       toast.success('タスクを移動しました')
     },
     onError(err) {
@@ -338,14 +339,16 @@ export const ProjectDetail: FC = () => {
         task.vertical_sort = index
         return task
       })
-      return sortList
+
+      list.tasks = sortList
+      return list
     })
 
-    const updateTasks = sortListCopy.map((tasks, listIndex) => {
-      return tasks.map((task, taskIndex) => {
+    const updateTasks = sortListCopy.map(list => {
+      return list.tasks.map((task, taskIndex) => {
         return {
           id: task.id,
-          list_id: String(listIndex + 1),
+          list_id: list.id,
           vertical_sort: taskIndex,
         }
       })
@@ -356,6 +359,7 @@ export const ProjectDetail: FC = () => {
       joinUpdateTasks.push(...updateTasks[index])
     }
 
+    logger.table([...joinUpdateTasks])
     await updateTaskSort({
       variables: {
         updateTasks: {
