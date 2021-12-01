@@ -4,6 +4,7 @@ import { useAuthContext } from 'providers/AuthProvider'
 import { useGetUserLazyQuery } from './mypage.gen'
 import styled, { css } from 'styled-components'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
+import { Loading } from 'components/ui/loading/Loading'
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext()
@@ -17,17 +18,25 @@ export const MyPage: FC = () => {
 
   if (!currentUser) return <Navigate to="/signup" />
   if (currentUser.uid !== id) return <Navigate to="/" />
+  if (!userQuery.data) return <Loading />
 
   return (
     <>
       <ProjectListHeader />
 
-      <p>マイページ</p>
-      <pre style={{ color: '#fff' }}>{JSON.stringify(userQuery.data?.user, null, '\t')}</pre>
+      <MyPageContainer>
+        <p>マイページ</p>
+        <pre style={{ color: '#fff' }}>{JSON.stringify(userQuery.data?.user, null, '\t')}</pre>
+      </MyPageContainer>
       <StyledMyPageBackground />
     </>
   )
 }
+
+const MyPageContainer = styled.div`
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  width: 100%;
+`
 
 const StyledMyPageBackground = styled.div`
   ${({ theme }) => css`
