@@ -8,7 +8,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { useInput } from 'hooks/useInput'
 import { TaskList } from 'components/models/task/TaskList'
 import { AddTaskButton } from 'components/models/task/AddTaskButton'
-import { BasicPopover } from 'components/ui/modal/Popover'
+import { SmallPopover } from 'components/ui/modal/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
@@ -87,10 +87,21 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                         maxLength={255}
                       />
                     </StyledTitle>
-                    {/* <StyledSpreadIconContainer onClick={handleClick}> */}
-                    <StyledSpreadIcon src="/svg/spread.svg" alt="spread" onClick={handleClick} />
-                    {/* </StyledSpreadIconContainer> */}
-                    <BasicPopover anchorEl={anchorEl} handleClose={handleClose} />
+                    {listIndex !== 0 && listIndex !== listLength - 1 && listLength !== 3 && (
+                      <>
+                        <StyledSpreadIcon
+                          src="/svg/spread.svg"
+                          alt="spread"
+                          onClick={handleClick}
+                        />
+                        <SmallPopover
+                          anchorEl={anchorEl}
+                          vertical="bottom"
+                          horizontal="left"
+                          handleClose={handleClose}
+                        />
+                      </>
+                    )}
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
@@ -138,7 +149,8 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
   position: relative;
   min-height: ${calculateMinSizeBasedOnFigmaWidth(48)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(1)};
-  border-radius: 2px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
   ${({ listIndex, listLength }) =>
     listIndex === 0
       ? css`
