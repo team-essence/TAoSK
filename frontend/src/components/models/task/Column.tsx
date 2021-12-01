@@ -20,6 +20,7 @@ type Props = {
 
 export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
   const [isDisabled, setIsDisabled] = useState(true)
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const listTitle = useInput(title)
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -47,6 +48,10 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
     }
   }, [closeModal])
 
+  const onF = () => {
+    textAreaRef.current?.select()
+  }
+
   return (
     <Draggable
       draggableId={`column-${id}`}
@@ -65,8 +70,10 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                     <StyledTitle onClick={e => openModal(e)}>
                       <StyledTitleTextArea
                         {...listTitle}
+                        ref={textAreaRef}
                         disabled={isDisabled}
                         onKeyDown={handleKeyPress}
+                        onFocus={onF}
                         minRows={1}
                         maxLength={255}
                       />
@@ -162,6 +169,7 @@ const StyledTitleTextArea = styled(TextareaAutosize)`
   display: block;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  max-height: auto;
   color: ${({ theme }) => theme.COLORS.BLACK};
   border: none;
   border-radius: 2px;
