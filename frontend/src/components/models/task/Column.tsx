@@ -33,7 +33,7 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                 <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
                   <StyledInnerHeadWrap>
                     <StyledTitle>{title}</StyledTitle>
-                    <img src="/svg/spread.svg" alt="spread" width="12" />
+                    <StyledSpreadIcon src="/svg/spread.svg" alt="spread" width="12" />
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
@@ -118,4 +118,7 @@ const StyledInnerHeadWrap = styled.div`
 const StyledTitle = styled.h2`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledSpreadIcon = styled.img`
+  width: ${calculateMinSizeBasedOnFigmaWidth(12)};
 `
