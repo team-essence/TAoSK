@@ -19,21 +19,26 @@ type Props = {
 
 export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
   const [isDisabled, setIsDisabled] = useState(true)
-  const inputEl = useRef<HTMLInputElement | null>(null)
   const listTitle = useInput(title)
 
-  const handleKeyPress = (e: any) => {
-    if (e.keyCode === 13) {
+  const calcTextAreaHeight = (value: string) => {
+    const rowsNum = value.split('\n').length
+
+    return rowsNum
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
       closeModal()
     }
   }
 
-  const openModal = (event: any) => {
+  const openModal = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (listIndex === 0 || listIndex === listLength - 1) return
-    inputEl.current?.focus()
+
     setIsDisabled(false)
     document.addEventListener('click', closeModal)
-    event.stopPropagation()
+    e.stopPropagation()
   }
 
   const closeModal = useCallback(() => {
@@ -62,18 +67,12 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
                 <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
                   <StyledInnerHeadWrap>
-                    <StyledTitle
-                      onClick={event => {
-                        openModal(event)
-                      }}>
+                    <StyledTitle onClick={e => openModal(e)}>
                       <StyledTitleInput
                         {...listTitle}
-                        ref={inputEl}
+                        rows={calcTextAreaHeight(listTitle.value)}
                         disabled={isDisabled}
                         onKeyDown={handleKeyPress}
-                        // onClick={event => {
-                        //   event.stopPropagation()
-                        // }}
                       />
                     </StyledTitle>
                     <StyledSpreadIcon src="/svg/spread.svg" alt="spread" />
@@ -162,12 +161,13 @@ const StyledTitle = styled.h2`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
-const StyledTitleInput = styled.input`
+const StyledTitleInput = styled.textarea`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.BLACK};
   border: none;
   border-radius: 2px;
+  resize: none;
   padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(6)};
   :disabled {
     color: ${({ theme }) => theme.COLORS.WHITE};

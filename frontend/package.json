@@ -15,6 +15,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.16",
+    "@mui/material": "^5.2.2",
+    "@mui/styled-engine-sc": "^5.1.0",
     "@react-three/drei": "^7.22.6",
     "@react-three/fiber": "^7.0.19",
     "@testing-library/jest-dom": "^5.11.4",
