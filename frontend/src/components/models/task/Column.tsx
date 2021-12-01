@@ -1,10 +1,11 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useCallback, useState, useRef } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DropType } from 'consts/dropType'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { useInput } from 'hooks/useInput'
 import { TaskList } from 'components/models/task/TaskList'
 import { AddTaskButton } from 'components/models/task/AddTaskButton'
 import styled, { css } from 'styled-components'
@@ -17,6 +18,35 @@ type Props = {
 } & Omit<List, 'list_id' | 'sort_id' | 'index'>
 
 export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
+  const [isDisabled, setIsDisabled] = useState(true)
+  const inputEl = useRef<HTMLInputElement | null>(null)
+  const listTitle = useInput(title)
+
+  const handleKeyPress = (e: any) => {
+    if (e.keyCode === 13) {
+      closeModal()
+    }
+  }
+
+  const openModal = (event: any) => {
+    if (listIndex === 0 || listIndex === listLength - 1) return
+    inputEl.current?.focus()
+    setIsDisabled(false)
+    document.addEventListener('click', closeModal)
+    event.stopPropagation()
+  }
+
+  const closeModal = useCallback(() => {
+    setIsDisabled(true)
+    document.removeEventListener('click', closeModal)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('click', closeModal)
+    }
+  }, [closeModal])
+
   return (
     <Draggable
       draggableId={`column-${id}`}
@@ -32,8 +62,21 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
                 <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
                   <StyledInnerHeadWrap>
-                    <StyledTitle>{title}</StyledTitle>
-                    <StyledSpreadIcon src="/svg/spread.svg" alt="spread" width="12" />
+                    <StyledTitle
+                      onClick={event => {
+                        openModal(event)
+                      }}>
+                      <StyledTitleInput
+                        {...listTitle}
+                        ref={inputEl}
+                        disabled={isDisabled}
+                        onKeyDown={handleKeyPress}
+                        // onClick={event => {
+                        //   event.stopPropagation()
+                        // }}
+                      />
+                    </StyledTitle>
+                    <StyledSpreadIcon src="/svg/spread.svg" alt="spread" />
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
@@ -118,6 +161,18 @@ const StyledInnerHeadWrap = styled.div`
 const StyledTitle = styled.h2`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledTitleInput = styled.input`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  color: ${({ theme }) => theme.COLORS.BLACK};
+  border: none;
+  border-radius: 2px;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(6)};
+  :disabled {
+    color: ${({ theme }) => theme.COLORS.WHITE};
+    background: inherit;
+  }
 `
 const StyledSpreadIcon = styled.img`
   width: ${calculateMinSizeBasedOnFigmaWidth(12)};
