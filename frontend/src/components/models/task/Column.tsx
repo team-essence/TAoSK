@@ -99,6 +99,8 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                           vertical="bottom"
                           horizontal="left"
                           handleClose={handleClose}
+                          handleEdit={() => setIsDisabled(false)}
+                          handleRemove={() => console.log('削除')}
                         />
                       </>
                     )}
@@ -202,6 +204,9 @@ const StyledTitleTextArea = styled(TextareaAutosize)`
   :disabled {
     color: ${({ theme }) => theme.COLORS.WHITE};
     background: inherit;
+  }
+  :focus {
+    outline: 0;
   }
 `
 const StyledSpreadIcon = styled.img`

@@ -8,9 +8,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
-type Props = {} & PopoverProps
+type Props = {
+  handleEdit: () => void
+  handleRemove: () => void
+} & PopoverProps
 
-export const SmallPopover: FC<Props> = ({ anchorEl, vertical, horizontal, handleClose }) => {
+export const SmallPopover: FC<Props> = ({
+  anchorEl,
+  vertical,
+  horizontal,
+  handleClose,
+  handleEdit,
+  handleRemove,
+}) => {
   return (
     <BasicPopover
       anchorEl={anchorEl}
@@ -18,11 +28,17 @@ export const SmallPopover: FC<Props> = ({ anchorEl, vertical, horizontal, handle
       horizontal={horizontal}
       handleClose={handleClose}>
       <StyledContainer>
-        <StyledFlexContainer onClick={handleClose}>
+        <StyledFlexContainer
+          onClick={() => {
+            handleEdit(), handleClose()
+          }}>
           <StyledFontAwesomeIcon icon={faPencilAlt} />
           <StyledText>編集</StyledText>
         </StyledFlexContainer>
-        <StyledFlexContainer onClick={handleClose}>
+        <StyledFlexContainer
+          onClick={() => {
+            handleRemove(), handleClose()
+          }}>
           <StyledFontAwesomeIcon icon={faEraser} />
           <StyledText>削除</StyledText>
         </StyledFlexContainer>
