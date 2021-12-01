@@ -4,7 +4,7 @@ import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './DragonIdle'
 import styled from 'styled-components'
-import { calculateVhBasedOnFigma } from 'utils/calculateVhBasedOnFigma'
+import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 export const MonsterAvatar: VFC = () => {
   return (
