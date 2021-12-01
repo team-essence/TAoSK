@@ -1,6 +1,6 @@
 export default class exp {
   /**
-   * ## 経験値からレベルへ変換
+   * 経験値からレベルへ変換
    * # [焼肉食べたい](https://www.yakiniku-king.jp/)
    *
    * @static
@@ -13,7 +13,7 @@ export default class exp {
   }
 
   /**
-   * ## レベルにならない余りの経験値に変換
+   * レベルにならない余りの経験値を返す
    *
    * @static
    * @param {number} exp
