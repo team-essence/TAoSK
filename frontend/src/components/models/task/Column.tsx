@@ -8,6 +8,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { useInput } from 'hooks/useInput'
 import { TaskList } from 'components/models/task/TaskList'
 import { AddTaskButton } from 'components/models/task/AddTaskButton'
+import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
 type Props = {
@@ -20,12 +21,6 @@ type Props = {
 export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
   const [isDisabled, setIsDisabled] = useState(true)
   const listTitle = useInput(title)
-
-  const calcTextAreaHeight = (value: string) => {
-    const rowsNum = value.split('\n').length
-
-    return rowsNum
-  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -68,11 +63,12 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                 <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
                   <StyledInnerHeadWrap>
                     <StyledTitle onClick={e => openModal(e)}>
-                      <StyledTitleInput
+                      <StyledTitleTextArea
                         {...listTitle}
-                        rows={calcTextAreaHeight(listTitle.value)}
                         disabled={isDisabled}
                         onKeyDown={handleKeyPress}
+                        minRows={1}
+                        maxLength={255}
                       />
                     </StyledTitle>
                     <StyledSpreadIcon src="/svg/spread.svg" alt="spread" />
@@ -119,9 +115,9 @@ const StyledColumnContainer = styled.ul`
   }
 `
 const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>`
+  display: flex;
   position: relative;
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
-  height: ${calculateMinSizeBasedOnFigmaWidth(48)};
+  min-height: ${calculateMinSizeBasedOnFigmaWidth(48)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(1)};
   border-radius: 2px;
   ${({ listIndex, listLength }) =>
@@ -136,6 +132,7 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
       : css`
           background-color: ${({ theme }) => theme.COLORS.BOULDER};
         `}
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
 `
 const StyledButtonContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
@@ -149,9 +146,9 @@ const StyledTaskListContainer = styled.div`
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;
+  flex-grow: 1;
   justify-content: space-between;
   align-items: center;
-  height: 100%;
   padding: 0 ${calculateMinSizeBasedOnFigmaWidth(14)};
   border: 2px solid ${({ theme }) => theme.COLORS.STARK_WHITE};
   border-top-left-radius: 4px;
@@ -161,14 +158,15 @@ const StyledTitle = styled.h2`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
-const StyledTitleInput = styled.textarea`
+const StyledTitleTextArea = styled(TextareaAutosize)`
+  display: block;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.BLACK};
   border: none;
   border-radius: 2px;
   resize: none;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(6)};
+  margin: ${calculateMinSizeBasedOnFigmaWidth(4)} 0;
   :disabled {
     color: ${({ theme }) => theme.COLORS.WHITE};
     background: inherit;
