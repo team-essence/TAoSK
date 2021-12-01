@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity('companies')
@@ -6,7 +6,7 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 export class Company {
   //uid
   @PrimaryColumn()
-  @Field()
+  @Field(() => ID)
   uid: string;
 
   //企業名
