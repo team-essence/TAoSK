@@ -23,7 +23,10 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
       index={listIndex}
       isDragDisabled={listIndex === 0 || listLength - 1 === listIndex}>
       {provided => (
-        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+        <StyledContainer
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}>
           <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
             {listProvided => (
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
@@ -45,12 +48,15 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
               </StyledColumnContainer>
             )}
           </Droppable>
-        </div>
+        </StyledContainer>
       )}
     </Draggable>
   )
 }
 
+const StyledContainer = styled.div`
+  margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
+`
 const StyledColumnContainer = styled.ul`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};

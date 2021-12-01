@@ -57,10 +57,11 @@ export const TaskCard: FC<Props> = ({
   return (
     <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
       {(taskProvided, snapshot) => (
-        <li
+        <StyledLi
           ref={taskProvided.innerRef}
           {...taskProvided.draggableProps}
-          {...taskProvided.dragHandleProps}>
+          {...taskProvided.dragHandleProps}
+          aria-roledescription="Press space bar to lift the task">
           <StyledContainer>
             <StyledInnerWrap>
               <StyledTitle>{title}</StyledTitle>
@@ -99,23 +100,26 @@ export const TaskCard: FC<Props> = ({
               </StyledFlexContainer>
             </StyledInnerWrap>
           </StyledContainer>
-        </li>
+        </StyledLi>
       )}
     </Draggable>
   )
 }
 
-const StyledContainer = styled.div`
+const StyledLi = styled.li`
   position: relative;
+  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  user-select: none;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
+`
+const StyledContainer = styled.div`
   height: auto;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   white-space: normal;
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
 `
-
 const StyledInnerWrap = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(6)};
   border: 2px solid ${({ theme }) => theme.COLORS.CARARRA};

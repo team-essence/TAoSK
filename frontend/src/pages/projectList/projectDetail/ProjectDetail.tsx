@@ -554,5 +554,4 @@ const ProjectDetailRightContainer = styled.div`
 
 const StyledTaskListContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
