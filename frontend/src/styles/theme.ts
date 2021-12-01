@@ -72,6 +72,18 @@ export const theme = {
     MONDO: '#463E29',
     SHIP_COVE: '#657DBA',
     BOULDER: '#7B7B7B',
+    SCORPION: '#575757',
+    COD_GRAY: '#1E1E1E',
+    HP: '#85D931',
+    HP_BG: '#DBF5C0',
+    MP: '#31BBD9',
+    MP_BG: '#C3E8F0',
+
+    FONT: {
+      TOBACCO_BROWN: '#665545',
+      SILVER: '#BFBFBF',
+      BLACK: '#38373C',
+    },
   },
 } as const
 
