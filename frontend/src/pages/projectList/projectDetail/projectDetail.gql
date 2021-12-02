@@ -174,3 +174,7 @@ mutation UpdateListName($name: String!, $list_id: String!) {
     list_id
   }
 }
+
+mutation RemoveList($id: Float!) {
+  removeList(removeList: { id: $id })
+}

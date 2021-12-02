@@ -8,7 +8,10 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControlTextArea'
-import { useUpdateListNameMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
+import {
+  useUpdateListNameMutation,
+  useRemoveListMutation,
+} from 'pages/projectList/projectDetail/projectDetail.gen'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/models/task/CreateTaskButton'
 import { SmallPopover } from 'components/models/task/SmallPopover'
@@ -31,10 +34,11 @@ export const Column: FC<Props> = ({
   listLength,
   handleAddTask,
 }) => {
-  const { anchorEl, openPopover, closePopover } = usePopover()
-  const [updateListName] = useUpdateListNameMutation()
   const listTitle = useInput(title)
   const controll = useControllTextArea()
+  const { anchorEl, openPopover, closePopover } = usePopover()
+  const [updateListName] = useUpdateListNameMutation()
+  const [removeList] = useRemoveListMutation()
 
   const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
@@ -51,6 +55,10 @@ export const Column: FC<Props> = ({
   const handleOnBlur = (name: string, list_id: string) => {
     updateListName({ variables: { name, list_id } })
     controll.disableTextArea()
+  }
+
+  const handleRemoveList = (id: number) => {
+    removeList({ variables: { id } })
   }
 
   return (
@@ -88,7 +96,7 @@ export const Column: FC<Props> = ({
                         maxLength={255}
                       />
                     </StyledTitle>
-                    {listIndex !== 0 && listIndex !== listLength - 1 && listLength !== 3 && (
+                    {listIndex !== 0 && listIndex !== listLength - 1 && (
                       <>
                         <StyledSpreadIcon
                           src="/svg/spread.svg"
@@ -101,7 +109,7 @@ export const Column: FC<Props> = ({
                           horizontal="left"
                           handleClose={closePopover}
                           handleEdit={controll.enableTextArea}
-                          handleRemove={() => console.log('削除')}
+                          handleRemove={() => handleRemoveList(Number(id))}
                         />
                       </>
                     )}
