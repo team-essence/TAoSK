@@ -1,10 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class RemoveListInput {
   @IsNotEmpty()
   @IsInt()
   @Field()
-  list_id: number;
+  id: number;
 }

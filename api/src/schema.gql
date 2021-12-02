@@ -258,7 +258,7 @@ input UpdateListInput {
 }
 
 input RemoveListInput {
-  list_id: Float!
+  id: Float!
 }
 
 input UpdateListSort {

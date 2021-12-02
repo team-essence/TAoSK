@@ -94,13 +94,13 @@ export class ListsService {
 
   async removeList(removeList: RemoveListInput): Promise<boolean> {
     try {
-      const list = await this.listRepository.findOne(removeList.list_id);
+      const list = await this.listRepository.findOne(removeList.id);
       if (!list) throw new NotFoundException();
 
       const listSort = await this.listSortRepository.findOne({
         where: {
           list: {
-            id: removeList.list_id,
+            id: removeList.id,
           },
         },
       });
@@ -109,7 +109,7 @@ export class ListsService {
       const tasks = await this.taskRepository.find({
         where: {
           list: {
-            id: removeList.list_id,
+            id: removeList.id,
           },
         },
       });
