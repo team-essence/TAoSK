@@ -73,8 +73,12 @@ export class ListsService {
     return lists;
   }
 
-  async updateListName(updateList: UpdateListInput) {
-    const list = await this.listRepository.findOne(updateList.list_id);
+  async updateListName(updateList: UpdateListInput): Promise<List> {
+    const list = await this.listRepository.findOne({
+      where: {
+        list_id: updateList.list_id,
+      },
+    });
     list.name = updateList.name;
     await this.listRepository.save(list).catch((err) => {
       new InternalServerErrorException();
@@ -85,14 +89,18 @@ export class ListsService {
     return list;
   }
 
-  async removeList(removeList: RemoveListInput) {
-    const list = await this.listRepository.findOne(removeList.list_id);
-    await this.listRepository.remove(list).catch((err) => {
-      new InternalServerErrorException();
-    });
+  // async removeList(removeList: RemoveListInput): Promise<boolean> {
+  //   const list = await this.listRepository.findOne({
+  //     where: {
+  //       list_id: removeList.list_id,
+  //     },
+  //   });
+  //   await this.listRepository.remove(list).catch((err) => {
+  //     new InternalServerErrorException();
+  //   });
 
-    if (!list) throw new NotFoundException();
+  //   if (!list) throw new NotFoundException();
 
-    return list;
-  }
+  //   return true;
+  // }
 }

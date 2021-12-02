@@ -1,6 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { RemoveListSortInput } from './dto/removeListSort.input';
 import { UpdateListSort } from './dto/updateListSort.input';
 import { ListSort } from './list-sort';
 
@@ -26,5 +31,22 @@ export class ListSortsService {
     } catch (error) {
       return false;
     }
+  }
+
+  async removeList(removeList: RemoveListSortInput): Promise<boolean> {
+    const list = await this.listSortRepository.findOne({
+      where: {
+        list: {
+          id: removeList.list_id,
+        },
+      },
+    });
+    await this.listSortRepository.softRemove(list).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    if (!list) throw new NotFoundException();
+
+    return true;
   }
 }
