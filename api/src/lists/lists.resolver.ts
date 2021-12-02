@@ -34,12 +34,12 @@ export class ListsResolver {
     });
   }
 
-  // @Mutation(() => List)
-  // public async removeList(
-  //   @Args({ name: 'removeList', nullable: true }) removeList: RemoveListInput,
-  // ) {
-  //   return this.listsService.removeList(removeList).catch((err) => {
-  //     throw err;
-  //   });
-  // }
+  @Mutation(() => Boolean)
+  public async removeList(
+    @Args({ name: 'removeList', nullable: true }) removeList: RemoveListInput,
+  ) {
+    return await this.listsService.removeList(removeList).catch((err) => {
+      throw err;
+    });
+  }
 }

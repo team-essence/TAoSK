@@ -16,14 +16,4 @@ export class ListSortsResolver {
       throw err;
     });
   }
-
-  @Mutation(() => ListSort)
-  public async removeList(
-    @Args({ name: 'removeList' })
-    removeList: RemoveListSortInput,
-  ) {
-    return this.listSortService.removeList(removeList).catch((err) => {
-      throw err;
-    });
-  }
 }

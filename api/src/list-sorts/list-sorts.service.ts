@@ -32,21 +32,4 @@ export class ListSortsService {
       return false;
     }
   }
-
-  async removeList(removeList: RemoveListSortInput): Promise<boolean> {
-    const list = await this.listSortRepository.findOne({
-      where: {
-        list: {
-          id: removeList.list_id,
-        },
-      },
-    });
-    await this.listSortRepository.softRemove(list).catch((err) => {
-      new InternalServerErrorException();
-    });
-
-    if (!list) throw new NotFoundException();
-
-    return true;
-  }
 }

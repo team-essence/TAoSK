@@ -12,6 +12,7 @@ import { Project } from 'src/projects/project';
 import { ListSort } from 'src/list-sorts/list-sort';
 import { UpdateListInput } from './dto/updateList.input';
 import { RemoveListInput } from './dto/removeList.input';
+import { Task } from 'src/tasks/task';
 
 @Injectable()
 export class ListsService {
@@ -22,6 +23,8 @@ export class ListsService {
     private projectRepository: Repository<Project>,
     @InjectRepository(ListSort)
     private listSortRepository: Repository<ListSort>,
+    @InjectRepository(Task)
+    private taskRepository: Repository<Task>,
   ) {}
 
   async create(newList: NewListInput): Promise<List> {
@@ -89,18 +92,42 @@ export class ListsService {
     return list;
   }
 
-  // async removeList(removeList: RemoveListInput): Promise<boolean> {
-  //   const list = await this.listRepository.findOne({
-  //     where: {
-  //       list_id: removeList.list_id,
-  //     },
-  //   });
-  //   await this.listRepository.remove(list).catch((err) => {
-  //     new InternalServerErrorException();
-  //   });
+  async removeList(removeList: RemoveListInput): Promise<boolean> {
+    try {
+      const list = await this.listRepository.findOne(removeList.list_id);
+      if (!list) throw new NotFoundException();
 
-  //   if (!list) throw new NotFoundException();
+      const listSort = await this.listSortRepository.findOne({
+        where: {
+          list: {
+            id: removeList.list_id,
+          },
+        },
+      });
+      if (!listSort) throw new NotFoundException();
 
-  //   return true;
-  // }
+      const tasks = await this.taskRepository.find({
+        where: {
+          list: {
+            id: removeList.list_id,
+          },
+        },
+      });
+      if (!tasks) throw new NotFoundException();
+
+      await this.listSortRepository.remove(listSort).catch((err) => {
+        new InternalServerErrorException();
+      });
+      await this.taskRepository.remove(tasks).catch((err) => {
+        new InternalServerErrorException();
+      });
+      await this.listRepository.remove(list).catch((err) => {
+        new InternalServerErrorException();
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }

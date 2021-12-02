@@ -184,8 +184,8 @@ type Mutation {
   createInvitation(projectId: String!, userId: String!): Invitation!
   createList(newList: NewListInput!): List!
   updateListName(updateList: UpdateListInput!): List!
+  removeList(removeList: RemoveListInput): Boolean!
   updateListSort(updateListSort: UpdateListSort!): Boolean!
-  removeList(removeList: RemoveListSortInput!): ListSort!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
   addTask(newTask: NewTaskInput!): Task!
 }
@@ -257,6 +257,10 @@ input UpdateListInput {
   list_id: String!
 }
 
+input RemoveListInput {
+  list_id: Float!
+}
+
 input UpdateListSort {
   listSort: [UpdateListSortObject!]!
 }
@@ -264,10 +268,6 @@ input UpdateListSort {
 input UpdateListSortObject {
   id: String!
   task_list: Float!
-}
-
-input RemoveListSortInput {
-  list_id: Float!
 }
 
 input UpdateTaskSort {
