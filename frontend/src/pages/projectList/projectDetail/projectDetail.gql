@@ -167,3 +167,10 @@ mutation CreateList($name: String!, $project_id: Float!, $task_list: Float!) {
 mutation UpdateListSort($listSort: [UpdateListSortObject!]!) {
   updateListSort(updateListSort: { listSort: $listSort })
 }
+
+mutation UpdateListName($name: String!, $list_id: String!) {
+  updateListName(updateList: { name: $name, list_id: $list_id }) {
+    name
+    list_id
+  }
+}

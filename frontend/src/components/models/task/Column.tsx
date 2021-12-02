@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useCallback, useState, useRef } from 'react'
+import React, { FC } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DropType } from 'consts/dropType'
@@ -6,9 +6,12 @@ import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useInput } from 'hooks/useInput'
+import { usePopover } from 'hooks/usePopover'
+import { useControllTextArea } from 'hooks/useControlTextArea'
+import { useUpdateListNameMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { TaskList } from 'components/models/task/TaskList'
-import { AddTaskButton } from 'components/models/task/AddTaskButton'
-import { SmallPopover } from 'components/ui/modal/SmallPopover'
+import { CreateTaskButton } from 'components/models/task/CreateTaskButton'
+import { SmallPopover } from 'components/models/task/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
@@ -17,48 +20,37 @@ type Props = {
   listIndex: number
   listLength: number
   handleAddTask: (list_id: number) => void
-} & Omit<List, 'list_id' | 'sort_id' | 'index'>
+} & Omit<List, 'sort_id' | 'index'>
 
-export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, handleAddTask }) => {
-  const [isDisabled, setIsDisabled] = useState(true)
-  const [anchorEl, setAnchorEl] = useState<HTMLImageElement | null>(null)
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+export const Column: FC<Props> = ({
+  id,
+  list_id,
+  title,
+  tasks,
+  listIndex,
+  listLength,
+  handleAddTask,
+}) => {
+  const { anchorEl, openPopover, closePopover } = usePopover()
+  const [updateListName] = useUpdateListNameMutation()
   const listTitle = useInput(title)
+  const controll = useControllTextArea()
 
-  const handleClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
-    setAnchorEl(null)
+  const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+    if (listIndex === 0 || listIndex === listLength - 1 || !e) return
+    controll.enableTextArea(e)
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleUpdateListName = (e: React.KeyboardEvent, name: string, list_id: string) => {
     if (e.key === 'Enter') {
-      closeModal()
+      updateListName({ variables: { name, list_id } })
+      controll.disableTextArea()
     }
   }
 
-  const openModal = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
-    if (listIndex === 0 || listIndex === listLength - 1) return
-
-    setIsDisabled(false)
-    document.addEventListener('click', closeModal)
-    e.stopPropagation()
-  }
-
-  const closeModal = useCallback(() => {
-    setIsDisabled(true)
-    document.removeEventListener('click', closeModal)
-  }, [])
-
-  useEffect(() => {
-    return () => {
-      document.removeEventListener('click', closeModal)
-    }
-  }, [closeModal])
-
-  const onF = () => {
-    textAreaRef.current?.select()
+  const handleOnBlur = (name: string, list_id: string) => {
+    updateListName({ variables: { name, list_id } })
+    controll.disableTextArea()
   }
 
   return (
@@ -76,13 +68,22 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
                 <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
                   <StyledInnerHeadWrap>
-                    <StyledTitle onClick={e => openModal(e)}>
+                    <StyledTitle onClick={e => handleEnableTextArea(e)}>
                       <StyledTitleTextArea
                         {...listTitle}
-                        ref={textAreaRef}
-                        disabled={isDisabled}
-                        onKeyDown={handleKeyPress}
-                        onFocus={onF}
+                        ref={controll.textAreaRef}
+                        disabled={controll.isDisabled}
+                        onKeyDown={e =>
+                          handleUpdateListName(
+                            e,
+                            listTitle.value ? listTitle.value : title,
+                            list_id,
+                          )
+                        }
+                        onBlur={() =>
+                          handleOnBlur(listTitle.value ? listTitle.value : title, list_id)
+                        }
+                        onFocus={controll.makeAllTextSelected}
                         minRows={1}
                         maxLength={255}
                       />
@@ -92,14 +93,14 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                         <StyledSpreadIcon
                           src="/svg/spread.svg"
                           alt="spread"
-                          onClick={handleClick}
+                          onClick={openPopover}
                         />
                         <SmallPopover
                           anchorEl={anchorEl}
                           vertical="bottom"
                           horizontal="left"
-                          handleClose={handleClose}
-                          handleEdit={() => setIsDisabled(false)}
+                          handleClose={closePopover}
+                          handleEdit={controll.enableTextArea}
                           handleRemove={() => console.log('削除')}
                         />
                       </>
@@ -109,7 +110,7 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                 <StyledTaskListContainer>
                   {listIndex === 0 && (
                     <StyledButtonContainer>
-                      <AddTaskButton handleAddTask={handleAddTask} />
+                      <CreateTaskButton handleAddTask={handleAddTask} />
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />

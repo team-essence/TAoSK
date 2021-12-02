@@ -8,7 +8,7 @@ type Props = {
   handleAddTask: (list_id: number) => void
 }
 
-export const AddTaskButton: FC<Props> = ({ handleAddTask }) => {
+export const CreateTaskButton: FC<Props> = ({ handleAddTask }) => {
   return <StyledContainer onClick={() => handleAddTask(1)}>+ タスクを追加</StyledContainer>
 }
 

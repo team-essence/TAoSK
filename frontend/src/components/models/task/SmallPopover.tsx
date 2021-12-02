@@ -9,7 +9,7 @@ import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Props = {
-  handleEdit: () => void
+  handleEdit: (e?: any) => void //FIXME Colmun.tsxでeが必要だけど、他ではいらない場合の型の指定が不明
   handleRemove: () => void
 } & PopoverProps
 
@@ -29,8 +29,8 @@ export const SmallPopover: FC<Props> = ({
       handleClose={handleClose}>
       <StyledContainer>
         <StyledFlexContainer
-          onClick={() => {
-            handleEdit(), handleClose()
+          onClick={e => {
+            handleEdit(e), handleClose()
           }}>
           <StyledFontAwesomeIcon icon={faPencilAlt} />
           <StyledText>編集</StyledText>
@@ -53,9 +53,9 @@ const StyledContainer = styled.div`
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
   width: ${calculateMinSizeBasedOnFigmaWidth(120)};
   height: ${calculateMinSizeBasedOnFigmaWidth(75)};
-  background: #fffef9;
-  border: 1px solid #bbbbbb;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  background: ${({ theme }) => theme.COLORS.BLACK_WHITE};
+  border: 1px solid ${({ theme }) => theme.COLORS.SILVER};
+  box-shadow: 0px 2px 4px ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   border-radius: 4px;
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(12)};
 `

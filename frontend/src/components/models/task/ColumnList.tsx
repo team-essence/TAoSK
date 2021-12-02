@@ -15,6 +15,7 @@ export const ColumnList: FC<Props> = ({ lists, handleAddTask }) => {
         <Column
           key={list.id}
           id={list.id}
+          list_id={list.list_id}
           listIndex={listIndex}
           listLength={length}
           title={list.title}
