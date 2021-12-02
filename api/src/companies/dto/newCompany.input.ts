@@ -1,10 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { MaxLength, IsNotEmpty, IsString } from 'class-validator';
+import { MaxLength, IsString } from 'class-validator';
 
 @InputType()
 export class NewCompanyInput {
   @Field()
-  @IsNotEmpty()
+  @IsString()
+  uid: string;
+
+  @Field()
   @IsString()
   @MaxLength(50)
   name: string;
