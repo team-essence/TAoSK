@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DropType } from 'consts/dropType'
@@ -6,6 +6,7 @@ import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useInput } from 'hooks/useInput'
+import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControlTextArea'
 import { useUpdateListNameMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { TaskList } from 'components/models/task/TaskList'
@@ -30,13 +31,13 @@ export const Column: FC<Props> = ({
   listLength,
   handleAddTask,
 }) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLImageElement | null>(null)
+  const { anchorEl, openPopover, closePopover } = usePopover()
   const [updateListName] = useUpdateListNameMutation()
   const listTitle = useInput(title)
   const controll = useControllTextArea()
 
-  const handleEnableTextArea = (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
-    if (listIndex === 0 || listIndex === listLength - 1) return
+  const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+    if (listIndex === 0 || listIndex === listLength - 1 || !e) return
     controll.enableTextArea(e)
   }
 
@@ -47,12 +48,9 @@ export const Column: FC<Props> = ({
     }
   }
 
-  const openPopover = (event: React.MouseEvent<HTMLImageElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const closePopover = () => {
-    setAnchorEl(null)
+  const handleOnBlur = (name: string, list_id: string) => {
+    updateListName({ variables: { name, list_id } })
+    controll.disableTextArea()
   }
 
   return (
@@ -82,6 +80,9 @@ export const Column: FC<Props> = ({
                             list_id,
                           )
                         }
+                        onBlur={() =>
+                          handleOnBlur(listTitle.value ? listTitle.value : title, list_id)
+                        }
                         onFocus={controll.makeAllTextSelected}
                         minRows={1}
                         maxLength={255}
@@ -99,7 +100,7 @@ export const Column: FC<Props> = ({
                           vertical="bottom"
                           horizontal="left"
                           handleClose={closePopover}
-                          handleEdit={() => console.log('削除')}
+                          handleEdit={controll.enableTextArea}
                           handleRemove={() => console.log('削除')}
                         />
                       </>

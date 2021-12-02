@@ -9,7 +9,7 @@ import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Props = {
-  handleEdit: () => void
+  handleEdit: (e?: any) => void //FIXME Colmun.tsxでeが必要だけど、他ではいらない場合の型の指定が不明
   handleRemove: () => void
 } & PopoverProps
 
@@ -29,8 +29,8 @@ export const SmallPopover: FC<Props> = ({
       handleClose={handleClose}>
       <StyledContainer>
         <StyledFlexContainer
-          onClick={() => {
-            handleEdit(), handleClose()
+          onClick={e => {
+            handleEdit(e), handleClose()
           }}>
           <StyledFontAwesomeIcon icon={faPencilAlt} />
           <StyledText>編集</StyledText>
