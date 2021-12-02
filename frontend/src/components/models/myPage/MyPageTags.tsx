@@ -46,10 +46,7 @@ export const MyPageTags: FC<Props> = ({ className, interests, certifications }) 
         </StyledMyPageTagWrapper>
       </StyledMyPageTagsScroll>
 
-      <StyledMyPageTagsBackground
-        src="/svg/user-tags_background.svg"
-        alt="タグズバックグラウンド"
-      />
+      <StyledMyPageTagsBackground src="/svg/user-tags_background.svg" alt="タグの背景画像" />
     </StyledMyPageTagsContainer>
   )
 }
