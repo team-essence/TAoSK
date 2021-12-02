@@ -6,6 +6,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import exp from 'utils/exp/exp'
 
 type Props = {
+  className?: string
   iconImage: string
   name: string
   uid: string
@@ -17,6 +18,7 @@ type Props = {
 }
 
 export const MyPageUserInfo: FC<Props> = ({
+  className,
   iconImage,
   name,
   uid,
@@ -27,7 +29,7 @@ export const MyPageUserInfo: FC<Props> = ({
   mp,
 }) => {
   return (
-    <StyledMyPageUserInfoContainer>
+    <StyledMyPageUserInfoContainer className={className}>
       <StyledUserWrapper>
         <StyledUserImageContainer>
           <img src={iconImage} alt={name} />

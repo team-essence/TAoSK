@@ -13,6 +13,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import status from 'utils/status/status'
 
 type Props = {
+  className?: string
   statusType: STATUS_TYPE
   statValue: number
 }
@@ -27,7 +28,7 @@ export const STATUS_TYPE = {
 } as const
 type STATUS_TYPE = typeof STATUS_TYPE[keyof typeof STATUS_TYPE]
 
-export const MyPageStatusCard: FC<Props> = ({ statusType, statValue }) => {
+export const MyPageStatusCard: FC<Props> = ({ className, statusType, statValue }) => {
   const defaultImgFolder = '/svg/myPageStatus'
 
   const statusTitle = (statusType: STATUS_TYPE) => {
@@ -65,7 +66,7 @@ export const MyPageStatusCard: FC<Props> = ({ statusType, statValue }) => {
   }
 
   return (
-    <StyledStatusCardContainer>
+    <StyledStatusCardContainer className={className}>
       <img src={statusImg(statusType)} alt="武器アイコン" />
       <h5>{statusTitle(statusType)}</h5>
 

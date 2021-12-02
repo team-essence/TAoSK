@@ -4,6 +4,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { MyPageStatusCard, STATUS_TYPE } from './MyPageStatusCard'
 
 type Props = {
+  className?: string
   technology: number
   solution: number
   achievement: number
@@ -13,6 +14,7 @@ type Props = {
 }
 
 export const MyPageStatus: FC<Props> = ({
+  className,
   technology,
   solution,
   achievement,
@@ -21,7 +23,7 @@ export const MyPageStatus: FC<Props> = ({
   plan,
 }) => {
   return (
-    <StyledMyPageStatusContainer>
+    <StyledMyPageStatusContainer className={className}>
       <StyledStatusCardContainer>
         <h4>ステータス</h4>
         <MyPageStatusCard statusType={STATUS_TYPE.TECHNOLOGY} statValue={technology} />

@@ -9,11 +9,9 @@ import {
   calculateMinSizeBasedOnFigmaHeight,
   calculateMinSizeBasedOnFigmaWidth,
 } from 'utils/calculateSizeBasedOnFigma'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { technologyLabelColor } from 'styles/myPageStatusLabel/LabelColor'
 import { MyPageUserInfo } from 'components/models/myPage/MyPageUserInfo'
 import { MyPageStatus } from 'components/models/myPage/MyPageStatus'
-import { MyPageStatusCard } from 'components/models/myPage/MyPageStatusCard'
+import { MyPageTags } from 'components/models/myPage/MyPageTags'
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext()
@@ -55,9 +53,10 @@ export const MyPage: FC = () => {
             plan={userQuery.data.user.plan}
           />
 
-          <StyledUserRightContainer>
-            <img src="/svg/user-tags_background.svg" alt="タグバックグラウンド" />
-          </StyledUserRightContainer>
+          <MyPageTags
+            interests={userQuery.data.user.interests}
+            certifications={userQuery.data.user.certifications}
+          />
         </StyledMyPageGridContainer>
       </StyledMyPageContainer>
 
@@ -103,13 +102,4 @@ const StyledMyPageBackground = styled.div`
   background-position: cover;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-`
-
-const StyledUserRightContainer = styled.div`
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-
-  img {
-    width: ${calculateMinSizeBasedOnFigmaWidth(535)};
-  }
 `
