@@ -45,16 +45,15 @@ export const Column: FC<Props> = ({
     controll.enableTextArea(e)
   }
 
-  const handleUpdateListName = (e: React.KeyboardEvent, name: string, list_id: string) => {
-    if (e.key === 'Enter') {
+  const handleUpdateListName = (
+    e: React.KeyboardEvent | React.FocusEvent,
+    name: string,
+    list_id: string,
+  ) => {
+    if (('key' in e && e.key === 'Enter') || e.type === 'blur') {
       updateListName({ variables: { name, list_id } })
       controll.disableTextArea()
     }
-  }
-
-  const handleOnBlur = (name: string, list_id: string) => {
-    updateListName({ variables: { name, list_id } })
-    controll.disableTextArea()
   }
 
   const handleRemoveList = (id: number) => {
@@ -88,8 +87,12 @@ export const Column: FC<Props> = ({
                             list_id,
                           )
                         }
-                        onBlur={() =>
-                          handleOnBlur(listTitle.value ? listTitle.value : title, list_id)
+                        onBlur={e =>
+                          handleUpdateListName(
+                            e,
+                            listTitle.value ? listTitle.value : title,
+                            list_id,
+                          )
                         }
                         onFocus={controll.makeAllTextSelected}
                         minRows={1}
