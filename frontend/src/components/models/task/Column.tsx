@@ -7,7 +7,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useInput } from 'hooks/useInput'
 import { TaskList } from 'components/models/task/TaskList'
-import { AddTaskButton } from 'components/models/task/AddTaskButton'
+import { CreateTaskButton } from 'components/models/task/CreateTaskButton'
 import { SmallPopover } from 'components/ui/modal/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
@@ -109,7 +109,7 @@ export const Column: FC<Props> = ({ id, title, tasks, listIndex, listLength, han
                 <StyledTaskListContainer>
                   {listIndex === 0 && (
                     <StyledButtonContainer>
-                      <AddTaskButton handleAddTask={handleAddTask} />
+                      <CreateTaskButton handleAddTask={handleAddTask} />
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
