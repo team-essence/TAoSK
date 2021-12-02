@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NewListInput } from './dto/newList.input';
@@ -6,6 +10,8 @@ import { List } from './list';
 import { v4 as uuidv4 } from 'uuid';
 import { Project } from 'src/projects/project';
 import { ListSort } from 'src/list-sorts/list-sort';
+import { UpdateListInput } from './dto/updateList.input';
+import { RemoveListInput } from './dto/removeList.input';
 
 @Injectable()
 export class ListsService {
@@ -65,5 +71,28 @@ export class ListsService {
     if (!lists) throw new NotFoundException();
 
     return lists;
+  }
+
+  async updateListName(updateList: UpdateListInput) {
+    const list = await this.listRepository.findOne(updateList.list_id);
+    list.name = updateList.name;
+    await this.listRepository.save(list).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    if (!list) throw new NotFoundException();
+
+    return list;
+  }
+
+  async removeList(removeList: RemoveListInput) {
+    const list = await this.listRepository.findOne(removeList.list_id);
+    await this.listRepository.remove(list).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    if (!list) throw new NotFoundException();
+
+    return list;
   }
 }
