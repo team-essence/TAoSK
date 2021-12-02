@@ -4,7 +4,8 @@ import { Company } from './company';
 import { PubSub } from 'graphql-subscriptions';
 import { NewCompanyInput } from './dto/newCompany.input';
 import { NotFoundException } from '@nestjs/common';
-@Resolver((of) => Company)
+
+@Resolver(() => Company)
 export class CompaniesResolver {
   private pubSub: PubSub;
   constructor(private companiesService: CompaniesService) {
@@ -17,6 +18,7 @@ export class CompaniesResolver {
     if (!company) {
       throw new NotFoundException();
     }
+
     return company;
   }
 

@@ -1,12 +1,9 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Company } from './company';
 import { NewCompanyInput } from './dto/newCompany.input';
+
 @Injectable()
 export class CompaniesService {
   constructor(
@@ -17,6 +14,7 @@ export class CompaniesService {
   getCompany(uid: string): Promise<Company> {
     const company = this.companyRepository.findOne(uid);
     if (!company) throw new NotFoundException();
+
     return company;
   }
 
