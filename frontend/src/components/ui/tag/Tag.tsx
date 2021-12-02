@@ -1,13 +1,16 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { CrossButton } from '../button/CrossButton'
 
 type Props = {
   className?: string
   name: string
+  onClick?: () => void
 }
 
-export const MyPageTag: FC<Props> = ({ className, name }) => {
+export const Tag: FC<Props> = ({ className, name, onClick }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [refHeight, setRefHeight] = useState(0)
 
@@ -17,16 +20,17 @@ export const MyPageTag: FC<Props> = ({ className, name }) => {
   }, [ref])
 
   return (
-    <StyledMyPageTagContainer className={className}>
+    <StyledTagContainer className={className}>
       <StyledTagTriangle refHeight={refHeight} />
       <StyledTag ref={ref}>
         <p>{name}</p>
+        {onClick && <StyledCrossButton color={theme.COLORS.CHOCOLATE} onClick={onClick} />}
       </StyledTag>
-    </StyledMyPageTagContainer>
+    </StyledTagContainer>
   )
 }
 
-const StyledMyPageTagContainer = styled.div`
+const StyledTagContainer = styled.div`
   display: inline-flex;
   align-items: center;
 `
@@ -51,8 +55,21 @@ const StyledTag = styled.div`
   background: url('/svg/tag_background.svg');
   background-repeat: repeat-x;
   background-size: contain;
+  display: flex;
+  align-items: center;
+  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(10)};
 
   p {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  }
+`
+
+const StyledCrossButton = styled(CrossButton)`
+  height: 100%;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(10)} ${calculateMinSizeBasedOnFigmaWidth(7)}
+    ${calculateMinSizeBasedOnFigmaWidth(10)} 0;
+  svg {
+    width: ${calculateMinSizeBasedOnFigmaWidth(8)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(8)};
   }
 `

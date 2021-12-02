@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import logger from 'utils/debugger/logger'
-import { MyPageTag } from './MyPageTag'
+import { Tag } from '../../ui/tag/Tag'
 
 type Props = {
   className?: string
@@ -20,6 +20,7 @@ type Props = {
 }
 
 export const MyPageTags: FC<Props> = ({ className, interests, certifications }) => {
+  // TODO: モーダルが追加されたらonClickを変更していく
   return (
     <StyledMyPageTagsContainer className={className}>
       <StyledMyPageTagsScroll>
@@ -30,7 +31,7 @@ export const MyPageTags: FC<Props> = ({ className, interests, certifications }) 
 
         <StyledMyPageTagWrapper>
           {interests.map((interest, index) => (
-            <MyPageTag name={interest.context} key={index} />
+            <Tag name={interest.context} key={index} />
           ))}
         </StyledMyPageTagWrapper>
 
@@ -41,7 +42,7 @@ export const MyPageTags: FC<Props> = ({ className, interests, certifications }) 
 
         <StyledMyPageTagWrapper>
           {certifications.map((certification, index) => (
-            <MyPageTag name={certification.name} key={index} />
+            <Tag name={certification.name} key={index} />
           ))}
         </StyledMyPageTagWrapper>
       </StyledMyPageTagsScroll>
