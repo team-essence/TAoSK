@@ -9,6 +9,7 @@ import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Props = {
+  className?: string
   handleEdit: (e?: any) => void //FIXME Colmun.tsxでeが必要だけど、他ではいらない場合の型の指定が不明
   handleRemove: () => void
 } & PopoverProps
