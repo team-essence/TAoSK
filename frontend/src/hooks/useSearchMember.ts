@@ -9,9 +9,12 @@ import {
 
 export type UseSearchMemberReturn = {
   onChange: ReturnType<typeof useInput>['onChange']
+  onFocus: () => void
+  onBlur: () => void
   userIds: string[]
   setUserIds: Dispatch<React.SetStateAction<string[]>>
   userDatas: SearchSameCompanyUsersMutation['searchSameCompanyUsers']
+  shouldShowResult: boolean
 }
 
 export const useSearchMember = (): UseSearchMemberReturn => {
@@ -23,6 +26,9 @@ export const useSearchMember = (): UseSearchMemberReturn => {
   const [userDatas, setUserDatas] = useState<
     SearchSameCompanyUsersMutation['searchSameCompanyUsers']
   >([])
+  const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
+  const onFocus = () => setShouldShowResult(true)
+  const onBlur = () => setShouldShowResult(false)
 
   useEffect(() => {
     if (!debouncedInputText) {
@@ -39,7 +45,7 @@ export const useSearchMember = (): UseSearchMemberReturn => {
   }, [debouncedInputText])
 
   useEffect(() => {
-    console.log(searchResult)
+    console.log(searchResult) // TODO: デバッグ用。後で消す
     const newUserDatas = searchResult.data?.searchSameCompanyUsers
     if (!newUserDatas?.length) {
       setUserDatas([])
@@ -50,5 +56,5 @@ export const useSearchMember = (): UseSearchMemberReturn => {
     setUserDatas(newUserDatas)
   }, [searchResult.data])
 
-  return { onChange, userIds, setUserIds, userDatas }
+  return { onChange, onFocus, onBlur, userIds, setUserIds, userDatas, shouldShowResult }
 }

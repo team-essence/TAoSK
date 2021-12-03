@@ -8,15 +8,29 @@ import { occupationList } from 'consts/occupationList'
 
 type Props = { className?: string } & UseSearchMemberReturn
 
-export const SearchMemberField: FC<Props> = ({ className, onChange, userDatas }) => {
+export const SearchMemberField: FC<Props> = ({
+  className,
+  onChange,
+  onFocus,
+  onBlur,
+  shouldShowResult,
+  userDatas,
+  userIds,
+}) => {
   return (
     <StyledAllWrapper className={className}>
       <StyledLabel>パーティメンバー</StyledLabel>
       <StyledInputWrapper>
-        <StyledInput type="text" placeholder="パーティメンバーを検索" onChange={onChange} />
+        <StyledInput
+          type="text"
+          placeholder="パーティメンバーを検索"
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
       </StyledInputWrapper>
 
-      {!!userDatas.length && (
+      {!!shouldShowResult && !!userDatas.length && (
         <StyledSearchResultWrapper>
           {userDatas.map((data, index) => (
             <StyledListItem key={index}>
@@ -29,6 +43,13 @@ export const SearchMemberField: FC<Props> = ({ className, onChange, userDatas })
             </StyledListItem>
           ))}
         </StyledSearchResultWrapper>
+      )}
+
+      {!!userIds.length && (
+        <StyledSelectedMembersWrapper>
+          <StyledBorder />
+          <StyledSelectedMembersTitle>{userIds.length}人のメンバー</StyledSelectedMembersTitle>
+        </StyledSelectedMembersWrapper>
       )}
     </StyledAllWrapper>
   )
@@ -108,4 +129,15 @@ const StyledName = styled.p`
 `
 const StyledOccupation = styled.p`
   color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.4)};
+`
+const StyledSelectedMembersWrapper = styled.div``
+const StyledBorder = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+`
+const StyledSelectedMembersTitle = styled.p`
+  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
 `
