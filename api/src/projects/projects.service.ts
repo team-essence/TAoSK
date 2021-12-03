@@ -125,6 +125,8 @@ export class ProjectsService {
       .leftJoinAndSelect('project.gameLogs', 'gameLogs')
       .leftJoinAndSelect('project.groups', 'groups')
       .leftJoinAndSelect('groups.user', 'groupsUser')
+      .leftJoinAndSelect('groupsUser.interests', 'interests')
+      .leftJoinAndSelect('groupsUser.certifications', 'certifications')
       .where('project.id=:id', { id })
       .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
       .getOne();
