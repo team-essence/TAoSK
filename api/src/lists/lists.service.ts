@@ -104,7 +104,6 @@ export class ListsService {
           },
         },
       });
-      if (!listSort) throw new NotFoundException();
 
       const tasks = await this.taskRepository.find({
         where: {
@@ -113,14 +112,18 @@ export class ListsService {
           },
         },
       });
-      if (!tasks) throw new NotFoundException();
 
-      await this.listSortRepository.remove(listSort).catch((err) => {
-        new InternalServerErrorException();
-      });
-      await this.taskRepository.remove(tasks).catch((err) => {
-        new InternalServerErrorException();
-      });
+      if (listSort) {
+        await this.listSortRepository.remove(listSort).catch((err) => {
+          new InternalServerErrorException();
+        });
+      }
+      if (tasks) {
+        await this.taskRepository.remove(tasks).catch((err) => {
+          new InternalServerErrorException();
+        });
+      }
+
       await this.listRepository.remove(list).catch((err) => {
         new InternalServerErrorException();
       });
