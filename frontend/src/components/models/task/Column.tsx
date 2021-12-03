@@ -99,7 +99,7 @@ export const Column: FC<Props> = ({
                         maxLength={255}
                       />
                     </StyledTitle>
-                    {listIndex !== 0 && listIndex !== listLength - 1 && (
+                    {listIndex !== 0 && listIndex !== listLength - 1 && listLength !== 3 && (
                       <>
                         <StyledSpreadIcon
                           src="/svg/spread.svg"
