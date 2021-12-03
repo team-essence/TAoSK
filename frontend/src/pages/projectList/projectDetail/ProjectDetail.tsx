@@ -29,7 +29,7 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DropType } from 'consts/dropType'
 import { ProjectMembers } from 'components/models/user/ProjectMembers'
-import { ColumnList } from 'components/models/task/ColumnList'
+import { TaskColumnList } from 'components/models/task/TaskColumnList'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -476,7 +476,7 @@ export const ProjectDetail: FC = () => {
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
                 <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <ColumnList lists={list} handleAddTask={handleAddTask} />
+                  <TaskColumnList lists={list} handleAddTask={handleAddTask} />
                   {provided.placeholder}
                 </StyledTaskListContainer>
               )}

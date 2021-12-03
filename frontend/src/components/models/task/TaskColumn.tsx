@@ -13,8 +13,8 @@ import {
   useRemoveListMutation,
 } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { TaskList } from 'components/models/task/TaskList'
-import { CreateTaskButton } from 'components/models/task/CreateTaskButton'
-import { SmallPopover } from 'components/models/task/SmallPopover'
+import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
+import { SmallPopover } from 'components/ui/modal/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
@@ -25,7 +25,7 @@ type Props = {
   handleAddTask: (list_id: number) => void
 } & Omit<List, 'sort_id' | 'index'>
 
-export const Column: FC<Props> = ({
+export const TasKColumn: FC<Props> = ({
   id,
   list_id,
   title,

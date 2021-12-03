@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { List } from 'types/list'
-import { Column } from 'components/models/task/Column'
+import { TaskColumn } from 'components/models/task/TaskColumn'
 
 type Props = {
   className?: string
@@ -8,11 +8,11 @@ type Props = {
   handleAddTask: (list_id: number) => void
 }
 
-export const ColumnList: FC<Props> = ({ lists, handleAddTask }) => {
+export const TaskColumnList: FC<Props> = ({ lists, handleAddTask }) => {
   return (
     <>
       {lists.map((list, listIndex, { length }) => (
-        <Column
+        <TaskColumn
           key={list.id}
           id={list.id}
           list_id={list.list_id}
