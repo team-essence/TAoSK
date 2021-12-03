@@ -82,6 +82,7 @@ export const theme = {
     MP_BG: '#C3E8F0',
     BIZARRE: '#EEE4DA',
     TOBACCO_BROWN: '#665545',
+    MATTERHORN: '#483B3D',
 
     GRADATION: {
       TECHNOLOGY: {

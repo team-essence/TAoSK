@@ -28,6 +28,7 @@ import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DropType } from 'consts/dropType'
+import { ProjectMembers } from 'components/models/user/ProjectMembers'
 import { ColumnList } from 'components/models/task/ColumnList'
 
 export const ProjectDetail: FC = () => {
@@ -438,39 +439,7 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <div>
-          <h2>オンライン</h2>
-          {projectData.data?.getProjectById.groups.map(
-            (group, index) =>
-              group.user.online_flg && (
-                <div key={index}>
-                  <p>{group.user.name}</p>
-                  <p>{group.user.icon_image}</p>
-                  <p>{group.user.id}</p>
-                  <p>{group.user.mp}</p>
-                  <p>{group.user.hp}</p>
-                  <p>{group.user.occupation_id}</p>
-                  <p>{JSON.stringify(group.user.online_flg)}</p>
-                </div>
-              ),
-          )}
-          <h2>オフライン</h2>
-          {projectData.data?.getProjectById.groups.map(
-            (group, index) =>
-              !group.user.online_flg && (
-                <div key={index}>
-                  <p>{group.user.name}</p>
-                  <p>{group.user.icon_image}</p>
-                  <p>{group.user.id}</p>
-                  <p>{group.user.mp}</p>
-                  <p>{group.user.hp}</p>
-                  <p>{group.user.occupation_id}</p>
-                  <p>{JSON.stringify(group.user.online_flg)}</p>
-                </div>
-              ),
-          )}
-          {/* {JSON.stringify(projectData.data?.getProjectById.groups)} */}
-        </div>
+        <ProjectMembers groups={projectData.data?.getProjectById.groups} />
         <p>左側</p>
 
         <div>
