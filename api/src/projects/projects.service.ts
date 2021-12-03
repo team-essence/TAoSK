@@ -123,6 +123,7 @@ export class ProjectsService {
       .leftJoinAndSelect('tasks.chats', 'chats')
       .leftJoinAndSelect('allocations.user', 'allocationsUser')
       .leftJoinAndSelect('project.gameLogs', 'gameLogs')
+      .leftJoinAndSelect('gameLogs.user', 'gameLogsUser')
       .leftJoinAndSelect('project.groups', 'groups')
       .leftJoinAndSelect('groups.user', 'groupsUser')
       .where('project.id=:id', { id })

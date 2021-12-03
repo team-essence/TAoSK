@@ -5,6 +5,22 @@ query GetProject($id: Float!) {
     hp
     difficulty
 
+    gameLogs {
+      id
+      context
+      created_at
+
+      user {
+        id
+        name
+      }
+    }
+
+    monster {
+      id
+      name
+    }
+
     groups {
       user {
         id
