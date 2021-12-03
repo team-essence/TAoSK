@@ -24,6 +24,7 @@ const StyledContainer = styled.div`
   gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
   width: ${calculateMinSizeBasedOnFigmaWidth(88)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
+  border-radius: 2px;
   background-color: ${({ theme }) => theme.COLORS.MATTERHORN};
 `
 const StyledCircle = styled.div<{ status: boolean }>`
