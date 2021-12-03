@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
@@ -7,18 +8,19 @@ import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
-import { AVATAR_STYLE } from 'consts/avatarStyle'
 
 type Props = {
   className?: string
+  taskIndex: number
   listIndex: number
   listLength: number
-  isDragging: boolean
 } & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FC<Props> = ({
+  id,
   title,
   technology,
   achievement,
@@ -26,11 +28,11 @@ export const TaskCard: FC<Props> = ({
   motivation,
   design,
   plan,
+  taskIndex,
   listIndex,
   listLength,
   chatCount,
   allocations,
-  isDragging,
   end_date,
 }) => {
   const params = [
@@ -53,68 +55,71 @@ export const TaskCard: FC<Props> = ({
   )
 
   return (
-    <StyledContainer isDragging={isDragging}>
-      <StyledInnerWrap>
-        <StyledTitle>{title}</StyledTitle>
-        <StyledFlexContainer>
-          <div>
-            {allocations.length !== 0 && (
-              <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
-            )}
-            <StyledFootContainer>
-              {end_date && (
-                <>
-                  <StyledDeadlineImage
-                    src={changeDeadlineImage(end_date, listIndex, listLength)}
-                    alt="deadline"
+    <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
+      {(taskProvided, snapshot) => (
+        <StyledLi
+          ref={taskProvided.innerRef}
+          {...taskProvided.draggableProps}
+          {...taskProvided.dragHandleProps}
+          aria-roledescription="Press space bar to lift the task">
+          <StyledContainer>
+            <StyledInnerWrap>
+              <StyledTitle>{title}</StyledTitle>
+              <StyledFlexContainer>
+                <div>
+                  {allocations.length !== 0 && (
+                    <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
+                  )}
+                  <StyledFootContainer>
+                    {end_date && (
+                      <>
+                        <StyledDeadlineImage
+                          src={changeDeadlineImage(end_date, listIndex, listLength)}
+                          alt="deadline"
+                        />
+                        <StyledDateContainer listIndex={listIndex} listLength={listLength}>
+                          <StyledClockImage src="/svg/clock.svg" alt="clock" />
+                          <StyledDate>{date.formatDay(end_date)}</StyledDate>
+                        </StyledDateContainer>
+                      </>
+                    )}
+                    {chatCount !== 0 && (
+                      <StyledCommentContainer>
+                        <StyledFontAwesomeIcon icon={faComment} />
+                        <StyledChatCount>{chatCount}</StyledChatCount>
+                      </StyledCommentContainer>
+                    )}
+                  </StyledFootContainer>
+                </div>
+                <StyledWeaponImageContainer>
+                  <StyledWeaponImage
+                    src={changeWeaponImage(listIndex, listLength, max.param)}
+                    alt="weapon"
                   />
-                  <StyledDateContainer listIndex={listIndex} listLength={listLength}>
-                    <StyledClockImage src="/svg/clock.svg" alt="clock" />
-                    <StyledDate>{date.formatDay(end_date)}</StyledDate>
-                  </StyledDateContainer>
-                </>
-              )}
-              {chatCount !== 0 && (
-                <StyledCommentContainer>
-                  <StyledFontAwesomeIcon icon={faComment} />
-                  <StyledChatCount>{chatCount}</StyledChatCount>
-                </StyledCommentContainer>
-              )}
-            </StyledFootContainer>
-          </div>
-          <StyledWeaponImageContainer>
-            <StyledWeaponImage
-              src={changeWeaponImage(listIndex, listLength, max.param)}
-              alt="weapon"
-            />
-          </StyledWeaponImageContainer>
-        </StyledFlexContainer>
-      </StyledInnerWrap>
-    </StyledContainer>
+                </StyledWeaponImageContainer>
+              </StyledFlexContainer>
+            </StyledInnerWrap>
+          </StyledContainer>
+        </StyledLi>
+      )}
+    </Draggable>
   )
 }
 
-const StyledContainer = styled.div<{ isDragging: boolean }>`
+const StyledLi = styled.li`
+  position: relative;
+  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  user-select: none;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
+`
+const StyledContainer = styled.div`
   height: auto;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   white-space: normal;
-  transform: rotate(45deg);
-  transform-origin: 0 0;
-  ${({ isDragging }) =>
-    isDragging
-      ? css`
-          transform: rotate(3deg);
-          transform-origin: 0 0;
-        `
-      : css`
-          transform: rotate(0);
-          transform-origin: 0 0;
-        `}
 `
-
 const StyledInnerWrap = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(6)};
   border: 2px solid ${({ theme }) => theme.COLORS.CARARRA};
@@ -135,7 +140,7 @@ const StyledWeaponImage = styled.img`
 `
 const StyledDeadlineImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(19)};
 `
 const StyledClockImage = styled.img`
   aspect-ratio: 1 / 1;

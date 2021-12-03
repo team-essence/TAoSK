@@ -1,6 +1,8 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { UpdateListSort } from './dto/updateListSort.input';
 import { ListSortsService } from './list-sorts.service';
+import { ListSort } from './list-sort';
+import { RemoveListSortInput } from './dto/removeListSort.input';
 
 @Resolver()
 export class ListSortsResolver {
