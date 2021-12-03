@@ -11,12 +11,14 @@ import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateMinSizeBasedOnFigmaHeight,
 } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { useSearchMember } from 'hooks/useSearchMember'
 
 type Props = {
   shouldShow: boolean
@@ -26,6 +28,7 @@ type Props = {
 
 export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, className }) => {
   const { register } = useTaskCreateForm()
+  const searchMemberFieldProps = useSearchMember()
 
   return (
     <StyledModal
@@ -34,7 +37,7 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
       <StyledWrapper>
-        <div>
+        <StyledLeftColumn>
           <StyledInputField
             label="タイトル"
             placeholder="タイトルを入力してください"
@@ -51,10 +54,11 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
             })}
             required={false}
           />
-        </div>
+        </StyledLeftColumn>
         <StyledBorder />
         <StyledRightColumn>
           <CalenderField label="期限" registration={register('date')} required={false} />
+          <SearchMemberField {...searchMemberFieldProps} />
         </StyledRightColumn>
       </StyledWrapper>
     </StyledModal>
@@ -78,6 +82,17 @@ const StyledBorder = styled.div`
   height: 100%;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
+const StyledLeftColumn = styled.div`
+  width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+`
+const StyledRightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  // TODO: 後でコメントアウトはずす
+  /* justify-content: space-between; */
+  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  height: 100%;
+`
 const fieldStyle = (
   inputCss: FlattenSimpleInterpolation,
 ): FlattenInterpolation<ThemeProps<DefaultTheme>> => css`
@@ -100,20 +115,13 @@ const fieldStyle = (
 `
 const StyledInputField = styled(InputField)`
   ${fieldStyle(css`
-    width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+    width: 100%;
     height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   `)}
 `
 const StyledOverviewField = styled(TextAreaField)`
   ${fieldStyle(css`
-    width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+    width: 100%;
     height: ${calculateMinSizeBasedOnFigmaWidth(180)};
   `)}
-`
-const StyledRightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
-  height: 100%;
 `

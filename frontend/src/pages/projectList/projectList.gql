@@ -59,6 +59,7 @@ mutation SearchSameCompanyUsers($selectUserIds: [String!]!, $name: String!, $com
     id
     name
     icon_image
+    occupation_id
   }
 }
 
