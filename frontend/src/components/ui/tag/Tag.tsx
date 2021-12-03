@@ -49,18 +49,19 @@ const StyledTagTriangle = styled.div<{ refHeight?: number }>`
   background-size: cover;
 `
 
+// BUG: ウィンドウが小さすぎるとリピートした画像の隙間が見える
 const StyledTag = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaWidth(6)} ${calculateMinSizeBasedOnFigmaWidth(7)};
-  width: fit-content;
+  min-width: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  min-height: ${calculateMinSizeBasedOnFigmaWidth(32)};
   background: url('/svg/tag_background.svg');
   background-repeat: repeat-x;
   background-size: contain;
   display: flex;
   align-items: center;
-  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(10)};
 
   p {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+    margin: 0 ${calculateMinSizeBasedOnFigmaWidth(7)};
   }
 `
 

@@ -74,9 +74,12 @@ const StyledMyPageTagTitle = styled.div`
   direction: ltr;
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(11)};
 
   h4 {
-    margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(15)};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
     color: ${({ theme }) => theme.COLORS.BIZARRE};
   }
@@ -86,11 +89,7 @@ const StyledMyPageTagTitle = styled.div`
   }
 `
 
-const StyledEditButton = styled(EditButton)`
-  position: absolute;
-  top: ${calculateMinSizeBasedOnFigmaWidth(-4)};
-  right: ${calculateMinSizeBasedOnFigmaWidth(-4)};
-`
+const StyledEditButton = styled(EditButton)``
 
 const StyledMyPageTagWrapper = styled.div`
   width: 100%;
