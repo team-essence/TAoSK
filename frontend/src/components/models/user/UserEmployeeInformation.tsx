@@ -3,7 +3,7 @@ import { DEFAUT_USER } from 'consts/defaultImages'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { usePopover } from 'hooks/usePopover'
-import { EmployeePopover } from 'components/models/user/EmployeePopover'
+import { UserEmployeePopover } from 'components/models/user/UserEmployeePopover'
 import Exp from 'utils/exp/exp'
 import styled, { css } from 'styled-components'
 
@@ -11,7 +11,7 @@ type Props = {
   className?: string
 } & Omit<GetUserQuery['user'], 'company' | 'memo'>
 
-export const EmployeeInformation: FC<Props> = ({
+export const UserEmployeeInformation: FC<Props> = ({
   name,
   icon_image,
   hp,
@@ -44,7 +44,7 @@ export const EmployeeInformation: FC<Props> = ({
           </StyledLowContainer>
         </StyledColumnContainer>
       </StyledContainer>
-      <EmployeePopover
+      <UserEmployeePopover
         anchorEl={anchorEl}
         handleClose={closePopover}
         vertical="top"

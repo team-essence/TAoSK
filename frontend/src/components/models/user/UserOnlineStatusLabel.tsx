@@ -8,7 +8,7 @@ type Props = {
   status: boolean
 }
 
-export const OnlineStatusLabel: FC<Props> = ({ label, status }) => {
+export const UserOnlineStatusLabel: FC<Props> = ({ label, status }) => {
   return (
     <StyledContainer>
       <StyledCircle status={status} />

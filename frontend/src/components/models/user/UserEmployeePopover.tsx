@@ -17,7 +17,7 @@ type Props = {
   design: number
 } & PopoverProps
 
-export const EmployeePopover: FC<Props> = ({
+export const UserEmployeePopover: FC<Props> = ({
   anchorEl,
   vertical,
   horizontal,
