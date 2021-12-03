@@ -21,17 +21,21 @@ import {
 } from './projectDetail.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
-import date from 'utils/date/date'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
-import { UpdateTask } from 'types/graphql.gen'
 import { DropType } from 'consts/dropType'
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { TaskCard } from 'components/models/task/TaskCard'
+import { ColumnList } from 'components/models/task/ColumnList'
+import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
+import { ProjectRight } from 'components/models/project/ProjectRight'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { Loading } from 'components/ui/loading/Loading'
+import { GameLogType } from 'types/gameLog'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -43,6 +47,16 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
+      })
+
+      data.getProjectById.gameLogs.map(gameLog => {
+        const time = new Date(gameLog.created_at)
+        const init = {
+          context: gameLog.context,
+          userName: gameLog.user.name,
+          createdAt: time.getTime(),
+        }
+        setLogs(log => [...log, init].sort((a, b) => a.createdAt - b.createdAt))
       })
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
@@ -102,6 +116,7 @@ export const ProjectDetail: FC = () => {
   })
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
+      logger.table(data.updateTaskSort)
       toast.success('タスクを移動しました')
     },
     onError(err) {
@@ -196,6 +211,7 @@ export const ProjectDetail: FC = () => {
   })
 
   const [list, setList] = useState<List[]>([])
+  const [logs, setLogs] = useState<GameLogType[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
@@ -341,14 +357,16 @@ export const ProjectDetail: FC = () => {
         task.vertical_sort = index
         return task
       })
-      return sortList
+
+      list.tasks = sortList
+      return list
     })
 
-    const updateTasks = sortListCopy.map((tasks, listIndex) => {
-      return tasks.map((task, taskIndex) => {
+    const updateTasks = sortListCopy.map(list => {
+      return list.tasks.map((task, taskIndex) => {
         return {
           id: task.id,
-          list_id: String(listIndex + 1),
+          list_id: list.id,
           vertical_sort: taskIndex,
         }
       })
@@ -359,6 +377,7 @@ export const ProjectDetail: FC = () => {
       joinUpdateTasks.push(...updateTasks[index])
     }
 
+    logger.table([...joinUpdateTasks])
     await updateTaskSort({
       variables: {
         updateTasks: {
@@ -380,7 +399,7 @@ export const ProjectDetail: FC = () => {
     })
   }
 
-  const handleAddTask = async (list_id: number) => {
+  const handleAddTask = (list_id: number) => {
     addTask({
       variables: {
         newTask: {
@@ -412,6 +431,8 @@ export const ProjectDetail: FC = () => {
       },
     })
   }
+
+  if (!projectData.data) return <Loading />
 
   return (
     <ProjectDetailContainer>
@@ -501,81 +522,13 @@ export const ProjectDetail: FC = () => {
         <div style={{ border: 'solid' }}></div>
 
         <div>
-          <button onClick={handleCreateList}>リスト作る</button>
-
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  style={{ display: 'flex' }}>
-                  {list.map((list, listIndex, { length }) => (
-                    <Draggable
-                      draggableId={`column-${list.id}`}
-                      index={listIndex}
-                      key={list.id}
-                      isDragDisabled={listIndex === 0 || length - 1 === listIndex}>
-                      {provided => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}>
-                          <h2>{list.title}</h2>
-                          <button onClick={() => setShouldShowModal(true)}>追加</button>
-                          {/* <button onClick={() => handleAddTask(listIndex + 1)}>追加</button> */}
-                          <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
-                            {listProvided => (
-                              <ul
-                                ref={listProvided.innerRef}
-                                {...listProvided.droppableProps}
-                                style={{
-                                  width: '400px',
-                                  border: 'solid',
-                                  minHeight: '300px',
-                                  padding: '20px',
-                                }}>
-                                {list.tasks.map((task, taskIndex) => (
-                                  <Draggable
-                                    key={task.id}
-                                    draggableId={`task-${task.id}`}
-                                    index={taskIndex}>
-                                    {(taskProvided, snapshot) => (
-                                      <li
-                                        ref={taskProvided.innerRef}
-                                        {...taskProvided.draggableProps}
-                                        {...taskProvided.dragHandleProps}>
-                                        <TaskCard
-                                          listIndex={listIndex}
-                                          listLength={length}
-                                          isDragging={snapshot.isDragging}
-                                          id={task.id}
-                                          title={task.title}
-                                          overview={task.overview}
-                                          technology={task.technology}
-                                          achievement={task.achievement}
-                                          solution={task.solution}
-                                          motivation={task.motivation}
-                                          design={task.design}
-                                          plan={task.plan}
-                                          allocations={task.allocations}
-                                          chatCount={task.chatCount}
-                                          end_date={task.end_date}
-                                        />
-                                      </li>
-                                    )}
-                                  </Draggable>
-                                ))}
-                                {listProvided.placeholder}
-                              </ul>
-                            )}
-                          </Droppable>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
+                  <ColumnList lists={list} handleAddTask={handleAddTask} />
                   {provided.placeholder}
-                </div>
+                </StyledTaskListContainer>
               )}
             </Droppable>
           </DragDropContext>
@@ -583,7 +536,12 @@ export const ProjectDetail: FC = () => {
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>
-        <p>右側</p>
+        <ProjectRight
+          onClick={handleCreateList}
+          monsterHp={projectData.data.getProjectById.hp}
+          monsterName={projectData.data.getProjectById.monster.name}
+          gameLogs={logs}
+        />
       </ProjectDetailRightContainer>
 
       <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
@@ -595,7 +553,7 @@ const ProjectDetailContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 0.8fr 0.2fr;
+  grid-template-columns: auto ${calculateMinSizeBasedOnFigmaWidth(283)};
   grid-template-rows: auto 1fr;
 `
 
@@ -614,7 +572,10 @@ const ProjectDetailLeftContainer = styled.div`
 
 const ProjectDetailRightContainer = styled.div`
   height: 100%;
-  background: ${convertIntoRGBA('#000000', 0.5)};
   grid-row: 2 / 3;
   grid-column: 2 / 3;
+`
+
+const StyledTaskListContainer = styled.div`
+  display: flex;
 `

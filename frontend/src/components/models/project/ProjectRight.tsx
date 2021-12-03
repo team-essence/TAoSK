@@ -1,0 +1,47 @@
+import React, { FC } from 'react'
+import styled from 'styled-components'
+import { GameLogType } from 'types/gameLog'
+import {
+  calculateMinSizeBasedOnFigmaHeight,
+  calculateMinSizeBasedOnFigmaWidth,
+} from 'utils/calculateSizeBasedOnFigma'
+import { ProjectCreateListButton } from './ProjectCreateListButton'
+import { ProjectGameLog } from './ProjectGameLog'
+import { ProjectMonster } from './ProjectMonster'
+
+type Props = {
+  className?: string
+  onClick: () => void
+  monsterName: string
+  monsterHp: number
+  gameLogs: GameLogType[]
+}
+
+export const ProjectRight: FC<Props> = ({
+  className,
+  onClick,
+  monsterName,
+  monsterHp,
+  gameLogs,
+}) => {
+  return (
+    <StyledProjectRightContainer className={className}>
+      <ProjectCreateListButton onClick={onClick} />
+
+      <StyledProjectGameLog gameLogs={gameLogs} />
+
+      <ProjectMonster name={monsterName} hp={monsterHp} />
+    </StyledProjectRightContainer>
+  )
+}
+
+const StyledProjectRightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const StyledProjectGameLog = styled(ProjectGameLog)`
+  margin-top: ${calculateMinSizeBasedOnFigmaHeight(16)};
+  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(24)};
+`
