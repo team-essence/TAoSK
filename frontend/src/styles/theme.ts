@@ -77,6 +77,7 @@ export const theme = {
     BOULDER: '#7B7B7B',
     DUSTY_GRAY: '#A38F98',
     TOBACCO_BROWN: '#665545',
+    GALLERY: '#EFEFEF',
   },
 } as const
 

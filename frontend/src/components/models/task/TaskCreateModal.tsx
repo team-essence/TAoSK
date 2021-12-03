@@ -10,7 +10,7 @@ import { theme } from 'styles/theme'
 import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
-import { useForm } from 'react-hook-form'
+import { CalenderField } from 'components/ui/form/CalenderField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
   calculateMinSizeBasedOnFigmaWidth,
@@ -53,7 +53,9 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
           />
         </div>
         <StyledBorder />
-        <StyledRightColumn></StyledRightColumn>
+        <StyledRightColumn>
+          <CalenderField label="期限" registration={register('date')} required={false} />
+        </StyledRightColumn>
       </StyledWrapper>
     </StyledModal>
   )
@@ -74,7 +76,7 @@ const StyledWrapper = styled.div`
 const StyledBorder = styled.div`
   width: 1px;
   height: 100%;
-  border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
 const fieldStyle = (
   inputCss: FlattenSimpleInterpolation,
