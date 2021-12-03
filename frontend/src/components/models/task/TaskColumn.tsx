@@ -25,7 +25,7 @@ type Props = {
   handleAddTask: (list_id: number) => void
 } & Omit<List, 'sort_id' | 'index'>
 
-export const TasKColumn: FC<Props> = ({
+export const TaskColumn: FC<Props> = ({
   id,
   list_id,
   title,
