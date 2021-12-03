@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
-import { DropType } from 'consts/dropType'
+import { DROP_TYPE } from 'consts/dropType'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -70,7 +70,7 @@ export const Column: FC<Props> = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}>
-          <Droppable droppableId={String(listIndex)} type={DropType.TASK}>
+          <Droppable droppableId={String(listIndex)} type={DROP_TYPE.TASK}>
             {listProvided => (
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
                 <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>

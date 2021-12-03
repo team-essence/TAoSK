@@ -27,7 +27,7 @@ import { useDebounce } from 'hooks/useDebounce'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
-import { DropType } from 'consts/dropType'
+import { DROP_TYPE } from 'consts/dropType'
 import { ColumnList } from 'components/models/task/ColumnList'
 
 export const ProjectDetail: FC = () => {
@@ -294,7 +294,7 @@ export const ProjectDetail: FC = () => {
 
     const listCopy = [...list]
 
-    if (type === DropType.COLUMN) {
+    if (type === DROP_TYPE.COLUMN) {
       if (destinationIndex === 0) {
         toast.warning('未着手は固定されています')
         return
@@ -504,7 +504,7 @@ export const ProjectDetail: FC = () => {
           <button onClick={handleCreateList}>リスト作る</button>
 
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
+            <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
                 <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
                   <ColumnList lists={list} handleAddTask={handleAddTask} />

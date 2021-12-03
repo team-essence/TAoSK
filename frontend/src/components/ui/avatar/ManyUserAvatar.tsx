@@ -1,4 +1,4 @@
-import { AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
@@ -8,7 +8,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { UserAvatarIcon } from './UserAvatarIcon'
 
 type Props = {
-  avatarStyleType: AVATAR_STYLE_TYPE
+  avatarStyleType: AVATAR_STYLE
   btnFunc?: () => void
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   groups: avatarGroups
