@@ -29,6 +29,11 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DropType } from 'consts/dropType'
 import { ColumnList } from 'components/models/task/ColumnList'
+import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
+import { ProjectRight } from 'components/models/project/ProjectRight'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { Loading } from 'components/ui/loading/Loading'
+import { GameLogType } from 'types/gameLog'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -40,6 +45,16 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
+      })
+
+      data.getProjectById.gameLogs.map(gameLog => {
+        const time = new Date(gameLog.created_at)
+        const init = {
+          context: gameLog.context,
+          userName: gameLog.user.name,
+          createdAt: time.getTime(),
+        }
+        setLogs(log => [...log, init].sort((a, b) => a.createdAt - b.createdAt))
       })
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
@@ -193,6 +208,7 @@ export const ProjectDetail: FC = () => {
   })
 
   const [list, setList] = useState<List[]>([])
+  const [logs, setLogs] = useState<GameLogType[]>([])
   const debouncedInputText = useDebounce(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
@@ -413,6 +429,8 @@ export const ProjectDetail: FC = () => {
     })
   }
 
+  if (!projectData.data) return <Loading />
+
   return (
     <ProjectDetailContainer>
       <ProjectTitleContainer>
@@ -501,8 +519,6 @@ export const ProjectDetail: FC = () => {
         <div style={{ border: 'solid' }}></div>
 
         <div>
-          <button onClick={handleCreateList}>リスト作る</button>
-
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
@@ -517,7 +533,12 @@ export const ProjectDetail: FC = () => {
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>
-        <p>右側</p>
+        <ProjectRight
+          onClick={handleCreateList}
+          monsterHp={projectData.data.getProjectById.hp}
+          monsterName={projectData.data.getProjectById.monster.name}
+          gameLogs={logs}
+        />
       </ProjectDetailRightContainer>
     </ProjectDetailContainer>
   )
@@ -527,7 +548,7 @@ const ProjectDetailContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 0.8fr 0.2fr;
+  grid-template-columns: auto ${calculateMinSizeBasedOnFigmaWidth(283)};
   grid-template-rows: auto 1fr;
 `
 
@@ -546,7 +567,6 @@ const ProjectDetailLeftContainer = styled.div`
 
 const ProjectDetailRightContainer = styled.div`
   height: 100%;
-  background: ${convertIntoRGBA('#000000', 0.5)};
   grid-row: 2 / 3;
   grid-column: 2 / 3;
 `
