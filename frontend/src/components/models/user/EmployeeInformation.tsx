@@ -2,6 +2,8 @@ import React, { FC } from 'react'
 import { DEFAUT_USER } from 'consts/defaultImages'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { usePopover } from 'hooks/usePopover'
+import { EmployeePopover } from 'components/models/user/EmployeePopover'
 import Exp from 'utils/exp/exp'
 import styled, { css } from 'styled-components'
 
@@ -9,23 +11,47 @@ type Props = {
   className?: string
 } & Omit<GetUserQuery['user'], 'company' | 'memo'>
 
-export const EmployeeInformation: FC<Props> = ({ name, icon_image, hp, mp, exp, online_flg }) => {
+export const EmployeeInformation: FC<Props> = ({
+  name,
+  icon_image,
+  hp,
+  mp,
+  exp,
+  online_flg,
+  technology,
+  achievement,
+  motivation,
+  solution,
+  plan,
+  design,
+}) => {
+  const { anchorEl, openPopover, closePopover } = usePopover()
   const level = Exp.toLevel(exp) !== 0 ? Exp.toLevel(exp) : 1
+  const params = { technology, achievement, motivation, solution, plan, design }
 
   return (
-    <StyledContainer onlineFlg={online_flg}>
-      <StyledImage src={icon_image ? icon_image : DEFAUT_USER} alt="employeeImage" />
-      <StyledColumnContainer>
-        <StyledLowContainer>
-          <StyledName>{name}</StyledName>
-          <StyledLevel>{`lv.${level}`}</StyledLevel>
-        </StyledLowContainer>
-        <StyledLowContainer>
-          <StyledHpBar rate={hp} onlineFlg={online_flg} />
-          <StyledMpBar rate={mp} onlineFlg={online_flg} />
-        </StyledLowContainer>
-      </StyledColumnContainer>
-    </StyledContainer>
+    <>
+      <StyledContainer onlineFlg={online_flg} onClick={openPopover}>
+        <StyledImage src={icon_image ? icon_image : DEFAUT_USER} alt="employeeImage" />
+        <StyledColumnContainer>
+          <StyledLowContainer>
+            <StyledName>{name}</StyledName>
+            <StyledLevel>{`lv.${level}`}</StyledLevel>
+          </StyledLowContainer>
+          <StyledLowContainer>
+            <StyledHpBar rate={hp} onlineFlg={online_flg} />
+            <StyledMpBar rate={mp} onlineFlg={online_flg} />
+          </StyledLowContainer>
+        </StyledColumnContainer>
+      </StyledContainer>
+      <EmployeePopover
+        anchorEl={anchorEl}
+        handleClose={closePopover}
+        vertical="top"
+        horizontal="right"
+        {...params}
+      />
+    </>
   )
 }
 
@@ -41,6 +67,7 @@ const StyledContainer = styled.div<{ onlineFlg: boolean }>`
       : css`
           opacity: 0.6;
         `}
+  cursor:pointer;
   opacity: 0.7;
 `
 const StyledColumnContainer = styled.div`
