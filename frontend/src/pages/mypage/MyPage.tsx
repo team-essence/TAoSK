@@ -2,6 +2,16 @@ import React, { FC, useEffect } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetUserLazyQuery } from './mypage.gen'
+import styled, { css } from 'styled-components'
+import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
+import { Loading } from 'components/ui/loading/Loading'
+import {
+  calculateMinSizeBasedOnFigmaHeight,
+  calculateMinSizeBasedOnFigmaWidth,
+} from 'utils/calculateSizeBasedOnFigma'
+import { MyPageUserInfo } from 'components/models/myPage/MyPageUserInfo'
+import { MyPageStatus } from 'components/models/myPage/MyPageStatus'
+import { MyPageTags } from 'components/models/myPage/MyPageTags'
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext()
@@ -15,11 +25,81 @@ export const MyPage: FC = () => {
 
   if (!currentUser) return <Navigate to="/signup" />
   if (currentUser.uid !== id) return <Navigate to="/" />
+  if (!userQuery.data) return <Loading />
 
   return (
-    <div>
-      <p>マイページ</p>
-      <pre>{JSON.stringify(userQuery.data?.user, null, '\t')}</pre>
-    </div>
+    <>
+      <ProjectListHeader />
+
+      <StyledMyPageContainer>
+        <StyledMyPageGridContainer>
+          <MyPageUserInfo
+            iconImage={userQuery.data.user.icon_image}
+            name={userQuery.data.user.name}
+            uid={userQuery.data.user.id}
+            company={userQuery.data.user.company}
+            totalExp={userQuery.data.user.exp}
+            occupationId={userQuery.data.user.occupation_id}
+            hp={userQuery.data.user.hp}
+            mp={userQuery.data.user.mp}
+          />
+
+          <MyPageStatus
+            technology={userQuery.data.user.technology}
+            solution={userQuery.data.user.solution}
+            achievement={userQuery.data.user.achievement}
+            motivation={userQuery.data.user.motivation}
+            design={userQuery.data.user.design}
+            plan={userQuery.data.user.plan}
+          />
+
+          <MyPageTags
+            interests={userQuery.data.user.interests}
+            certifications={userQuery.data.user.certifications}
+          />
+        </StyledMyPageGridContainer>
+      </StyledMyPageContainer>
+
+      <StyledMyPageBackground />
+    </>
   )
 }
+
+const StyledMyPageContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledMyPageGridContainer = styled.div`
+  padding-top: calc(
+    ${({ theme }) => theme.HEADER_HEIGHT} + ${calculateMinSizeBasedOnFigmaHeight(20)}
+  );
+  margin: auto;
+  width: fit-content;
+  display: grid;
+  grid-template-columns: ${calculateMinSizeBasedOnFigmaWidth(345)} ${calculateMinSizeBasedOnFigmaWidth(
+      535,
+    )};
+  grid-template-rows: auto auto;
+  gap: 0px 45px;
+`
+
+const StyledMyPageBackground = styled.div`
+  ${({ theme }) => css`
+    z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
+    top: ${theme.HEADER_HEIGHT};
+    height: calc(100vh - ${theme.HEADER_HEIGHT});
+  `};
+
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  background: url('/images/my-page_background.webp');
+  background-attachment: fixed;
+  background-position: cover;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+`

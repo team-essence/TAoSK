@@ -18,10 +18,12 @@ query GetUser($id: String!) {
     exp
 
     interests {
+      id
       context
     }
 
     certifications {
+      id
       name
     }
   }

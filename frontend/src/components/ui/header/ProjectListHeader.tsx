@@ -10,11 +10,11 @@ export const ProjectListHeader: FC = () => {
   return (
     <StyledHeaderWrapper>
       <StyledLogoWrapper>
-        <StyledLogo src="svg/logo-transparent-background.svg" alt="ロゴ" />
+        <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
       </StyledLogoWrapper>
 
       <StyledBellWrapper>
-        <img src="svg/bell.svg" alt="通知アイコン" />
+        <img src="/svg/bell.svg" alt="通知アイコン" />
         {true && <StyledNotificationIcon />}
       </StyledBellWrapper>
 
