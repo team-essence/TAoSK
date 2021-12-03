@@ -51,6 +51,18 @@ export class UsersService {
     return user;
   }
 
+  getHrAllUsers(company: string): Promise<User[]> {
+    const users = this.usersRepository.find({
+      relations: ['interests', 'certifications'],
+      where: {
+        company: company,
+      },
+    });
+    if (!users) throw new NotFoundException();
+
+    return users;
+  }
+
   async create({
     newUser,
     newInterest,
@@ -113,6 +125,19 @@ export class UsersService {
     if (!user) throw new NotFoundException();
 
     user.online_flg = isOnline;
+    await this.usersRepository.save(user).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return user;
+  }
+
+  async updateMemo(id: string, memo: string) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) throw new NotFoundException();
+
+    user.memo = memo;
     await this.usersRepository.save(user).catch((err) => {
       new InternalServerErrorException();
     });

@@ -74,6 +74,58 @@ export const theme = {
     BOULDER: '#7B7B7B',
     STARK_WHITE: '#EBDECD',
     PEARL_BUSH: '#EDE5DE',
+    SCORPION: '#575757',
+    COD_GRAY: '#1E1E1E',
+    HP: '#85D931',
+    HP_BG: '#DBF5C0',
+    MP: '#31BBD9',
+    MP_BG: '#C3E8F0',
+    BIZARRE: '#EEE4DA',
+    TOBACCO_BROWN: '#665545',
+
+    GRADATION: {
+      TECHNOLOGY: {
+        START: '#514694',
+        CENTER: '#6A5EB6',
+        END: '#4D428C',
+      },
+
+      SOLUTION: {
+        START: '#BFA921',
+        CENTER: '#D7BE2C',
+        END: '#C2AC2E',
+      },
+
+      ACHIEVEMENT: {
+        START: '#AC46A9',
+        CENTER: '#C768C4',
+        END: '#983996',
+      },
+
+      MOTIVATION: {
+        START: '#7B4336',
+        CENTER: '#B16F60',
+        END: '#9D4430',
+      },
+
+      DESIGN: {
+        START: '#339A85',
+        CENTER: '#60B1A1',
+        END: '#2E8E7B',
+      },
+
+      PLAN: {
+        START: '#68973A',
+        CENTER: '#88B160',
+        END: '#5A8B29',
+      },
+    },
+
+    FONT: {
+      TOBACCO_BROWN: '#665545',
+      SILVER: '#BFBFBF',
+      BLACK: '#38373C',
+    },
   },
 } as const
 
