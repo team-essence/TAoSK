@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { CrossButton } from '../button/CrossButton'
+import { CrossIcon } from 'components/ui/icon/CrossIcon'
 
 type Props = {
   className?: string
@@ -24,7 +24,11 @@ export const Tag: FC<Props> = ({ className, name, onClick }) => {
       <StyledTagTriangle refHeight={refHeight} />
       <StyledTag ref={ref}>
         <p>{name}</p>
-        {onClick && <StyledCrossButton color={theme.COLORS.CHOCOLATE} onClick={onClick} />}
+        {!!onClick && (
+          <StyledButton onClick={onClick}>
+            <StyledCrossIcon color={theme.COLORS.CHOCOLATE} />
+          </StyledButton>
+        )}
       </StyledTag>
     </StyledTagContainer>
   )
@@ -65,7 +69,9 @@ const StyledTag = styled.div`
   }
 `
 
-const StyledCrossButton = styled(CrossButton)`
+const StyledButton = styled.button``
+
+const StyledCrossIcon = styled(CrossIcon)`
   height: 100%;
   padding: ${calculateMinSizeBasedOnFigmaWidth(10)} ${calculateMinSizeBasedOnFigmaWidth(7)}
     ${calculateMinSizeBasedOnFigmaWidth(10)} 0;
