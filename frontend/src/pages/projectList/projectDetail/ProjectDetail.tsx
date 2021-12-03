@@ -196,7 +196,7 @@ export const ProjectDetail: FC = () => {
   })
 
   const [list, setList] = useState<List[]>([])
-  const debouncedInputText = useDebounce(inputUserName.value, 500)
+  const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
     logger.debug('でる')
