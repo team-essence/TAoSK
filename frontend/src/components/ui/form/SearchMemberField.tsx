@@ -15,8 +15,8 @@ export const SearchMemberField: FC<Props> = ({
   onBlur,
   shouldShowResult,
   userDatas,
-  userIds,
-  setUserIds,
+  selectedUserDatas,
+  setSelectedUserDatas,
 }) => {
   return (
     <StyledAllWrapper className={className}>
@@ -37,7 +37,7 @@ export const SearchMemberField: FC<Props> = ({
             <StyledListItem
               key={index}
               indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
-              onMouseDown={() => setUserIds([...userIds, data.id])}>
+              onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
               {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
               <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
               <StyledProfile>
@@ -50,10 +50,12 @@ export const SearchMemberField: FC<Props> = ({
         </StyledSearchResultWrapper>
       )}
 
-      {!!userIds.length && (
+      {!!selectedUserDatas.length && (
         <StyledSelectedMembersWrapper>
           <StyledBorder />
-          <StyledSelectedMembersTitle>{userIds.length}人のメンバー</StyledSelectedMembersTitle>
+          <StyledSelectedMembersTitle>
+            {selectedUserDatas.length}人のメンバー
+          </StyledSelectedMembersTitle>
         </StyledSelectedMembersWrapper>
       )}
     </StyledAllWrapper>
@@ -156,11 +158,13 @@ const StyledOccupation = styled.p`
 `
 const StyledSelectedMembersWrapper = styled.div``
 const StyledBorder = styled.div`
+  margin: ${calculateMinSizeBasedOnFigmaWidth(7)} 0;
   width: 100%;
-  height: 100%;
+  height: 1px;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
 const StyledSelectedMembersTitle = styled.p`
+  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(7)};
   color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};

@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch } from 'react'
+import { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import { useDebounce } from 'hooks/useDebounce'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useInput } from 'hooks/useInput'
@@ -7,25 +7,25 @@ import {
   SearchSameCompanyUsersMutation,
 } from 'pages/projectList/projectList.gen'
 
+type UserData = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
+
 export type UseSearchMemberReturn = {
   onChange: ReturnType<typeof useInput>['onChange']
   onFocus: () => void
   onBlur: () => void
-  userIds: string[]
-  setUserIds: Dispatch<React.SetStateAction<string[]>>
-  userDatas: SearchSameCompanyUsersMutation['searchSameCompanyUsers']
+  selectedUserDatas: UserData
+  setSelectedUserDatas: Dispatch<SetStateAction<UserData>>
+  userDatas: UserData
   shouldShowResult: boolean
 }
 
 export const useSearchMember = (): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const { value, onChange } = useInput('')
-  const [userIds, setUserIds] = useState<string[]>([])
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
-  const [userDatas, setUserDatas] = useState<
-    SearchSameCompanyUsersMutation['searchSameCompanyUsers']
-  >([])
+  const [userDatas, setUserDatas] = useState<UserData>([])
+  const [selectedUserDatas, setSelectedUserDatas] = useState<UserData>([])
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
   const onFocus = () => setShouldShowResult(true)
   const onBlur = () => setShouldShowResult(false)
@@ -37,7 +37,7 @@ export const useSearchMember = (): UseSearchMemberReturn => {
     }
     searchSameCompanyUsers({
       variables: {
-        selectUserIds: userIds,
+        selectUserIds: selectedUserDatas.map(data => data.id),
         name: debouncedInputText,
         company: currentUserData.data?.user.company ? currentUserData.data.user.company : '',
       },
@@ -55,5 +55,13 @@ export const useSearchMember = (): UseSearchMemberReturn => {
     setUserDatas(newUserDatas)
   }, [searchResult.data])
 
-  return { onChange, onFocus, onBlur, userIds, setUserIds, userDatas, shouldShowResult }
+  return {
+    onChange,
+    onFocus,
+    onBlur,
+    selectedUserDatas,
+    setSelectedUserDatas,
+    userDatas,
+    shouldShowResult,
+  }
 }
