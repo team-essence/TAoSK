@@ -4,6 +4,7 @@ import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { BasicPopover } from 'components/ui/modal/BasicPopover'
+import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styled from 'styled-components'
 
@@ -17,7 +18,7 @@ type Props = {
   design: number
 } & PopoverProps
 
-export const UserEmployeePopover: FC<Props> = ({
+export const EmployeePopover: FC<Props> = ({
   anchorEl,
   vertical,
   horizontal,
@@ -38,7 +39,7 @@ export const UserEmployeePopover: FC<Props> = ({
     { param: 'plan', value: plan },
   ]
   const paramsSortedIntoThreeMaxValues = params
-    .sort((prev, current) => (prev.value < current.value ? 1 : -1))
+    .sort((prev, current) => (prev.value > current.value ? 1 : -1))
     .filter((_, index) => index >= 3)
 
   return (
@@ -53,12 +54,11 @@ export const UserEmployeePopover: FC<Props> = ({
           <div>
             <StyledH4>ステータス</StyledH4>
             <StyledBorder />
-            {paramsSortedIntoThreeMaxValues.map((item, index) => (
-              <div key={index}>
-                <p>{item.param}</p>
-                <p>{item.value}</p>
-              </div>
-            ))}
+            <StyledEmployeeStatus>
+              {paramsSortedIntoThreeMaxValues.map((item, index) => (
+                <EmployeeStatus key={index} {...item} />
+              ))}
+            </StyledEmployeeStatus>
           </div>
           <div>
             <StyledH4>興味あること</StyledH4>
@@ -105,16 +105,10 @@ const StyledBorder = styled.div`
   border: 1px solid ${convertIntoRGBA(theme.COLORS.BRANDY, 0.6)};
   border-radius: 4px;
 `
-const StyledFlexContainer = styled.div`
+
+const StyledEmployeeStatus = styled.div`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  align-items: center;
-  cursor: pointer;
-  :hover {
-    border-radius: 3px;
-    background: ${({ theme }) => theme.COLORS.PEARL_BUSH};
-    transition: 0.3s;
-  }
 `
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};

@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { GetProjectQuery } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { UserOnlineStatusLabel } from 'components/models/user/UserOnlineStatusLabel'
-import { UserEmployeeInformation } from 'components/models/user/UserEmployeeInformation'
+import { EmployeeOnlineStatusLabel } from 'components/models/employee/EmployeeOnlineStatusLabel'
+import { EmployeeInformation } from 'components/models/employee/EmployeeInformation'
 import styled from 'styled-components'
 
 type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
@@ -11,30 +11,30 @@ type Props = {
   className?: string
 } & Partial<Groups>
 
-export const UserProjectMembers: FC<Props> = ({ groups }) => {
+export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
   const a = groups?.concat(groups).concat(groups).concat(groups)
 
   return (
     <StyledContainer>
       <StyledLabelContainer>
-        <UserOnlineStatusLabel label="オンライン" status={true} />
+        <EmployeeOnlineStatusLabel label="オンライン" status={true} />
       </StyledLabelContainer>
       {a?.map(
         (group, index) =>
           !group.user.online_flg && (
             <StyledEmployeeContainer key={index}>
-              <UserEmployeeInformation {...group.user} />
+              <EmployeeInformation {...group.user} />
             </StyledEmployeeContainer>
           ),
       )}
       <StyledLabelContainer>
-        <UserOnlineStatusLabel label="オフライン" status={false} />
+        <EmployeeOnlineStatusLabel label="オフライン" status={false} />
       </StyledLabelContainer>
       {a?.map(
         (group, index) =>
           !group.user.online_flg && (
             <StyledEmployeeContainer key={index}>
-              <UserEmployeeInformation {...group.user} />
+              <EmployeeInformation {...group.user} />
             </StyledEmployeeContainer>
           ),
       )}

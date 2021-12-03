@@ -127,6 +127,15 @@ export const theme = {
       SILVER: '#BFBFBF',
       BLACK: '#38373C',
     },
+
+    STATUS: {
+      TECHNOLOGY: '#6558B9',
+      ACHIEVEMENT: '#C26DBF',
+      SOLUTION: '#D4C25C',
+      MOTIVATION: '#BA7565',
+      DESIGN: '#65BAAA',
+      PLAN: '#8FBA65;',
+    },
   },
 } as const
 

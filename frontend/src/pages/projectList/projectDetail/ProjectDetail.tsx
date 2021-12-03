@@ -28,7 +28,7 @@ import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DropType } from 'consts/dropType'
-import { UserProjectMembers } from 'components/models/user/UserProjectMembers'
+import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
 import { TaskColumnList } from 'components/models/task/TaskColumnList'
 
 export const ProjectDetail: FC = () => {
@@ -439,7 +439,7 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <UserProjectMembers groups={projectData.data?.getProjectById.groups} />
+        <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} />
         <p>左側</p>
 
         <div>
