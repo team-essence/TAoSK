@@ -45,7 +45,6 @@ export const useSearchMember = (): UseSearchMemberReturn => {
   }, [debouncedInputText])
 
   useEffect(() => {
-    console.log(searchResult) // TODO: デバッグ用。後で消す
     const newUserDatas = searchResult.data?.searchSameCompanyUsers
     if (!newUserDatas?.length) {
       setUserDatas([])

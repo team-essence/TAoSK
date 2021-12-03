@@ -526,7 +526,8 @@ export const ProjectDetail: FC = () => {
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
                 <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <ColumnList lists={list} handleAddTask={handleAddTask} />
+                  {/* <ColumnList lists={list} handleAddTask={handleAddTask} /> */}
+                  <ColumnList lists={list} handleAddTask={() => setShouldShowModal(true)} /> {/* TODO: テスト用、後で消す */}
                   {provided.placeholder}
                 </StyledTaskListContainer>
               )}

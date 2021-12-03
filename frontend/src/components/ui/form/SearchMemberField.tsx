@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import type { UseSearchMemberReturn } from 'hooks/useSearchMember'
 import { occupationList } from 'consts/occupationList'
 
@@ -16,6 +16,7 @@ export const SearchMemberField: FC<Props> = ({
   shouldShowResult,
   userDatas,
   userIds,
+  setUserIds,
 }) => {
   return (
     <StyledAllWrapper className={className}>
@@ -33,7 +34,11 @@ export const SearchMemberField: FC<Props> = ({
       {!!shouldShowResult && !!userDatas.length && (
         <StyledSearchResultWrapper>
           {userDatas.map((data, index) => (
-            <StyledListItem key={index}>
+            <StyledListItem
+              key={index}
+              indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
+              onMouseDown={() => setUserIds([...userIds, data.id])}>
+              {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
               <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
               <StyledProfile>
                 <StyledName>{data.name}</StyledName>
@@ -96,17 +101,36 @@ const StyledSearchResultWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   list-style-type: none;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(8)};
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};
   height: ${calculateMinSizeBasedOnFigmaWidth(200)};
   border: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.COLORS.BLACK_WHITE};
 `
-const StyledListItem = styled.li`
+const StyledListItem = styled.li<{ indexAt: 'first' | 'last' | 'other' }>`
+  cursor: pointer;
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  padding: ${calculateMinSizeBasedOnFigmaWidth(4)} 0;
+  ${({ indexAt }) => {
+    if (indexAt === 'first') {
+      return css`
+        padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(8)}
+          ${calculateMinSizeBasedOnFigmaWidth(4)};
+      `
+    } else if (indexAt === 'last') {
+      return css`
+        padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(8)}
+          ${calculateMinSizeBasedOnFigmaWidth(8)};
+      `
+    } else {
+      return css`
+        padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(8)};
+      `
+    }
+  }}
+  &:hover {
+    background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.SILVER, 0.1)};
+  }
 `
 const StyledAvatar = styled.img`
   box-sizing: border-box;
