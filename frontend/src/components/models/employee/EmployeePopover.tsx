@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { PopoverProps } from 'types/popover'
+import { Params } from 'types/status'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -30,7 +31,7 @@ export const EmployeePopover: FC<Props> = ({
   plan,
   design,
 }) => {
-  const params = [
+  const params: Params[] = [
     { param: 'technology', value: technology },
     { param: 'achievement', value: achievement },
     { param: 'solution', value: solution },

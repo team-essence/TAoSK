@@ -1,9 +1,11 @@
 import React, { FC } from 'react'
+import { StatusParam } from 'types/status'
+import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import Status from 'utils/status/status'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  param: string
+  param: StatusParam
   value: number
 }
 
@@ -13,6 +15,10 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 
   return (
     <StyledContainer param={param}>
+      <StyledFlexContainer>
+        <img src="/svg/weapon/technology_bg.svg" alt="weapon" />
+        <p>{convertParamIntoJp(param)}</p>
+      </StyledFlexContainer>
       <div>
         <p>{rank}</p>
         <p>{proficiency}</p>
@@ -22,6 +28,8 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 }
 
 const StyledContainer = styled.div<{ param: string }>`
+  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
+  border-radius: 4px;
   ${({ param, theme }) => {
     switch (param) {
       case 'technology':
@@ -62,3 +70,8 @@ const StyledContainer = styled.div<{ param: string }>`
     }
   }}
 `
+const StyledFlexContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+// const StyledParam = styled(StyledFlex)``
