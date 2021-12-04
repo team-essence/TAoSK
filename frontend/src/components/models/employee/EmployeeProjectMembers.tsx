@@ -59,7 +59,7 @@ const StyledContaner = styled.div`
 const StyledMemberContainer = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(210)};
-  max-height: ${calculateVhBasedOnFigma(680)};
+  height: ${calculateVhBasedOnFigma(680)};
   padding: 0 ${calculateMinSizeBasedOnFigmaWidth(8)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
