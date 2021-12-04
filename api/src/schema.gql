@@ -174,7 +174,7 @@ type Query {
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
   getCompany(uid: String!): Company!
-  getProjectById(id: Float!): Project!
+  getProjectById(id: String!): Project!
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!

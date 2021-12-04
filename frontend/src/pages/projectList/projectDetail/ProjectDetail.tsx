@@ -244,7 +244,7 @@ export const ProjectDetail: FC = () => {
 
       getProjectById({
         variables: {
-          id: Number(id),
+          id,
         },
       })
     }
