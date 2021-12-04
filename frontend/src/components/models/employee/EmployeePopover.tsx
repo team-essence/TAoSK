@@ -39,8 +39,8 @@ export const EmployeePopover: FC<Props> = ({
     { param: 'plan', value: plan },
   ]
   const paramsSortedIntoThreeMaxValues = params
-    .sort((prev, current) => (prev.value > current.value ? 1 : -1))
-    .filter((_, index) => index >= 3)
+    .sort((prev, current) => (prev.value < current.value ? 1 : -1))
+    .slice(0, 3)
 
   return (
     <BasicPopover
@@ -50,6 +50,7 @@ export const EmployeePopover: FC<Props> = ({
       handleClose={handleClose}>
       <StyledContainer>
         <StyledUpperRow>上段</StyledUpperRow>
+        <StyledBorder />
         <StyledLowerRow>
           <div>
             <StyledH4>ステータス</StyledH4>
@@ -75,26 +76,21 @@ export const EmployeePopover: FC<Props> = ({
 }
 
 const StyledContainer = styled.div`
-  /* border-radius: 4px; */
-`
-const StyledUpperRow = styled.div`
   border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
+`
+const StyledUpperRow = styled.div`
+  /* border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
+  background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
+  border-radius: 4px; */
 `
 const StyledLowerRow = styled.div`
   width: 100%;
   max-height: ${calculateMinSizeBasedOnFigmaWidth(320)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(16)};
-  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-  overflow-y: scroll;
-  /* -ms-overflow-style: none;
-  scrollbar-width: none;
-  ::-webkit-scrollbar {
-    display: none;
-  } */
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 const StyledH4 = styled.h4`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};

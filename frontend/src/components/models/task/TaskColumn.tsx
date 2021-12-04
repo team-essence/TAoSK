@@ -4,7 +4,10 @@ import { List } from 'types/list'
 import { DropType } from 'consts/dropType'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import {
+  calculateMinSizeBasedOnFigmaWidth,
+  calculateVhBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControlTextArea'
@@ -125,6 +128,14 @@ export const TaskColumn: FC<Props> = ({
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>
                 {listProvided.placeholder}
               </StyledColumnContainer>
@@ -136,9 +147,6 @@ export const TaskColumn: FC<Props> = ({
   )
 }
 
-const StyledContainer = styled.div`
-  margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
-`
 const StyledColumnContainer = styled.ul`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};
@@ -182,12 +190,18 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
 const StyledButtonContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
+const StyledContainer = styled.div`
+  margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
+`
 // 改行でts-styled-pluginのエラーが出る為変数に格納
 const avoidTsStyledErr = `${calculateMinSizeBasedOnFigmaWidth(
   16,
 )} ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(8)}`
 const StyledTaskListContainer = styled.div`
+  max-height: ${calculateVhBasedOnFigma(630)};
   padding: ${avoidTsStyledErr};
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;

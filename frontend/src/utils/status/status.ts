@@ -1,6 +1,6 @@
 type Rank = 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'
 
-export default class status {
+export default class Status {
   /**
    * ステータス値からランクへ変換
    *

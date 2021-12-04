@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import Status from 'utils/status/status'
 import styled, { css } from 'styled-components'
 
 type Props = {
@@ -7,9 +8,15 @@ type Props = {
 }
 
 export const EmployeeStatus: FC<Props> = ({ param, value }) => {
+  const rank = Status.toRank(value)
+  const proficiency = Status.toRemainderStatus(value)
+
   return (
     <StyledContainer param={param}>
-      <div>{value}</div>
+      <div>
+        <p>{rank}</p>
+        <p>{proficiency}</p>
+      </div>
     </StyledContainer>
   )
 }
