@@ -539,6 +539,12 @@ export const ProjectDetail: FC = () => {
             totalExp={currentUserData.data.user.exp}
             hp={currentUserData.data.user.hp}
             mp={currentUserData.data.user.mp}
+            technology={currentUserData.data.user.technology}
+            solution={currentUserData.data.user.solution}
+            achievement={currentUserData.data.user.achievement}
+            motivation={currentUserData.data.user.motivation}
+            design={currentUserData.data.user.design}
+            plan={currentUserData.data.user.plan}
           />
         )}
       </ProjectDetailLeftContainer>

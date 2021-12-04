@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import exp from 'utils/exp/exp'
 import { ProjectMyBars } from './ProjectMyBars'
+import { ProjectMyStatuses } from './ProjectMyStatuses'
 
 type Props = {
   className?: string
@@ -13,6 +14,12 @@ type Props = {
   totalExp: number
   hp: number
   mp: number
+  technology: number
+  solution: number
+  achievement: number
+  motivation: number
+  design: number
+  plan: number
 }
 
 export const ProjectMyInfo: FC<Props> = ({
@@ -23,39 +30,60 @@ export const ProjectMyInfo: FC<Props> = ({
   totalExp,
   hp,
   mp,
+  technology,
+  solution,
+  achievement,
+  motivation,
+  design,
+  plan,
 }) => {
   return (
     <StyledProjectMyInfoContainer className={className}>
-      <StyledUserIconImgContainer>
-        <img src={iconImage} alt={name} />
-      </StyledUserIconImgContainer>
+      <StyledProjectMyCardContainer>
+        <StyledUserIconImgContainer>
+          <img src={iconImage} alt={name} />
+        </StyledUserIconImgContainer>
 
-      <StyledUserOccupationContainer>
-        <p>{occupationList[occupationId]}</p>
-        <img src="/svg/user-name_background.svg" alt="ユーザ名の背景画像" />
-      </StyledUserOccupationContainer>
+        <StyledUserOccupationContainer>
+          <p>{occupationList[occupationId]}</p>
+          <img src="/svg/user-name_background.svg" alt="ユーザ名の背景画像" />
+        </StyledUserOccupationContainer>
 
-      <StyledUserContainer>
-        <h6>{name}</h6>
+        <StyledUserContainer>
+          <h6>{name}</h6>
 
-        <StyledLevelContainer>
-          <p>lv.{exp.toLevel(totalExp)}</p>
-        </StyledLevelContainer>
-      </StyledUserContainer>
+          <StyledLevelContainer>
+            <p>lv.{exp.toLevel(totalExp)}</p>
+          </StyledLevelContainer>
+        </StyledUserContainer>
 
-      <ProjectMyBars hp={hp} mp={mp} totalExp={totalExp} />
+        <ProjectMyBars hp={hp} mp={mp} totalExp={totalExp} />
 
-      <StyledProjectMyInfoBackground
-        src="/svg/project-detail-my-info_background.svg"
-        alt="自分の情報の背景画像"
+        <StyledProjectMyInfoBackground
+          src="/svg/project-detail-my-info_background.svg"
+          alt="自分の情報の背景画像"
+        />
+      </StyledProjectMyCardContainer>
+
+      <ProjectMyStatuses
+        technology={technology}
+        solution={solution}
+        achievement={achievement}
+        motivation={motivation}
+        design={design}
+        plan={plan}
       />
     </StyledProjectMyInfoContainer>
   )
 }
 
 const StyledProjectMyInfoContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+`
+
+const StyledProjectMyCardContainer = styled.div`
   position: relative;
-  margin-top: 250px;
   width: ${calculateMinSizeBasedOnFigmaWidth(436)};
   height: ${calculateMinSizeBasedOnFigmaWidth(110)};
 `

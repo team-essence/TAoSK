@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { BAR_TYPE } from 'consts/bar'
 import exp from 'utils/exp/exp'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { yanoneKaffeesatz } from 'styles/fontFamily/fontFamily'
 
 type Props = {
   className?: string
@@ -63,9 +64,7 @@ const StyledStatusBarContainer = styled.div`
   grid-template-columns: auto auto;
   align-items: center;
   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(2)};
-  font-family: 'Yanone Kaffeesatz', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
-    'Hiragino Sans', Meiryo, sans-serif;
-
+  font-family: ${yanoneKaffeesatz};
   h4 {
     position: relative;
     top: ${calculateMinSizeBasedOnFigmaWidth(1)};
