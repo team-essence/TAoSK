@@ -8,7 +8,7 @@ import { GameLog } from 'src/game-logs/game-log';
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
@@ -21,9 +21,9 @@ import {
 @ObjectType()
 export class Project {
   //id
-  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
+  @PrimaryColumn()
   @Field(() => ID)
-  id: number;
+  id: string;
 
   //プロジェクト名
   @Column({

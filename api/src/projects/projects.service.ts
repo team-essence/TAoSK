@@ -47,6 +47,7 @@ export class ProjectsService {
     // プロジェクトの作成
     const project = this.projectRepository.create({
       ...newProject,
+      id: uuidv4().slice(0, 8),
       end_date: new Date(newProject.end_date),
       monster,
     });
@@ -110,7 +111,7 @@ export class ProjectsService {
     return project;
   }
 
-  findProjectOne(id: number): Promise<Project> {
+  findProjectOne(id: string): Promise<Project> {
     const project = this.projectRepository
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.monster', 'monster')
