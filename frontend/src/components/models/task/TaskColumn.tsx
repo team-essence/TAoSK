@@ -128,6 +128,11 @@ export const TaskColumn: FC<Props> = ({
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>
                 {listProvided.placeholder}
               </StyledColumnContainer>
@@ -194,6 +199,17 @@ const StyledTaskListContainer = styled.div`
   padding: ${avoidTsStyledErr};
   overflow-x: hidden;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.COLORS.OLIVE_GREEN};
+    border-radius: 100px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #c7c7c7;
+    border-radius: 100px;
+  }
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;
