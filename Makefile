@@ -16,6 +16,9 @@ up:
 	docker compose up
 down:
 	docker compose down
+restart:
+	@make down
+	@make up
 ps:
 	docker compose ps
 build:
