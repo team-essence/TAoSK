@@ -492,31 +492,6 @@ export const ProjectDetail: FC = () => {
         </div>
         <p>左側</p>
 
-        <div>
-          {currentUserData.data && (
-            <>
-              <img
-                src={currentUserData.data.user.icon_image}
-                alt={currentUserData.data.user.name}
-              />
-              <h4>{currentUserData.data.user.name}</h4>
-              <p>HP: {currentUserData.data.user.hp}</p>
-              <p>MP: {currentUserData.data.user.mp}</p>
-              <p>EXP: {currentUserData.data.user.exp}</p>
-
-              <p>技術力: {currentUserData.data.user.technology}</p>
-              <p>達成力: {currentUserData.data.user.achievement}</p>
-              <p>意欲: {currentUserData.data.user.motivation}</p>
-              <p>問題発見・解決力: {currentUserData.data.user.solution}</p>
-              <p>設計力: {currentUserData.data.user.plan}</p>
-              <p>デザイン力: {currentUserData.data.user.design}</p>
-              <p>
-                ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-              </p>
-            </>
-          )}
-        </div>
-
         <div style={{ border: 'solid' }}></div>
 
         <div>
