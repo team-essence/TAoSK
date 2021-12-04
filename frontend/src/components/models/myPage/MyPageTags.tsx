@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import logger from 'utils/debugger/logger'
-import { Tag } from '../../ui/tag/Tag'
+import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
 type Props = {
   className?: string
@@ -31,7 +31,7 @@ export const MyPageTags: FC<Props> = ({ className, interests, certifications }) 
 
         <StyledMyPageTagWrapper>
           {interests.map((interest, index) => (
-            <Tag name={interest.context} key={index} />
+            <Tag name={interest.context} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
 
@@ -42,7 +42,7 @@ export const MyPageTags: FC<Props> = ({ className, interests, certifications }) 
 
         <StyledMyPageTagWrapper>
           {certifications.map((certification, index) => (
-            <Tag name={certification.name} key={index} />
+            <Tag name={certification.name} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
       </StyledMyPageTagsScroll>
