@@ -128,14 +128,6 @@ export const TaskColumn: FC<Props> = ({
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>
                 {listProvided.placeholder}
               </StyledColumnContainer>

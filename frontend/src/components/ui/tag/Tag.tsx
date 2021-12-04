@@ -24,7 +24,7 @@ export const Tag: FC<Props> = ({ className, name, onClick, tagType }) => {
     <StyledTagContainer className={className}>
       <StyledTagTriangle tagType={tagType} />
       <StyledTag tagType={tagType}>
-        <p>{name}</p>
+        <StyledTagName>{name}</StyledTagName>
         {!!onClick && (
           <StyledCrossButton tagType={tagType} color={theme.COLORS.CHOCOLATE} onClick={onClick} />
         )}
@@ -117,4 +117,7 @@ const StyledCrossButton = styled(CrossButton)<{ tagType: TAG_TYPE }>`
       padding-right: ${calculateMinSizeBasedOnFigmaWidth(6)};
     `}
   `}
+`
+const StyledTagName = styled.p`
+  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
 `

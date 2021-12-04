@@ -25,6 +25,8 @@ export const EmployeeInformation: FC<Props> = ({
   solution,
   plan,
   design,
+  interests,
+  certifications,
 }) => {
   const { anchorEl, openPopover, closePopover } = usePopover()
   const level = Exp.toLevel(exp) !== 0 ? Exp.toLevel(exp) : 1
@@ -51,6 +53,8 @@ export const EmployeeInformation: FC<Props> = ({
         vertical="top"
         horizontal="right"
         id={id}
+        interests={interests}
+        certifications={certifications}
         {...params}
       />
     </>

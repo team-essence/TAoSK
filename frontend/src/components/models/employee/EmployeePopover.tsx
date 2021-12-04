@@ -19,6 +19,8 @@ type Props = {
   solution: number
   plan: number
   design: number
+  interests: { id: number; context: string }[]
+  certifications: { id: number; name: string }[]
 } & PopoverProps
 
 export const EmployeePopover: FC<Props> = ({
@@ -33,6 +35,8 @@ export const EmployeePopover: FC<Props> = ({
   solution,
   plan,
   design,
+  interests,
+  certifications,
 }) => {
   const params: Params[] = [
     { param: 'technology', value: technology },
@@ -66,15 +70,22 @@ export const EmployeePopover: FC<Props> = ({
             </StyledEmployeeStatus>
           </div>
           <div>
-            <StyledH4>興味あること</StyledH4>
+            <StyledH4>興味のあること</StyledH4>
             <StyledBorder />
-            {/* <div>
-              <Tag name="基本情報" tagType="small" />
-            </div> */}
+            <StyledTagContainer>
+              {interests.map((item, index) => (
+                <Tag key={index} name={item.context} tagType="small" />
+              ))}
+            </StyledTagContainer>
           </div>
           <div>
             <StyledH4>資格</StyledH4>
             <StyledBorder />
+            <StyledTagContainer>
+              {certifications.map((item, index) => (
+                <Tag key={index} name={item.name} tagType="small" />
+              ))}
+            </StyledTagContainer>
           </div>
         </StyledLowerRow>
       </StyledContainer>
@@ -95,7 +106,7 @@ const StyledUpperRow = styled.div`
 const StyledLowerRow = styled.div`
   width: 100%;
   max-height: ${calculateMinSizeBasedOnFigmaWidth(320)};
-  padding: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(16)};
   overflow-x: hidden;
   overflow-y: auto;
 `
@@ -115,13 +126,9 @@ const StyledEmployeeStatus = styled(StyledMarginVertical)`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
-  color: ${convertIntoRGBA(theme.COLORS.MINE_SHAFT, 0.6)};
-`
-const StyledText = styled.p`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
-  color: ${convertIntoRGBA(theme.COLORS.MINE_SHAFT, 0.6)};
+const StyledTagContainer = styled(StyledMarginVertical)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  max-width: ${calculateMinSizeBasedOnFigmaWidth(256)};
 `
