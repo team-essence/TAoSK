@@ -1,19 +1,32 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useIncrementAndDecrement } from 'hooks/useIncrementAndDecrement'
 
-type Status = '技術力' | '達成力' | '解決力' | '意欲' | 'デザイン' | '設計力'
+type Status = 'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan'
 
 type Props = {
   status: Status
+  setStatus: Dispatch<SetStateAction<Record<Status, number>>>
 }
 
-export const TaskStatusPointField: FC<Props> = ({ status }) => {
+export const TaskStatusPointField: FC<Props> = ({ status, setStatus }) => {
   const { count, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
     useIncrementAndDecrement(10, 0)
+  const statusNameObj: Record<Status, string> = {
+    technology: '技術力',
+    achievement: '達成力',
+    solution: '解決力',
+    motivation: '意欲',
+    design: 'デザイン',
+    plan: '設計力',
+  }
+
+  useEffect(() => {
+    setStatus(prev => ({ ...prev, [status]: count }))
+  }, [count])
 
   return (
     <StyledStatusWrapper>
@@ -21,7 +34,7 @@ export const TaskStatusPointField: FC<Props> = ({ status }) => {
         <StyledStatusIcon status={status} />
       </StyledIconBox>
 
-      <StyledStatusName>{status}</StyledStatusName>
+      <StyledStatusName>{statusNameObj[status]}</StyledStatusName>
 
       <StyledCountWrapper>
         <StyledMinusBtn onClick={decrement} disabled={isDisabledDecrement} />
@@ -75,17 +88,17 @@ const iconBoxCss = (
 const StyledIconBox = styled.div<{ status: Status }>`
   ${({ status, theme }) => {
     switch (status) {
-      case '技術力':
+      case 'technology':
         return iconBoxCss(theme.COLORS.TECHNOLOGY, convertIntoRGBA(theme.COLORS.BLACK, 0.2))
-      case '達成力':
+      case 'achievement':
         return iconBoxCss(theme.COLORS.ACHIEVEMENT, 'transparent')
-      case '解決力':
+      case 'solution':
         return iconBoxCss(theme.COLORS.SOLUTION, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
-      case '意欲':
+      case 'motivation':
         return iconBoxCss(theme.COLORS.MOTIVATION, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
-      case 'デザイン':
+      case 'design':
         return iconBoxCss(theme.COLORS.DESIGN, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
-      case '設計力':
+      case 'plan':
         return iconBoxCss(theme.COLORS.PLAN, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
       default: {
         const _exhaustiveCheck: never = status
@@ -102,27 +115,27 @@ const StyledStatusIcon = styled.div<{ status: Status }>`
   background-size: contain;
   ${({ status }) => {
     switch (status) {
-      case '技術力':
+      case 'technology':
         return css`
           background-image: url('/svg/status-technology.svg');
         `
-      case '達成力':
+      case 'achievement':
         return css`
           background-image: url('/svg/status-achievement.svg');
         `
-      case '解決力':
+      case 'solution':
         return css`
           background-image: url('/svg/status-solution.svg');
         `
-      case '意欲':
+      case 'motivation':
         return css`
           background-image: url('/svg/status-motivation.svg');
         `
-      case 'デザイン':
+      case 'design':
         return css`
           background-image: url('/svg/status-design.svg');
         `
-      case '設計力':
+      case 'plan':
         return css`
           background-image: url('/svg/status-plan.svg');
         `

@@ -7,15 +7,15 @@ import {
   SearchSameCompanyUsersMutation,
 } from 'pages/projectList/projectList.gen'
 
-type UserData = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
+type UserDatas = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
 
-export type UseSearchMemberReturn = {
+type UseSearchMemberReturn = {
   onChange: ReturnType<typeof useInput>['onChange']
   onFocus: () => void
   onBlur: () => void
-  selectedUserDatas: UserData
-  setSelectedUserDatas: Dispatch<SetStateAction<UserData>>
-  userDatas: UserData
+  selectedUserDatas: UserDatas
+  setSelectedUserDatas: Dispatch<SetStateAction<UserDatas>>
+  userDatas: UserDatas
   shouldShowResult: boolean
 }
 
@@ -24,8 +24,8 @@ export const useSearchMember = (): UseSearchMemberReturn => {
   const { value, onChange } = useInput('')
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
-  const [userDatas, setUserDatas] = useState<UserData>([])
-  const [selectedUserDatas, setSelectedUserDatas] = useState<UserData>([])
+  const [userDatas, setUserDatas] = useState<UserDatas>([])
+  const [selectedUserDatas, setSelectedUserDatas] = useState<UserDatas>([])
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
   const onFocus = () => setShouldShowResult(true)
   const onBlur = () => setShouldShowResult(false)

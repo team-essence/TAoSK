@@ -19,7 +19,6 @@ import {
   calculateMinSizeBasedOnFigmaHeight,
 } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
-import { useSearchMember } from 'hooks/useSearchMember'
 
 type Props = {
   shouldShow: boolean
@@ -28,8 +27,7 @@ type Props = {
 }
 
 export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, className }) => {
-  const { register } = useTaskCreateForm()
-  const searchMemberFieldProps = useSearchMember()
+  const { register, errors, setStatus, setUserDatas } = useTaskCreateForm()
 
   return (
     <StyledModal
@@ -46,6 +44,7 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
               required: 'タイトルは必須です',
               maxLength: { value: 255, message: '255文字以内で入力してください' },
             })}
+            error={errors['title']}
           />
           <StyledOverviewField
             label="概要"
@@ -59,16 +58,16 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
         <StyledBorder />
         <StyledRightColumn>
           <CalenderField label="期限" registration={register('date')} required={false} />
-          <SearchMemberField {...searchMemberFieldProps} />
+          <SearchMemberField setUserDatas={setUserDatas} />
 
           <StyledStatusWrapper className={className}>
             <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-            <TaskStatusPointField status="技術力" />
-            <TaskStatusPointField status="達成力" />
-            <TaskStatusPointField status="解決力" />
-            <TaskStatusPointField status="意欲" />
-            <TaskStatusPointField status="デザイン" />
-            <TaskStatusPointField status="設計力" />
+            <TaskStatusPointField status="technology" setStatus={setStatus} />
+            <TaskStatusPointField status="achievement" setStatus={setStatus} />
+            <TaskStatusPointField status="solution" setStatus={setStatus} />
+            <TaskStatusPointField status="motivation" setStatus={setStatus} />
+            <TaskStatusPointField status="design" setStatus={setStatus} />
+            <TaskStatusPointField status="plan" setStatus={setStatus} />
           </StyledStatusWrapper>
         </StyledRightColumn>
       </StyledWrapper>

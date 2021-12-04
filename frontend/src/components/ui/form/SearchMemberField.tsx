@@ -1,23 +1,31 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { SearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import styled, { css } from 'styled-components'
-import type { UseSearchMemberReturn } from 'hooks/useSearchMember'
 import { occupationList } from 'consts/occupationList'
+import { useSearchMember } from 'hooks/useSearchMember'
 
-type Props = { className?: string } & UseSearchMemberReturn
+type UserDatas = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
+type Props = {
+  className?: string
+  setUserDatas: Dispatch<SetStateAction<UserDatas>>
+}
 
-export const SearchMemberField: FC<Props> = ({
-  className,
-  onChange,
-  onFocus,
-  onBlur,
-  shouldShowResult,
-  userDatas,
-  selectedUserDatas,
-  setSelectedUserDatas,
-}) => {
+export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
+  const {
+    onChange,
+    onFocus,
+    onBlur,
+    shouldShowResult,
+    userDatas,
+    selectedUserDatas,
+    setSelectedUserDatas,
+  } = useSearchMember()
+
+  useEffect(() => setUserDatas([...userDatas]), [userDatas])
+
   return (
     <StyledAllWrapper className={className}>
       <StyledLabel>パーティメンバー</StyledLabel>
