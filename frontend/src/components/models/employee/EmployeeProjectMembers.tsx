@@ -17,17 +17,15 @@ type Props = {
 } & Partial<Groups>
 
 export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
-  const a = groups?.concat(groups).concat(groups).concat(groups)
-
   return (
     <StyledContaner>
       <StyledMemberContainer>
         <StyledLabelContainer>
           <EmployeeOnlineStatusLabel label="オンライン" status={true} />
         </StyledLabelContainer>
-        {a?.map(
+        {groups?.map(
           (group, index) =>
-            !group.user.online_flg && (
+            group.user.online_flg && (
               <StyledEmployeeContainer key={index}>
                 <EmployeeInformation {...group.user} />
               </StyledEmployeeContainer>
@@ -36,7 +34,7 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
         <StyledLabelContainer>
           <EmployeeOnlineStatusLabel label="オフライン" status={false} />
         </StyledLabelContainer>
-        {a?.map(
+        {groups?.map(
           (group, index) =>
             !group.user.online_flg && (
               <StyledEmployeeContainer key={index}>
@@ -59,13 +57,13 @@ const StyledContaner = styled.div`
   align-items: baseline;
 `
 const StyledMemberContainer = styled.div`
+  position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(210)};
   max-height: ${calculateVhBasedOnFigma(680)};
   padding: 0 ${calculateMinSizeBasedOnFigmaWidth(8)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-  white-space: normal;
   overflow-x: hidden;
   overflow-y: auto;
 `
