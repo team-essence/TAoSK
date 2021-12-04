@@ -12,7 +12,7 @@ import { Avatar } from 'components/ui/item/Avatar'
 import { Level } from 'components/ui/item/Level'
 import { Occupation } from 'components/ui/item/Occupation'
 import { Tag } from 'components/ui/tag/Tag'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type Props = {
   className?: string
@@ -162,3 +162,108 @@ const StyledTagContainer = styled(StyledMarginVertical)`
   flex-wrap: wrap;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
+
+// const StyledUserInfoWrapper = styled.div`
+//   padding: 6px 0;
+//   background: ${({ theme }) => convertIntoRGBA(theme.COLORS.COD_GRAY, 0.11)};
+//   width: ${calculateMinSizeBasedOnFigmaWidth(426)};
+// `
+
+// const StyledParameterContainer = styled(StyledUserInfoWrapper)`
+//   padding: ${calculateMinSizeBasedOnFigmaWidth(17)} 0;
+//   display: flex;
+//   flex-direction: column;
+//   gap: ${calculateMinSizeBasedOnFigmaWidth(16)} 0;
+// `
+
+// const StyledStatusBarContainer = styled.div`
+//   margin: 0 auto;
+//   position: relative;
+//   display: flex;
+//   align-items: center;
+//   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(9)};
+//   width: fit-content;
+
+//   h5 {
+//     color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
+//     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+//     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
+//   }
+
+//   p {
+//     font-family: 'Yanone Kaffeesatz', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
+//       'Hiragino Sans', Meiryo, sans-serif;
+//     position: absolute;
+//     right: 0;
+//     ${({ theme }) => css`
+//       width: ${calculateMinSizeBasedOnFigmaWidth(58)};
+//       text-align: center;
+//       z-index: ${theme.Z_INDEX.INDEX_2};
+//       font-size: ${theme.FONT_SIZES.SIZE_18};
+//       color: ${theme.COLORS.WHITE};
+//       font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+//       background: linear-gradient(
+//         0deg,
+//         ${theme.COLORS.MINE_SHAFT},
+//         ${theme.COLORS.MINE_SHAFT} 100%
+//       );
+//       background-size: 200% 200%;
+//       -webkit-background-clip: text;
+//       -webkit-text-stroke: 4px transparent;
+//     `}
+//   }
+// `
+
+// const StyledBar = styled.div`
+//   position: relative;
+//   width: ${calculateMinSizeBasedOnFigmaWidth(150)};
+//   height: ${calculateMinSizeBasedOnFigmaWidth(13)};
+// `
+
+// const StyledHpBar = styled(StyledBar)<{ rate: number }>`
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(4)});
+//     height: 100%;
+//     background: ${({ theme }) => theme.COLORS.HP_BG};
+//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
+//     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+//   }
+
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     width: ${({ rate }) => rate}%;
+//     height: 100%;
+//     background: ${({ theme }) => theme.COLORS.HP};
+//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
+//   }
+// `
+
+// const StyledMpBar = styled(StyledBar)<{ rate: number }>`
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(4)});
+//     height: 100%;
+//     background: ${({ theme }) => theme.COLORS.MP_BG};
+//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
+//     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+//   }
+
+//   &::after {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     width: ${({ rate }) => rate}%;
+//     height: 100%;
+//     background: ${({ theme }) => theme.COLORS.MP};
+//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
+//   }
+// `

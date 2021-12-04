@@ -5,6 +5,7 @@ import { usePopover } from 'hooks/usePopover'
 import { EmployeePopover } from 'components/models/employee/EmployeePopover'
 import { Level } from 'components/ui/item/Level'
 import { Avatar } from 'components/ui/item/Avatar'
+import { StatusBar } from 'components/ui/item/StatusBar'
 import Exp from 'utils/exp/exp'
 import styled, { css } from 'styled-components'
 
@@ -60,8 +61,8 @@ export const EmployeeInformation: FC<Props> = ({
             <Level level={level} size="small" />
           </StyledLowContainer>
           <StyledLowContainer>
-            <StyledHpBar rate={hp} onlineFlg={online_flg} />
-            <StyledMpBar rate={mp} onlineFlg={online_flg} />
+            <StatusBar type="HP" size="small" rate={hp} onlineFlg={online_flg} />
+            <StatusBar type="MP" size="small" rate={mp} onlineFlg={online_flg} />
           </StyledLowContainer>
         </StyledColumnContainer>
       </StyledContainer>
@@ -80,6 +81,7 @@ const StyledContainer = styled.div<{ onlineFlg: boolean }>`
   display: flex;
   align-items: center;
   gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  cursor: pointer;
   ${({ onlineFlg }) =>
     onlineFlg
       ? css`
@@ -88,7 +90,6 @@ const StyledContainer = styled.div<{ onlineFlg: boolean }>`
       : css`
           opacity: 0.6;
         `}
-  cursor:pointer;
 `
 const StyledColumnContainer = styled.div`
   display: flex;
@@ -114,65 +115,4 @@ const StyledName = styled.div`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-`
-const StyledBar = styled.div`
-  position: relative;
-  width: ${calculateMinSizeBasedOnFigmaWidth(64)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(6)};
-`
-const StyledHpBar = styled(StyledBar)<{ rate: number; onlineFlg: boolean }>`
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-    background: ${({ theme }) => theme.COLORS.SILVER};
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: ${({ rate }) => rate}%;
-    height: 100%;
-    border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-    ${({ onlineFlg }) =>
-      onlineFlg
-        ? css`
-            background: ${({ theme }) => theme.COLORS.HP};
-          `
-        : css`
-            background: ${({ theme }) => theme.COLORS.SILVER};
-          `}
-  }
-`
-const StyledMpBar = styled(StyledBar)<{ rate: number; onlineFlg: boolean }>`
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-    background: ${({ theme }) => theme.COLORS.SILVER};
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: ${({ rate }) => rate}%;
-    height: 100%;
-    border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-    ${({ onlineFlg }) =>
-      onlineFlg
-        ? css`
-            background: ${({ theme }) => theme.COLORS.MP};
-          `
-        : css`
-            background: ${({ theme }) => theme.COLORS.SILVER};
-          `}
-  }
 `
