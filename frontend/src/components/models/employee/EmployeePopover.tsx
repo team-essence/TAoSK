@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
+import { occupationList } from 'consts/occupationList'
 import { PopoverProps } from 'types/popover'
 import { Params } from 'types/status'
 import { theme } from 'styles/theme'
@@ -9,6 +10,7 @@ import { BasicPopover } from 'components/ui/modal/BasicPopover'
 import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
 import { Avatar } from 'components/ui/item/Avatar'
 import { Level } from 'components/ui/item/Level'
+import { Occupation } from 'components/ui/item/Occupation'
 import { Tag } from 'components/ui/tag/Tag'
 import styled from 'styled-components'
 
@@ -16,10 +18,11 @@ type Props = {
   className?: string
   level: number
 } & PopoverProps &
-  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | ' online_flg'>
+  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | 'online_flg'>
 
 export const EmployeePopover: FC<Props> = ({
   id,
+  occupation_id,
   name,
   hp,
   mp,
@@ -58,13 +61,16 @@ export const EmployeePopover: FC<Props> = ({
       handleClose={handleClose}>
       <StyledContainer>
         <StyledUpperRowContainer>
-          <StyledUpperRow>
+          <StyledFlexCotaniner>
             <Avatar image={icon_image} size="normal" />
             <div>
-              <Level size="normal" level={level} />
+              <StyledFlexCotaniner>
+                <Level size="normal" level={level} />
+                <Occupation size="normal" occupation={occupationList[occupation_id - 1]} />
+              </StyledFlexCotaniner>
               <div>HP,MP</div>
             </div>
-          </StyledUpperRow>
+          </StyledFlexCotaniner>
           <StyledName>{name}</StyledName>
           <StyledId>{`#${id}`}</StyledId>
         </StyledUpperRowContainer>
@@ -115,18 +121,7 @@ const StyledUpperRowContainer = styled.div`
 const StyledFlexCotaniner = styled.div`
   display: flex;
   align-items: center;
-`
-const StyledUpperRow = styled(StyledFlexCotaniner)`
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
-`
-const StyledImage = styled.img`
-  aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(80)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(80)};
-  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
-  border-radius: 2px;
-  object-fit: cover;
-  background-color: ${({ theme }) => theme.COLORS.WHITE};
 `
 const StyledName = styled.h5`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};

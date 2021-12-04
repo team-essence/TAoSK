@@ -29,7 +29,7 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 }
 
 const StyledContainer = styled.div<{ param: string }>`
-  width: ${calculateMinSizeBasedOnFigmaWidth(90)};
+  min-width: ${calculateMinSizeBasedOnFigmaWidth(90)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
