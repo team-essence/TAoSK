@@ -250,8 +250,8 @@ const StyledHpBar = styled(StyledBar)<{ rate: number }>`
     content: '';
     position: absolute;
     top: 0;
-    left: ${calculateMinSizeBasedOnFigmaWidth(-4)};
-    width: 100%;
+    right: 0;
+    width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(4)});
     height: 100%;
     background: ${({ theme }) => theme.COLORS.HP_BG};
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
@@ -274,8 +274,8 @@ const StyledMpBar = styled(StyledBar)<{ rate: number }>`
     content: '';
     position: absolute;
     top: 0;
-    left: ${calculateMinSizeBasedOnFigmaWidth(-4)};
-    width: 100%;
+    right: 0;
+    width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(4)});
     height: 100%;
     background: ${({ theme }) => theme.COLORS.MP_BG};
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};

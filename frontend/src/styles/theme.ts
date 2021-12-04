@@ -7,6 +7,7 @@ export const theme = {
     INDEX_MINUS_1: -1,
     INDEX_1: 1,
     INDEX_2: 2,
+    INDEX_3: 3,
     HEADER: 100,
   },
   FONT_SIZES: {
@@ -83,6 +84,10 @@ export const theme = {
     BIZARRE: '#EEE4DA',
     TOBACCO_BROWN: '#665545',
     MATTERHORN: '#483B3D',
+    MONSTER_HP: '#D94531',
+    MONSTER_HP_BG: '#F0C3C3',
+    SPICY_MIX: '#876143',
+    GREEN: '#00B500',
 
     GRADATION: {
       TECHNOLOGY: {
