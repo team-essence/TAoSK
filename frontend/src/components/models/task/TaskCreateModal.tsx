@@ -7,6 +7,7 @@ import styled, {
   DefaultTheme,
 } from 'styled-components'
 import { theme } from 'styles/theme'
+import { TaskStatusPoint } from 'components/models/task/TaskStatusPoint'
 import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
@@ -59,6 +60,7 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
         <StyledRightColumn>
           <CalenderField label="期限" registration={register('date')} required={false} />
           <SearchMemberField {...searchMemberFieldProps} />
+          <TaskStatusPoint />
         </StyledRightColumn>
       </StyledWrapper>
     </StyledModal>
@@ -99,7 +101,7 @@ const fieldStyle = (
   label {
     color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-    font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+    font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
   }
   input,
   textarea {

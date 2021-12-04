@@ -82,16 +82,23 @@ export const theme = {
     PEARL_BUSH: '#EDE5DE',
     SCORPION: '#575757',
     COD_GRAY: '#1E1E1E',
-    HP: '#85D931',
-    HP_BG: '#DBF5C0',
-    MP: '#31BBD9',
-    MP_BG: '#C3E8F0',
     BIZARRE: '#EEE4DA',
     TOBACCO_BROWN: '#665545',
     MONSTER_HP: '#D94531',
     MONSTER_HP_BG: '#F0C3C3',
     SPICY_MIX: '#876143',
     GREEN: '#00B500',
+
+    HP: '#85D931',
+    HP_BG: '#DBF5C0',
+    MP: '#31BBD9',
+    MP_BG: '#C3E8F0',
+    TECHNOLOGY: '#6558B9',
+    SOLUTION: '#D26ECE',
+    ACHIEVEMENT: '#DFC635',
+    MOTIVATION: '#BA7565',
+    DESIGN: '#65BAAA',
+    PLAN: '#8FBA65',
 
     GRADATION: {
       TECHNOLOGY: {
