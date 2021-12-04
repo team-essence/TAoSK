@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
-import { DEFAUT_USER } from 'consts/defaultImages'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { usePopover } from 'hooks/usePopover'
 import { EmployeePopover } from 'components/models/employee/EmployeePopover'
 import { Level } from 'components/ui/item/Level'
+import { Avatar } from 'components/ui/item/Avatar'
 import Exp from 'utils/exp/exp'
 import styled, { css } from 'styled-components'
 
@@ -14,6 +14,7 @@ type Props = {
 
 export const EmployeeInformation: FC<Props> = ({
   id,
+  occupation_id,
   name,
   icon_image,
   hp,
@@ -31,17 +32,32 @@ export const EmployeeInformation: FC<Props> = ({
 }) => {
   const { anchorEl, openPopover, closePopover } = usePopover()
   const level = Exp.toLevel(exp) !== 0 ? Exp.toLevel(exp) : 1
-  const params = { technology, achievement, motivation, solution, plan, design }
+  const popoverItem = {
+    id,
+    occupation_id,
+    name,
+    hp,
+    mp,
+    level,
+    icon_image,
+    interests,
+    certifications,
+    technology,
+    achievement,
+    motivation,
+    solution,
+    plan,
+    design,
+  }
 
   return (
     <>
       <StyledContainer onlineFlg={online_flg} onClick={openPopover}>
-        <StyledImage src={icon_image ? icon_image : DEFAUT_USER} alt="employeeImage" />
+        <Avatar image={icon_image} size="small" />
         <StyledColumnContainer>
           <StyledLowContainer>
             <StyledName>{name}</StyledName>
             <Level level={level} size="small" />
-            {/* <StyledLevel>{`lv.${level}`}</StyledLevel> */}
           </StyledLowContainer>
           <StyledLowContainer>
             <StyledHpBar rate={hp} onlineFlg={online_flg} />
@@ -54,12 +70,7 @@ export const EmployeeInformation: FC<Props> = ({
         handleClose={closePopover}
         vertical="top"
         horizontal="right"
-        id={id}
-        name={name}
-        icon_image={icon_image}
-        interests={interests}
-        certifications={certifications}
-        {...params}
+        {...popoverItem}
       />
     </>
   )
@@ -95,15 +106,6 @@ const StyledLowContainer = styled.div`
   border-radius: 4px;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)} ${calculateMinSizeBasedOnFigmaWidth(4)};
 `
-const StyledImage = styled.img`
-  aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(41)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(41)};
-  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
-  border-radius: 4px;
-  object-fit: cover;
-  background-color: ${({ theme }) => theme.COLORS.WHITE};
-`
 const StyledName = styled.div`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
@@ -112,16 +114,6 @@ const StyledName = styled.div`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-`
-const StyledLevel = styled.div`
-  min-width: ${calculateMinSizeBasedOnFigmaWidth(32)};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_10};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
-  border-radius: 4px;
-  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(4)};
-  background-color: ${({ theme }) => theme.COLORS.MATTERHORN};
 `
 const StyledBar = styled.div`
   position: relative;

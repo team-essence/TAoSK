@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { PopoverProps } from 'types/popover'
 import { Params } from 'types/status'
 import { theme } from 'styles/theme'
@@ -6,27 +7,23 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { BasicPopover } from 'components/ui/modal/BasicPopover'
 import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
+import { Avatar } from 'components/ui/item/Avatar'
+import { Level } from 'components/ui/item/Level'
 import { Tag } from 'components/ui/tag/Tag'
 import styled from 'styled-components'
 
 type Props = {
   className?: string
-  id: string
-  name: string
-  icon_image: string
-  technology: number
-  achievement: number
-  motivation: number
-  solution: number
-  plan: number
-  design: number
-  interests: { id: number; context: string }[]
-  certifications: { id: number; name: string }[]
-} & PopoverProps
+  level: number
+} & PopoverProps &
+  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | ' online_flg'>
 
 export const EmployeePopover: FC<Props> = ({
   id,
   name,
+  hp,
+  mp,
+  level,
   icon_image,
   anchorEl,
   vertical,
@@ -62,9 +59,9 @@ export const EmployeePopover: FC<Props> = ({
       <StyledContainer>
         <StyledUpperRowContainer>
           <StyledUpperRow>
-            <StyledImage src={icon_image} alt="icon" />
+            <Avatar image={icon_image} size="normal" />
             <div>
-              <div>lv enj</div>
+              <Level size="normal" level={level} />
               <div>HP,MP</div>
             </div>
           </StyledUpperRow>

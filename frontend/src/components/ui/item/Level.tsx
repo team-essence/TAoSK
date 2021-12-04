@@ -5,12 +5,13 @@ import styled, { css } from 'styled-components'
 type StyleSize = 'small' | 'normal' | 'large'
 
 type Props = {
+  className?: string
   level: number
   size: StyleSize
 }
 
-export const Level: FC<Props> = ({ level, size }) => {
-  return <StyledLevel size={size}>{`lv.${level}`}</StyledLevel>
+export const Level: FC<Props> = ({ className, level, size }) => {
+  return <StyledLevel className={className} size={size}>{`lv.${level}`}</StyledLevel>
 }
 
 const StyledLevel = styled.div<{ size: StyleSize }>`
@@ -31,10 +32,10 @@ const StyledLevel = styled.div<{ size: StyleSize }>`
       case 'normal':
         return css`
           min-width: ${calculateMinSizeBasedOnFigmaWidth(32)};
-          font-size: ${theme.FONT_SIZES.SIZE_10};
-          border: 1px solid ${theme.COLORS.BRANDY};
+          font-size: ${theme.FONT_SIZES.SIZE_14};
+          border: 2px solid ${theme.COLORS.BRANDY};
           border-radius: 4px;
-          padding: 0 ${calculateMinSizeBasedOnFigmaWidth(4)};
+          padding: 0 ${calculateMinSizeBasedOnFigmaWidth(8)};
         `
       case 'large':
         return css`
