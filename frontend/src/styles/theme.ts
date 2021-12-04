@@ -91,6 +91,7 @@ export const theme = {
     EXP_BG: '#E7D5A6',
     BIZARRE: '#EEE4DA',
     TOBACCO_BROWN: '#665545',
+    MATTERHORN: '#483B3D',
     MONSTER_HP: '#D94531',
     MONSTER_HP_BG: '#F0C3C3',
     SPICY_MIX: '#876143',
@@ -140,6 +141,15 @@ export const theme = {
       TOBACCO_BROWN: '#665545',
       SILVER: '#BFBFBF',
       BLACK: '#38373C',
+    },
+
+    STATUS: {
+      TECHNOLOGY: '#6558B9',
+      ACHIEVEMENT: '#C26DBF',
+      SOLUTION: '#D4C25C',
+      MOTIVATION: '#BA7565',
+      DESIGN: '#65BAAA',
+      PLAN: '#8FBA65;',
     },
   },
 } as const

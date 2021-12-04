@@ -28,7 +28,8 @@ import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DropType } from 'consts/dropType'
-import { ColumnList } from 'components/models/task/ColumnList'
+import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
+import { TaskColumnList } from 'components/models/task/TaskColumnList'
 import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -457,39 +458,7 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <div>
-          <h2>オンライン</h2>
-          {projectData.data?.getProjectById.groups.map(
-            (group, index) =>
-              group.user.online_flg && (
-                <div key={index}>
-                  <p>{group.user.name}</p>
-                  <p>{group.user.icon_image}</p>
-                  <p>{group.user.id}</p>
-                  <p>{group.user.mp}</p>
-                  <p>{group.user.hp}</p>
-                  <p>{group.user.occupation_id}</p>
-                  <p>{JSON.stringify(group.user.online_flg)}</p>
-                </div>
-              ),
-          )}
-          <h2>オフライン</h2>
-          {projectData.data?.getProjectById.groups.map(
-            (group, index) =>
-              !group.user.online_flg && (
-                <div key={index}>
-                  <p>{group.user.name}</p>
-                  <p>{group.user.icon_image}</p>
-                  <p>{group.user.id}</p>
-                  <p>{group.user.mp}</p>
-                  <p>{group.user.hp}</p>
-                  <p>{group.user.occupation_id}</p>
-                  <p>{JSON.stringify(group.user.online_flg)}</p>
-                </div>
-              ),
-          )}
-          {/* {JSON.stringify(projectData.data?.getProjectById.groups)} */}
-        </div>
+        <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} />
         <p>左側</p>
 
         <div style={{ border: 'solid' }}></div>
@@ -499,7 +468,7 @@ export const ProjectDetail: FC = () => {
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
                 <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <ColumnList lists={list} handleAddTask={handleAddTask} />
+                  <TaskColumnList lists={list} handleAddTask={handleAddTask} />
                   {provided.placeholder}
                 </StyledTaskListContainer>
               )}
