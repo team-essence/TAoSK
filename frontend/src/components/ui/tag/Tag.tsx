@@ -25,7 +25,7 @@ export const Tag: FC<Props> = ({ className, name, onClick, tagType }) => {
       <StyledTagTriangle tagType={tagType} />
       <StyledTag tagType={tagType}>
         <p>{name}</p>
-        {onClick && (
+        {!!onClick && (
           <StyledCrossButton tagType={tagType} color={theme.COLORS.CHOCOLATE} onClick={onClick} />
         )}
       </StyledTag>
@@ -98,7 +98,6 @@ const StyledTag = styled.div<{ tagType: TAG_TYPE }>`
   `}
 `
 
-// TODO: 罰ボタンありのタグデザインが上がってきたら修正しないと大きさが変わる
 const StyledCrossButton = styled(CrossButton)<{ tagType: TAG_TYPE }>`
   height: 100%;
   svg {

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import logger from 'utils/debugger/logger'
-import { Tag, TAG_TYPE } from '../../ui/tag/Tag'
+import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
 type Props = {
   className?: string
