@@ -3,31 +3,31 @@ import { createGlobalStyle } from 'styled-components'
 export const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Mplus1Code';
-    src: url('fonts/Mplus1Code-Light.ttf') format('truetype');
+    src: url('/fonts/Mplus1Code-Light.ttf') format('truetype');
     font-weight: 300;
     font-style: normal;
   }
   @font-face {
     font-family: 'Mplus1Code';
-    src: url('fonts/Mplus1Code-Regular.ttf') format('truetype');
+    src: url('/fonts/Mplus1Code-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
   }
   @font-face {
     font-family: 'Mplus1Code';
-    src: url('fonts/Mplus1Code-Medium.ttf') format('truetype');
+    src: url('/fonts/Mplus1Code-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
   }
   @font-face {
     font-family: 'Mplus1Code';
-    src: url('fonts/Mplus1Code-SemiBold.ttf') format('truetype');
+    src: url('/fonts/Mplus1Code-SemiBold.ttf') format('truetype');
     font-weight: 600;
     font-style: normal;
   }
   @font-face {
     font-family: 'Mplus1Code';
-    src: url('fonts/Mplus1Code-Bold.ttf') format('truetype');
+    src: url('/fonts/Mplus1Code-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
   }
@@ -51,7 +51,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.COLORS.WHITE};
     word-break: break-word;
     word-wrap: break-word;
-    font-family: 'Mplus1Code', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
+    font-family: "Mplus1Code", "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
     font-weight: 500;
     }
