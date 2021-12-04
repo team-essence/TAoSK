@@ -25,7 +25,9 @@ export const Tag: FC<Props> = ({ className, name, onClick, tagType }) => {
       <StyledTagTriangle tagType={tagType} />
       <StyledTag tagType={tagType}>
         <p>{name}</p>
-        {onClick && <StyledCrossButton color={theme.COLORS.CHOCOLATE} onClick={onClick} />}
+        {onClick && (
+          <StyledCrossButton tagType={tagType} color={theme.COLORS.CHOCOLATE} onClick={onClick} />
+        )}
       </StyledTag>
     </StyledTagContainer>
   )
@@ -97,12 +99,23 @@ const StyledTag = styled.div<{ tagType: TAG_TYPE }>`
 `
 
 // TODO: 罰ボタンありのタグデザインが上がってきたら修正しないと大きさが変わる
-const StyledCrossButton = styled(CrossButton)`
+const StyledCrossButton = styled(CrossButton)<{ tagType: TAG_TYPE }>`
   height: 100%;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(10)} ${calculateMinSizeBasedOnFigmaWidth(7)}
-    ${calculateMinSizeBasedOnFigmaWidth(10)} 0;
   svg {
     width: ${calculateMinSizeBasedOnFigmaWidth(8)};
     height: ${calculateMinSizeBasedOnFigmaWidth(8)};
   }
+
+  ${({ tagType }) => css`
+    ${tagType === TAG_TYPE.NORMAL &&
+    css`
+      padding: ${calculateMinSizeBasedOnFigmaWidth(10)} ${calculateMinSizeBasedOnFigmaWidth(7)}
+        ${calculateMinSizeBasedOnFigmaWidth(10)} 0;
+    `}
+
+    ${tagType === TAG_TYPE.SMALL &&
+    css`
+      padding-right: ${calculateMinSizeBasedOnFigmaWidth(6)};
+    `}
+  `}
 `
