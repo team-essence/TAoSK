@@ -11,6 +11,7 @@ import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
 import { Avatar } from 'components/ui/item/Avatar'
 import { Level } from 'components/ui/item/Level'
 import { Occupation } from 'components/ui/item/Occupation'
+import { StatusBar } from 'components/ui/item/StatusBar'
 import { Tag } from 'components/ui/tag/Tag'
 import styled, { css } from 'styled-components'
 
@@ -61,16 +62,27 @@ export const EmployeePopover: FC<Props> = ({
       handleClose={handleClose}>
       <StyledContainer>
         <StyledUpperRowContainer>
-          <StyledFlexCotaniner>
+          <StyledFlexWrapper>
             <Avatar image={icon_image} size="normal" />
             <div>
-              <StyledFlexCotaniner>
+              <StyledFlexWrapper>
                 <Level size="normal" level={level} />
                 <Occupation size="normal" occupation={occupationList[occupation_id - 1]} />
-              </StyledFlexCotaniner>
-              <div>HP,MP</div>
+              </StyledFlexWrapper>
+              <StyledStatusWrap>
+                <StyledStatusBarContainer>
+                  <StyledStatusItem>HP</StyledStatusItem>
+                  <StatusBar type="HP" size="normal" rate={hp} onlineFlg={true} />
+                  <StyledStatusValue>{hp}/100</StyledStatusValue>
+                </StyledStatusBarContainer>
+                <StyledStatusBarContainer>
+                  <StyledStatusItem>MP</StyledStatusItem>
+                  <StatusBar type="MP" size="normal" rate={mp} onlineFlg={true} />
+                  <StyledStatusValue>{mp}/100</StyledStatusValue>
+                </StyledStatusBarContainer>
+              </StyledStatusWrap>
             </div>
-          </StyledFlexCotaniner>
+          </StyledFlexWrapper>
           <StyledName>{name}</StyledName>
           <StyledId>{`#${id}`}</StyledId>
         </StyledUpperRowContainer>
@@ -110,23 +122,56 @@ export const EmployeePopover: FC<Props> = ({
 }
 
 const StyledContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(320)};
-  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
+  width: ${calculateMinSizeBasedOnFigmaWidth(328)};
+  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
 `
 const StyledUpperRowContainer = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(16)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
-const StyledFlexCotaniner = styled.div`
+const StyledFlexWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+`
+const StyledStatusWrap = styled.div`
+  padding: ${calculateMinSizeBasedOnFigmaWidth(2)} ${calculateMinSizeBasedOnFigmaWidth(8)};
+  margin-top: ${calculateMinSizeBasedOnFigmaWidth(6)};
+  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
+  border-radius: 4px;
+`
+const StyledStatusBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(2)};
+`
+const StyledStatusItem = styled.p`
+  font-family: 'Yanone Kaffeesatz', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif;
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+    line-height: 1.2;
+    color: ${theme.COLORS.WHITE};
+    font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+    background: linear-gradient(0deg, ${theme.COLORS.MINE_SHAFT}, ${theme.COLORS.MINE_SHAFT} 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 4px transparent;
+  `}
+`
+const StyledStatusValue = styled(StyledStatusItem)`
+  position: absolute;
+  top: 0;
+  right: ${calculateMinSizeBasedOnFigmaWidth(2)};
 `
 const StyledName = styled.h5`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
+  padding-top: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledId = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
@@ -162,108 +207,3 @@ const StyledTagContainer = styled(StyledMarginVertical)`
   flex-wrap: wrap;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
-
-// const StyledUserInfoWrapper = styled.div`
-//   padding: 6px 0;
-//   background: ${({ theme }) => convertIntoRGBA(theme.COLORS.COD_GRAY, 0.11)};
-//   width: ${calculateMinSizeBasedOnFigmaWidth(426)};
-// `
-
-// const StyledParameterContainer = styled(StyledUserInfoWrapper)`
-//   padding: ${calculateMinSizeBasedOnFigmaWidth(17)} 0;
-//   display: flex;
-//   flex-direction: column;
-//   gap: ${calculateMinSizeBasedOnFigmaWidth(16)} 0;
-// `
-
-// const StyledStatusBarContainer = styled.div`
-//   margin: 0 auto;
-//   position: relative;
-//   display: flex;
-//   align-items: center;
-//   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(9)};
-//   width: fit-content;
-
-//   h5 {
-//     color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-//     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-//     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
-//   }
-
-//   p {
-//     font-family: 'Yanone Kaffeesatz', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
-//       'Hiragino Sans', Meiryo, sans-serif;
-//     position: absolute;
-//     right: 0;
-//     ${({ theme }) => css`
-//       width: ${calculateMinSizeBasedOnFigmaWidth(58)};
-//       text-align: center;
-//       z-index: ${theme.Z_INDEX.INDEX_2};
-//       font-size: ${theme.FONT_SIZES.SIZE_18};
-//       color: ${theme.COLORS.WHITE};
-//       font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
-//       background: linear-gradient(
-//         0deg,
-//         ${theme.COLORS.MINE_SHAFT},
-//         ${theme.COLORS.MINE_SHAFT} 100%
-//       );
-//       background-size: 200% 200%;
-//       -webkit-background-clip: text;
-//       -webkit-text-stroke: 4px transparent;
-//     `}
-//   }
-// `
-
-// const StyledBar = styled.div`
-//   position: relative;
-//   width: ${calculateMinSizeBasedOnFigmaWidth(150)};
-//   height: ${calculateMinSizeBasedOnFigmaWidth(13)};
-// `
-
-// const StyledHpBar = styled(StyledBar)<{ rate: number }>`
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     right: 0;
-//     width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(4)});
-//     height: 100%;
-//     background: ${({ theme }) => theme.COLORS.HP_BG};
-//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-//     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
-//   }
-
-//   &::after {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     width: ${({ rate }) => rate}%;
-//     height: 100%;
-//     background: ${({ theme }) => theme.COLORS.HP};
-//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-//   }
-// `
-
-// const StyledMpBar = styled(StyledBar)<{ rate: number }>`
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     right: 0;
-//     width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(4)});
-//     height: 100%;
-//     background: ${({ theme }) => theme.COLORS.MP_BG};
-//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-//     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
-//   }
-
-//   &::after {
-//     content: '';
-//     position: absolute;
-//     top: 0;
-//     width: ${({ rate }) => rate}%;
-//     height: 100%;
-//     background: ${({ theme }) => theme.COLORS.MP};
-//     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-//   }
-// `
