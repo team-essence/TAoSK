@@ -4,6 +4,7 @@ import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { usePopover } from 'hooks/usePopover'
 import { EmployeePopover } from 'components/models/employee/EmployeePopover'
+import { Level } from 'components/ui/item/Level'
 import Exp from 'utils/exp/exp'
 import styled, { css } from 'styled-components'
 
@@ -39,7 +40,8 @@ export const EmployeeInformation: FC<Props> = ({
         <StyledColumnContainer>
           <StyledLowContainer>
             <StyledName>{name}</StyledName>
-            <StyledLevel>{`lv.${level}`}</StyledLevel>
+            <Level level={level} size="small" />
+            {/* <StyledLevel>{`lv.${level}`}</StyledLevel> */}
           </StyledLowContainer>
           <StyledLowContainer>
             <StyledHpBar rate={hp} onlineFlg={online_flg} />
@@ -53,6 +55,8 @@ export const EmployeeInformation: FC<Props> = ({
         vertical="top"
         horizontal="right"
         id={id}
+        name={name}
+        icon_image={icon_image}
         interests={interests}
         certifications={certifications}
         {...params}
@@ -74,7 +78,6 @@ const StyledContainer = styled.div<{ onlineFlg: boolean }>`
           opacity: 0.6;
         `}
   cursor:pointer;
-  opacity: 0.7;
 `
 const StyledColumnContainer = styled.div`
   display: flex;
@@ -93,9 +96,12 @@ const StyledLowContainer = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)} ${calculateMinSizeBasedOnFigmaWidth(4)};
 `
 const StyledImage = styled.img`
+  aspect-ratio: 1 / 1;
   width: ${calculateMinSizeBasedOnFigmaWidth(41)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(41)};
   border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
+  object-fit: cover;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
 `
 const StyledName = styled.div`
@@ -127,18 +133,11 @@ const StyledHpBar = styled(StyledBar)<{ rate: number; onlineFlg: boolean }>`
     content: '';
     position: absolute;
     top: 0;
-    left: ${calculateMinSizeBasedOnFigmaWidth(-1.5)};
-    width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(1.5)});
+    left: 0;
+    width: 100%;
     height: 100%;
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-    ${({ onlineFlg }) =>
-      onlineFlg
-        ? css`
-            background: ${({ theme }) => theme.COLORS.HP_BG};
-          `
-        : css`
-            background: ${({ theme }) => theme.COLORS.SILVER};
-          `}
+    background: ${({ theme }) => theme.COLORS.SILVER};
   }
   &::after {
     content: '';
@@ -162,18 +161,11 @@ const StyledMpBar = styled(StyledBar)<{ rate: number; onlineFlg: boolean }>`
     content: '';
     position: absolute;
     top: 0;
-    left: ${calculateMinSizeBasedOnFigmaWidth(-1.5)};
-    width: calc(100% + ${calculateMinSizeBasedOnFigmaWidth(1.5)});
+    left: 0;
+    width: 100%;
     height: 100%;
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
-    ${({ onlineFlg }) =>
-      onlineFlg
-        ? css`
-            background: ${({ theme }) => theme.COLORS.MP_BG};
-          `
-        : css`
-            background: ${({ theme }) => theme.COLORS.SILVER};
-          `}
+    background: ${({ theme }) => theme.COLORS.SILVER};
   }
   &::after {
     content: '';

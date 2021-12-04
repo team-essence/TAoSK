@@ -29,7 +29,7 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 }
 
 const StyledContainer = styled.div<{ param: string }>`
-  width: ${calculateMinSizeBasedOnFigmaWidth(88)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(90)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
@@ -92,9 +92,10 @@ const StyledImage = styled.img`
   width: ${calculateMinSizeBasedOnFigmaWidth(14)};
 `
 const StyledParam = styled.div`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
+  -webkit-text-stroke: 0.4px ${({ theme }) => theme.COLORS.BLACK};
 `
 const StyledRank = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};

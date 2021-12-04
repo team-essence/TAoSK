@@ -7,12 +7,13 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { BasicPopover } from 'components/ui/modal/BasicPopover'
 import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
 import { Tag } from 'components/ui/tag/Tag'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styled from 'styled-components'
 
 type Props = {
   className?: string
   id: string
+  name: string
+  icon_image: string
   technology: number
   achievement: number
   motivation: number
@@ -25,6 +26,8 @@ type Props = {
 
 export const EmployeePopover: FC<Props> = ({
   id,
+  name,
+  icon_image,
   anchorEl,
   vertical,
   horizontal,
@@ -57,7 +60,17 @@ export const EmployeePopover: FC<Props> = ({
       horizontal={horizontal}
       handleClose={handleClose}>
       <StyledContainer>
-        <StyledUpperRow>上段</StyledUpperRow>
+        <StyledUpperRowContainer>
+          <StyledUpperRow>
+            <StyledImage src={icon_image} alt="icon" />
+            <div>
+              <div>lv enj</div>
+              <div>HP,MP</div>
+            </div>
+          </StyledUpperRow>
+          <StyledName>{name}</StyledName>
+          <StyledId>{`#${id}`}</StyledId>
+        </StyledUpperRowContainer>
         <StyledBorder />
         <StyledLowerRow>
           <div>
@@ -94,14 +107,39 @@ export const EmployeePopover: FC<Props> = ({
 }
 
 const StyledContainer = styled.div`
+  width: ${calculateMinSizeBasedOnFigmaWidth(320)};
   border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
 `
-const StyledUpperRow = styled.div`
-  /* border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
-  background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-  border-radius: 4px; */
+const StyledUpperRowContainer = styled.div`
+  padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(16)};
+`
+const StyledFlexCotaniner = styled.div`
+  display: flex;
+  align-items: center;
+`
+const StyledUpperRow = styled(StyledFlexCotaniner)`
+  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+`
+const StyledImage = styled.img`
+  aspect-ratio: 1 / 1;
+  width: ${calculateMinSizeBasedOnFigmaWidth(80)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(80)};
+  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
+  border-radius: 2px;
+  object-fit: cover;
+  background-color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledName = styled.h5`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledId = styled.p`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.NORMAL};
+  color: ${({ theme }) => theme.COLORS.SILVER};
 `
 const StyledLowerRow = styled.div`
   width: 100%;
@@ -125,10 +163,10 @@ const StyledMarginVertical = styled.div`
 const StyledEmployeeStatus = styled(StyledMarginVertical)`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  justify-content: space-between;
 `
 const StyledTagContainer = styled(StyledMarginVertical)`
   display: flex;
   flex-wrap: wrap;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  max-width: ${calculateMinSizeBasedOnFigmaWidth(256)};
 `
