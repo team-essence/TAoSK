@@ -34,6 +34,7 @@ import { ProjectRight } from 'components/models/project/ProjectRight'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
 import { GameLogType } from 'types/gameLog'
+import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -530,6 +531,16 @@ export const ProjectDetail: FC = () => {
             </Droppable>
           </DragDropContext>
         </div>
+        {!!currentUserData.data && (
+          <ProjectMyInfo
+            iconImage={currentUserData.data.user.icon_image}
+            occupationId={currentUserData.data.user.occupation_id}
+            name={currentUserData.data.user.name}
+            totalExp={currentUserData.data.user.exp}
+            hp={currentUserData.data.user.hp}
+            mp={currentUserData.data.user.mp}
+          />
+        )}
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>
