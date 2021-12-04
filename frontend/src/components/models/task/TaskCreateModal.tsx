@@ -12,7 +12,7 @@ import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
-import { TaskStatusPointField } from 'components/ui/form/StatusPointField'
+import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
   calculateMinSizeBasedOnFigmaWidth,
