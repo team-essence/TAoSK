@@ -12,6 +12,7 @@ type Props = {
 } & Omit<GetUserQuery['user'], 'company' | 'memo'>
 
 export const EmployeeInformation: FC<Props> = ({
+  id,
   name,
   icon_image,
   hp,
@@ -49,6 +50,7 @@ export const EmployeeInformation: FC<Props> = ({
         handleClose={closePopover}
         vertical="top"
         horizontal="right"
+        id={id}
         {...params}
       />
     </>

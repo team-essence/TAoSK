@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { StatusParam } from 'types/status'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import Status from 'utils/status/status'
 import styled, { css } from 'styled-components'
 
@@ -15,20 +16,22 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 
   return (
     <StyledContainer param={param}>
-      <StyledFlexContainer>
-        <img src="/svg/weapon/technology_bg.svg" alt="weapon" />
-        <p>{convertParamIntoJp(param)}</p>
-      </StyledFlexContainer>
-      <div>
-        <p>{rank}</p>
-        <p>{proficiency}</p>
-      </div>
+      <StyledParamContainer>
+        <StyledImage src="/svg/weapon/technology_bg.svg" alt="weapon" />
+        <StyledParam>{convertParamIntoJp(param)}</StyledParam>
+      </StyledParamContainer>
+      <StyledRankContainer>
+        <StyledRank>{rank}</StyledRank>
+        <StyledRank>{proficiency}</StyledRank>
+      </StyledRankContainer>
     </StyledContainer>
   )
 }
 
 const StyledContainer = styled.div<{ param: string }>`
-  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
+  width: ${calculateMinSizeBasedOnFigmaWidth(88)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
   ${({ param, theme }) => {
     switch (param) {
@@ -74,4 +77,27 @@ const StyledFlexContainer = styled.div`
   display: flex;
   align-items: center;
 `
-// const StyledParam = styled(StyledFlex)``
+const StyledParamContainer = styled(StyledFlexContainer)`
+  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  justify-content: center;
+`
+const StyledRankContainer = styled(StyledFlexContainer)`
+  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  justify-content: center;
+  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
+  border-radius: 2px;
+  background-color: ${({ theme }) => theme.COLORS.MATTERHORN};
+`
+const StyledImage = styled.img`
+  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+`
+const StyledParam = styled.div`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledRank = styled.p`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  color: ${({ theme }) => theme.COLORS.WHITE};
+`

@@ -6,11 +6,13 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { BasicPopover } from 'components/ui/modal/BasicPopover'
 import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
+import { Tag } from 'components/ui/tag/Tag'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styled from 'styled-components'
 
 type Props = {
   className?: string
+  id: string
   technology: number
   achievement: number
   motivation: number
@@ -20,6 +22,7 @@ type Props = {
 } & PopoverProps
 
 export const EmployeePopover: FC<Props> = ({
+  id,
   anchorEl,
   vertical,
   horizontal,
@@ -65,6 +68,9 @@ export const EmployeePopover: FC<Props> = ({
           <div>
             <StyledH4>興味あること</StyledH4>
             <StyledBorder />
+            {/* <div>
+              <Tag name="基本情報" tagType="small" />
+            </div> */}
           </div>
           <div>
             <StyledH4>資格</StyledH4>
@@ -102,8 +108,10 @@ const StyledBorder = styled.div`
   border: 1px solid ${convertIntoRGBA(theme.COLORS.BRANDY, 0.6)};
   border-radius: 4px;
 `
-
-const StyledEmployeeStatus = styled.div`
+const StyledMarginVertical = styled.div`
+  margin: ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
+`
+const StyledEmployeeStatus = styled(StyledMarginVertical)`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
