@@ -31,6 +31,12 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 700;
     font-style: normal;
   }
+    @font-face {
+    font-family: 'ZCOOL QingKe HuangYou';
+    src: url('fonts/ZCOOLQingKeHuangYou-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
 
   *,
   *:before,

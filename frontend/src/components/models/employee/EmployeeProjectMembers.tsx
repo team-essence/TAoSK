@@ -6,6 +6,8 @@ import {
 } from 'utils/calculateSizeBasedOnFigma'
 import { EmployeeOnlineStatusLabel } from 'components/models/employee/EmployeeOnlineStatusLabel'
 import { EmployeeInformation } from 'components/models/employee/EmployeeInformation'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
@@ -43,7 +45,10 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
             ),
         )}
       </StyledMemberContainer>
-      <StyledSignBoard>MEMBER</StyledSignBoard>
+      <StyledSignBoardContainer>
+        <StyledH3>MEMBER</StyledH3>
+        <StyledFontAwesomeIcon icon={faCaretRight} />
+      </StyledSignBoardContainer>
     </StyledContaner>
   )
 }
@@ -51,6 +56,7 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
 const StyledContaner = styled.div`
   display: flex;
   gap: ${calculateVhBasedOnFigma(8)};
+  align-items: baseline;
 `
 const StyledMemberContainer = styled.div`
   width: ${calculateMinSizeBasedOnFigmaWidth(210)};
@@ -63,18 +69,28 @@ const StyledMemberContainer = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
 `
-const StyledSignBoard = styled.h3`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_18};
-  height: ${calculateVhBasedOnFigma(142)};
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  border: 1px solid ${({ theme }) => theme.COLORS.BRANDY};
+const StyledSignBoardContainer = styled.div`
+  display: flex;
+  align-items: center;
+  border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   filter: drop-shadow(-4px 4px 2px rgba(0, 0, 0, 0.5));
   writing-mode: vertical-rl;
   -webkit-writing-mode: vertical-rl;
   -ms-writing-mode: tb-rl;
   text-orientation: upright;
+`
+const StyledH3 = styled.h3`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_18};
+  /* font-family: 'ZCOOL QingKe HuangYou' 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif; */
+  color: ${({ theme }) => theme.COLORS.WHITE};
+`
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_18};
+  color: ${({ theme }) => theme.COLORS.WHITE};
 `
 const StyledEmployeeContainer = styled.div`
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(10)};
