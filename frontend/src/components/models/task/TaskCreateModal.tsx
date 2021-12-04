@@ -7,12 +7,12 @@ import styled, {
   DefaultTheme,
 } from 'styled-components'
 import { theme } from 'styles/theme'
-import { TaskStatusPoint } from 'components/models/task/TaskStatusPoint'
 import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
+import { TaskStatusPointField } from 'components/ui/form/StatusPointField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
   calculateMinSizeBasedOnFigmaWidth,
@@ -60,7 +60,16 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
         <StyledRightColumn>
           <CalenderField label="期限" registration={register('date')} required={false} />
           <SearchMemberField {...searchMemberFieldProps} />
-          <TaskStatusPoint />
+
+          <StyledStatusWrapper className={className}>
+            <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
+            <TaskStatusPointField status="技術力" />
+            <TaskStatusPointField status="達成力" />
+            <TaskStatusPointField status="解決力" />
+            <TaskStatusPointField status="意欲" />
+            <TaskStatusPointField status="デザイン" />
+            <TaskStatusPointField status="設計力" />
+          </StyledStatusWrapper>
         </StyledRightColumn>
       </StyledWrapper>
     </StyledModal>
@@ -126,4 +135,14 @@ const StyledOverviewField = styled(TextAreaField)`
     width: 100%;
     height: ${calculateMinSizeBasedOnFigmaWidth(180)};
   `)}
+`
+const StyledStatusWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
+const StyledStatusTitle = styled.p`
+  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `

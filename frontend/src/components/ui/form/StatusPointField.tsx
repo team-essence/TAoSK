@@ -11,7 +11,7 @@ type Props = {
   status: Status
 }
 
-export const StatusPointField: FC<Props> = ({ status }) => {
+export const TaskStatusPointField: FC<Props> = ({ status }) => {
   const { count, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
     useIncrementAndDecrement(10, 0)
 
