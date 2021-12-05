@@ -13,12 +13,12 @@ type Props = {
 }
 
 export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, closeClick }) => {
-  const [host, setHost] = useState('')
+  const [origin, setOrigin] = useState('')
 
   useEffect(() => {
     if (!location) return
-    logger.debug(location.host)
-    setHost(location.host)
+    logger.debug(location.origin)
+    setOrigin(location.origin)
   }, [location])
 
   return (
@@ -39,8 +39,8 @@ export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, clos
           <StyledInvitationUrlContainer>
             <p>
               <span>URL：</span>
-              <a href={`https://${host}/invitation/${'hoge'}`}>
-                https://{host}/invitation/{'id'}
+              <a href={`${origin}/invitation/${'hoge'}`}>
+                {origin}/invitation/{'id'}
               </a>
             </p>
           </StyledInvitationUrlContainer>
