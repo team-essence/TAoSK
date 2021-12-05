@@ -37,35 +37,39 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, userDatas = [
 
   if (avatarStyleType === AVATAR_STYLE.LIST && userDatas.length)
     return (
-      <StyledUserCountContainer className={className}>
-        <StyledUserCountListContainer onClick={handlePopUp}>
-          <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
-        </StyledUserCountListContainer>
-
+      <>
+        <StyledUserCountContainer className={className}>
+          <StyledUserCountListContainer onClick={handlePopUp}>
+            <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
+          </StyledUserCountListContainer>
+        </StyledUserCountContainer>
         {isPopup && (
           <ManyUserAvatar
             userDatas={userDatas}
+            userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
           />
         )}
-      </StyledUserCountContainer>
+      </>
     )
   else if (avatarStyleType === AVATAR_STYLE.MODAL && userDatas.length)
     return (
-      <StyledUserCountContainer className={className}>
-        <StyledUserCountModalContainer onClick={handlePopUp}>
-          <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
-        </StyledUserCountModalContainer>
-
+      <>
+        <StyledUserCountContainer className={className}>
+          <StyledUserCountModalContainer onClick={handlePopUp}>
+            <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
+          </StyledUserCountModalContainer>
+        </StyledUserCountContainer>
         {isPopup && (
           <ManyUserAvatar
             userDatas={userDatas}
+            userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
           />
         )}
-      </StyledUserCountContainer>
+      </>
     )
   else
     return (

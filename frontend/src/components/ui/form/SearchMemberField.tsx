@@ -113,9 +113,11 @@ const StyledAllWrapper = styled.div`
   position: relative;
 `
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
 `
 const StyledInputWrapper = styled.div`
   position: relative;
@@ -213,9 +215,11 @@ const StyledBorder = styled.div`
 `
 const StyledSelectedMembersTitle = styled.p`
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(7)};
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
 `
 const StyledMembersContainer = styled.div`
   display: flex;

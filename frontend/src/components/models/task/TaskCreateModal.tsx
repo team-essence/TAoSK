@@ -107,9 +107,11 @@ const fieldStyle = (
   inputCss: FlattenSimpleInterpolation,
 ): FlattenInterpolation<ThemeProps<DefaultTheme>> => css`
   label {
-    color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-    font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+    ${({ theme }) => css`
+      color: ${theme.COLORS.TOBACCO_BROWN};
+      font-size: ${theme.FONT_SIZES.SIZE_16};
+      font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+    `}
   }
   input,
   textarea {
@@ -142,7 +144,9 @@ const StyledStatusWrapper = styled.div`
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledStatusTitle = styled.p`
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+  `}
 `
