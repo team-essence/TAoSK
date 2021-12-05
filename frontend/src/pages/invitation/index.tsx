@@ -3,7 +3,7 @@ import { useAuthContext } from 'providers/AuthProvider'
 import { useNavigate, useParams } from 'react-router'
 import logger from 'utils/debugger/logger'
 import { useGetInvitationByUserIdLazyQuery, useJoinProjectMutation } from './Invitation.gen'
-import { gqlErrorMessage } from 'consts/gqlErrorMessage'
+import { GQL_ERROR_MESSAGE } from 'consts/gqlErrorMessage'
 import toast from 'utils/toast/toast'
 
 export const Invitation = () => {
@@ -35,7 +35,7 @@ export const Invitation = () => {
       })
     },
     onError(err) {
-      if (err.message === gqlErrorMessage.NOT_FOUND_EXCEPTION) {
+      if (err.message === GQL_ERROR_MESSAGE.NOT_FOUND_EXCEPTION) {
         toast.error('無効な招待です')
         navigate('/')
       }
