@@ -21,12 +21,8 @@ import { useDebounce } from 'hooks/useDebounce'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
-import { DropType } from 'consts/dropType'
+import { DROP_TYPE } from 'consts/dropType'
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
-import { TaskCard } from 'components/models/task/TaskCard'
-import { TaskColumnList } from 'components/models/task/TaskColumnList'
-import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
-import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -309,7 +305,7 @@ export const ProjectDetail: FC = () => {
 
     const listCopy = [...list]
 
-    if (type === DropType.COLUMN) {
+    if (type === DROP_TYPE.COLUMN) {
       if (destinationIndex === 0) {
         toast.warning('未着手は固定されています')
         return
@@ -465,23 +461,6 @@ export const ProjectDetail: FC = () => {
 
         <div style={{ border: 'solid' }}></div>
 
-        <div>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
-              {provided => (
-                <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  {/* <TaskColumnList lists={list} handleAddTask={handleAddTask} /> */}
-                  <TaskColumnList
-                    lists={list}
-                    handleAddTask={() => setShouldShowModal(true)}
-                  />{' '}
-                  {/* TODO: テスト用、後で消す */}
-                  {provided.placeholder}
-                </StyledTaskListContainer>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
         {!!currentUserData.data && (
           <ProjectMyInfo
             iconImage={currentUserData.data.user.icon_image}
