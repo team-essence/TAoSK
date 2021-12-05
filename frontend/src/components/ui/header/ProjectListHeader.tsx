@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 
-type Props = {}
+type Props = {
+  className?: string
+  iconImage: string
+}
 
-export const ProjectListHeader: FC = () => {
+export const ProjectListHeader: FC<Props> = ({ className, iconImage }) => {
   return (
-    <StyledHeaderWrapper>
+    <StyledHeaderWrapper className={className}>
       <StyledLogoWrapper>
         <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
       </StyledLogoWrapper>
@@ -20,10 +23,7 @@ export const ProjectListHeader: FC = () => {
 
       <StyledUserMenuIconWrapper>
         <StyledUserMenuIcon>
-          <img
-            src="https://akiba-souken.k-img.com/assets/images/article/000/928/t640_928199.jpg"
-            alt="ユーザアイコン"
-          />
+          <img src={iconImage} alt="ユーザアイコン" />
         </StyledUserMenuIcon>
 
         <img src="/svg/menu-arrow_bottom.svg" alt="メニュー表示" />

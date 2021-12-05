@@ -29,7 +29,7 @@ export const MyPage: FC = () => {
 
   return (
     <>
-      <ProjectListHeader />
+      <ProjectListHeader iconImage={userQuery.data.user.icon_image} />
 
       <StyledMyPageContainer>
         <StyledMyPageGridContainer>

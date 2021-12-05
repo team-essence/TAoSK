@@ -36,7 +36,8 @@ export const ProjectList: FC = () => {
 
   return (
     <>
-      <ProjectListHeader />
+      <ProjectListHeader iconImage={userData.data.user.icon_image} />
+
       <StyledProjectListPageContainer>
         <StyledProjectListContainer>
           <StyledProjectListWrapper>

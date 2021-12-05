@@ -97,6 +97,7 @@ export const theme = {
     SPICY_MIX: '#876143',
     GREEN: '#00B500',
     TRANSPARENT: 'transparent',
+    TOPAZ: '#878190',
 
     GRADATION: {
       TECHNOLOGY: {
