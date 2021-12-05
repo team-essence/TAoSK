@@ -4,11 +4,11 @@ import { useHover } from 'hooks/useHover'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  avatarStyleType: AVATAR_STYLE_TYPE
+  avatarStyleType: AVATAR_STYLE
   iconImage: string
   name?: string
   occupation?: string
