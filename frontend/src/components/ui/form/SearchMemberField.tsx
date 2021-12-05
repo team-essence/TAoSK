@@ -31,11 +31,11 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
 
   useEffect(() => setUserDatas([...userDatas]), [userDatas])
 
-  // TODO: UserCountの挙動を確認するためのテスト用。ユーザーデータ一個追加で20個追加される
-  const testAdd = (data: UserDatas[number]) => {
-    const testDatas: UserDatas = [...Array(20)].map(() => data)
-    setSelectedUserDatas([...selectedUserDatas, ...testDatas])
-  }
+  // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
+  // const testAdd = (data: UserDatas[number]) => {
+  //   const testDatas: UserDatas = [...Array(20)].map(() => data)
+  //   setSelectedUserDatas([...selectedUserDatas, ...testDatas])
+  // }
 
   const onClickDeleteBtn = (index: number) => {
     selectedUserDatas.splice(index, 1)
@@ -61,7 +61,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
             <StyledListItem
               key={index}
               indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
-              onMouseDown={() => testAdd(data)}>
+              onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
               {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
               <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
               <StyledProfile>

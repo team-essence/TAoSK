@@ -124,7 +124,6 @@ export const ProjectDetail: FC = () => {
       toast.error('タスクの作成失敗しました')
     },
   })
-  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
@@ -451,19 +450,11 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        {/* TODO: モーダル表示テスト用。タスク追加をしたい場合は下のコメントアウトを外して使う。モーダルが完成したら下のコメントアウトを消す。 */}
         <ProjectDrawer
           groups={projectData.data?.getProjectById.groups}
           lists={list}
-          handleAddTask={() => setShouldShowModal(true)}
           onDragEnd={onDragEnd}
         />
-        {/* <ProjectDrawer
-          groups={projectData.data?.getProjectById.groups}
-          lists={list}
-          handleAddTask={handleAddTask}
-          onDragEnd={onDragEnd}
-        /> */}
         <p>左側</p>
 
         <div style={{ border: 'solid' }}></div>
@@ -494,8 +485,6 @@ export const ProjectDetail: FC = () => {
           gameLogs={logs}
         />
       </ProjectDetailRightContainer>
-
-      <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
     </ProjectDetailContainer>
   )
 }

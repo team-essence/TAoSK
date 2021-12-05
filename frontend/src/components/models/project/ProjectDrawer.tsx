@@ -16,10 +16,9 @@ type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
 type Props = {
   lists: List[]
   onDragEnd: (result: DropResult) => Promise<void>
-  handleAddTask: (list_id: number) => void
 } & Partial<Groups>
 
-export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
+export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -34,7 +33,7 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTa
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
                 <StyledContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <TaskColumnList lists={lists} handleAddTask={handleAddTask} />
+                  <TaskColumnList lists={lists} />
                   {provided.placeholder}
                 </StyledContainer>
               )}

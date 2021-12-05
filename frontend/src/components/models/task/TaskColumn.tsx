@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DROP_TYPE } from 'consts/dropType'
@@ -15,6 +15,7 @@ import {
   useUpdateListNameMutation,
   useRemoveListMutation,
 } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
 import { SmallPopover } from 'components/ui/modal/SmallPopover'
@@ -25,23 +26,15 @@ type Props = {
   className?: string
   listIndex: number
   listLength: number
-  handleAddTask: (list_id: number) => void
 } & Omit<List, 'sort_id' | 'index'>
 
-export const TaskColumn: FC<Props> = ({
-  id,
-  list_id,
-  title,
-  tasks,
-  listIndex,
-  listLength,
-  handleAddTask,
-}) => {
+export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
   const controll = useControllTextArea()
   const { anchorEl, openPopover, closePopover } = usePopover()
   const [updateListName] = useUpdateListNameMutation()
   const [removeList] = useRemoveListMutation()
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
@@ -123,9 +116,16 @@ export const TaskColumn: FC<Props> = ({
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
                   {listIndex === 0 && (
-                    <StyledButtonContainer>
-                      <CreateTaskButton handleAddTask={handleAddTask} />
-                    </StyledButtonContainer>
+                    <>
+                      <StyledButtonContainer>
+                        <CreateTaskButton onClick={() => setShouldShowModal(true)} />
+                      </StyledButtonContainer>
+                      <TaskCreateModal
+                        shouldShow={shouldShowModal}
+                        setShouldShow={setShouldShowModal}
+                        verticalSort={tasks.length}
+                      />
+                    </>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>

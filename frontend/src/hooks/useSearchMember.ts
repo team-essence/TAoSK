@@ -2,12 +2,8 @@ import { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import { useDebounce } from 'hooks/useDebounce'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useInput } from 'hooks/useInput'
-import {
-  useSearchSameCompanyUsersMutation,
-  SearchSameCompanyUsersMutation,
-} from 'pages/projectList/projectList.gen'
-
-type UserDatas = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
+import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
+import type { UserDatas } from 'types/userDatas'
 
 type UseSearchMemberReturn = {
   onChange: ReturnType<typeof useInput>['onChange']

@@ -32,7 +32,7 @@ export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className
 
 const StyledWrapper = styled.div<{ shouldShow: boolean }>`
   z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
-  position: absolute;
+  position: fixed;
   display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
   top: 0;
   right: 0;
