@@ -1,9 +1,9 @@
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import React, { FC, useEffect } from 'react'
+import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import type { UserDatas } from 'types/userDatas'
-import { calculateVwBasedOnFigma, calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
@@ -64,11 +64,12 @@ const StyledManyUserAvatarContainer = styled.div<{
   position: absolute;
   display: grid;
 
-  gap: ${calculateVwBasedOnFigma(8)} 0;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding: ${calculateVwBasedOnFigma(11)} ${calculateVwBasedOnFigma(5)};
+  width: 108.8888888%;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(11)} ${calculateMinSizeBasedOnFigmaWidth(5)};
 
   ${({ maxBoxes }) => css`
     grid-template-columns: ${() => [...Array(maxBoxes)].map(() => ' 1fr')};
@@ -79,18 +80,6 @@ const StyledManyUserAvatarContainer = styled.div<{
     border: solid 1px ${theme.COLORS.SILVER};
     box-shadow: 0px 1px 4px ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   `}
-
-  ${({ avatarStyleType }) => {
-    if (avatarStyleType === 'list') {
-      return css`
-        width: ${calculateVwBasedOnFigma(294)};
-      `
-    } else if (avatarStyleType === 'modal') {
-      return css`
-        width: ${calculateVwBasedOnFigma(294)};
-      `
-    }
-  }}
 `
 
 const StyledManyUserAvatar = styled.div`
