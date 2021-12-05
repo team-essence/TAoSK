@@ -1,15 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Navigate, NavLink, useParams } from 'react-router-dom'
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-  resetServerContext,
-} from 'react-beautiful-dnd'
+import { useParams } from 'react-router-dom'
+import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
+import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import {
   useGetProjectLazyQuery,
   useUpdateOnlineFlagMutation,
@@ -19,25 +14,24 @@ import {
   useCreateListMutation,
   useUpdateListSortMutation,
 } from './projectDetail.gen'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
-import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
+import { GameLogType } from 'types/gameLog'
 import { DropType } from 'consts/dropType'
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { TaskCard } from 'components/models/task/TaskCard'
 import { TaskColumnList } from 'components/models/task/TaskColumnList'
 import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
 import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
+import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
+import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
-import { GameLogType } from 'types/gameLog'
-import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -461,7 +455,12 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} />
+        <ProjectDrawer
+          groups={projectData.data?.getProjectById.groups}
+          lists={list}
+          handleAddTask={handleAddTask}
+          onDragEnd={onDragEnd}
+        />
         <p>左側</p>
 
         <div style={{ border: 'solid' }}></div>
