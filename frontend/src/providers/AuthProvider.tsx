@@ -32,7 +32,6 @@ export const AuthProvider: FC = ({ children }) => {
     }
   }, [])
 
-  if (loading) return null
   return (
     <AuthContext.Provider value={{ currentUser: value.currentUser, loading: value.loading }}>
       {!loading && children}
