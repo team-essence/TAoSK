@@ -1,15 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Navigate, NavLink, useParams } from 'react-router-dom'
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-  resetServerContext,
-} from 'react-beautiful-dnd'
+import { useParams } from 'react-router-dom'
+import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
+import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import {
   useGetProjectLazyQuery,
   useUpdateOnlineFlagMutation,
@@ -19,23 +14,18 @@ import {
   useCreateListMutation,
   useUpdateListSortMutation,
 } from './projectDetail.gen'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
-import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
 import { List } from 'types/list'
 import { Task } from 'types/task'
+import { GameLogType } from 'types/gameLog'
 import { DropType } from 'consts/dropType'
-import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
-import { TaskColumnList } from 'components/models/task/TaskColumnList'
-import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
+import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
-import { GameLogType } from 'types/gameLog'
-import { EmpTest } from 'components/models/employee/EmpTest'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -458,7 +448,7 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <EmpTest
+        <ProjectDrawer
           groups={projectData.data?.getProjectById.groups}
           lists={list}
           handleAddTask={handleAddTask}
@@ -490,19 +480,6 @@ export const ProjectDetail: FC = () => {
             </>
           )}
         </div>
-
-        {/* <div>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
-              {provided => (
-                <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <TaskColumnList lists={list} handleAddTask={handleAddTask} />
-                  {provided.placeholder}
-                </StyledTaskListContainer>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div> */}
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>

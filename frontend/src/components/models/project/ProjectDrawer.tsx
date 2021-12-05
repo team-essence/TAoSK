@@ -19,7 +19,7 @@ type Props = {
   handleAddTask: (list_id: number) => void
 } & Partial<Groups>
 
-export const EmpTest: React.FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
+export const ProjectDrawer: React.FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
