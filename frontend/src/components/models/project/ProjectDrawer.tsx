@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
 import { DropType } from 'consts/dropType'
@@ -19,8 +19,8 @@ type Props = {
   handleAddTask: (list_id: number) => void
 } & Partial<Groups>
 
-export const ProjectDrawer: React.FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
-  const [isOpen, setIsOpen] = React.useState(false)
+export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
     <StyledContainer>

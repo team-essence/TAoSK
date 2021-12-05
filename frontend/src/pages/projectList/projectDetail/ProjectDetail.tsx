@@ -512,7 +512,7 @@ const ProjectDetailLeftContainer = styled.div`
   grid-row: 2 / 3;
   grid-column: 1 / 2;
   overflow-x: auto;
-  /* white-space: nowrap; */
+  white-space: nowrap;
 `
 
 const ProjectDetailRightContainer = styled.div`
