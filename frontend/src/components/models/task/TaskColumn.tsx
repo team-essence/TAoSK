@@ -128,11 +128,6 @@ export const TaskColumn: FC<Props> = ({
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>
                 {listProvided.placeholder}
               </StyledColumnContainer>
@@ -151,7 +146,6 @@ const StyledColumnContainer = styled.ul`
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
-  box-shadow: -8px 8px 2px rgba(0, 0, 0, 0.5);
   &::after {
     content: '';
     border: 2px solid ${({ theme }) => theme.COLORS.WHITE};
@@ -195,11 +189,16 @@ const avoidTsStyledErr = `${calculateMinSizeBasedOnFigmaWidth(
   16,
 )} ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(8)}`
 const StyledTaskListContainer = styled.div`
-  max-height: ${calculateVhBasedOnFigma(630)};
+  max-height: ${calculateVhBasedOnFigma(584)};
   padding: ${avoidTsStyledErr};
   overflow-x: hidden;
   overflow-y: auto;
+  /* -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
+    display: none;
+  } */
+  /* &::-webkit-scrollbar {
     width: 8px;
   }
   &::-webkit-scrollbar-track {
@@ -209,7 +208,7 @@ const StyledTaskListContainer = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: #c7c7c7;
     border-radius: 100px;
-  }
+  } */
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;
