@@ -15,7 +15,6 @@ import {
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControlTextArea'
-import { useElementSize } from 'hooks/useElementSize'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
 import { SmallPopover } from 'components/ui/modal/SmallPopover'
@@ -41,11 +40,8 @@ export const TaskColumn: FC<Props> = ({
   const listTitle = useInput(title)
   const controll = useControllTextArea()
   const { anchorEl, openPopover, closePopover } = usePopover()
-  const { sizeInspectedEl, height } = useElementSize<HTMLDivElement>()
   const [updateListName] = useUpdateListNameMutation()
   const [removeList] = useRemoveListMutation()
-  console.log(height)
-  console.log(calculateVhBasedOnFigma(620))
 
   const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
@@ -125,7 +121,7 @@ export const TaskColumn: FC<Props> = ({
                     )}
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
-                <StyledTaskListContainer ref={sizeInspectedEl}>
+                <StyledTaskListContainer>
                   {listIndex === 0 && (
                     <StyledButtonContainer>
                       <CreateTaskButton handleAddTask={handleAddTask} />
