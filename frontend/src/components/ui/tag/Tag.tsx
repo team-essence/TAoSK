@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { CrossButton } from '../button/CrossButton'
+import { CrossIcon } from 'components/ui/icon/CrossIcon'
 
 type Props = {
   className?: string
@@ -26,7 +26,9 @@ export const Tag: FC<Props> = ({ className, name, onClick, tagType }) => {
       <StyledTag tagType={tagType}>
         <StyledTagName>{name}</StyledTagName>
         {!!onClick && (
-          <StyledCrossButton tagType={tagType} color={theme.COLORS.CHOCOLATE} onClick={onClick} />
+          <StyledButton onClick={onClick}>
+            <StyledCrossIcon tagType={tagType} color={theme.COLORS.CHOCOLATE} />
+          </StyledButton>
         )}
       </StyledTag>
     </StyledTagContainer>
@@ -98,7 +100,8 @@ const StyledTag = styled.div<{ tagType: TAG_TYPE }>`
   `}
 `
 
-const StyledCrossButton = styled(CrossButton)<{ tagType: TAG_TYPE }>`
+const StyledButton = styled.button``
+const StyledCrossIcon = styled(CrossIcon)<{ tagType: TAG_TYPE }>`
   height: 100%;
   svg {
     width: ${calculateMinSizeBasedOnFigmaWidth(8)};

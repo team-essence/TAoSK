@@ -22,6 +22,7 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
+import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -123,6 +124,7 @@ export const ProjectDetail: FC = () => {
       toast.error('タスクの作成失敗しました')
     },
   })
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
@@ -202,7 +204,7 @@ export const ProjectDetail: FC = () => {
 
   const [list, setList] = useState<List[]>([])
   const [logs, setLogs] = useState<GameLogType[]>([])
-  const debouncedInputText = useDebounce(inputUserName.value, 500)
+  const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
     logger.debug('でる')
@@ -485,6 +487,8 @@ export const ProjectDetail: FC = () => {
           gameLogs={logs}
         />
       </ProjectDetailRightContainer>
+
+      <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
     </ProjectDetailContainer>
   )
 }

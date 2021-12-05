@@ -57,7 +57,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.COLORS.WHITE};
     word-break: break-word;
     word-wrap: break-word;
-    font-family: 'Mplus1Code', "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
+    font-family: "Mplus1Code", "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
     font-weight: 500;
   }

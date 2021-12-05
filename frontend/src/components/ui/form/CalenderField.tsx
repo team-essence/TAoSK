@@ -1,8 +1,12 @@
 import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import {
+  calculateMinSizeBasedOnFigmaHeight,
+  calculateMinSizeBasedOnFigmaWidth,
+} from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 type Props = {
   className?: string
@@ -12,10 +16,9 @@ type Props = {
   registration: Partial<UseFormRegisterReturn>
   errorColor?: string
   required?: boolean
-  type?: 'text' | 'email' | 'password'
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const InputField: FC<Props> = ({
+export const CalenderField: FC<Props> = ({
   className,
   errorColor = theme.COLORS.ERROR,
   label,
@@ -41,9 +44,12 @@ export const InputField: FC<Props> = ({
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
           <StyledInputWrapper shouldShowError={shouldShowError} errorColor={errorColor}>
-            <input {...registration} {...inputAttributes} onBlur={onBlur} />
-            {children}
+            <StyledCalenderIconButton>
+              <StyledCalenderIcon src="/images/calender-icon.png" alt="カレンダーのアイコン" />
+            </StyledCalenderIconButton>
+            <StyledInput {...registration} {...inputAttributes} onBlur={onBlur} type="date" />
           </StyledInputWrapper>
+          {children}
         </label>
       </StyledLabelWrapper>
       {shouldShowError && (
@@ -57,13 +63,51 @@ export const InputField: FC<Props> = ({
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
   margin-bottom: ${({ marginBottom }) => marginBottom};
+  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
 `
 const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: string }>`
   position: relative;
+  display: flex;
+  width: 100%;
+  height: ${calculateMinSizeBasedOnFigmaHeight(40)};
   margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
-  input {
-    padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
-    border-color: ${props => (props.shouldShowError ? props.errorColor : undefined)} !important;
+  border: solid 1px
+    ${({ theme, shouldShowError, errorColor }) =>
+      shouldShowError ? errorColor : convertIntoRGBA(theme.COLORS.WHITE, 0.6)};
+  border-radius: 4px;
+`
+const StyledCalenderIconButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${calculateMinSizeBasedOnFigmaWidth(35)};
+  height: 100%;
+  border-radius: 4px 0px 0px 4px;
+  background-color: ${({ theme }) => theme.COLORS.GALLERY};
+`
+const StyledCalenderIcon = styled.img`
+  object-fit: contain;
+  aspect-ratio: 1 / 1;
+  width: ${calculateMinSizeBasedOnFigmaWidth(27)};
+`
+const StyledInput = styled.input`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  border: none;
+  border-radius: 0px 4px 4px 0px;
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.SILVER, 0.4)};
+  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  &::-webkit-calendar-picker-indicator {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-image: none;
   }
 `
 const StyledErrorMessage = styled.div<{ color: string }>`

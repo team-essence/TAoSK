@@ -22,16 +22,12 @@ export const SignIn: FC = () => {
         <StyledSignIn>
           <StyledLogoImg src="logo.png" alt="TAoSK ロゴ" />
           <StyledFormWrapper>
-            <InputField
+            <StyledInputField
               label="メールアドレス"
               type="email"
               registration={register('email', { required: true })}
-              inputStyles={{
-                border: `solid 1px ${theme.COLORS.CHOCOLATE}`,
-                borderRadius: '2px',
-              }}
             />
-            <PasswordField
+            <StyledPasswordField
               label="パスワード"
               registration={register('password', { required: true })}
             />
@@ -107,6 +103,28 @@ const StyledFormWrapper = styled.div`
 const StyledLogoImg = styled.img`
   height: ${calculateMinSizeBasedOnFigmaWidth(170)};
 `
+const StyledInputField = styled(InputField)`
+  label {
+    color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+    font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  }
+  input {
+    width: 100%;
+    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
+    border-radius: 2px;
+    background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
+    border: solid 1px ${theme.COLORS.CHOCOLATE};
+    border-radius: 2px;
+    color: ${({ theme }) => theme.COLORS.BLACK};
+    &::placeholder {
+      font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+      color: ${({ theme }) => theme.COLORS.GRAY};
+    }
+  }
+`
+const StyledPasswordField = StyledInputField.withComponent(PasswordField)
 const StyledParagraphWrapper = styled.div`
   display: flex;
   flex-direction: column;
