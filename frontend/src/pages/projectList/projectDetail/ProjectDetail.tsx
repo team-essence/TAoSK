@@ -458,7 +458,6 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        {/* <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} /> */}
         <EmpTest
           groups={projectData.data?.getProjectById.groups}
           lists={list}
