@@ -128,11 +128,6 @@ export const TaskColumn: FC<Props> = ({
                     </StyledButtonContainer>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                 </StyledTaskListContainer>
                 {listProvided.placeholder}
               </StyledColumnContainer>
@@ -197,9 +192,14 @@ const avoidTsStyledErr = `${calculateMinSizeBasedOnFigmaWidth(
 const StyledTaskListContainer = styled.div`
   max-height: ${calculateVhBasedOnFigma(630)};
   padding: ${avoidTsStyledErr};
-  overflow-x: hidden;
+  /* overflow-x: hidden;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
+    display: none;
+  } */
+  /* &::-webkit-scrollbar {
     width: 8px;
   }
   &::-webkit-scrollbar-track {
@@ -209,7 +209,7 @@ const StyledTaskListContainer = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: #c7c7c7;
     border-radius: 100px;
-  }
+  } */
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;

@@ -35,6 +35,7 @@ import { ProjectRight } from 'components/models/project/ProjectRight'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
 import { GameLogType } from 'types/gameLog'
+import { EmpTest } from 'components/models/employee/EmpTest'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -457,7 +458,13 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} />
+        {/* <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} /> */}
+        <EmpTest
+          groups={projectData.data?.getProjectById.groups}
+          lists={list}
+          handleAddTask={handleAddTask}
+          onDragEnd={onDragEnd}
+        />
         <p>左側</p>
 
         <div>
@@ -485,9 +492,7 @@ export const ProjectDetail: FC = () => {
           )}
         </div>
 
-        <div style={{ border: 'solid' }}></div>
-
-        <div>
+        {/* <div>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
@@ -498,7 +503,7 @@ export const ProjectDetail: FC = () => {
               )}
             </Droppable>
           </DragDropContext>
-        </div>
+        </div> */}
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>
@@ -531,7 +536,7 @@ const ProjectDetailLeftContainer = styled.div`
   grid-row: 2 / 3;
   grid-column: 1 / 2;
   overflow-x: auto;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 `
 
 const ProjectDetailRightContainer = styled.div`

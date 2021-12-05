@@ -18,6 +18,9 @@ type Props = {
 
 export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
   return (
+    // <>
+    //   <p>aa</p>
+    // </>
     <StyledContaner>
       <StyledMemberContainer>
         <StyledLabelContainer>
@@ -43,10 +46,10 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
             ),
         )}
       </StyledMemberContainer>
-      <StyledSignBoardContainer>
+      {/* <StyledSignBoardContainer>
         <StyledH3>MEMBER</StyledH3>
         <StyledFontAwesomeIcon icon={faCaretRight} />
-      </StyledSignBoardContainer>
+      </StyledSignBoardContainer> */}
     </StyledContaner>
   )
 }
