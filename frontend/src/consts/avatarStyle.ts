@@ -3,4 +3,4 @@ export const AVATAR_STYLE = {
   MODAL: 'modal',
   TASK: 'task',
 } as const
-export type AVATAR_STYLE_TYPE = typeof AVATAR_STYLE[keyof typeof AVATAR_STYLE]
+export type AVATAR_STYLE = typeof AVATAR_STYLE[keyof typeof AVATAR_STYLE]

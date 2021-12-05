@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { AVATAR_STYLE, AVATAR_STYLE_TYPE } from 'consts/avatarStyle'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
@@ -10,7 +10,7 @@ import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFi
 
 type Props = {
   userCount: number
-  avatarStyleType: AVATAR_STYLE_TYPE
+  avatarStyleType: AVATAR_STYLE
   groups?: avatarGroups
   className?: string
 }
@@ -113,7 +113,7 @@ const StyledUserCountTaskContainer = styled.div`
   align-items: center;
 `
 
-const StyledCountText = styled.p<{ avatarStyleType: AVATAR_STYLE_TYPE }>`
+const StyledCountText = styled.p<{ avatarStyleType: AVATAR_STYLE }>`
   text-align: center;
 
   ${({ avatarStyleType, theme }) =>

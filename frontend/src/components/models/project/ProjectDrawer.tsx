@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
-import { DropType } from 'consts/dropType'
+import { DROP_TYPE } from 'consts/dropType'
 import { List } from 'types/list'
 import { GetProjectQuery } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -31,7 +31,7 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTa
         <StyledMainWrap>
           <EmployeeSignBoard isOpen={isOpen} handleClick={() => setIsOpen(!isOpen)} />
           <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
+            <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
                 <StyledContainer ref={provided.innerRef} {...provided.droppableProps}>
                   <TaskColumnList lists={lists} handleAddTask={handleAddTask} />

@@ -21,7 +21,7 @@ import { useDebounce } from 'hooks/useDebounce'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
-import { DropType } from 'consts/dropType'
+import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -303,7 +303,7 @@ export const ProjectDetail: FC = () => {
 
     const listCopy = [...list]
 
-    if (type === DropType.COLUMN) {
+    if (type === DROP_TYPE.COLUMN) {
       if (destinationIndex === 0) {
         toast.warning('未着手は固定されています')
         return
@@ -459,18 +459,6 @@ export const ProjectDetail: FC = () => {
 
         <div style={{ border: 'solid' }}></div>
 
-        <div>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
-              {provided => (
-                <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <TaskColumnList lists={list} handleAddTask={handleAddTask} />
-                  {provided.placeholder}
-                </StyledTaskListContainer>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </div>
         {!!currentUserData.data && (
           <ProjectMyInfo
             iconImage={currentUserData.data.user.icon_image}
