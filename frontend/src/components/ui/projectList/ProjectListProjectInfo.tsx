@@ -97,7 +97,7 @@ export const ProjectListProjectInfo: FC<Props> = ({
               <div key={index} ref={avatarRef}>
                 {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
                 <UserAvatarIcon
-                  avatarStyleType={AVATAR_STYLE.MODAL}
+                  avatarStyleType={AVATAR_STYLE.LIST}
                   iconImage={data.icon_image}
                   name={data.name}
                   occupation={occupationList[data.occupation_id]}
@@ -108,7 +108,7 @@ export const ProjectListProjectInfo: FC<Props> = ({
             return (
               <div key={index}>
                 <UserCount
-                  avatarStyleType={AVATAR_STYLE.MODAL}
+                  avatarStyleType={AVATAR_STYLE.LIST}
                   userCount={overUsersCount}
                   userDatas={testUserDatas}
                 />
@@ -181,5 +181,6 @@ const StyledStyledProjectInfoTextOverview = styled(StyledStyledProjectInfoText)`
 
 const StyledPartyContainer = styled.div`
   display: flex;
+  position: relative;
   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(6)};
 `

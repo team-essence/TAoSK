@@ -1,6 +1,6 @@
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import type { UserDatas } from 'types/userDatas'
 import { calculateVwBasedOnFigma, calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -39,10 +39,7 @@ export const ManyUserAvatar: FC<Props> = ({
         if (boxCount <= userDatas.length - userCount) return
 
         return (
-          <StyledManyUserAvatar
-            isGap={userDatas.length === boxCount || (index - 4) % 6 === 0 ? false : true}
-            avatarStyleType={avatarStyleType}
-            key={index}>
+          <StyledManyUserAvatar key={index}>
             <div ref={avatarRef}>
               <UserAvatarIcon
                 avatarStyleType={avatarStyleType}
@@ -67,8 +64,14 @@ const StyledManyUserAvatarContainer = styled.div<{
   position: absolute;
   display: grid;
 
+  gap: ${calculateVwBasedOnFigma(8)} 0;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: ${calculateVwBasedOnFigma(11)} ${calculateVwBasedOnFigma(5)};
+
   ${({ maxBoxes }) => css`
-    grid-template-columns: ${() => [...Array(maxBoxes)].map(() => ' auto')};
+    grid-template-columns: ${() => [...Array(maxBoxes)].map(() => ' 1fr')};
   `}
 
   ${({ theme }) => css`
@@ -78,39 +81,18 @@ const StyledManyUserAvatarContainer = styled.div<{
   `}
 
   ${({ avatarStyleType }) => {
-    if (avatarStyleType === 'modal') {
+    if (avatarStyleType === 'list') {
       return css`
-        gap: ${calculateVwBasedOnFigma(8)} 0;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: ${calculateVwBasedOnFigma(11)} ${calculateVwBasedOnFigma(5)};
         width: ${calculateVwBasedOnFigma(294)};
       `
-    } else {
+    } else if (avatarStyleType === 'modal') {
       return css`
-        gap: ${calculateVhBasedOnFigma(12)} 0;
-        top: ${calculateVhBasedOnFigma(56)};
-        right: ${calculateVhBasedOnFigma(-12)};
-        padding: ${calculateVhBasedOnFigma(12)};
+        width: ${calculateVwBasedOnFigma(294)};
       `
     }
   }}
 `
 
-const StyledManyUserAvatar = styled.div<{ isGap: boolean; avatarStyleType: AVATAR_STYLE }>`
-  ${({ isGap, avatarStyleType }) => {
-    if (avatarStyleType === 'modal') {
-      return css`
-        margin: 0 auto;
-      `
-    } else {
-      return (
-        isGap &&
-        css`
-          margin-right: ${calculateVhBasedOnFigma(12)};
-        `
-      )
-    }
-  }}
+const StyledManyUserAvatar = styled.div`
+  margin: 0 auto;
 `
