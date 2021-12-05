@@ -24,6 +24,7 @@ import { GameLogType } from 'types/gameLog'
 import { DropType } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
+import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
 
@@ -236,7 +237,7 @@ export const ProjectDetail: FC = () => {
 
       getProjectById({
         variables: {
-          id: Number(id),
+          id,
         },
       })
     }
@@ -456,30 +457,36 @@ export const ProjectDetail: FC = () => {
         />
         <p>左側</p>
 
-        <div>
-          {currentUserData.data && (
-            <>
-              <img
-                src={currentUserData.data.user.icon_image}
-                alt={currentUserData.data.user.name}
-              />
-              <h4>{currentUserData.data.user.name}</h4>
-              <p>HP: {currentUserData.data.user.hp}</p>
-              <p>MP: {currentUserData.data.user.mp}</p>
-              <p>EXP: {currentUserData.data.user.exp}</p>
+        <div style={{ border: 'solid' }}></div>
 
-              <p>技術力: {currentUserData.data.user.technology}</p>
-              <p>達成力: {currentUserData.data.user.achievement}</p>
-              <p>意欲: {currentUserData.data.user.motivation}</p>
-              <p>問題発見・解決力: {currentUserData.data.user.solution}</p>
-              <p>設計力: {currentUserData.data.user.plan}</p>
-              <p>デザイン力: {currentUserData.data.user.design}</p>
-              <p>
-                ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-              </p>
-            </>
-          )}
+        <div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
+              {provided => (
+                <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
+                  <TaskColumnList lists={list} handleAddTask={handleAddTask} />
+                  {provided.placeholder}
+                </StyledTaskListContainer>
+              )}
+            </Droppable>
+          </DragDropContext>
         </div>
+        {!!currentUserData.data && (
+          <ProjectMyInfo
+            iconImage={currentUserData.data.user.icon_image}
+            occupationId={currentUserData.data.user.occupation_id}
+            name={currentUserData.data.user.name}
+            totalExp={currentUserData.data.user.exp}
+            hp={currentUserData.data.user.hp}
+            mp={currentUserData.data.user.mp}
+            technology={currentUserData.data.user.technology}
+            solution={currentUserData.data.user.solution}
+            achievement={currentUserData.data.user.achievement}
+            motivation={currentUserData.data.user.motivation}
+            design={currentUserData.data.user.design}
+            plan={currentUserData.data.user.plan}
+          />
+        )}
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>

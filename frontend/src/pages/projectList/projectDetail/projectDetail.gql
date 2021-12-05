@@ -1,4 +1,4 @@
-query GetProject($id: Float!) {
+query GetProject($id: String!) {
   getProjectById(id: $id) {
     id
     name

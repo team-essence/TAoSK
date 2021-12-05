@@ -8,6 +8,12 @@ export const theme = {
     INDEX_1: 1,
     INDEX_2: 2,
     INDEX_3: 3,
+    INDEX_4: 4,
+    INDEX_5: 5,
+    INDEX_6: 6,
+    INDEX_7: 7,
+    INDEX_8: 8,
+    IDNEX_9: 9,
     HEADER: 100,
   },
   FONT_SIZES: {
@@ -81,6 +87,8 @@ export const theme = {
     HP_BG: '#DBF5C0',
     MP: '#31BBD9',
     MP_BG: '#C3E8F0',
+    EXP: '#D9AA31',
+    EXP_BG: '#E7D5A6',
     BIZARRE: '#EEE4DA',
     TOBACCO_BROWN: '#665545',
     MATTERHORN: '#483B3D',
@@ -88,6 +96,8 @@ export const theme = {
     MONSTER_HP_BG: '#F0C3C3',
     SPICY_MIX: '#876143',
     GREEN: '#00B500',
+    MATTERHORN: '#483B3D',
+    TRANSPARENT: 'transparent',
 
     GRADATION: {
       TECHNOLOGY: {
