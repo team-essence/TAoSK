@@ -36,7 +36,7 @@ export const UserMenuPopup: FC<Props> = ({
     <StyledUserMenuPopupContainer
       className={className}
       title="アカウント"
-      popupType={POPUP_TYPE.NORMAL}
+      popupType={POPUP_TYPE.SMALL}
       isHover={isHover}
       isClick={isClick}
       closeClick={closeClick}>
@@ -63,7 +63,7 @@ export const UserMenuPopup: FC<Props> = ({
           <Link to={'/mypage/' + uid}>マイページ</Link>
         </p>
         {/* TODO: モーダルがきたらonClickを追加 */}
-        <button>アカウント作成</button>
+        <button>アカウント設定</button>
       </StyledAccountRelationshipContainer>
 
       <StyledLSignOutContainer>
@@ -111,7 +111,7 @@ const StyledUserName = styled.p`
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
   color: ${({ theme }) => theme.COLORS.FONT.BLACK};
   line-height: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  width: ${calculateMinSizeBasedOnFigmaWidth(213)};
+  max-width: ${calculateMinSizeBasedOnFigmaWidth(123)};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -137,6 +137,10 @@ const StyledUserUid = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
   color: ${({ theme }) => theme.COLORS.DOVE_GRAY};
+  max-width: ${calculateMinSizeBasedOnFigmaWidth(176)};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const StyledAccountRelationshipContainer = styled.div`

@@ -56,11 +56,6 @@ export const ProjectListHeader: FC<Props> = ({ className, iconImage, name, uid, 
     setIsClickUserMenu(false)
   }
 
-  const handleClickUserMene = (isClick: boolean) => {
-    !isClick && allClose()
-    setIsClickUserMenu(isClickUserMenu => !isClickUserMenu)
-  }
-
   return (
     <StyledHeaderWrapper className={className}>
       <StyledLogoWrapper>

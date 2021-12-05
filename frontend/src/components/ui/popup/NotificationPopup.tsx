@@ -39,7 +39,7 @@ export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, clos
           <StyledInvitationUrlContainer>
             <p>
               <span>URL：</span>
-              <a href={`https://${host}`}>
+              <a href={`https://${host}/invitation/${'hoge'}`}>
                 https://{host}/invitation/{'id'}
               </a>
             </p>
