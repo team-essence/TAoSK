@@ -4,38 +4,31 @@ import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useIncrementAndDecrement } from 'hooks/useIncrementAndDecrement'
+import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 
 type Status = 'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan'
 
 type Props = {
+  className?: string
   status: Status
   setStatus: Dispatch<SetStateAction<Record<Status, number>>>
 }
 
-export const TaskStatusPointField: FC<Props> = ({ status, setStatus }) => {
+export const TaskStatusPointField: FC<Props> = ({ className, status, setStatus }) => {
   const { count, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
     useIncrementAndDecrement(10, 0)
-  // TODO: h-jun01のやつマージしたらutilのconvertなんちゃらで置き換える
-  const statusNameObj: Record<Status, string> = {
-    technology: '技術力',
-    achievement: '達成力',
-    solution: '解決力',
-    motivation: '意欲',
-    design: 'デザイン',
-    plan: '設計力',
-  }
 
   useEffect(() => {
     setStatus(prev => ({ ...prev, [status]: count }))
   }, [count])
 
   return (
-    <StyledStatusWrapper>
+    <StyledStatusWrapper className={className}>
       <StyledIconBox status={status}>
         <StyledStatusIcon status={status} />
       </StyledIconBox>
 
-      <StyledStatusName>{statusNameObj[status]}</StyledStatusName>
+      <StyledStatusName>{convertParamIntoJp(status)}</StyledStatusName>
 
       <StyledCountWrapper>
         <StyledMinusBtn onClick={decrement} disabled={isDisabledDecrement} />

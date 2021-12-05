@@ -13,7 +13,7 @@ type Props = {
 }
 
 // TODO: 使うかどうかわからない。ManyUserAvatarが使えそうなので、そちらを使う場合はこれを消す
-export const MemberItems: FC<Props> = ({ userDatas, required = false }) => {
+export const MemberItems: FC<Props> = ({ className, userDatas, required = false }) => {
   return <div></div>
 }
 
