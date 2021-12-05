@@ -15,6 +15,7 @@ type Props = {
 export const TaskStatusPointField: FC<Props> = ({ status, setStatus }) => {
   const { count, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
     useIncrementAndDecrement(10, 0)
+  // TODO: h-jun01のやつマージしたらutilのconvertなんちゃらで置き換える
   const statusNameObj: Record<Status, string> = {
     technology: '技術力',
     achievement: '達成力',

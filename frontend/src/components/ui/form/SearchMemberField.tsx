@@ -2,7 +2,6 @@ import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { SearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { theme } from 'styles/theme'
 import styled, { css } from 'styled-components'
 import { occupationList } from 'consts/occupationList'
 import { useSearchMember } from 'hooks/useSearchMember'
@@ -96,7 +95,7 @@ const StyledInput = styled.input`
   height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
   padding-right: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  border: solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+  border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 4px;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   &::placeholder {
@@ -104,6 +103,7 @@ const StyledInput = styled.input`
   }
 `
 const StyledSearchResultWrapper = styled.ul`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_3};
   position: absolute;
   top: 100%;
   left: 0;

@@ -139,6 +139,7 @@ const StyledStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledStatusTitle = styled.p`
   color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
