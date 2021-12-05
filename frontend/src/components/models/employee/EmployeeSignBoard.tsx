@@ -25,7 +25,7 @@ const StyledContainer = styled.div`
   align-items: center;
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(2)};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   filter: drop-shadow(-4px 4px 2px rgba(0, 0, 0, 0.5));
   cursor: pointer;
