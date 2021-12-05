@@ -374,7 +374,7 @@ export const ProjectDetail: FC = () => {
       variables: {
         updateTasks: {
           tasks: joinUpdateTasks,
-          project_id: id as string,
+          project_id: String(id),
         },
       },
     })
@@ -407,7 +407,7 @@ export const ProjectDetail: FC = () => {
           design: Math.floor(Math.random() * 11),
           vertical_sort: list[list_id].tasks.length,
           end_date: '2021/12/30',
-          project_id: id as string,
+          project_id: String(id),
           list_id: String(list_id),
         },
       },
@@ -418,7 +418,7 @@ export const ProjectDetail: FC = () => {
     await createList({
       variables: {
         name: 'ほげ',
-        project_id: Number(id),
+        project_id: String(id),
         task_list: 1,
       },
     })
@@ -441,7 +441,7 @@ export const ProjectDetail: FC = () => {
                 <h2>名前: {searchSameCompanyUsers.name}</h2>
                 <p>id: {searchSameCompanyUsers.id}</p>
                 <button
-                  onClick={() => handleInvitation(searchSameCompanyUsers.id, id as string)}
+                  onClick={() => handleInvitation(searchSameCompanyUsers.id, String(id))}
                   style={{ border: 'solid' }}>
                   招待する
                 </button>

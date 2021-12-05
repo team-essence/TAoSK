@@ -157,7 +157,7 @@ mutation AddTask($newTask: NewTaskInput!) {
   }
 }
 
-mutation CreateList($name: String!, $project_id: Float!, $task_list: Float!) {
+mutation CreateList($name: String!, $project_id: String!, $task_list: Float!) {
   createList(newList: { name: $name, project_id: $project_id, task_list: $task_list }) {
     id
     list_id
