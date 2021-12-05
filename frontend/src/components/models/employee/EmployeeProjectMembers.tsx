@@ -27,8 +27,7 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
           (group, index) =>
             group.user.online_flg && (
               <StyledEmployeeContainer key={index}>
-                {/* FIXME: technology, achievement, motivation, solution、5 などのプロパティがありませんとエラーが起きたのでエラー回避のため一旦コメントアウト */}
-                {/* <EmployeeInformation {...group.user} /> */}
+                <EmployeeInformation {...group.user} />
               </StyledEmployeeContainer>
             ),
         )}
@@ -39,8 +38,7 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
           (group, index) =>
             !group.user.online_flg && (
               <StyledEmployeeContainer key={index}>
-                {/* FIXME: technology, achievement, motivation, solution、5 などのプロパティがありませんとエラーが起きたのでエラー回避のため一旦コメントアウト */}
-                {/* <EmployeeInformation {...group.user} /> */}
+                <EmployeeInformation {...group.user} />
               </StyledEmployeeContainer>
             ),
         )}
