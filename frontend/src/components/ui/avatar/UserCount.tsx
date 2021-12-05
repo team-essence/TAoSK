@@ -1,21 +1,21 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
-import { avatarGroups } from 'types/avatarGroups'
+import type { UserDatas } from 'types/userDatas'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE
-  groups?: avatarGroups
+  userDatas?: UserDatas
   className?: string
 }
 
-export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, className }) => {
+export const UserCount: FC<Props> = ({ userCount, avatarStyleType, userDatas = [], className }) => {
   const [isPopup, setIsPopUp] = useState(false)
 
   const closeModal = useCallback(event => {
@@ -35,7 +35,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, class
     event.stopPropagation()
   }
 
-  if (avatarStyleType === AVATAR_STYLE.LIST && groups)
+  if (avatarStyleType === AVATAR_STYLE.LIST && userDatas.length)
     return (
       <StyledUserCountContainer className={className}>
         <StyledUserCountListContainer onClick={handlePopUp}>
@@ -44,14 +44,14 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, class
 
         {isPopup && (
           <ManyUserAvatar
-            groups={groups}
+            userDatas={userDatas}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
           />
         )}
       </StyledUserCountContainer>
     )
-  else if (avatarStyleType === AVATAR_STYLE.MODAL && groups)
+  else if (avatarStyleType === AVATAR_STYLE.MODAL && userDatas.length)
     return (
       <StyledUserCountContainer className={className}>
         <StyledUserCountModalContainer onClick={handlePopUp}>
@@ -60,7 +60,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, class
 
         {isPopup && (
           <ManyUserAvatar
-            groups={groups}
+            userDatas={userDatas}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
           />

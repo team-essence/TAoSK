@@ -128,6 +128,7 @@ const StyledUserAvatarIconTaskContainer = styled.div<{
 `
 
 const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
+  z-index: ${({ theme }) => theme.Z_INDEX.POPOVER};
   position: absolute;
   bottom: ${({ bottom }) => calculateVhBasedOnFigma(-bottom)};
   left: -20%;

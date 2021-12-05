@@ -2,7 +2,7 @@ import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import { avatarGroups } from 'types/avatarGroups'
+import type { UserDatas } from 'types/userDatas'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { UserAvatarIcon } from './UserAvatarIcon'
@@ -11,31 +11,31 @@ type Props = {
   avatarStyleType: AVATAR_STYLE
   btnFunc?: () => void
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  groups: avatarGroups
+  userDatas: UserDatas
   className?: string
 }
 
 export const ManyUserAvatar: FC<Props> = ({
   avatarStyleType,
   btnFunc,
-  groups,
+  userDatas,
   onClick,
   className,
 }) => {
   return (
     <StyledManyUserAvatarContainer onClick={event => onClick(event)} className={className}>
-      {groups.map((group, index) => {
+      {userDatas.map((userData, index) => {
         if (index <= 4) return
 
         return (
           <StyledManyUserAvatar
-            isGap={groups.length - 1 === index || (index - 4) % 6 === 0 ? false : true}
+            isGap={userDatas.length - 1 === index || (index - 4) % 6 === 0 ? false : true}
             key={index}>
             <UserAvatarIcon
               avatarStyleType={avatarStyleType}
-              iconImage={group.user.icon_image}
-              name={group.user.name}
-              occupation={occupationList[group.user.occupation_id]}
+              iconImage={userData.icon_image}
+              name={userData.name}
+              occupation={occupationList[userData.occupation_id]}
               btnFunc={btnFunc}
             />
           </StyledManyUserAvatar>
@@ -46,6 +46,7 @@ export const ManyUserAvatar: FC<Props> = ({
 }
 
 const StyledManyUserAvatarContainer = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.UNDER_POPOVER};
   position: absolute;
   padding: 12px;
   top: ${calculateVhBasedOnFigma(56)};

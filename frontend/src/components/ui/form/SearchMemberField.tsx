@@ -1,12 +1,15 @@
 import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
+import { occupationList } from 'consts/occupationList'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { SearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
-import { occupationList } from 'consts/occupationList'
 import { useSearchMember } from 'hooks/useSearchMember'
+import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
+import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { UserCount } from 'components/ui/avatar/UserCount'
+import type { UserDatas } from 'types/userDatas'
 
-type UserDatas = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
 type Props = {
   className?: string
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
@@ -22,8 +25,17 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     selectedUserDatas,
     setSelectedUserDatas,
   } = useSearchMember()
+  const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+    selectedUserDatas.length,
+  )
 
   useEffect(() => setUserDatas([...userDatas]), [userDatas])
+
+  // TODO: UserCountの挙動を確認するためのテスト用。ユーザーデータ一個追加で20個追加される
+  const testAdd = (data: UserDatas[number]) => {
+    const testDatas: UserDatas = [...Array(20)].map(() => data)
+    setSelectedUserDatas([...selectedUserDatas, ...testDatas])
+  }
 
   return (
     <StyledAllWrapper className={className}>
@@ -44,7 +56,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
             <StyledListItem
               key={index}
               indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
-              onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
+              onMouseDown={() => testAdd(data)}>
               {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
               <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
               <StyledProfile>
@@ -63,6 +75,34 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
           <StyledSelectedMembersTitle>
             {selectedUserDatas.length}人のメンバー
           </StyledSelectedMembersTitle>
+          <StyledMembersContainer ref={containerRef}>
+            {selectedUserDatas.map((data, index) => {
+              const boxCount = index + 1
+              if (boxCount < maxBoxes) {
+                return (
+                  <div key={index} ref={avatarRef}>
+                    {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
+                    <UserAvatarIcon
+                      avatarStyleType={AVATAR_STYLE.MODAL}
+                      iconImage={data.icon_image}
+                      name={data.name}
+                      occupation={occupationList[data.occupation_id]}
+                    />
+                  </div>
+                )
+              } else if (boxCount === maxBoxes) {
+                return (
+                  <div key={index}>
+                    <UserCount
+                      avatarStyleType={AVATAR_STYLE.MODAL}
+                      userCount={overUsersCount}
+                      userDatas={selectedUserDatas}
+                    />
+                  </div>
+                )
+              }
+            })}
+          </StyledMembersContainer>
         </StyledSelectedMembersWrapper>
       )}
     </StyledAllWrapper>
@@ -111,7 +151,7 @@ const StyledSearchResultWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   list-style-type: none;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  width: 100%;
   height: ${calculateMinSizeBasedOnFigmaWidth(200)};
   border: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   border-radius: 4px;
@@ -176,4 +216,9 @@ const StyledSelectedMembersTitle = styled.p`
   color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+`
+const StyledMembersContainer = styled.div`
+  display: flex;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(6)};
+  width: 100%;
 `

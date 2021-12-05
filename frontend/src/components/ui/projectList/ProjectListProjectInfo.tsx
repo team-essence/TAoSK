@@ -1,12 +1,14 @@
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { UserAvatarIcon } from '../avatar/UserAvatarIcon'
-import { UserCount } from '../avatar/UserCount'
+import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
+import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { UserCount } from 'components/ui/avatar/UserCount'
+import type { UserDatas } from 'types/userDatas'
 
 type Props = {
   story: string
@@ -65,6 +67,19 @@ export const ProjectListProjectInfo: FC<Props> = ({
       </StyledProjectInfoTitleContainer>
     )
   }
+  const userDatas: UserDatas = useMemo(
+    () => groupsProject[selectProject].project.groups.map(group => group.user),
+    [groupsProject, selectProject],
+  )
+  // const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+  //   userDatas.length,
+  // )
+
+  // TODO: テスト用。後で消す
+  const testUserDatas: UserDatas = [...Array(10)].map(() => userDatas[0])
+  const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+    testUserDatas.length,
+  )
 
   return (
     <StyledProjectInfoContainer>
@@ -73,51 +88,45 @@ export const ProjectListProjectInfo: FC<Props> = ({
       {projectInfoTitle('依頼内容')}
       <StyledStyledProjectInfoTextOverview>{overview}</StyledStyledProjectInfoTextOverview>
       {projectInfoTitle('パーティーメンバー')}
-      <StyledPartyContainer>
-        {(() => {
-          // TODO: この即時関数内はテスト用なので、後で消す
-          const copied: Props['groupsProject'] = JSON.parse(JSON.stringify(groupsProject))
-          const tests = copied
-          tests[selectProject].project.groups = [...Array(10)].map(
-            () => tests[selectProject].project.groups[0],
-          )
-
-          return (
-            <>
-              {tests[selectProject].project.groups.map((group, index) => {
-                if (index > 4) return
-
-                return (
-                  <UserAvatarIcon
-                    avatarStyleType={AVATAR_STYLE.LIST}
-                    iconImage={group.user.icon_image}
-                    name={group.user.name}
-                    occupation={occupationList[group.user.occupation_id]}
-                    key={index}
-                  />
-                )
-              })}
-
-              {tests[selectProject].project.groups.length > 5 && (
-                <UserCount
-                  userCount={tests[selectProject].project.groups.length - 5}
-                  groups={groupsProject[selectProject].project.groups}
-                  avatarStyleType={AVATAR_STYLE.LIST}
+      <StyledPartyContainer ref={containerRef}>
+        {/* TODO: userが多い時のテスト用 */}
+        {testUserDatas.map((data, index) => {
+          const boxCount = index + 1
+          if (boxCount < maxBoxes) {
+            return (
+              <div key={index} ref={avatarRef}>
+                {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
+                <UserAvatarIcon
+                  avatarStyleType={AVATAR_STYLE.MODAL}
+                  iconImage={data.icon_image}
+                  name={data.name}
+                  occupation={occupationList[data.occupation_id]}
                 />
-              )}
-            </>
-          )
-        })()}
+              </div>
+            )
+          } else if (boxCount === maxBoxes) {
+            return (
+              <div key={index}>
+                <UserCount
+                  avatarStyleType={AVATAR_STYLE.MODAL}
+                  userCount={overUsersCount}
+                  userDatas={testUserDatas}
+                />
+              </div>
+            )
+          }
+        })}
         {/* TODO: 上のテスト用を消したらこっちのコメントアウトを外す */}
+        {/* TODO: groupをやめてuserDatasに変更する */}
         {/* {groupsProject[selectProject].project.groups.map((group, index) => {
           if (index > 4) return
 
           return (
             <UserAvatarIcon
               avatarStyleType={AVATAR_STYLE.LIST}
-              iconImage={group.user.icon_image}
-              name={group.user.name}
-              occupation={occupationList[group.user.occupation_id]}
+              iconImage={userData.icon_image}
+              name={userData.name}
+              occupation={occupationList[userData.occupation_id]}
               key={index}
             />
           )
