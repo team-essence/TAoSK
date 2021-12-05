@@ -416,7 +416,7 @@ export const ProjectDetail: FC = () => {
     await createList({
       variables: {
         name: 'ほげ',
-        project_id: Number(id),
+        project_id: id as string,
         task_list: 1,
       },
     })
