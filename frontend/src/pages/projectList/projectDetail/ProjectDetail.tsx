@@ -10,7 +10,6 @@ import {
   useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
-  useAddTaskMutation,
   useCreateListMutation,
   useUpdateListSortMutation,
 } from './projectDetail.gen'
@@ -23,7 +22,6 @@ import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
-import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -114,14 +112,6 @@ export const ProjectDetail: FC = () => {
     onError(err) {
       logger.debug(err)
       toast.error('タスクの移動に失敗しました')
-    },
-  })
-  const [addTask] = useAddTaskMutation({
-    onCompleted(data) {
-      toast.success('タスクを作成しました')
-    },
-    onError(err) {
-      toast.error('タスクの作成失敗しました')
     },
   })
 
@@ -386,29 +376,6 @@ export const ProjectDetail: FC = () => {
       variables: {
         userId,
         projectId,
-      },
-    })
-  }
-
-  const handleAddTask = (list_id: number) => {
-    addTask({
-      variables: {
-        newTask: {
-          title:
-            '心拍数と集中力を測定してfirestore上に送れるようにする心拍数と集中力を測定してfirestore上に送れるようにする',
-          overview: 'hoge',
-          // 一旦ステータスはランダムにした
-          technology: Math.floor(Math.random() * 11),
-          achievement: Math.floor(Math.random() * 11),
-          solution: Math.floor(Math.random() * 11),
-          motivation: Math.floor(Math.random() * 11),
-          plan: Math.floor(Math.random() * 11),
-          design: Math.floor(Math.random() * 11),
-          vertical_sort: list[list_id].tasks.length,
-          end_date: '2021/12/30',
-          project_id: id as string,
-          list_id: String(list_id),
-        },
       },
     })
   }

@@ -179,7 +179,17 @@ const StyledTaskCreateButton = styled.button`
   height: ${calculateMinSizeBasedOnFigmaWidth(40)};
   background-image: url('/svg/gold-button.svg');
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
+  ${({ theme }) => css`
+    filter: drop-shadow(
+        0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)}
+          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
+      )
+      drop-shadow(
+        0 ${calculateMinSizeBasedOnFigmaWidth(1.5)} ${calculateMinSizeBasedOnFigmaWidth(1)}
+          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
+      );
+  `}
 `
 const StyledTaskCreateText = styled.p`
   height: ${calculateMinSizeBasedOnFigmaWidth(30)};
