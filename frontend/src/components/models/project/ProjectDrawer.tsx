@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
 import { DROP_TYPE } from 'consts/dropType'
 import { List } from 'types/list'
 import { GetProjectQuery } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { useLocalStorage } from 'hooks/useLocalStorage'
 import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
 import { EmployeeSignBoard } from 'components/models/employee/EmployeeSignBoard'
 import { TaskColumnList } from 'components/models/task/TaskColumnList'
@@ -20,17 +21,20 @@ type Props = {
 } & Partial<Groups>
 
 export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true)
+  const { currentValue, setCurrentValue } = useLocalStorage<boolean>('isOpen', true)
 
   return (
     <StyledContainer>
-      <Drawer sx={StyledDrawer} variant="persistent" anchor="left" open={isOpen}>
+      <Drawer sx={StyledDrawer} variant="persistent" anchor="left" open={currentValue}>
         <EmployeeProjectMembers groups={groups} />
       </Drawer>
-      <StyledMaterialUiMain open={isOpen}>
+      <StyledMaterialUiMain open={currentValue}>
         <StyledMainWrap>
           <Tesxt>
-            <EmployeeSignBoard isOpen={isOpen} handleClick={() => setIsOpen(!isOpen)} />
+            <EmployeeSignBoard
+              isOpen={currentValue}
+              handleClick={() => setCurrentValue(!currentValue)}
+            />
           </Tesxt>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
