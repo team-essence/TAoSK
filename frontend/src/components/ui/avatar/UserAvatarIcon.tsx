@@ -13,13 +13,13 @@ type Props = {
   name?: string
   occupation?: string
   className?: string
-  btnFunc?: () => void
+  onClickDeleteBtn?: () => void
 }
 
 export const UserAvatarIcon: FC<Props> = ({
   avatarStyleType,
   iconImage,
-  btnFunc,
+  onClickDeleteBtn,
   name,
   occupation,
   className,
@@ -54,8 +54,8 @@ export const UserAvatarIcon: FC<Props> = ({
   else
     return (
       <StyledUserAvatarIconModalContainer {...eventHoverHandlers} className={className}>
-        {btnFunc && (
-          <StyledUserCloseButton onClick={btnFunc}>
+        {onClickDeleteBtn && (
+          <StyledUserCloseButton onClick={onClickDeleteBtn}>
             <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
           </StyledUserCloseButton>
         )}

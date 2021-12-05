@@ -13,12 +13,19 @@ type Props = {
   avatarStyleType: AVATAR_STYLE
   userDatas?: UserDatas
   className?: string
+  onClickDeleteBtn?: (index: number) => void
 }
 
-export const UserCount: FC<Props> = ({ userCount, avatarStyleType, userDatas = [], className }) => {
+export const UserCount: FC<Props> = ({
+  userCount,
+  avatarStyleType,
+  userDatas = [],
+  className,
+  onClickDeleteBtn,
+}) => {
   const [isPopup, setIsPopUp] = useState(false)
 
-  const closeModal = useCallback(event => {
+  const closeModal = useCallback(() => {
     setIsPopUp(false)
     document.removeEventListener('click', closeModal)
   }, [])
@@ -35,7 +42,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, userDatas = [
     event.stopPropagation()
   }
 
-  if (avatarStyleType === AVATAR_STYLE.LIST && userDatas.length)
+  if (avatarStyleType === AVATAR_STYLE.LIST && userDatas.length) {
     return (
       <>
         <StyledUserCountContainer className={className}>
@@ -53,7 +60,7 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, userDatas = [
         )}
       </>
     )
-  else if (avatarStyleType === AVATAR_STYLE.MODAL && userDatas.length)
+  } else if (avatarStyleType === AVATAR_STYLE.MODAL && userDatas.length) {
     return (
       <>
         <StyledUserCountContainer className={className}>
@@ -67,16 +74,18 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, userDatas = [
             userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
+            onClickDeleteBtn={onClickDeleteBtn}
           />
         )}
       </>
     )
-  else
+  } else {
     return (
       <StyledUserCountTaskContainer className={className}>
         <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
       </StyledUserCountTaskContainer>
     )
+  }
 }
 
 const StyledUserCountContainer = styled.div`

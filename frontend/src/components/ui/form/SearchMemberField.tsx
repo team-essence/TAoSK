@@ -37,6 +37,11 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     setSelectedUserDatas([...selectedUserDatas, ...testDatas])
   }
 
+  const onClickDeleteBtn = (index: number) => {
+    selectedUserDatas.splice(index, 1)
+    setSelectedUserDatas([...selectedUserDatas.slice()])
+  }
+
   return (
     <StyledAllWrapper className={className}>
       <StyledLabel>パーティメンバー</StyledLabel>
@@ -87,6 +92,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
                       iconImage={data.icon_image}
                       name={data.name}
                       occupation={occupationList[data.occupation_id]}
+                      onClickDeleteBtn={() => onClickDeleteBtn(index)}
                     />
                   </div>
                 )
@@ -97,6 +103,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       userCount={overUsersCount}
                       userDatas={selectedUserDatas}
+                      onClickDeleteBtn={onClickDeleteBtn}
                     />
                   </div>
                 )

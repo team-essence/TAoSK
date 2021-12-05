@@ -10,7 +10,7 @@ import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 
 type Props = {
   avatarStyleType: AVATAR_STYLE
-  btnFunc?: () => void
+  onClickDeleteBtn?: (index: number) => void
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   userDatas: UserDatas
   userCount: number
@@ -19,7 +19,7 @@ type Props = {
 
 export const ManyUserAvatar: FC<Props> = ({
   avatarStyleType,
-  btnFunc,
+  onClickDeleteBtn,
   userDatas,
   userCount,
   onClick,
@@ -46,7 +46,7 @@ export const ManyUserAvatar: FC<Props> = ({
                 iconImage={userData.icon_image}
                 name={userData.name}
                 occupation={occupationList[userData.occupation_id]}
-                btnFunc={btnFunc}
+                onClickDeleteBtn={() => onClickDeleteBtn && onClickDeleteBtn(index)}
               />
             </div>
           </StyledManyUserAvatar>
