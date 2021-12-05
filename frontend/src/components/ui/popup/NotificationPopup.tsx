@@ -1,29 +1,46 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { theme } from 'styles/theme'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import date from 'utils/date/date'
+import logger from 'utils/debugger/logger'
 
 type Props = {
   className?: string
+  isHover: boolean
+  isClick: boolean
+  closeClick: () => void
 }
 
-export const NotificationPopup: FC<Props> = ({ className }) => {
+export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, closeClick }) => {
+  const [host, setHost] = useState('')
+
+  useEffect(() => {
+    if (!location) return
+    logger.debug(location.host)
+    setHost(location.host)
+  }, [location])
+
   return (
     <StyledNotificationPopupContainer
       className={className}
       title="通知"
-      popupType={POPUP_TYPE.NORMAL}>
+      popupType={POPUP_TYPE.NORMAL}
+      isHover={isHover}
+      isClick={isClick}
+      closeClick={closeClick}>
       <StyledInvitationItem>
         <StyledInvitationText>
-          <span>【】</span>
+          <span>【プロジェクト名】</span>
           に招待されました
         </StyledInvitationText>
 
         <StyledInvitationUrlContainer>
           <p>
-            URL : <a href="https://">https://</a>
+            <span>URL：</span>
+            <a href={`https://${host}`}>
+              https://{host}/invitation/{'id'}
+            </a>
           </p>
         </StyledInvitationUrlContainer>
 
@@ -41,6 +58,12 @@ const StyledNotificationPopupContainer = styled(CoverPopup)``
 const StyledInvitationItem = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(12)} 0;
   width: ${calculateMinSizeBasedOnFigmaWidth(312)};
+
+  border-bottom: 1px dashed ${({ theme }) => theme.COLORS.SILVER};
+
+  &:last-child {
+    border-bottom: none;
+  }
 `
 
 const StyledInvitationText = styled.p`
@@ -59,13 +82,34 @@ const StyledInvitationUrlContainer = styled.div`
   border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
 
   p {
-    line-height: 0;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: ${({ theme }) => theme.COLORS.DODGER_BLUE};
+
+    span {
+      color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+    }
+
+    a {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: ${calculateMinSizeBasedOnFigmaWidth(3)};
+        left: 0;
+        width: 100%;
+        height: ${calculateMinSizeBasedOnFigmaWidth(1)};
+        background: ${({ theme }) => theme.COLORS.DODGER_BLUE};
+      }
+    }
   }
 `
 
 const StyledInvitationTimeContainer = styled.div`
   p {
-    line-height: 0;
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
     color: ${({ theme }) => theme.COLORS.TOPAZ};
   }

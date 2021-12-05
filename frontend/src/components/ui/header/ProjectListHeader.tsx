@@ -1,8 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
+import { NotificationPopup } from '../popup/NotificationPopup'
+import { useHover } from 'hooks/useHover'
 
 type Props = {
   className?: string
@@ -10,13 +12,18 @@ type Props = {
 }
 
 export const ProjectListHeader: FC<Props> = ({ className, iconImage }) => {
+  const [notificationHovered, notificationEventHoverHandlers] = useHover()
+  const [isNotification, setIsNotification] = useState(false)
+
   return (
     <StyledHeaderWrapper className={className}>
       <StyledLogoWrapper>
         <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
       </StyledLogoWrapper>
 
-      <StyledBellWrapper>
+      <StyledBellWrapper
+        {...notificationEventHoverHandlers}
+        onClick={() => setIsNotification(isNotification => !isNotification)}>
         <img src="/svg/bell.svg" alt="通知アイコン" />
         {true && <StyledNotificationIcon />}
       </StyledBellWrapper>
@@ -28,11 +35,18 @@ export const ProjectListHeader: FC<Props> = ({ className, iconImage }) => {
 
         <img src="/svg/menu-arrow_bottom.svg" alt="メニュー表示" />
       </StyledUserMenuIconWrapper>
+
+      <StyledNotificationPopup
+        isHover={notificationHovered ? true : false}
+        isClick={isNotification}
+        closeClick={() => setIsNotification(false)}
+      />
     </StyledHeaderWrapper>
   )
 }
 
 const StyledHeaderWrapper = styled.div`
+  position: relative;
   z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   position: fixed;
   display: flex;
@@ -92,4 +106,11 @@ const StyledUserMenuIcon = styled.div`
     border-radius: 50%;
     object-fit: cover;
   }
+`
+
+const StyledNotificationPopup = styled(NotificationPopup)`
+  position: absolute;
+  transform-origin: top right;
+  top: ${calculateMinSizeBasedOnFigmaWidth(76)};
+  right: ${calculateMinSizeBasedOnFigmaWidth(80)};
 `
