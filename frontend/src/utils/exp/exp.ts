@@ -1,4 +1,4 @@
-export default class exp {
+export default class Exp {
   /**
    * 経験値からレベルへ変換
    * # [焼肉食べたい](https://www.yakiniku-king.jp/)

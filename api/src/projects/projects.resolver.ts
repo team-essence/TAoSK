@@ -9,7 +9,7 @@ export class ProjectsResolver {
   constructor(private projectService: ProjectsService) {}
 
   @Query(() => Project)
-  async getProjectById(@Args({ name: 'id' }) id: number) {
+  async getProjectById(@Args({ name: 'id' }) id: string) {
     const project = await this.projectService.findProjectOne(id);
 
     if (!project) throw new NotFoundException();

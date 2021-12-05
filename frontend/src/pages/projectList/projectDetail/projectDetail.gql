@@ -1,4 +1,4 @@
-query GetProject($id: Float!) {
+query GetProject($id: String!) {
   getProjectById(id: $id) {
     id
     name
@@ -25,11 +25,26 @@ query GetProject($id: Float!) {
       user {
         id
         name
+        icon_image
         hp
         mp
+        exp
+        technology
+        achievement
+        motivation
+        solution
+        plan
+        design
         occupation_id
-        icon_image
         online_flg
+        interests {
+          id
+          context
+        }
+        certifications {
+          id
+          name
+        }
       }
     }
 

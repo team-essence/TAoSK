@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
+import { Params } from 'types/status'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
@@ -35,7 +36,7 @@ export const TaskCard: FC<Props> = ({
   allocations,
   end_date,
 }) => {
-  const params = [
+  const params: Params[] = [
     { param: 'technology', value: technology },
     { param: 'achievement', value: achievement },
     { param: 'solution', value: solution },
@@ -43,7 +44,7 @@ export const TaskCard: FC<Props> = ({
     { param: 'design', value: design },
     { param: 'plan', value: plan },
   ]
-  const max = params.reduce((a, b) => (a.value > b.value ? a : b))
+  const max = params.reduce((prev, current) => (prev.value > current.value ? prev : current))
   const assignedUsers = allocations.map((item, index, array) =>
     index < 6 ? (
       <UserAvatarIcon avatarStyleType={AVATAR_STYLE.TASK} iconImage={item.icon_image} />

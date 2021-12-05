@@ -30,12 +30,14 @@ import { Task } from 'types/task'
 import { DropType } from 'consts/dropType'
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { TaskCard } from 'components/models/task/TaskCard'
-import { ColumnList } from 'components/models/task/ColumnList'
+import { TaskColumnList } from 'components/models/task/TaskColumnList'
+import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
 import { ProjectCreateListButton } from 'components/models/project/ProjectCreateListButton'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
 import { GameLogType } from 'types/gameLog'
+import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -459,65 +461,8 @@ export const ProjectDetail: FC = () => {
       </ProjectTitleContainer>
 
       <ProjectDetailLeftContainer>
-        <div>
-          <h2>オンライン</h2>
-          {projectData.data?.getProjectById.groups.map(
-            (group, index) =>
-              group.user.online_flg && (
-                <div key={index}>
-                  <p>{group.user.name}</p>
-                  <p>{group.user.icon_image}</p>
-                  <p>{group.user.id}</p>
-                  <p>{group.user.mp}</p>
-                  <p>{group.user.hp}</p>
-                  <p>{group.user.occupation_id}</p>
-                  <p>{JSON.stringify(group.user.online_flg)}</p>
-                </div>
-              ),
-          )}
-          <h2>オフライン</h2>
-          {projectData.data?.getProjectById.groups.map(
-            (group, index) =>
-              !group.user.online_flg && (
-                <div key={index}>
-                  <p>{group.user.name}</p>
-                  <p>{group.user.icon_image}</p>
-                  <p>{group.user.id}</p>
-                  <p>{group.user.mp}</p>
-                  <p>{group.user.hp}</p>
-                  <p>{group.user.occupation_id}</p>
-                  <p>{JSON.stringify(group.user.online_flg)}</p>
-                </div>
-              ),
-          )}
-          {/* {JSON.stringify(projectData.data?.getProjectById.groups)} */}
-        </div>
+        <EmployeeProjectMembers groups={projectData.data?.getProjectById.groups} />
         <p>左側</p>
-
-        <div>
-          {currentUserData.data && (
-            <>
-              <img
-                src={currentUserData.data.user.icon_image}
-                alt={currentUserData.data.user.name}
-              />
-              <h4>{currentUserData.data.user.name}</h4>
-              <p>HP: {currentUserData.data.user.hp}</p>
-              <p>MP: {currentUserData.data.user.mp}</p>
-              <p>EXP: {currentUserData.data.user.exp}</p>
-
-              <p>技術力: {currentUserData.data.user.technology}</p>
-              <p>達成力: {currentUserData.data.user.achievement}</p>
-              <p>意欲: {currentUserData.data.user.motivation}</p>
-              <p>問題発見・解決力: {currentUserData.data.user.solution}</p>
-              <p>設計力: {currentUserData.data.user.plan}</p>
-              <p>デザイン力: {currentUserData.data.user.design}</p>
-              <p>
-                ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-              </p>
-            </>
-          )}
-        </div>
 
         <div style={{ border: 'solid' }}></div>
 
@@ -526,14 +471,34 @@ export const ProjectDetail: FC = () => {
             <Droppable droppableId="board" direction="horizontal" type={DropType.COLUMN}>
               {provided => (
                 <StyledTaskListContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  {/* <ColumnList lists={list} handleAddTask={handleAddTask} /> */}
-                  <ColumnList lists={list} handleAddTask={() => setShouldShowModal(true)} /> {/* TODO: テスト用、後で消す */}
+                  {/* <TaskColumnList lists={list} handleAddTask={handleAddTask} /> */}
+                  <TaskColumnList
+                    lists={list}
+                    handleAddTask={() => setShouldShowModal(true)}
+                  />{' '}
+                  {/* TODO: テスト用、後で消す */}
                   {provided.placeholder}
                 </StyledTaskListContainer>
               )}
             </Droppable>
           </DragDropContext>
         </div>
+        {!!currentUserData.data && (
+          <ProjectMyInfo
+            iconImage={currentUserData.data.user.icon_image}
+            occupationId={currentUserData.data.user.occupation_id}
+            name={currentUserData.data.user.name}
+            totalExp={currentUserData.data.user.exp}
+            hp={currentUserData.data.user.hp}
+            mp={currentUserData.data.user.mp}
+            technology={currentUserData.data.user.technology}
+            solution={currentUserData.data.user.solution}
+            achievement={currentUserData.data.user.achievement}
+            motivation={currentUserData.data.user.motivation}
+            design={currentUserData.data.user.design}
+            plan={currentUserData.data.user.plan}
+          />
+        )}
       </ProjectDetailLeftContainer>
 
       <ProjectDetailRightContainer>
