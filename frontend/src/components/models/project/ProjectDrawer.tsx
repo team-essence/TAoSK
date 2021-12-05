@@ -20,7 +20,7 @@ type Props = {
 } & Partial<Groups>
 
 export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTask }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(true)
 
   return (
     <StyledContainer>
@@ -29,7 +29,9 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTa
       </Drawer>
       <StyledMaterialUiMain open={isOpen}>
         <StyledMainWrap>
-          <EmployeeSignBoard isOpen={isOpen} handleClick={() => setIsOpen(!isOpen)} />
+          <Tesxt>
+            <EmployeeSignBoard isOpen={isOpen} handleClick={() => setIsOpen(!isOpen)} />
+          </Tesxt>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
@@ -49,9 +51,12 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd, handleAddTa
 const StyledContainer = styled.div`
   display: flex;
 `
+const Tesxt = styled.div`
+  position: relative;
+  top: ${calculateMinSizeBasedOnFigmaWidth(8)};
+`
 const StyledMainWrap = styled.div`
   display: flex;
-  align-items: baseline;
   gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
 const StyledDrawer = {
@@ -60,6 +65,7 @@ const StyledDrawer = {
   '& .MuiDrawer-paper': {
     position: 'static',
     width: calculateMinSizeBasedOnFigmaWidth(210),
+    border: 'none',
     backgroundColor: 'inherit',
     overflowX: 'hidden',
   },

@@ -46,7 +46,7 @@ export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
 const StyledContainer = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(210)};
-  height: ${calculateVhBasedOnFigma(640)};
+  height: ${calculateVhBasedOnFigma(460)};
   padding: 0 ${calculateMinSizeBasedOnFigmaWidth(8)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;

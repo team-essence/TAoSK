@@ -68,7 +68,7 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
     } else {
       setIsDisabled(false)
     }
-  }, [watchAllFields, setValue, errors])
+  }, [watchAllFields, errors])
 
   return { register, handleSubmit, getValues, isDisabled, errors, trigger }
 }

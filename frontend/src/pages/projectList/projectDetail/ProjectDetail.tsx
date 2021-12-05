@@ -22,6 +22,7 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
+import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -123,6 +124,7 @@ export const ProjectDetail: FC = () => {
       toast.error('タスクの作成失敗しました')
     },
   })
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
@@ -202,7 +204,7 @@ export const ProjectDetail: FC = () => {
 
   const [list, setList] = useState<List[]>([])
   const [logs, setLogs] = useState<GameLogType[]>([])
-  const debouncedInputText = useDebounce(inputUserName.value, 500)
+  const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string) => {
     logger.debug('でる')
@@ -372,7 +374,7 @@ export const ProjectDetail: FC = () => {
       variables: {
         updateTasks: {
           tasks: joinUpdateTasks,
-          project_id: id as string,
+          project_id: String(id),
         },
       },
     })
@@ -405,7 +407,7 @@ export const ProjectDetail: FC = () => {
           design: Math.floor(Math.random() * 11),
           vertical_sort: list[list_id].tasks.length,
           end_date: '2021/12/30',
-          project_id: id as string,
+          project_id: String(id),
           list_id: String(list_id),
         },
       },
@@ -416,7 +418,7 @@ export const ProjectDetail: FC = () => {
     await createList({
       variables: {
         name: 'ほげ',
-        project_id: Number(id),
+        project_id: String(id),
         task_list: 1,
       },
     })
@@ -439,7 +441,7 @@ export const ProjectDetail: FC = () => {
                 <h2>名前: {searchSameCompanyUsers.name}</h2>
                 <p>id: {searchSameCompanyUsers.id}</p>
                 <button
-                  onClick={() => handleInvitation(searchSameCompanyUsers.id, id as string)}
+                  onClick={() => handleInvitation(searchSameCompanyUsers.id, String(id))}
                   style={{ border: 'solid' }}>
                   招待する
                 </button>
@@ -461,18 +463,10 @@ export const ProjectDetail: FC = () => {
 
         {!!currentUserData.data && (
           <ProjectMyInfo
+            {...currentUserData.data.user}
             iconImage={currentUserData.data.user.icon_image}
             occupationId={currentUserData.data.user.occupation_id}
-            name={currentUserData.data.user.name}
             totalExp={currentUserData.data.user.exp}
-            hp={currentUserData.data.user.hp}
-            mp={currentUserData.data.user.mp}
-            technology={currentUserData.data.user.technology}
-            solution={currentUserData.data.user.solution}
-            achievement={currentUserData.data.user.achievement}
-            motivation={currentUserData.data.user.motivation}
-            design={currentUserData.data.user.design}
-            plan={currentUserData.data.user.plan}
           />
         )}
       </ProjectDetailLeftContainer>
@@ -485,6 +479,8 @@ export const ProjectDetail: FC = () => {
           gameLogs={logs}
         />
       </ProjectDetailRightContainer>
+
+      <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
     </ProjectDetailContainer>
   )
 }

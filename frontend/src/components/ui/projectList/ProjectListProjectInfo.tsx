@@ -74,7 +74,42 @@ export const ProjectListProjectInfo: FC<Props> = ({
       <StyledStyledProjectInfoTextOverview>{overview}</StyledStyledProjectInfoTextOverview>
       {projectInfoTitle('パーティーメンバー')}
       <StyledPartyContainer>
-        {groupsProject[selectProject].project.groups.map((group, index) => {
+        {(() => {
+          // TODO: この即時関数内はテスト用なので、後で消す
+          const copied: Props['groupsProject'] = JSON.parse(JSON.stringify(groupsProject))
+          const tests = copied
+          tests[selectProject].project.groups = [...Array(10)].map(
+            () => tests[selectProject].project.groups[0],
+          )
+
+          return (
+            <>
+              {tests[selectProject].project.groups.map((group, index) => {
+                if (index > 4) return
+
+                return (
+                  <UserAvatarIcon
+                    avatarStyleType={AVATAR_STYLE.LIST}
+                    iconImage={group.user.icon_image}
+                    name={group.user.name}
+                    occupation={occupationList[group.user.occupation_id]}
+                    key={index}
+                  />
+                )
+              })}
+
+              {tests[selectProject].project.groups.length > 5 && (
+                <UserCount
+                  userCount={tests[selectProject].project.groups.length - 5}
+                  groups={groupsProject[selectProject].project.groups}
+                  avatarStyleType={AVATAR_STYLE.LIST}
+                />
+              )}
+            </>
+          )
+        })()}
+        {/* TODO: 上のテスト用を消したらこっちのコメントアウトを外す */}
+        {/* {groupsProject[selectProject].project.groups.map((group, index) => {
           if (index > 4) return
 
           return (
@@ -94,7 +129,7 @@ export const ProjectListProjectInfo: FC<Props> = ({
             groups={groupsProject[selectProject].project.groups}
             avatarStyleType={AVATAR_STYLE.LIST}
           />
-        )}
+        )} */}
       </StyledPartyContainer>
     </StyledProjectInfoContainer>
   )
