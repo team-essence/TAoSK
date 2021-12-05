@@ -29,7 +29,7 @@ export const UserAvatarIcon: FC<Props> = ({
   if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
       <StyledUserAvatarIconContainer size={50} {...eventHoverHandlers} className={className}>
-        <StyledUserAvatarIconListContainer iconImage={iconImage} size={50} />
+        <StyledUserAvatarListIcon iconImage={iconImage} size={50} />
 
         {hovered && (
           <StyledPopupUserInfoContainer bottom={66}>
@@ -48,7 +48,7 @@ export const UserAvatarIcon: FC<Props> = ({
   else if (avatarStyleType === AVATAR_STYLE.TASK)
     return (
       <StyledUserAvatarIconContainer size={24} className={className}>
-        <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={24} />
+        <StyledUserAvatarTaskIcon iconImage={iconImage} size={24} />
       </StyledUserAvatarIconContainer>
     )
   else
@@ -59,7 +59,7 @@ export const UserAvatarIcon: FC<Props> = ({
             <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
           </StyledUserCloseButton>
         )}
-        <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={40} />
+        <StyledUserAvatarTaskIcon iconImage={iconImage} size={40} />
 
         {hovered && (
           <StyledPopupUserInfoContainer bottom={66}>
@@ -98,7 +98,7 @@ const StyledUserCloseButton = styled.button`
   }
 `
 
-const StyledUserAvatarIconListContainer = styled.div<{
+const StyledUserAvatarListIcon = styled.div<{
   iconImage: string
   size: number
 }>`
@@ -113,7 +113,7 @@ const StyledUserAvatarIconListContainer = styled.div<{
   background-repeat: no-repeat;
 `
 
-const StyledUserAvatarIconTaskContainer = styled.div<{
+const StyledUserAvatarTaskIcon = styled.div<{
   iconImage: string
   size: number
 }>`
