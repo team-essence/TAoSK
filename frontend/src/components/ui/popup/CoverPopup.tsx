@@ -133,6 +133,4 @@ const StyledCrossIcon = styled(CrossIcon)`
   }
 `
 
-const StyledCoverPopupContent = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaWidth(24)};
-`
+const StyledCoverPopupContent = styled.div``

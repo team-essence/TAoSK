@@ -29,30 +29,36 @@ export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, clos
       isHover={isHover}
       isClick={isClick}
       closeClick={closeClick}>
-      <StyledInvitationItem>
-        <StyledInvitationText>
-          <span>【プロジェクト名】</span>
-          に招待されました
-        </StyledInvitationText>
+      <StyledInvitationItemContainer>
+        <StyledInvitationItem>
+          <StyledInvitationText>
+            <span>【プロジェクト名】</span>
+            に招待されました
+          </StyledInvitationText>
 
-        <StyledInvitationUrlContainer>
-          <p>
-            <span>URL：</span>
-            <a href={`https://${host}`}>
-              https://{host}/invitation/{'id'}
-            </a>
-          </p>
-        </StyledInvitationUrlContainer>
+          <StyledInvitationUrlContainer>
+            <p>
+              <span>URL：</span>
+              <a href={`https://${host}`}>
+                https://{host}/invitation/{'id'}
+              </a>
+            </p>
+          </StyledInvitationUrlContainer>
 
-        <StyledInvitationTimeContainer>
-          <p>{date.formatDay('2021-12-11')}</p>
-        </StyledInvitationTimeContainer>
-      </StyledInvitationItem>
+          <StyledInvitationTimeContainer>
+            <p>{date.formatDay('2021-12-11')}</p>
+          </StyledInvitationTimeContainer>
+        </StyledInvitationItem>
+      </StyledInvitationItemContainer>
     </StyledNotificationPopupContainer>
   )
 }
 
 const StyledNotificationPopupContainer = styled(CoverPopup)``
+
+const StyledInvitationItemContainer = styled.div`
+  padding: ${calculateMinSizeBasedOnFigmaWidth(24)};
+`
 
 // TODO: 今後招待以外の通知実装された時のために名前にinvitationを入れている
 const StyledInvitationItem = styled.div`

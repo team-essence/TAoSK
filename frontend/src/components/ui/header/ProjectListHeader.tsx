@@ -1,19 +1,65 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { NotificationPopup } from '../popup/NotificationPopup'
 import { useHover } from 'hooks/useHover'
+import { UserMenuPopup } from '../popup/UserMenuPopup'
 
 type Props = {
   className?: string
   iconImage: string
+  name: string
+  uid: string
+  totalExp: number
 }
 
-export const ProjectListHeader: FC<Props> = ({ className, iconImage }) => {
-  const [notificationHovered, notificationEventHoverHandlers] = useHover()
-  const [isNotification, setIsNotification] = useState(false)
+export const ProjectListHeader: FC<Props> = ({ className, iconImage, name, uid, totalExp }) => {
+  const [isNotificationHover, notificationEventHoverHandlers] = useHover()
+  const [isClickNotification, setIsClickNotification] = useState(false)
+  const [isUserMenuHover, userMenuEventHoverHandlers] = useHover()
+  const [isClickUserMenu, setIsClickUserMenu] = useState(false)
+
+  const closeNotificationPopup = useCallback(event => {
+    setIsClickNotification(false)
+    document.removeEventListener('click', closeNotificationPopup)
+  }, [])
+
+  const handleNotificationPopup = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    isClick: boolean,
+  ) => {
+    !isClick && allClose()
+    setIsClickNotification(isClickNotification => !isClickNotification)
+    document.addEventListener('click', closeNotificationPopup)
+    event.stopPropagation()
+  }
+
+  const closeUserMenuPopup = useCallback(event => {
+    setIsClickUserMenu(false)
+    document.removeEventListener('click', closeUserMenuPopup)
+  }, [])
+
+  const handleUserMenuPopup = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    isClick: boolean,
+  ) => {
+    !isClick && allClose()
+    setIsClickUserMenu(isClickUserMenu => !isClickUserMenu)
+    document.addEventListener('click', closeUserMenuPopup)
+    event.stopPropagation()
+  }
+
+  const allClose = () => {
+    setIsClickNotification(false)
+    setIsClickUserMenu(false)
+  }
+
+  const handleClickUserMene = (isClick: boolean) => {
+    !isClick && allClose()
+    setIsClickUserMenu(isClickUserMenu => !isClickUserMenu)
+  }
 
   return (
     <StyledHeaderWrapper className={className}>
@@ -23,12 +69,14 @@ export const ProjectListHeader: FC<Props> = ({ className, iconImage }) => {
 
       <StyledBellWrapper
         {...notificationEventHoverHandlers}
-        onClick={() => setIsNotification(isNotification => !isNotification)}>
+        onClick={event => handleNotificationPopup(event, isClickNotification)}>
         <img src="/svg/bell.svg" alt="通知アイコン" />
         {true && <StyledNotificationIcon />}
       </StyledBellWrapper>
 
-      <StyledUserMenuIconWrapper>
+      <StyledUserMenuIconWrapper
+        {...userMenuEventHoverHandlers}
+        onClick={event => handleUserMenuPopup(event, isClickUserMenu)}>
         <StyledUserMenuIcon>
           <img src={iconImage} alt="ユーザアイコン" />
         </StyledUserMenuIcon>
@@ -36,11 +84,25 @@ export const ProjectListHeader: FC<Props> = ({ className, iconImage }) => {
         <img src="/svg/menu-arrow_bottom.svg" alt="メニュー表示" />
       </StyledUserMenuIconWrapper>
 
-      <StyledNotificationPopup
-        isHover={notificationHovered ? true : false}
-        isClick={isNotification}
-        closeClick={() => setIsNotification(false)}
-      />
+      <StyledPopupContainer onClick={event => event.stopPropagation()}>
+        <StyledNotificationPopup
+          isHover={!!isNotificationHover}
+          isClick={isClickNotification}
+          closeClick={() => setIsClickNotification(false)}
+        />
+      </StyledPopupContainer>
+
+      <StyledPopupContainer onClick={event => event.stopPropagation()}>
+        <StyledUserMenuPopup
+          isHover={!!isUserMenuHover}
+          isClick={isClickUserMenu}
+          closeClick={() => setIsClickUserMenu(false)}
+          iconImage={iconImage}
+          name={name}
+          uid={uid}
+          totalExp={totalExp}
+        />
+      </StyledPopupContainer>
     </StyledHeaderWrapper>
   )
 }
@@ -108,9 +170,18 @@ const StyledUserMenuIcon = styled.div`
   }
 `
 
+const StyledPopupContainer = styled.div``
+
 const StyledNotificationPopup = styled(NotificationPopup)`
   position: absolute;
   transform-origin: top right;
   top: ${calculateMinSizeBasedOnFigmaWidth(76)};
   right: ${calculateMinSizeBasedOnFigmaWidth(80)};
+`
+
+const StyledUserMenuPopup = styled(UserMenuPopup)`
+  position: absolute;
+  transform-origin: top right;
+  top: ${calculateMinSizeBasedOnFigmaWidth(76)};
+  right: ${calculateMinSizeBasedOnFigmaWidth(30)};
 `
