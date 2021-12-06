@@ -6,6 +6,7 @@ import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFi
 import { NotificationPopup } from '../popup/NotificationPopup'
 import { useHover } from 'hooks/useHover'
 import { UserMenuPopup } from '../popup/UserMenuPopup'
+import { Notifications } from 'types/notification'
 
 type Props = {
   className?: string
@@ -13,9 +14,17 @@ type Props = {
   name: string
   uid: string
   totalExp: number
+  notifications: Notifications
 }
 
-export const ProjectListHeader: FC<Props> = ({ className, iconImage, name, uid, totalExp }) => {
+export const ProjectListHeader: FC<Props> = ({
+  className,
+  iconImage,
+  name,
+  uid,
+  totalExp,
+  notifications,
+}) => {
   const [isNotificationHover, notificationEventHoverHandlers] = useHover()
   const [isClickNotification, setIsClickNotification] = useState(false)
   const [isUserMenuHover, userMenuEventHoverHandlers] = useHover()
@@ -66,7 +75,7 @@ export const ProjectListHeader: FC<Props> = ({ className, iconImage, name, uid, 
         {...notificationEventHoverHandlers}
         onClick={event => handleNotificationPopup(event, isClickNotification)}>
         <img src="/svg/bell.svg" alt="通知アイコン" />
-        {true && <StyledNotificationIcon />}
+        {!!notifications.length && <StyledNotificationIcon />}
       </StyledBellWrapper>
 
       <StyledUserMenuIconWrapper
@@ -84,6 +93,7 @@ export const ProjectListHeader: FC<Props> = ({ className, iconImage, name, uid, 
           isHover={!!isNotificationHover}
           isClick={isClickNotification}
           closeClick={() => setIsClickNotification(false)}
+          notifications={notifications}
         />
       </StyledPopupContainer>
 

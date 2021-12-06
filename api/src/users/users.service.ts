@@ -38,6 +38,8 @@ export class UsersService {
       relations: [
         'interests',
         'certifications',
+        'invitations',
+        'invitations.project',
         'groups',
         'groups.project',
         'groups.project.groups',

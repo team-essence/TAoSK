@@ -4,15 +4,23 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import date from 'utils/date/date'
 import logger from 'utils/debugger/logger'
+import { Notifications } from 'types/notification'
 
 type Props = {
   className?: string
   isHover: boolean
   isClick: boolean
   closeClick: () => void
+  notifications: Notifications
 }
 
-export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, closeClick }) => {
+export const NotificationPopup: FC<Props> = ({
+  className,
+  isHover,
+  isClick,
+  closeClick,
+  notifications,
+}) => {
   const [origin, setOrigin] = useState('')
 
   useEffect(() => {
@@ -30,25 +38,27 @@ export const NotificationPopup: FC<Props> = ({ className, isHover, isClick, clos
       isClick={isClick}
       closeClick={closeClick}>
       <StyledInvitationItemContainer>
-        <StyledInvitationItem>
-          <StyledInvitationText>
-            <span>【プロジェクト名】</span>
-            に招待されました
-          </StyledInvitationText>
+        {notifications.map((notification, index) => (
+          <StyledInvitationItem key={index}>
+            <StyledInvitationText>
+              <span>【{notification.name}】</span>
+              に招待されました
+            </StyledInvitationText>
 
-          <StyledInvitationUrlContainer>
-            <p>
-              <span>URL：</span>
-              <a href={`${origin}/invitation/${'hoge'}`}>
-                {origin}/invitation/{'id'}
-              </a>
-            </p>
-          </StyledInvitationUrlContainer>
+            <StyledInvitationUrlContainer>
+              <p>
+                <span>URL：</span>
+                <a href={`${origin}/invitation/${notification.id}`}>
+                  {origin}/invitation/{notification.id}
+                </a>
+              </p>
+            </StyledInvitationUrlContainer>
 
-          <StyledInvitationTimeContainer>
-            <p>{date.formatDay('2021-12-11')}</p>
-          </StyledInvitationTimeContainer>
-        </StyledInvitationItem>
+            <StyledInvitationTimeContainer>
+              <p>{date.formatDay(notification.createAt)}</p>
+            </StyledInvitationTimeContainer>
+          </StyledInvitationItem>
+        ))}
       </StyledInvitationItemContainer>
     </StyledNotificationPopupContainer>
   )

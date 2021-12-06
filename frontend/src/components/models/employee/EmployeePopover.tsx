@@ -19,7 +19,7 @@ type Props = {
   className?: string
   level: number
 } & PopoverProps &
-  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | 'online_flg'>
+  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | 'online_flg' | 'invitations'>
 
 export const EmployeePopover: FC<Props> = ({
   id,
