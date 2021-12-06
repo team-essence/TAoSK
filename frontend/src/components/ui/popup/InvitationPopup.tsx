@@ -1,0 +1,272 @@
+import React, { FC, useEffect, useState } from 'react'
+import styled, { css } from 'styled-components'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
+import { useInput } from 'hooks/useInput'
+import { useDebounce } from 'hooks/useDebounce'
+
+import { useAuthContext } from 'providers/AuthProvider'
+import { occupationList } from 'consts/occupationList'
+import {
+  useCreateInvitationMutation,
+  useSearchUsersLazyQuery,
+} from 'pages/projectList/projectDetail/projectDetail.gen'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import logger from 'utils/debugger/logger'
+import { useParams } from 'react-router'
+import toast from 'utils/toast/toast'
+
+type Props = {
+  className?: string
+  isHover: boolean
+  isClick: boolean
+  company: string
+  closeClick: () => void
+}
+
+export const InvitationPopup: FC<Props> = ({
+  className,
+  isHover,
+  isClick,
+  closeClick,
+  company,
+}) => {
+  const { id } = useParams()
+  const [searchUser, searchUserQuery] = useSearchUsersLazyQuery({
+    onCompleted(data) {
+      const users = data.findProjectDetailSameCompanyUsers.map(user => {
+        return {
+          id: user.id,
+          name: user.name,
+          iconImage: user.icon_image,
+          isInvitation: !!user.invitations.length,
+        }
+      })
+      setSearchedList(users)
+      !debouncedInputText && setSearchedList([])
+    },
+    fetchPolicy: 'network-only',
+  })
+  const [createInvitation] = useCreateInvitationMutation({
+    onCompleted(data) {
+      toast.success(`${data.createInvitation.user.name}さんを招待しました`)
+      setSearchedList(searchedList => {
+        return searchedList.map(searchedItem => {
+          if (searchedItem.id === data.createInvitation.user.id) searchedItem.isInvitation = true
+
+          return searchedItem
+        })
+      })
+    },
+    onError(err) {
+      logger.debug(err)
+      toast.error('招待に失敗しました')
+    },
+  })
+  const inputSearchUser = useInput('')
+  const debouncedInputText = useDebounce<string>(inputSearchUser.value, 500)
+  const { currentUser } = useAuthContext()
+  const [searchedList, setSearchedList] = useState<
+    {
+      id: string
+      name: string
+      iconImage: string
+      isInvitation: boolean
+    }[]
+  >([])
+
+  useEffect(() => {
+    if (!currentUser) return
+
+    searchUser({
+      variables: {
+        searchUser: {
+          project_id: String(id),
+          input: debouncedInputText,
+          company,
+        },
+      },
+    })
+  }, [debouncedInputText])
+
+  const tryCreateInvitation = (projectId: string, userId: string) => {
+    createInvitation({
+      variables: {
+        userId,
+        projectId,
+      },
+    })
+  }
+
+  return (
+    <StyledInvitationPopupContainer
+      className={className}
+      title="仲間を招待する"
+      popupType={POPUP_TYPE.NORMAL}
+      isHover={isHover}
+      isClick={isClick}
+      closeClick={closeClick}>
+      <StyledInvitationContainer>
+        <StyledSearchInputContainer>
+          <StyledSearchImg src="/svg/search.svg" alt="検索アイコン" />
+
+          <StyledSearchInput placeholder={'ユーザ名、UIDを入力'} {...inputSearchUser} />
+        </StyledSearchInputContainer>
+
+        {!!searchedList.length && (
+          <StyledSearchedItemContainer>
+            {searchedList.map((searchedItem, index) => (
+              <StyledSearchedItem key={index}>
+                <StyledUserInfoContainer>
+                  <StyledUserIconImageContainer>
+                    <img src={searchedItem.iconImage} alt="ユーザアイコン" />
+                  </StyledUserIconImageContainer>
+
+                  <StyledUserInfo>
+                    <StyledUserName>{searchedItem.name}</StyledUserName>
+                    <StyledUserUid>@{searchedItem.id}</StyledUserUid>
+                  </StyledUserInfo>
+                </StyledUserInfoContainer>
+
+                <StyledInvitationButton
+                  disabled={searchedItem.isInvitation}
+                  isInvitation={searchedItem.isInvitation}
+                  onClick={() => tryCreateInvitation(String(id), searchedItem.id)}>
+                  {searchedItem.isInvitation ? '招待済み' : '招待する'}
+                </StyledInvitationButton>
+              </StyledSearchedItem>
+            ))}
+          </StyledSearchedItemContainer>
+        )}
+      </StyledInvitationContainer>
+    </StyledInvitationPopupContainer>
+  )
+}
+
+const StyledInvitationPopupContainer = styled(CoverPopup)``
+
+const StyledInvitationContainer = styled.div``
+
+const StyledSearchInputContainer = styled.div`
+  margin: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(24)};
+  position: relative;
+  border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  border: solid ${calculateMinSizeBasedOnFigmaWidth(1)} ${({ theme }) => theme.COLORS.FONT.SILVER};
+`
+
+const StyledSearchInput = styled.input`
+  border-radius: 0 0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)};
+  border: none;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(9)} ${calculateMinSizeBasedOnFigmaWidth(12)};
+  padding-right: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  width: calc(100% - ${calculateMinSizeBasedOnFigmaWidth(30)});
+  outline: 0;
+
+  &::placeholder {
+    color: #adadad;
+  }
+`
+
+const StyledSearchImg = styled.img`
+  position: absolute;
+  right: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20;
+  width: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(16)};
+`
+
+const StyledSearchedItemContainer = styled.div`
+  padding: ${calculateMinSizeBasedOnFigmaWidth(24)};
+  padding-top: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  border-top: solid ${calculateMinSizeBasedOnFigmaWidth(1)} ${({ theme }) => theme.COLORS.SILVER};
+`
+
+const StyledSearchedItem = styled.div`
+  padding: ${calculateMinSizeBasedOnFigmaWidth(12)} 0;
+  border-bottom: 1px dashed ${({ theme }) => theme.COLORS.SILVER};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:first-child {
+    padding-top: 0;
+  }
+`
+
+const StyledUserInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(6)};
+`
+
+const StyledUserInfo = styled.div`
+  width: ${calculateMinSizeBasedOnFigmaWidth(200)};
+`
+const StyledP = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
+
+const StyledUserName = styled(StyledP)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+    font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+    color: ${theme.COLORS.FONT.BLACK};
+    line-height: ${theme.FONT_SIZES.SIZE_14};
+  `}
+`
+
+const StyledUserUid = styled(StyledP)`
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZES.SIZE_12};
+    font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+    color: ${theme.COLORS.DOVE_GRAY};
+  `}
+`
+
+const StyledUserIconImageContainer = styled.div`
+  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+
+  img {
+    width: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 0 0 0.5px ${({ theme }) => theme.COLORS.BITTER_COCOA_BROWN};
+    border: solid 1px ${({ theme }) => theme.COLORS.BRANDY};
+  }
+`
+
+const StyledInvitationButton = styled.button<{ isInvitation: boolean }>`
+  padding: ${calculateMinSizeBasedOnFigmaWidth(3)} ${calculateMinSizeBasedOnFigmaWidth(0)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(64)};
+  border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  text-align: center;
+  cursor: pointer;
+
+  ${({ theme }) => css`
+    background: ${theme.COLORS.DODGER_BLUE};
+    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+    font-size: ${theme.FONT_SIZES.SIZE_12};
+    line-height: ${theme.FONT_SIZES.SIZE_16};
+    color: ${theme.COLORS.WHITE};
+  `}
+
+  ${({ isInvitation, theme }) =>
+    isInvitation &&
+    css`
+      background: ${convertIntoRGBA(theme.COLORS.BLACK, 0.2)};
+      color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.2)};
+      cursor: default;
+    `}
+`

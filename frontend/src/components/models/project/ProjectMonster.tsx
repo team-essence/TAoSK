@@ -60,7 +60,9 @@ const StyledMonsterName = styled.h5`
 `
 
 const StyledProjectMonsterImg = styled.img`
-  width: ${calculateMinSizeBasedOnFigmaHeight(265)};
+  margin: 0 auto;
+  display: block;
+  width: ${calculateMinSizeBasedOnFigmaHeight(220)};
 `
 
 const StyledStatusBarContainer = styled.div`
