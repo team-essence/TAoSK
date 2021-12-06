@@ -21,7 +21,6 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
-import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -416,17 +415,12 @@ export const ProjectDetail: FC = () => {
             ),
           )}
       </ProjectTitleContainer>
-
       <ProjectDetailLeftContainer>
         <ProjectDrawer
           groups={projectData.data?.getProjectById.groups}
           lists={list}
           onDragEnd={onDragEnd}
         />
-        <p>左側</p>
-
-        <div style={{ border: 'solid' }}></div>
-
         {!!currentUserData.data && (
           <ProjectMyInfo
             {...currentUserData.data.user}
@@ -436,7 +430,6 @@ export const ProjectDetail: FC = () => {
           />
         )}
       </ProjectDetailLeftContainer>
-
       <ProjectDetailRightContainer>
         <ProjectRight
           onClick={handleCreateList}
@@ -474,8 +467,4 @@ const ProjectDetailRightContainer = styled.div`
   height: 100%;
   grid-row: 2 / 3;
   grid-column: 2 / 3;
-`
-
-const StyledTaskListContainer = styled.div`
-  display: flex;
 `
