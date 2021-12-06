@@ -21,12 +21,11 @@ export const Loading: FC = () => {
 }
 
 const StyledContainer = styled.div`
-  display: flex;
+  display: grid;
   place-items: center;
   height: 100vh;
-  background-color: #2c2c2c;
+  background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 const StyledNowLoading = styled.div`
   width: ${calculateMinSizeBasedOnFigmaWidth(800)};
-  margin: 0 auto;
 `
