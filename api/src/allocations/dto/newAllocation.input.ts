@@ -9,7 +9,7 @@ export class NewAllocationInput {
   user_id: string;
 
   @IsNotEmpty()
-  @IsInt()
+  @IsString()
   @Field()
-  project_id: number;
+  task_id: string;
 }
