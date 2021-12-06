@@ -171,6 +171,7 @@ const StyledSearchResultWrapper = styled.ul`
 const StyledListItem = styled.li<{ indexAt: 'first' | 'last' | 'other' }>`
   cursor: pointer;
   display: flex;
+  align-items: center;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
   ${({ indexAt }) => {
     if (indexAt === 'first') {
@@ -198,7 +199,6 @@ const StyledAvatar = styled.img`
   object-fit: contain;
   aspect-ratio: 1 / 1;
   width: ${calculateMinSizeBasedOnFigmaWidth(30)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(30)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.2)};
   border-radius: 2px;
 `

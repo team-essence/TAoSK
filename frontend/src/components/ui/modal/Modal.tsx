@@ -4,7 +4,7 @@ import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { theme } from 'styles/theme'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type Props = {
   title?: string
@@ -100,12 +100,14 @@ const StyledCrossIcon = styled(CrossIcon)`
   }
 `
 const StyledOverlay = styled.div<{ shouldShow: boolean }>`
-  z-index: ${({ theme }) => theme.Z_INDEX.OVERLAY};
-  display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: transparent;
+  ${({ theme, shouldShow }) => css`
+    z-index: ${theme.Z_INDEX.OVERLAY};
+    display: ${shouldShow ? 'block' : 'none'};
+    background-color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.65)};
+  `}
 `
