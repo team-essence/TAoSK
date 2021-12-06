@@ -27,6 +27,7 @@ export class ChatsService {
           id: taskId,
         },
       },
+      relations: ['user'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -66,7 +67,7 @@ export class ChatsService {
 
     chat.comment = comment;
 
-    this.chatRepository.save(chat).catch((err) => {
+    await this.chatRepository.save(chat).catch((err) => {
       new InternalServerErrorException();
     });
 
@@ -76,6 +77,7 @@ export class ChatsService {
           id: taskId,
         },
       },
+      relations: ['user'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -89,7 +91,7 @@ export class ChatsService {
       },
     });
 
-    this.chatRepository.remove(chat).catch((err) => {
+    await this.chatRepository.remove(chat).catch((err) => {
       new InternalServerErrorException();
     });
 
@@ -99,6 +101,7 @@ export class ChatsService {
           id: taskId,
         },
       },
+      relations: ['user'],
     });
     if (!chats) throw new NotFoundException();
 
