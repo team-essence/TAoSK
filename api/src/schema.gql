@@ -76,7 +76,7 @@ type Task {
   plan: Float!
   design: Float!
   vertical_sort: Float!
-  end_date: DateTime!
+  end_date: String!
   project: Project!
   list: List!
   chats: [Chat!]!
