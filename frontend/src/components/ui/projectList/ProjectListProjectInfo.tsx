@@ -71,15 +71,15 @@ export const ProjectListProjectInfo: FC<Props> = ({
     () => groupsProject[selectProject].project.groups.map(group => group.user),
     [groupsProject, selectProject],
   )
-  // const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
-  //   userDatas.length,
-  // )
-
-  // TODO: テスト用。後で消す
-  const testUserDatas: UserDatas = [...Array(10)].map(() => userDatas[0])
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
-    testUserDatas.length,
+    userDatas.length,
   )
+
+  // TODO: ユーザーが多い時の挙動を確かめるテスト用。本番では消す
+  // const testUserDatas: UserDatas = [...Array(10)].map(() => userDatas[0])
+  // const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+  //   testUserDatas.length,
+  // )
 
   return (
     <StyledProjectInfoContainer>
@@ -89,13 +89,12 @@ export const ProjectListProjectInfo: FC<Props> = ({
       <StyledStyledProjectInfoTextOverview>{overview}</StyledStyledProjectInfoTextOverview>
       {projectInfoTitle('パーティーメンバー')}
       <StyledPartyContainer ref={containerRef}>
-        {/* TODO: userが多い時のテスト用 */}
-        {testUserDatas.map((data, index) => {
+        {/* TODO: userが多い時のテスト用, 本番では消す */}
+        {/* {testUserDatas.map((data, index) => {
           const boxCount = index + 1
           if (boxCount < maxBoxes) {
             return (
               <div key={index} ref={avatarRef}>
-                {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
                 <UserAvatarIcon
                   avatarStyleType={AVATAR_STYLE.LIST}
                   iconImage={data.icon_image}
@@ -115,30 +114,32 @@ export const ProjectListProjectInfo: FC<Props> = ({
               </div>
             )
           }
+        })} */}
+        {userDatas.map((data, index) => {
+          const boxCount = index + 1
+          if (boxCount < maxBoxes) {
+            return (
+              <div key={index} ref={avatarRef}>
+                <UserAvatarIcon
+                  avatarStyleType={AVATAR_STYLE.LIST}
+                  iconImage={data.icon_image}
+                  name={data.name}
+                  occupation={occupationList[data.occupation_id]}
+                />
+              </div>
+            )
+          } else if (boxCount === maxBoxes) {
+            return (
+              <div key={index}>
+                <UserCount
+                  avatarStyleType={AVATAR_STYLE.LIST}
+                  userCount={overUsersCount}
+                  userDatas={userDatas}
+                />
+              </div>
+            )
+          }
         })}
-        {/* TODO: 上のテスト用を消したらこっちのコメントアウトを外す */}
-        {/* TODO: groupをやめてuserDatasに変更する */}
-        {/* {groupsProject[selectProject].project.groups.map((group, index) => {
-          if (index > 4) return
-
-          return (
-            <UserAvatarIcon
-              avatarStyleType={AVATAR_STYLE.LIST}
-              iconImage={userData.icon_image}
-              name={userData.name}
-              occupation={occupationList[userData.occupation_id]}
-              key={index}
-            />
-          )
-        })}
-
-        {groupsProject[selectProject].project.groups.length > 5 && (
-          <UserCount
-            userCount={groupsProject[selectProject].project.groups.length - 5}
-            groups={groupsProject[selectProject].project.groups}
-            avatarStyleType={AVATAR_STYLE.LIST}
-          />
-        )} */}
       </StyledPartyContainer>
     </StyledProjectInfoContainer>
   )
