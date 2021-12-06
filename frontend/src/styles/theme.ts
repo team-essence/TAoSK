@@ -98,6 +98,7 @@ export const theme = {
     TOPAZ: '#878190',
     DOVE_GRAY: '#707070',
     SILVER_CHALICE: '#B1B1B1',
+    CITRON: '#98B819',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',

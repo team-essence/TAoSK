@@ -78,6 +78,9 @@ export const ProjectMyInfo: FC<Props> = ({
 }
 
 const StyledProjectMyInfoContainer = styled.div`
+  position: fixed;
+  bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  left: ${calculateMinSizeBasedOnFigmaWidth(8)};
   display: flex;
   align-items: flex-end;
 `

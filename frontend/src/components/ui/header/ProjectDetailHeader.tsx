@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -13,6 +13,10 @@ import { InvitationHeader } from './InvitaionHeader'
 import { useInput } from 'hooks/useInput'
 import { SearchTaskPopup } from '../popup/SearchTaskPopup'
 import { List } from 'types/list'
+import { taskSearch } from 'utils/search/taskSearch'
+import { useDebounce } from 'hooks/useDebounce'
+import { SearchTask } from 'types/task'
+import logger from 'utils/debugger/logger'
 
 type Props = {
   className?: string
@@ -41,7 +45,10 @@ export const ProjectDetailHeader: FC<Props> = ({
   const [isClickUserMenu, setIsClickUserMenu] = useState(false)
   const [isInvitationHover, invitationEventHoverHandlers] = useHover()
   const [isClickInvitation, setIsIsClickInvitation] = useState(false)
-  const searchTask = useInput('')
+  const [isSearchTaskPopup, setIsSearchTaskPopup] = useState(false)
+  const [searchedTasks, setSearchTasks] = useState<SearchTask[]>([])
+  const [searchTaskInput, setSearchTaskInput] = useState('')
+  const debouncedInputText = useDebounce<string>(searchTaskInput, 500)
 
   const closeNotificationPopup = useCallback(event => {
     setIsClickNotification(false)
@@ -88,11 +95,32 @@ export const ProjectDetailHeader: FC<Props> = ({
     event.stopPropagation()
   }
 
+  const closeSearchTaskPopup = useCallback(event => {
+    setSearchTaskInput('')
+    setIsSearchTaskPopup(false)
+    document.removeEventListener('click', closeSearchTaskPopup)
+  }, [])
+
+  const handleSearchTaskPopup = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    isClick: boolean,
+  ) => {
+    !isClick && allClose()
+    setIsSearchTaskPopup(isSearchTaskPopup => !isSearchTaskPopup)
+    document.addEventListener('click', closeSearchTaskPopup)
+    event.stopPropagation()
+  }
+
   const allClose = () => {
     setIsClickNotification(false)
     setIsClickUserMenu(false)
     setIsIsClickInvitation(false)
   }
+
+  useEffect(() => {
+    logger.debug(taskSearch(list, debouncedInputText))
+    setSearchTasks(taskSearch(list, debouncedInputText))
+  }, [debouncedInputText])
 
   return (
     <StyledHeaderWrapper className={className}>
@@ -104,7 +132,12 @@ export const ProjectDetailHeader: FC<Props> = ({
         <StyledSearchTaskInputContainer>
           <StyledSearchImg src="/svg/search-task.svg" alt="検索アイコン" />
 
-          <StyledSearchTaskInput placeholder="タスク名で検索" {...searchTask} />
+          <StyledSearchTaskInput
+            placeholder="タスク名で検索"
+            onChange={event => setSearchTaskInput(event.target.value)}
+            value={searchTaskInput}
+            onClick={event => handleSearchTaskPopup(event, isSearchTaskPopup)}
+          />
         </StyledSearchTaskInputContainer>
       </StyledLeftContainer>
 
@@ -155,7 +188,11 @@ export const ProjectDetailHeader: FC<Props> = ({
         />
       </StyledPopupContainer>
 
-      {!!searchTask.value && <StyledSearchTaskPopup />}
+      {isSearchTaskPopup && (
+        <StyledPopupContainer onClick={event => event.stopPropagation()}>
+          <StyledSearchTaskPopup searchedTasks={searchedTasks} />
+        </StyledPopupContainer>
+      )}
     </StyledHeaderWrapper>
   )
 }
