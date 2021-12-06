@@ -460,10 +460,6 @@ export const ProjectDetail: FC = () => {
             handleAddTask={handleAddTask}
             onDragEnd={onDragEnd}
           />
-          <p>左側</p>
-
-          <div style={{ border: 'solid' }}></div>
-
           {!!currentUserData.data && (
             <ProjectMyInfo
               {...currentUserData.data.user}
@@ -473,7 +469,6 @@ export const ProjectDetail: FC = () => {
             />
           )}
         </ProjectDetailLeftContainer>
-
         <ProjectDetailRightContainer>
           <ProjectRight
             onClick={handleCreateList}
@@ -482,7 +477,6 @@ export const ProjectDetail: FC = () => {
             gameLogs={logs}
           />
         </ProjectDetailRightContainer>
-
         <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
       </ProjectDetailContainer>
 
@@ -502,14 +496,9 @@ const ProjectDetailContainer = styled.div`
   grid-template-rows: auto 1fr;
 `
 
-const ProjectTitleContainer = styled.p`
-  grid-row: 1 / 2;
-  grid-column: 1 / 3;
-`
-
 const ProjectDetailLeftContainer = styled.div`
   height: 100%;
-  grid-row: 2 / 3;
+  grid-row: 1 / 2;
   grid-column: 1 / 2;
   overflow-x: auto;
   white-space: nowrap;
@@ -517,7 +506,7 @@ const ProjectDetailLeftContainer = styled.div`
 
 const ProjectDetailRightContainer = styled.div`
   height: 100%;
-  grid-row: 2 / 3;
+  grid-row: 1 / 2;
   grid-column: 2 / 3;
 `
 
