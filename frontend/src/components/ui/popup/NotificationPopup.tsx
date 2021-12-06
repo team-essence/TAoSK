@@ -64,10 +64,14 @@ export const NotificationPopup: FC<Props> = ({
   )
 }
 
-const StyledNotificationPopupContainer = styled(CoverPopup)``
+const StyledNotificationPopupContainer = styled(CoverPopup)`
+  max-height: ${calculateMinSizeBasedOnFigmaWidth(494)};
+`
 
 const StyledInvitationItemContainer = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(24)};
+  max-height: ${calculateMinSizeBasedOnFigmaWidth(390)};
+  overflow-y: scroll;
 `
 
 // TODO: 今後招待以外の通知実装された時のために名前にinvitationを入れている
@@ -103,6 +107,7 @@ const StyledInvitationUrlContainer = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     color: ${({ theme }) => theme.COLORS.DODGER_BLUE};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
 
     span {
       color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
@@ -114,7 +119,7 @@ const StyledInvitationUrlContainer = styled.div`
       &::after {
         content: '';
         position: absolute;
-        bottom: ${calculateMinSizeBasedOnFigmaWidth(3)};
+        bottom: ${calculateMinSizeBasedOnFigmaWidth(1)};
         left: 0;
         width: 100%;
         height: ${calculateMinSizeBasedOnFigmaWidth(1)};

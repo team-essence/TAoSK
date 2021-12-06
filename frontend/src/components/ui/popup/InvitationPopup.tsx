@@ -4,9 +4,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
-
 import { useAuthContext } from 'providers/AuthProvider'
-import { occupationList } from 'consts/occupationList'
 import {
   useCreateInvitationMutation,
   useSearchUsersLazyQuery,
@@ -143,7 +141,9 @@ export const InvitationPopup: FC<Props> = ({
   )
 }
 
-const StyledInvitationPopupContainer = styled(CoverPopup)``
+const StyledInvitationPopupContainer = styled(CoverPopup)`
+  max-height: ${calculateMinSizeBasedOnFigmaWidth(494)};
+`
 
 const StyledInvitationContainer = styled.div``
 
@@ -183,6 +183,8 @@ const StyledSearchedItemContainer = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(24)};
   padding-top: ${calculateMinSizeBasedOnFigmaWidth(16)};
   border-top: solid ${calculateMinSizeBasedOnFigmaWidth(1)} ${({ theme }) => theme.COLORS.SILVER};
+  max-height: ${calculateMinSizeBasedOnFigmaWidth(340)};
+  overflow-y: scroll;
 `
 
 const StyledSearchedItem = styled.div`
