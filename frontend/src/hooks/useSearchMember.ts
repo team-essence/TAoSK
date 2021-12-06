@@ -15,6 +15,17 @@ type UseSearchMemberReturn = {
   shouldShowResult: boolean
 }
 
+/**
+ * メンバーを検索するために必要な処理の一群
+ * @return {UseSearchMemberReturn} returns
+ * @return {ReturnType<typeof useInput>['onChange']} returns.onChange - 検索欄を入力した時にテキストを参照し続けるため使う
+ * @return {() => void} returns.onFocus - 検索結果を表示する
+ * @return {() => void} returns.onBlur - 検索結果を非表示にする
+ * @return {UserDatas} returns.selectedUserDatas - 検索結果から選択したユーザーデータの配列
+ * @return {Dispatch<SetStateAction<UserDatas>>} returns.setSelectedUserDatas
+ * @return {UserDatas} returns.userDatas - 検索結果のユーザーデータの配列
+ * @return {boolean} returns.shouldShowResult - 検索結果を表示するか
+ */
 export const useSearchMember = (): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const { value, onChange } = useInput('')
