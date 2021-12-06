@@ -81,8 +81,13 @@ const StyledInvitationItem = styled.div`
 
   border-bottom: 1px dashed ${({ theme }) => theme.COLORS.SILVER};
 
+  &:first-child {
+    padding-top: 0;
+  }
+
   &:last-child {
     border-bottom: none;
+    padding-bottom: 0;
   }
 `
 

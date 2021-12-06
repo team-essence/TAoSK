@@ -2,7 +2,6 @@ import React, { FC, useCallback, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { NotificationPopup } from '../popup/NotificationPopup'
 import { useHover } from 'hooks/useHover'
 import { UserMenuPopup } from '../popup/UserMenuPopup'
@@ -10,6 +9,10 @@ import { Notifications } from 'types/notification'
 import { InvitationPopup } from '../popup/InvitationPopup'
 import { UserMenuHeader } from './UserMenuHeader'
 import { NotificationHeader } from './NotificationHeader'
+import { InvitationHeader } from './InvitaionHeader'
+import { useInput } from 'hooks/useInput'
+import { SearchTaskPopup } from '../popup/SearchTaskPopup'
+import { List } from 'types/list'
 
 type Props = {
   className?: string
@@ -18,6 +21,8 @@ type Props = {
   uid: string
   totalExp: number
   notifications: Notifications
+  company: string
+  list: List[]
 }
 
 export const ProjectDetailHeader: FC<Props> = ({
@@ -27,6 +32,8 @@ export const ProjectDetailHeader: FC<Props> = ({
   uid,
   totalExp,
   notifications,
+  company,
+  list,
 }) => {
   const [isNotificationHover, notificationEventHoverHandlers] = useHover()
   const [isClickNotification, setIsClickNotification] = useState(false)
@@ -34,6 +41,7 @@ export const ProjectDetailHeader: FC<Props> = ({
   const [isClickUserMenu, setIsClickUserMenu] = useState(false)
   const [isInvitationHover, invitationEventHoverHandlers] = useHover()
   const [isClickInvitation, setIsIsClickInvitation] = useState(false)
+  const searchTask = useInput('')
 
   const closeNotificationPopup = useCallback(event => {
     setIsClickNotification(false)
@@ -88,15 +96,22 @@ export const ProjectDetailHeader: FC<Props> = ({
 
   return (
     <StyledHeaderWrapper className={className}>
-      <StyledLogoWrapper>
-        <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
-      </StyledLogoWrapper>
+      <StyledLeftContainer>
+        <StyledLogoWrapper>
+          <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
+        </StyledLogoWrapper>
 
-      <StyledInvitationWrapper
-        {...invitationEventHoverHandlers}
-        onClick={event => handleInvitationPopup(event, isClickInvitation)}>
-        <p>招待</p>
-      </StyledInvitationWrapper>
+        <StyledSearchTaskInputContainer>
+          <StyledSearchImg src="/svg/search-task.svg" alt="検索アイコン" />
+
+          <StyledSearchTaskInput placeholder="タスク名で検索" {...searchTask} />
+        </StyledSearchTaskInputContainer>
+      </StyledLeftContainer>
+
+      <InvitationHeader
+        handlers={invitationEventHoverHandlers}
+        onClick={event => handleInvitationPopup(event, isClickInvitation)}
+      />
 
       <NotificationHeader
         handlers={notificationEventHoverHandlers}
@@ -136,9 +151,11 @@ export const ProjectDetailHeader: FC<Props> = ({
           isHover={!!isInvitationHover}
           isClick={isClickInvitation}
           closeClick={() => setIsIsClickInvitation(false)}
-          company="HAL株式会社"
+          company={company}
         />
       </StyledPopupContainer>
+
+      {!!searchTask.value && <StyledSearchTaskPopup />}
     </StyledHeaderWrapper>
   )
 }
@@ -158,8 +175,14 @@ const StyledHeaderWrapper = styled.div`
 
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
-  width: 100%;
   height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+`
+
+const StyledLeftContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(60)};
 `
 
 const StyledLogo = styled.img`
@@ -182,26 +205,57 @@ const StyledUserMenuPopup = styled(UserMenuPopup)`
   right: ${calculateMinSizeBasedOnFigmaWidth(30)};
 `
 
-const StyledInvitationWrapper = styled.div`
-  margin-right: ${calculateMinSizeBasedOnFigmaWidth(26)};
-  padding: ${calculateMinSizeBasedOnFigmaWidth(3)} ${calculateMinSizeBasedOnFigmaWidth(0)};
-  width: ${calculateMinSizeBasedOnFigmaWidth(64)};
-  border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
-  text-align: center;
-  cursor: pointer;
-
-  ${({ theme }) => css`
-    background: ${theme.COLORS.DODGER_BLUE};
-    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
-    font-size: ${theme.FONT_SIZES.SIZE_12};
-    line-height: ${theme.FONT_SIZES.SIZE_16};
-    color: ${theme.COLORS.WHITE};
-  `}
-`
-
 const StyledInvitationPopup = styled(InvitationPopup)`
   position: absolute;
   transform-origin: top right;
   top: ${calculateMinSizeBasedOnFigmaWidth(76)};
   right: ${calculateMinSizeBasedOnFigmaWidth(125)};
+`
+
+const StyledSearchTaskInputContainer = styled.div`
+  margin: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(24)};
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(210)};
+
+  ${({ theme }) => css`
+    border: solid ${calculateMinSizeBasedOnFigmaWidth(1)} ${theme.COLORS.SILVER_CHALICE};
+    background: ${theme.COLORS.DOVE_GRAY};
+  `}
+`
+
+const StyledSearchTaskInput = styled.input`
+  border-radius: 0 0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)};
+  border: none;
+  padding: ${calculateMinSizeBasedOnFigmaWidth(9)} ${calculateMinSizeBasedOnFigmaWidth(12)};
+  padding-right: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  border-radius: ${calculateMinSizeBasedOnFigmaWidth(3)};
+  width: calc(100% - ${calculateMinSizeBasedOnFigmaWidth(20)});
+  outline: 0;
+  background: ${({ theme }) => theme.COLORS.DOVE_GRAY};
+  color: ${({ theme }) => theme.COLORS.WHITE};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.COLORS.WHITE};
+  }
+`
+
+const StyledSearchImg = styled.img`
+  position: absolute;
+  left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20;
+  width: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(16)};
+`
+
+const StyledSearchTaskPopup = styled(SearchTaskPopup)`
+  position: absolute;
+  transform-origin: top left;
+  top: ${({ theme }) => theme.HEADER_HEIGHT};
+  left: ${calculateMinSizeBasedOnFigmaWidth(230)};
 `

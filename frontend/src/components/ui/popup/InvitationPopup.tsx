@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
-import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { useAuthContext } from 'providers/AuthProvider'
 import {
@@ -30,6 +29,7 @@ export const InvitationPopup: FC<Props> = ({
   company,
 }) => {
   const { id } = useParams()
+  const [searchInput, setSearchInput] = useState('')
   const [searchUser, searchUserQuery] = useSearchUsersLazyQuery({
     onCompleted(data) {
       const users = data.findProjectDetailSameCompanyUsers.map(user => {
@@ -61,8 +61,7 @@ export const InvitationPopup: FC<Props> = ({
       toast.error('招待に失敗しました')
     },
   })
-  const inputSearchUser = useInput('')
-  const debouncedInputText = useDebounce<string>(inputSearchUser.value, 500)
+  const debouncedInputText = useDebounce<string>(searchInput, 500)
   const { currentUser } = useAuthContext()
   const [searchedList, setSearchedList] = useState<
     {
@@ -87,6 +86,12 @@ export const InvitationPopup: FC<Props> = ({
     })
   }, [debouncedInputText])
 
+  useEffect(() => {
+    if (isClick) return
+    setSearchInput('')
+    setSearchedList([])
+  }, [isClick])
+
   const tryCreateInvitation = (projectId: string, userId: string) => {
     createInvitation({
       variables: {
@@ -108,7 +113,11 @@ export const InvitationPopup: FC<Props> = ({
         <StyledSearchInputContainer>
           <StyledSearchImg src="/svg/search.svg" alt="検索アイコン" />
 
-          <StyledSearchInput placeholder={'ユーザ名、UIDを入力'} {...inputSearchUser} />
+          <StyledSearchInput
+            placeholder={'ユーザ名、UIDを入力'}
+            onChange={event => setSearchInput(event.target.value)}
+            value={searchInput}
+          />
         </StyledSearchInputContainer>
 
         {!!searchedList.length && (
@@ -160,12 +169,12 @@ const StyledSearchInput = styled.input`
   padding: ${calculateMinSizeBasedOnFigmaWidth(9)} ${calculateMinSizeBasedOnFigmaWidth(12)};
   padding-right: ${calculateMinSizeBasedOnFigmaWidth(4)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  border-radius: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  border-radius: ${calculateMinSizeBasedOnFigmaWidth(3)};
   width: calc(100% - ${calculateMinSizeBasedOnFigmaWidth(30)});
   outline: 0;
 
   &::placeholder {
-    color: #adadad;
+    color: ${({ theme }) => theme.COLORS.SILVER};
   }
 `
 

@@ -97,6 +97,7 @@ export const theme = {
     TRANSPARENT: 'transparent',
     TOPAZ: '#878190',
     DOVE_GRAY: '#707070',
+    SILVER_CHALICE: '#B1B1B1',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',

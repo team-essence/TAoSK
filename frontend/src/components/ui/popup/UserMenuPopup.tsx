@@ -1,9 +1,6 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
-import {
-  calculateMinNegativeSizeBasedOnFigmaWidth,
-  calculateMinSizeBasedOnFigmaWidth,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import { Link } from 'react-router-dom'
 import { useTrySignOut } from 'hooks/useTrySignOut'

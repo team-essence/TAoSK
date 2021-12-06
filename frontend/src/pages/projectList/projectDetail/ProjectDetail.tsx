@@ -447,7 +447,9 @@ export const ProjectDetail: FC = () => {
         name={currentUserData.data!.user.name}
         uid={currentUserData.data!.user.id}
         totalExp={currentUserData.data!.user.exp}
+        company={currentUserData.data!.user.company}
         notifications={notifications}
+        list={list}
       />
 
       <ProjectDetailContainer>
