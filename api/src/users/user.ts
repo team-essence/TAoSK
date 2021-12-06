@@ -14,6 +14,7 @@ import {
   DeleteDateColumn,
   OneToMany,
 } from 'typeorm';
+import { Chat } from 'src/chats/chat';
 
 @Entity('users')
 @ObjectType()
@@ -117,6 +118,10 @@ export class User {
   @OneToMany(() => GameLog, (gameLog) => gameLog.user)
   @Field(() => [GameLog])
   gameLogs: GameLog[];
+
+  @OneToMany(() => Chat, (chat) => chat.user)
+  @Field(() => [Chat])
+  chat: Chat[];
 
   @CreateDateColumn()
   @Field()
