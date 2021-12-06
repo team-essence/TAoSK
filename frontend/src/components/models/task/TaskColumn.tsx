@@ -8,14 +8,14 @@ import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVhBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
-import { useInput } from 'hooks/useInput'
-import { usePopover } from 'hooks/usePopover'
-import { useControllTextArea } from 'hooks/useControlTextArea'
 import {
   useUpdateListNameMutation,
   useRemoveListMutation,
 } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
+import { useInput } from 'hooks/useInput'
+import { usePopover } from 'hooks/usePopover'
+import { useControllTextArea } from 'hooks/useControlTextArea'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
 import { SmallPopover } from 'components/ui/modal/SmallPopover'
@@ -128,8 +128,8 @@ export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, li
                     </>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  {listProvided.placeholder}
                 </StyledTaskListContainer>
-                {listProvided.placeholder}
               </StyledColumnContainer>
             )}
           </Droppable>
@@ -184,13 +184,10 @@ const StyledButtonContainer = styled.div`
 const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
-// 改行でts-styled-pluginのエラーが出る為変数に格納
-const avoidTsStyledErr = `${calculateMinSizeBasedOnFigmaWidth(
-  16,
-)} ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(8)}`
 const StyledTaskListContainer = styled.div`
-  max-height: ${calculateVhBasedOnFigma(584)};
-  padding: ${avoidTsStyledErr};
+  max-height: ${calculateVhBasedOnFigma(620)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
+  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(4)};
   overflow-x: hidden;
   overflow-y: auto;
   /* -ms-overflow-style: none;

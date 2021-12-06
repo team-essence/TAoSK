@@ -95,7 +95,9 @@ const StyledParam = styled.div`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
-  -webkit-text-stroke: 0.4px ${({ theme }) => theme.COLORS.BLACK};
+  background: linear-gradient(0deg, #2c2c2c, #2c2c2c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-stroke: 2px transparent;
 `
 const StyledRank = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};

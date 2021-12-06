@@ -262,7 +262,7 @@ input NewProjectInput {
 
 input NewListInput {
   name: String!
-  project_id: Float!
+  project_id: String!
   task_list: Float!
 }
 

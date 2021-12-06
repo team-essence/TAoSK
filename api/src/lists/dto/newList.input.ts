@@ -9,9 +9,9 @@ export class NewListInput {
   name: string;
 
   @IsNotEmpty()
-  @IsInt()
+  @IsString()
   @Field()
-  project_id: number;
+  project_id: string;
 
   @IsInt()
   @Field()
