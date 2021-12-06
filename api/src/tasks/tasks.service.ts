@@ -70,7 +70,7 @@ export class TasksService {
       plan: newTask.plan,
       design: newTask.design,
       vertical_sort: newTask.vertical_sort,
-      end_date: new Date(newTask.end_date),
+      end_date: newTask.end_date,
       project,
       list,
     });
