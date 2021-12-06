@@ -21,7 +21,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     onFocus,
     onBlur,
     shouldShowResult,
-    userDatas,
+    candidateUserDatas,
     selectedUserDatas,
     setSelectedUserDatas,
   } = useSearchMember()
@@ -29,7 +29,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     selectedUserDatas.length,
   )
 
-  useEffect(() => setUserDatas([...userDatas]), [userDatas])
+  useEffect(() => setUserDatas([...selectedUserDatas]), [selectedUserDatas])
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
   // const testAdd = (data: UserDatas[number]) => {
@@ -54,12 +54,14 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
           onBlur={onBlur}
         />
 
-        {!!shouldShowResult && !!userDatas.length && (
+        {!!shouldShowResult && !!candidateUserDatas.length && (
           <StyledSearchResultWrapper>
-            {userDatas.map((data, index) => (
+            {candidateUserDatas.map((data, index) => (
               <StyledListItem
                 key={index}
-                indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
+                indexAt={
+                  index === 0 ? 'first' : index === candidateUserDatas.length - 1 ? 'last' : 'other'
+                }
                 onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
                 {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
                 <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
