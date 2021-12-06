@@ -53,26 +53,26 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
           onFocus={onFocus}
           onBlur={onBlur}
         />
-      </StyledInputWrapper>
 
-      {!!shouldShowResult && !!userDatas.length && (
-        <StyledSearchResultWrapper>
-          {userDatas.map((data, index) => (
-            <StyledListItem
-              key={index}
-              indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
-              onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
-              {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
-              <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
-              <StyledProfile>
-                <StyledName>{data.name}</StyledName>
-                {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
-                <StyledOccupation>{occupationList[data.occupation_id - 1]}</StyledOccupation>
-              </StyledProfile>
-            </StyledListItem>
-          ))}
-        </StyledSearchResultWrapper>
-      )}
+        {!!shouldShowResult && !!userDatas.length && (
+          <StyledSearchResultWrapper>
+            {userDatas.map((data, index) => (
+              <StyledListItem
+                key={index}
+                indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
+                onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
+                {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
+                <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
+                <StyledProfile>
+                  <StyledName>{data.name}</StyledName>
+                  {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
+                  <StyledOccupation>{occupationList[data.occupation_id - 1]}</StyledOccupation>
+                </StyledProfile>
+              </StyledListItem>
+            ))}
+          </StyledSearchResultWrapper>
+        )}
+      </StyledInputWrapper>
 
       {!!selectedUserDatas.length && (
         <StyledSelectedMembersWrapper>
