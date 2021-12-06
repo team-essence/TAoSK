@@ -67,7 +67,7 @@ export class ChatsService {
 
     chat.comment = comment;
 
-    await this.chatRepository.save(chat).catch((err) => {
+    await this.chatRepository.save(chat).catch(() => {
       new InternalServerErrorException();
     });
 
@@ -91,7 +91,7 @@ export class ChatsService {
       },
     });
 
-    await this.chatRepository.remove(chat).catch((err) => {
+    await this.chatRepository.remove(chat).catch(() => {
       new InternalServerErrorException();
     });
 

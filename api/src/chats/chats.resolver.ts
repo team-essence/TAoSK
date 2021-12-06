@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
 import { Chat } from './chat';
 import { ChatsService } from './chats.service';
+
 @Resolver()
 export class ChatsResolver {
   constructor(private chatsService: ChatsService) {}
