@@ -162,12 +162,12 @@ export const theme = {
     },
 
     STATUS: {
-      TECHNOLOGY: '#6558B9',
-      ACHIEVEMENT: '#C26DBF',
-      SOLUTION: '#D4C25C',
-      MOTIVATION: '#BA7565',
-      DESIGN: '#65BAAA',
-      PLAN: '#8FBA65;',
+      TECHNOLOGY: '#D16060',
+      ACHIEVEMENT: '#D9754A',
+      SOLUTION: '#65BAAA',
+      MOTIVATION: '#8FBA65',
+      DESIGN: '#7567CB',
+      PLAN: '#D4C25C',
     },
   },
 } as const

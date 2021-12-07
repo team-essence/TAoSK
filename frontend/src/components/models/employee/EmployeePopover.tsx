@@ -122,7 +122,7 @@ export const EmployeePopover: FC<Props> = ({
 }
 
 const StyledContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(324)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(332)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
