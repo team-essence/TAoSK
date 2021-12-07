@@ -170,6 +170,7 @@ type Query {
   allUsers: [User!]!
   user(id: String!): User!
   findHrUsers(company: String!): [User!]!
+  findProjectDetailSameCompanyUsers(searchUser: ProjectDetailUserSearchInput!): [User!]!
   certifications(user_ids: [String!]!): [Certification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
@@ -178,6 +179,12 @@ type Query {
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!
+}
+
+input ProjectDetailUserSearchInput {
+  project_id: String!
+  input: String!
+  company: String!
 }
 
 type Mutation {

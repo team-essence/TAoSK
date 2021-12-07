@@ -5,13 +5,14 @@ import {
 } from '@nestjs/common';
 import { User } from './user';
 import { NewUserInput } from './dto/newUser.input';
-import { In, Like, Not, Repository } from 'typeorm';
+import { Brackets, In, Like, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewCertificationClientInput } from 'src/certifications/dto/newCertification.input';
 import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
 import { Interest } from 'src/interests/interest';
 import { Certification } from 'src/certifications/certification';
 import { SearchUserInput } from './dto/searchUser.input';
+import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
 
 @Injectable()
 export class UsersService {
@@ -38,6 +39,8 @@ export class UsersService {
       relations: [
         'interests',
         'certifications',
+        'invitations',
+        'invitations.project',
         'groups',
         'groups.project',
         'groups.project.groups',
@@ -117,6 +120,43 @@ export class UsersService {
     if (!sameCompanyUsers) throw new NotFoundException();
 
     return sameCompanyUsers;
+  }
+
+  projectDetailSearchSameCompanyUsers({
+    projectDetailSearchSameCompanyUsers,
+  }: {
+    projectDetailSearchSameCompanyUsers: ProjectDetailUserSearchInput;
+  }): Promise<User[]> {
+    const projectDetailSearchSameUsers = this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.groups', 'groups')
+      .leftJoinAndSelect(
+        'user.invitations',
+        'invitations',
+        'invitations.project_id = :projectId',
+        {
+          projectId: projectDetailSearchSameCompanyUsers.project_id,
+        },
+      )
+      .leftJoinAndSelect('invitations.project', 'project')
+      .where('groups.id IS NULL')
+      .andWhere('user.company = :company', {
+        company: projectDetailSearchSameCompanyUsers.company,
+      })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where('user.name LIKE :name', {
+            name: `%${projectDetailSearchSameCompanyUsers.input}%`,
+          }).orWhere('user.id LIKE :id', {
+            id: `%${projectDetailSearchSameCompanyUsers.input}%`,
+          });
+        }),
+      )
+      .getMany();
+
+    if (!projectDetailSearchSameUsers) throw new NotFoundException();
+
+    return projectDetailSearchSameUsers;
   }
 
   async updateOnlineFlag(id: string, isOnline: boolean) {

@@ -19,3 +19,10 @@ export type Task = {
   chatCount: number
   allocations: Allocation[]
 }
+
+export type SearchTask = {
+  title: string
+  lint_index: number
+  tasks: Task[]
+  isTask: boolean
+}

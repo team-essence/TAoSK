@@ -86,6 +86,18 @@ query GetProject($id: String!) {
   }
 }
 
+query SearchUsers($searchUser: ProjectDetailUserSearchInput!) {
+  findProjectDetailSameCompanyUsers(searchUser: $searchUser) {
+    id
+    name
+    icon_image
+
+    invitations {
+      id
+    }
+  }
+}
+
 mutation UpdateOnlineFlag($id: String!, $isOnline: Boolean!) {
   updateOnlineFlag(id: $id, isOnline: $isOnline) {
     id
