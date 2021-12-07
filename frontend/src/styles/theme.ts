@@ -96,6 +96,8 @@ export const theme = {
     MONSTER_HP_BG: '#F0C3C3',
     SPICY_MIX: '#876143',
     GREEN: '#00B500',
+    SWIRL: '#D8D0C9',
+    COTTON_SEED: '#C4BCB5',
     TRANSPARENT: 'transparent',
 
     HP: '#85D931',
