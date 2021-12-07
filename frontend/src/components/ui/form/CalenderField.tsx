@@ -1,5 +1,5 @@
 import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import {
   calculateMinSizeBasedOnFigmaHeight,
@@ -29,7 +29,6 @@ export const CalenderField: FC<Props> = ({
   ...inputAttributes
 }) => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
-
   const shouldShowError = !!(hasBlured && error?.message)
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
     inputAttributes.onBlur && inputAttributes.onBlur(e)
@@ -44,9 +43,9 @@ export const CalenderField: FC<Props> = ({
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
           <StyledInputWrapper shouldShowError={shouldShowError} errorColor={errorColor}>
-            <StyledCalenderIconButton>
+            <StyledCalenderIconWrapper>
               <StyledCalenderIcon src="/images/calender-icon.png" alt="カレンダーのアイコン" />
-            </StyledCalenderIconButton>
+            </StyledCalenderIconWrapper>
             <StyledInput {...registration} {...inputAttributes} onBlur={onBlur} type="date" />
           </StyledInputWrapper>
           {children}
@@ -62,9 +61,11 @@ export const CalenderField: FC<Props> = ({
 }
 
 const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
-  margin-bottom: ${({ marginBottom }) => marginBottom};
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  ${({ marginBottom, theme }) => css`
+    margin-bottom: ${marginBottom};
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
 `
 const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: string }>`
   position: relative;
@@ -77,7 +78,7 @@ const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: st
       shouldShowError ? errorColor : convertIntoRGBA(theme.COLORS.WHITE, 0.6)};
   border-radius: 4px;
 `
-const StyledCalenderIconButton = styled.button`
+const StyledCalenderIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,17 +93,22 @@ const StyledCalenderIcon = styled.img`
   width: ${calculateMinSizeBasedOnFigmaWidth(27)};
 `
 const StyledInput = styled.input`
-  position: relative;
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   width: 100%;
   height: 100%;
   padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
   border: none;
   border-radius: 0px 4px 4px 0px;
-  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.SILVER, 0.4)};
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+
+  ${({ theme }) => css`
+    background-color: ${convertIntoRGBA(theme.COLORS.SILVER, 0.4)};
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
   &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
     position: absolute;
+    left: 0;
     margin: 0;
     padding: 0;
     width: 100%;

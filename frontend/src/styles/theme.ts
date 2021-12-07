@@ -14,8 +14,10 @@ export const theme = {
     INDEX_6: 6,
     INDEX_7: 7,
     INDEX_8: 8,
-    OVERLAY: 9,
     HEADER: 50,
+    OVERLAY: 90,
+    UNDER_POPOVER: 98,
+    POPOVER: 99,
     MODAL: 100,
   },
   FONT_SIZES: {

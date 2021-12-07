@@ -10,7 +10,6 @@ import {
   useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
-  useAddTaskMutation,
   useCreateListMutation,
   useUpdateListSortMutation,
 } from './projectDetail.gen'
@@ -22,7 +21,6 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
-import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -116,15 +114,6 @@ export const ProjectDetail: FC = () => {
       toast.error('タスクの移動に失敗しました')
     },
   })
-  const [addTask] = useAddTaskMutation({
-    onCompleted(data) {
-      toast.success('タスクを作成しました')
-    },
-    onError(err) {
-      toast.error('タスクの作成失敗しました')
-    },
-  })
-  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
@@ -391,29 +380,6 @@ export const ProjectDetail: FC = () => {
     })
   }
 
-  const handleAddTask = (list_id: number) => {
-    addTask({
-      variables: {
-        newTask: {
-          title:
-            '心拍数と集中力を測定してfirestore上に送れるようにする心拍数と集中力を測定してfirestore上に送れるようにする',
-          overview: 'hoge',
-          // 一旦ステータスはランダムにした
-          technology: Math.floor(Math.random() * 11),
-          achievement: Math.floor(Math.random() * 11),
-          solution: Math.floor(Math.random() * 11),
-          motivation: Math.floor(Math.random() * 11),
-          plan: Math.floor(Math.random() * 11),
-          design: Math.floor(Math.random() * 11),
-          vertical_sort: list[list_id].tasks.length,
-          end_date: '2021/12/30',
-          project_id: String(id),
-          list_id: String(list_id),
-        },
-      },
-    })
-  }
-
   const handleCreateList = async () => {
     await createList({
       variables: {
@@ -453,7 +419,6 @@ export const ProjectDetail: FC = () => {
         <ProjectDrawer
           groups={projectData.data?.getProjectById.groups}
           lists={list}
-          handleAddTask={handleAddTask}
           onDragEnd={onDragEnd}
         />
         {!!currentUserData.data && (
@@ -473,7 +438,6 @@ export const ProjectDetail: FC = () => {
           gameLogs={logs}
         />
       </ProjectDetailRightContainer>
-      <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
     </ProjectDetailContainer>
   )
 }

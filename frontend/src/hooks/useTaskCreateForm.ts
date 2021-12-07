@@ -1,31 +1,28 @@
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react'
-import {
-  useForm,
-  UseFormRegister,
-  UseFormHandleSubmit,
-  UseFormGetValues,
-  FieldErrors,
-} from 'react-hook-form'
-import { SearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
+import { useState, useRef, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
+import { useParams } from 'react-router-dom'
+import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
+import type { UserDatas } from 'types/userDatas'
+import toast from 'utils/toast/toast'
+import { useAddTaskMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
 
 type StatusCounts = Record<
   'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan',
   number
 >
-type UserDatas = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
 
 type UseTaskCreateFormReturn<T> = {
+  handleAddTask: () => void
   register: UseFormRegister<T>
-  handleSubmit: UseFormHandleSubmit<T>
-  getValues: UseFormGetValues<T>
   isDisabled: boolean
   errors: FieldErrors
   setStatus: Dispatch<SetStateAction<StatusCounts>>
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
 }
+
+type UseTaskCreateForm<T> = (args: { verticalSort: number }) => UseTaskCreateFormReturn<T>
 
 /**
  * タスク追加処理の初期設定を行う
@@ -38,7 +35,8 @@ type UseTaskCreateFormReturn<T> = {
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useTaskCreateForm = (): UseTaskCreateFormReturn<FormInputs> => {
+export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort }) => {
+  const { id: projectId } = useParams()
   const {
     register,
     handleSubmit,
@@ -59,6 +57,14 @@ export const useTaskCreateForm = (): UseTaskCreateFormReturn<FormInputs> => {
     plan: 0,
   })
   const [userDatas, setUserDatas] = useState<UserDatas>([])
+  const [addTask] = useAddTaskMutation({
+    onCompleted(data) {
+      toast.success('タスクを作成しました')
+    },
+    onError(err) {
+      toast.error('タスクの作成失敗しました')
+    },
+  })
 
   useEffect(() => {
     const initializeInputValues = () => {
@@ -77,5 +83,35 @@ export const useTaskCreateForm = (): UseTaskCreateFormReturn<FormInputs> => {
     }
   }, [watchAllFields, errors])
 
-  return { register, handleSubmit, getValues, isDisabled, errors, setStatus, setUserDatas }
+  const handleAddTask = useCallback(() => {
+    const { title, overview, date } = getValues()
+    const { technology, achievement, solution, motivation, design, plan } = status
+    addTask({
+      variables: {
+        newTask: {
+          title,
+          overview,
+          technology,
+          achievement,
+          solution,
+          motivation,
+          plan,
+          design,
+          vertical_sort: verticalSort,
+          end_date: date,
+          project_id: String(projectId),
+          list_id: '1',
+        },
+      },
+    })
+  }, [status, userDatas])
+
+  return {
+    register,
+    isDisabled,
+    errors,
+    setStatus,
+    setUserDatas,
+    handleAddTask: handleSubmit(handleAddTask),
+  }
 }
