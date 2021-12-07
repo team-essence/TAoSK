@@ -95,9 +95,9 @@ export class Task {
   list: List;
 
   //1対多
-  @OneToMany(() => Chat, (chat) => chat.task)
+  @OneToMany(() => Chat, (chats) => chats.task)
   @Field(() => [Chat])
-  chat: Chat[];
+  chats: Chat[];
 
   @Field()
   chatCount: number;

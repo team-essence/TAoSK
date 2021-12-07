@@ -80,7 +80,7 @@ type Task {
   end_date: String!
   project: Project!
   list: List!
-  chat: [Chat!]!
+  chats: [Chat!]!
   chatCount: Float!
   allocations: [Allocation!]!
   created_at: DateTime!
@@ -207,10 +207,10 @@ type Mutation {
   updateListSort(updateListSort: UpdateListSort!): Boolean!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
   addTask(newTask: NewTaskInput!): Task!
+  createAllocation(newAllocation: NewAllocationInput!): Allocation!
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
-  createAllocation(newAllocation: NewAllocationInput!): Allocation!
 }
 
 input NewCertificationClientInput {
