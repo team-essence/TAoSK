@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Task } from 'src/tasks/task';
+import { User } from 'src/users/user';
 import {
   Entity,
   Column,
@@ -29,9 +30,15 @@ export class Chat {
 
   //タスクID
   @Field(() => Task, { defaultValue: '' })
-  @ManyToOne(() => Task, (task) => task.chats)
+  @ManyToOne(() => Task, (task) => task.chat)
   @JoinColumn({ name: 'task_id' })
   task: Task;
+
+  //ユーザID
+  @Field(() => User, { defaultValue: '' })
+  @ManyToOne(() => User, (user) => user.chat)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   //作成日
   @CreateDateColumn()
