@@ -17,7 +17,7 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
   return (
     <StyledContainer param={param}>
       <StyledParamContainer>
-        <StyledImage src="/svg/weapon/technology_bg.svg" alt="weapon" />
+        <StyledImage src={`/svg/status-${param}.svg`} alt="weapon" />
         <StyledParam>{convertParamIntoJp(param)}</StyledParam>
       </StyledParamContainer>
       <StyledRankContainer>
@@ -29,7 +29,7 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 }
 
 const StyledContainer = styled.div<{ param: string }>`
-  min-width: ${calculateMinSizeBasedOnFigmaWidth(90)};
+  min-width: ${calculateMinSizeBasedOnFigmaWidth(88)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
@@ -89,7 +89,10 @@ const StyledRankContainer = styled(StyledFlexContainer)`
   background-color: ${({ theme }) => theme.COLORS.MATTERHORN};
 `
 const StyledImage = styled.img`
+  aspect-ratio: 1/1;
   width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  object-fit: cover;
 `
 const StyledParam = styled.div`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
