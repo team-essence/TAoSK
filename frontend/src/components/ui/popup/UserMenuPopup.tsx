@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
-import styled, { css } from 'styled-components'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import { Link } from 'react-router-dom'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useTrySignOut } from 'hooks/useTrySignOut'
+import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import Exp from 'utils/exp/exp'
+import styled from 'styled-components'
 
 type Props = {
   className?: string
@@ -59,7 +59,6 @@ export const UserMenuPopup: FC<Props> = ({
         <p>
           <Link to={`/mypage/${uid}`}>マイページ</Link>
         </p>
-        {/* TODO: モーダルがきたらonClickを追加 */}
         <button>アカウント設定</button>
       </StyledAccountRelationshipContainer>
 
@@ -122,7 +121,6 @@ const StyledLevelContainer = styled.div`
     color: ${({ theme }) => theme.COLORS.WHITE};
   }
 `
-
 const StyledUserUid = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
@@ -163,7 +161,6 @@ const StyledAccountRelationshipContainer = styled.div`
     }
   }
 `
-
 const StyledLSignOutContainer = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(24)};
   button {
