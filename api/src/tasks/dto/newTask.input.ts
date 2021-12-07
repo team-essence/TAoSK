@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { MaxLength, IsString, IsInt, IsDate } from 'class-validator';
+import { MaxLength, IsString, IsInt, IsDate, IsBoolean } from 'class-validator';
 
 @InputType()
 export class NewTaskInput {
@@ -62,4 +62,8 @@ export class NewTaskInput {
   @Field()
   @IsString()
   list_id: string;
+
+  @Field()
+  @IsBoolean()
+  completed_flg: boolean;
 }

@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
+import { User } from 'src/users/user';
 import { Repository } from 'typeorm';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
@@ -20,6 +21,8 @@ export class TasksService {
     private listRepository: Repository<List>,
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<Task[]> {
@@ -71,6 +74,7 @@ export class TasksService {
       design: newTask.design,
       vertical_sort: newTask.vertical_sort,
       end_date: newTask.end_date,
+      completed_flg: newTask.completed_flg,
       project,
       list,
     });
@@ -80,5 +84,131 @@ export class TasksService {
     });
 
     return task;
+  }
+
+  //タスク編集
+  // ・タイトル変更
+  async updateTitle(taskId: number, title: string): Promise<Task> {
+    let task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    task.title = title;
+
+    await this.taskRepository.save(task).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    return task;
+  }
+  // ・概要変更
+  async updateOverview(taskId: number, overview: string): Promise<Task> {
+    let task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    task.overview = overview;
+
+    await this.taskRepository.save(task).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    return task;
+  }
+  // ・ステータス変更
+  async updateParameters(
+    taskId: number,
+    technology: number,
+    achievement: number,
+    solution: number,
+    motivation: number,
+    plan: number,
+    design: number,
+  ): Promise<Task> {
+    let task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    task.technology = technology;
+    task.achievement = achievement;
+    task.solution = solution;
+    task.motivation = motivation;
+    task.plan = plan;
+    task.design = design;
+
+    await this.taskRepository.save(task).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    return task;
+  }
+  // ・期日変更
+  async updateEndDate(taskId: number, end_date: string): Promise<Task> {
+    let task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    task.end_date = end_date;
+
+    await this.taskRepository.save(task).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    return task;
+  }
+  // タスク削除
+  async deleteTask(taskId: number): Promise<Task[]> {
+    const task = await this.taskRepository.findOne({
+      where: {
+        id: taskId,
+      },
+    });
+
+    await this.taskRepository.remove(task).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    const tasks = this.taskRepository.find({
+      where: {
+        task: {
+          id: taskId,
+        },
+      },
+      relations: ['project', 'list'],
+    });
+
+    return tasks;
   }
 }
