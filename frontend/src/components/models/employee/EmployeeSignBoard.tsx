@@ -15,7 +15,7 @@ export const EmployeeSignBoard: FC<Props> = ({ className, isOpen, handleClick })
   return (
     <StyledContainer className={className} onClick={handleClick}>
       <StyledH3>MEMBER</StyledH3>
-      <StyledFontAwesomeIcon icon={isOpen ? faCaretRight : faCaretLeft} />
+      <StyledFontAwesomeIcon icon={isOpen ? faCaretLeft : faCaretRight} />
     </StyledContainer>
   )
 }
