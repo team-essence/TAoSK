@@ -78,7 +78,8 @@ export const SearchTaskPopup: FC<Props> = ({ className, searchedTasks }) => {
 
 const StyledSearchTaskPopupContainer = styled.div`
   width: ${calculateMinSizeBasedOnFigmaWidth(779)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(335)};
+  min-height: ${calculateMinSizeBasedOnFigmaWidth(335)};
+  max-height: ${calculateMinSizeBasedOnFigmaWidth(409)};
   border-radius: ${calculateMinSizeBasedOnFigmaWidth(6)};
   overflow-y: scroll;
 
