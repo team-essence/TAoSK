@@ -53,6 +53,11 @@ const StyledContainer = styled.div`
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   overflow-x: hidden;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 const StyledEmployeeContainer = styled.div`
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(10)};
