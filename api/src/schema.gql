@@ -76,7 +76,7 @@ type Task {
   plan: Float!
   design: Float!
   vertical_sort: Float!
-  end_date: DateTime!
+  end_date: String!
   project: Project!
   list: List!
   chats: [Chat!]!
@@ -204,6 +204,7 @@ type Mutation {
   updateListSort(updateListSort: UpdateListSort!): Boolean!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
   addTask(newTask: NewTaskInput!): Task!
+  createAllocation(newAllocation: NewAllocationInput!): Allocation!
 }
 
 input NewCertificationClientInput {
@@ -315,6 +316,11 @@ input NewTaskInput {
   end_date: String!
   project_id: String!
   list_id: String!
+}
+
+input NewAllocationInput {
+  user_id: String!
+  task_id: String!
 }
 
 type Subscription {

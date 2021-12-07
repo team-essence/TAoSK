@@ -7,6 +7,9 @@ type UseGetCurrentUserDataReturn = {
   currentUserData: ReturnType<typeof useGetCurrentUserLazyQuery>[1]
 }
 
+/**
+ * 現在のユーザーデータを返す
+ */
 export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
   const { currentUser } = useAuthContext()
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})

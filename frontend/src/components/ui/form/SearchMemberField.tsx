@@ -1,12 +1,15 @@
 import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
+import { AVATAR_STYLE } from 'consts/avatarStyle'
+import { occupationList } from 'consts/occupationList'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { SearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
-import { occupationList } from 'consts/occupationList'
 import { useSearchMember } from 'hooks/useSearchMember'
+import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
+import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { UserCount } from 'components/ui/avatar/UserCount'
+import type { UserDatas } from 'types/userDatas'
 
-type UserDatas = SearchSameCompanyUsersMutation['searchSameCompanyUsers']
 type Props = {
   className?: string
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
@@ -18,12 +21,26 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     onFocus,
     onBlur,
     shouldShowResult,
-    userDatas,
+    candidateUserDatas,
     selectedUserDatas,
     setSelectedUserDatas,
   } = useSearchMember()
+  const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+    selectedUserDatas.length,
+  )
 
-  useEffect(() => setUserDatas([...userDatas]), [userDatas])
+  useEffect(() => setUserDatas([...selectedUserDatas]), [selectedUserDatas])
+
+  // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
+  // const testAdd = (data: UserDatas[number]) => {
+  //   const testDatas: UserDatas = [...Array(20)].map(() => data)
+  //   setSelectedUserDatas([...selectedUserDatas, ...testDatas])
+  // }
+
+  const onClickDeleteBtn = (index: number) => {
+    selectedUserDatas.splice(index, 1)
+    setSelectedUserDatas([...selectedUserDatas.slice()])
+  }
 
   return (
     <StyledAllWrapper className={className}>
@@ -36,26 +53,28 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
           onFocus={onFocus}
           onBlur={onBlur}
         />
-      </StyledInputWrapper>
 
-      {!!shouldShowResult && !!userDatas.length && (
-        <StyledSearchResultWrapper>
-          {userDatas.map((data, index) => (
-            <StyledListItem
-              key={index}
-              indexAt={index === 0 ? 'first' : index === userDatas.length - 1 ? 'last' : 'other'}
-              onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
-              {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
-              <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
-              <StyledProfile>
-                <StyledName>{data.name}</StyledName>
-                {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
-                <StyledOccupation>{occupationList[data.occupation_id - 1]}</StyledOccupation>
-              </StyledProfile>
-            </StyledListItem>
-          ))}
-        </StyledSearchResultWrapper>
-      )}
+        {!!shouldShowResult && !!candidateUserDatas.length && (
+          <StyledSearchResultWrapper>
+            {candidateUserDatas.map((data, index) => (
+              <StyledListItem
+                key={index}
+                indexAt={
+                  index === 0 ? 'first' : index === candidateUserDatas.length - 1 ? 'last' : 'other'
+                }
+                onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
+                {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
+                <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
+                <StyledProfile>
+                  <StyledName>{data.name}</StyledName>
+                  {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
+                  <StyledOccupation>{occupationList[data.occupation_id - 1]}</StyledOccupation>
+                </StyledProfile>
+              </StyledListItem>
+            ))}
+          </StyledSearchResultWrapper>
+        )}
+      </StyledInputWrapper>
 
       {!!selectedUserDatas.length && (
         <StyledSelectedMembersWrapper>
@@ -63,6 +82,36 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
           <StyledSelectedMembersTitle>
             {selectedUserDatas.length}人のメンバー
           </StyledSelectedMembersTitle>
+          <StyledMembersContainer ref={containerRef}>
+            {selectedUserDatas.map((data, index) => {
+              const boxCount = index + 1
+              if (boxCount < maxBoxes) {
+                return (
+                  <div key={index} ref={avatarRef}>
+                    {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
+                    <UserAvatarIcon
+                      avatarStyleType={AVATAR_STYLE.MODAL}
+                      iconImage={data.icon_image}
+                      name={data.name}
+                      occupation={occupationList[data.occupation_id]}
+                      onClickDeleteBtn={() => onClickDeleteBtn(index)}
+                    />
+                  </div>
+                )
+              } else if (boxCount === maxBoxes) {
+                return (
+                  <div key={index}>
+                    <UserCount
+                      avatarStyleType={AVATAR_STYLE.MODAL}
+                      userCount={overUsersCount}
+                      userDatas={selectedUserDatas}
+                      onClickDeleteBtn={onClickDeleteBtn}
+                    />
+                  </div>
+                )
+              }
+            })}
+          </StyledMembersContainer>
         </StyledSelectedMembersWrapper>
       )}
     </StyledAllWrapper>
@@ -73,9 +122,11 @@ const StyledAllWrapper = styled.div`
   position: relative;
 `
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
 `
 const StyledInputWrapper = styled.div`
   position: relative;
@@ -111,7 +162,7 @@ const StyledSearchResultWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   list-style-type: none;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  width: 100%;
   height: ${calculateMinSizeBasedOnFigmaWidth(200)};
   border: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   border-radius: 4px;
@@ -120,6 +171,7 @@ const StyledSearchResultWrapper = styled.ul`
 const StyledListItem = styled.li<{ indexAt: 'first' | 'last' | 'other' }>`
   cursor: pointer;
   display: flex;
+  align-items: center;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
   ${({ indexAt }) => {
     if (indexAt === 'first') {
@@ -147,7 +199,6 @@ const StyledAvatar = styled.img`
   object-fit: contain;
   aspect-ratio: 1 / 1;
   width: ${calculateMinSizeBasedOnFigmaWidth(30)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(30)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.2)};
   border-radius: 2px;
 `
@@ -173,7 +224,14 @@ const StyledBorder = styled.div`
 `
 const StyledSelectedMembersTitle = styled.p`
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(7)};
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
+`
+const StyledMembersContainer = styled.div`
+  display: flex;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(6)};
+  width: 100%;
 `

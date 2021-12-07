@@ -1,12 +1,14 @@
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { UserAvatarIcon } from '../avatar/UserAvatarIcon'
-import { UserCount } from '../avatar/UserCount'
+import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
+import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { UserCount } from 'components/ui/avatar/UserCount'
+import type { UserDatas } from 'types/userDatas'
 
 type Props = {
   story: string
@@ -65,6 +67,19 @@ export const ProjectListProjectInfo: FC<Props> = ({
       </StyledProjectInfoTitleContainer>
     )
   }
+  const userDatas: UserDatas = useMemo(
+    () => groupsProject[selectProject].project.groups.map(group => group.user),
+    [groupsProject, selectProject],
+  )
+  const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+    userDatas.length,
+  )
+
+  // TODO: ユーザーが多い時の挙動を確かめるテスト用。本番では消す
+  // const testUserDatas: UserDatas = [...Array(10)].map(() => userDatas[0])
+  // const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
+  //   testUserDatas.length,
+  // )
 
   return (
     <StyledProjectInfoContainer>
@@ -73,63 +88,58 @@ export const ProjectListProjectInfo: FC<Props> = ({
       {projectInfoTitle('依頼内容')}
       <StyledStyledProjectInfoTextOverview>{overview}</StyledStyledProjectInfoTextOverview>
       {projectInfoTitle('パーティーメンバー')}
-      <StyledPartyContainer>
-        {(() => {
-          // TODO: この即時関数内はテスト用なので、後で消す
-          const copied: Props['groupsProject'] = JSON.parse(JSON.stringify(groupsProject))
-          const tests = copied
-          tests[selectProject].project.groups = [...Array(10)].map(
-            () => tests[selectProject].project.groups[0],
-          )
-
-          return (
-            <>
-              {tests[selectProject].project.groups.map((group, index) => {
-                if (index > 4) return
-
-                return (
-                  <UserAvatarIcon
-                    avatarStyleType={AVATAR_STYLE.LIST}
-                    iconImage={group.user.icon_image}
-                    name={group.user.name}
-                    occupation={occupationList[group.user.occupation_id]}
-                    key={index}
-                  />
-                )
-              })}
-
-              {tests[selectProject].project.groups.length > 5 && (
-                <UserCount
-                  userCount={tests[selectProject].project.groups.length - 5}
-                  groups={groupsProject[selectProject].project.groups}
+      <StyledPartyContainer ref={containerRef}>
+        {/* TODO: userが多い時のテスト用, 本番では消す */}
+        {/* {testUserDatas.map((data, index) => {
+          const boxCount = index + 1
+          if (boxCount < maxBoxes) {
+            return (
+              <div key={index} ref={avatarRef}>
+                <UserAvatarIcon
                   avatarStyleType={AVATAR_STYLE.LIST}
+                  iconImage={data.icon_image}
+                  name={data.name}
+                  occupation={occupationList[data.occupation_id]}
                 />
-              )}
-            </>
-          )
-        })()}
-        {/* TODO: 上のテスト用を消したらこっちのコメントアウトを外す */}
-        {/* {groupsProject[selectProject].project.groups.map((group, index) => {
-          if (index > 4) return
-
-          return (
-            <UserAvatarIcon
-              avatarStyleType={AVATAR_STYLE.LIST}
-              iconImage={group.user.icon_image}
-              name={group.user.name}
-              occupation={occupationList[group.user.occupation_id]}
-              key={index}
-            />
-          )
+              </div>
+            )
+          } else if (boxCount === maxBoxes) {
+            return (
+              <div key={index}>
+                <UserCount
+                  avatarStyleType={AVATAR_STYLE.LIST}
+                  userCount={overUsersCount}
+                  userDatas={testUserDatas}
+                />
+              </div>
+            )
+          }
+        })} */}
+        {userDatas.map((data, index) => {
+          const boxCount = index + 1
+          if (boxCount < maxBoxes) {
+            return (
+              <div key={index} ref={avatarRef}>
+                <UserAvatarIcon
+                  avatarStyleType={AVATAR_STYLE.LIST}
+                  iconImage={data.icon_image}
+                  name={data.name}
+                  occupation={occupationList[data.occupation_id]}
+                />
+              </div>
+            )
+          } else if (boxCount === maxBoxes) {
+            return (
+              <div key={index}>
+                <UserCount
+                  avatarStyleType={AVATAR_STYLE.LIST}
+                  userCount={overUsersCount}
+                  userDatas={userDatas}
+                />
+              </div>
+            )
+          }
         })}
-
-        {groupsProject[selectProject].project.groups.length > 5 && (
-          <UserCount
-            userCount={groupsProject[selectProject].project.groups.length - 5}
-            groups={groupsProject[selectProject].project.groups}
-            avatarStyleType={AVATAR_STYLE.LIST}
-          />
-        )} */}
       </StyledPartyContainer>
     </StyledProjectInfoContainer>
   )
@@ -172,5 +182,6 @@ const StyledStyledProjectInfoTextOverview = styled(StyledStyledProjectInfoText)`
 
 const StyledPartyContainer = styled.div`
   display: flex;
+  position: relative;
   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(6)};
 `

@@ -14,6 +14,7 @@ import { CalenderField } from 'components/ui/form/CalenderField'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { strokeTextShadow } from 'utils/strokeTextShadow'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateMinSizeBasedOnFigmaHeight,
@@ -24,10 +25,19 @@ type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
   className?: string
+  verticalSort: number
 }
 
-export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, className }) => {
-  const { register, errors, setStatus, setUserDatas } = useTaskCreateForm()
+export const TaskCreateModal: FC<Props> = ({
+  shouldShow,
+  setShouldShow,
+  className,
+  verticalSort,
+}) => {
+  const { handleAddTask, isDisabled, register, errors, setStatus, setUserDatas } =
+    useTaskCreateForm({
+      verticalSort,
+    })
 
   return (
     <StyledModal
@@ -35,42 +45,47 @@ export const TaskCreateModal: FC<Props> = ({ shouldShow, setShouldShow, classNam
       shouldShow={shouldShow}
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
-      <StyledWrapper>
-        <StyledLeftColumn>
-          <StyledInputField
-            label="タイトル"
-            placeholder="タイトルを入力してください"
-            registration={register('title', {
-              required: 'タイトルは必須です',
-              maxLength: { value: 255, message: '255文字以内で入力してください' },
-            })}
-            error={errors['title']}
-          />
-          <StyledOverviewField
-            label="概要"
-            placeholder="タスク概要を入力してください"
-            registration={register('overview', {
-              maxLength: { value: 1024, message: '1024文字以内で入力してください' },
-            })}
-            required={false}
-          />
-        </StyledLeftColumn>
-        <StyledBorder />
-        <StyledRightColumn>
-          <CalenderField label="期限" registration={register('date')} required={false} />
-          <SearchMemberField setUserDatas={setUserDatas} />
+      <StyledFormWrapper>
+        <StyledInputsWrapper>
+          <StyledLeftColumn>
+            <StyledInputField
+              label="タイトル"
+              placeholder="タイトルを入力してください"
+              registration={register('title', {
+                required: 'タイトルは必須です',
+                maxLength: { value: 255, message: '255文字以内で入力してください' },
+              })}
+              error={errors['title']}
+            />
+            <StyledOverviewField
+              label="概要"
+              placeholder="タスク概要を入力してください"
+              registration={register('overview', {
+                maxLength: { value: 1024, message: '1024文字以内で入力してください' },
+              })}
+              required={false}
+            />
+          </StyledLeftColumn>
+          <StyledBorder />
+          <StyledRightColumn>
+            <CalenderField label="期限" registration={register('date')} required={false} />
+            <SearchMemberField setUserDatas={setUserDatas} />
 
-          <StyledStatusWrapper className={className}>
-            <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-            <TaskStatusPointField status="technology" setStatus={setStatus} />
-            <TaskStatusPointField status="achievement" setStatus={setStatus} />
-            <TaskStatusPointField status="solution" setStatus={setStatus} />
-            <TaskStatusPointField status="motivation" setStatus={setStatus} />
-            <TaskStatusPointField status="design" setStatus={setStatus} />
-            <TaskStatusPointField status="plan" setStatus={setStatus} />
-          </StyledStatusWrapper>
-        </StyledRightColumn>
-      </StyledWrapper>
+            <StyledStatusWrapper className={className}>
+              <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
+              <TaskStatusPointField status="technology" setStatus={setStatus} />
+              <TaskStatusPointField status="achievement" setStatus={setStatus} />
+              <TaskStatusPointField status="solution" setStatus={setStatus} />
+              <TaskStatusPointField status="motivation" setStatus={setStatus} />
+              <TaskStatusPointField status="design" setStatus={setStatus} />
+              <TaskStatusPointField status="plan" setStatus={setStatus} />
+            </StyledStatusWrapper>
+          </StyledRightColumn>
+        </StyledInputsWrapper>
+        <StyledTaskCreateButton onClick={handleAddTask} disabled={isDisabled}>
+          <StyledTaskCreateText>作成</StyledTaskCreateText>
+        </StyledTaskCreateButton>
+      </StyledFormWrapper>
     </StyledModal>
   )
 }
@@ -81,7 +96,14 @@ const StyledModal = styled(Modal)`
   height: ${calculateMinSizeBasedOnFigmaHeight(709)};
   padding: ${calculateMinSizeBasedOnFigmaHeight(46)} ${calculateMinSizeBasedOnFigmaWidth(26)};
 `
-const StyledWrapper = styled.div`
+const StyledFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+`
+const StyledInputsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -98,8 +120,6 @@ const StyledLeftColumn = styled.div`
 const StyledRightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  // TODO: 後でコメントアウトはずす
-  /* justify-content: space-between; */
   width: ${calculateMinSizeBasedOnFigmaWidth(270)};
   height: 100%;
 `
@@ -107,9 +127,11 @@ const fieldStyle = (
   inputCss: FlattenSimpleInterpolation,
 ): FlattenInterpolation<ThemeProps<DefaultTheme>> => css`
   label {
-    color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-    font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+    ${({ theme }) => css`
+      color: ${theme.COLORS.TOBACCO_BROWN};
+      font-size: ${theme.FONT_SIZES.SIZE_16};
+      font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+    `}
   }
   input,
   textarea {
@@ -142,7 +164,40 @@ const StyledStatusWrapper = styled.div`
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledStatusTitle = styled.p`
-  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+  `}
+`
+const StyledTaskCreateButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  width: ${calculateMinSizeBasedOnFigmaWidth(160)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  background-image: url('/svg/gold-button.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  ${({ theme }) => css`
+    filter: drop-shadow(
+        0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)}
+          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
+      )
+      drop-shadow(
+        0 ${calculateMinSizeBasedOnFigmaWidth(1.5)} ${calculateMinSizeBasedOnFigmaWidth(1)}
+          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
+      );
+  `}
+`
+const StyledTaskCreateText = styled.p`
+  height: ${calculateMinSizeBasedOnFigmaWidth(30)};
+  text-align: center;
+  ${({ theme }) => css`
+    ${strokeTextShadow('1.2px', theme.COLORS.MONDO)}
+    color: ${theme.COLORS.WHITE};
+    font-size: ${theme.FONT_SIZES.SIZE_20};
+    font-weight: ${theme.FONT_WEIGHTS.BOLD};
+  `}
 `

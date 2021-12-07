@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useHover } from 'hooks/useHover'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -13,13 +13,13 @@ type Props = {
   name?: string
   occupation?: string
   className?: string
-  btnFunc?: () => void
+  onClickDeleteBtn?: () => void
 }
 
 export const UserAvatarIcon: FC<Props> = ({
   avatarStyleType,
   iconImage,
-  btnFunc,
+  onClickDeleteBtn,
   name,
   occupation,
   className,
@@ -28,8 +28,8 @@ export const UserAvatarIcon: FC<Props> = ({
 
   if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
-      <StyledUserAvatarIconContainer size={50} {...eventHoverHandlers} className={className}>
-        <StyledUserAvatarIconListContainer iconImage={iconImage} size={50} />
+      <StyledUserAvatarIconListContainer {...eventHoverHandlers} className={className}>
+        <StyledUserAvatarListIcon iconImage={iconImage} />
 
         {hovered && (
           <StyledPopupUserInfoContainer bottom={66}>
@@ -43,23 +43,23 @@ export const UserAvatarIcon: FC<Props> = ({
             </StyledPopupUserContainer>
           </StyledPopupUserInfoContainer>
         )}
-      </StyledUserAvatarIconContainer>
+      </StyledUserAvatarIconListContainer>
     )
   else if (avatarStyleType === AVATAR_STYLE.TASK)
     return (
-      <StyledUserAvatarIconContainer size={24} className={className}>
-        <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={24} />
-      </StyledUserAvatarIconContainer>
+      <StyledUserAvatarIconTaskContainer className={className}>
+        <StyledUserAvatarTaskIcon iconImage={iconImage} />
+      </StyledUserAvatarIconTaskContainer>
     )
   else
     return (
-      <StyledUserAvatarIconContainer size={40} {...eventHoverHandlers} className={className}>
-        {btnFunc && (
-          <StyledUserCloseButton onClick={btnFunc}>
+      <StyledUserAvatarIconModalContainer {...eventHoverHandlers} className={className}>
+        {onClickDeleteBtn && (
+          <StyledUserCloseButton onClick={onClickDeleteBtn}>
             <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
           </StyledUserCloseButton>
         )}
-        <StyledUserAvatarIconTaskContainer iconImage={iconImage} size={40} />
+        <StyledUserAvatarModalIcon iconImage={iconImage} />
 
         {hovered && (
           <StyledPopupUserInfoContainer bottom={66}>
@@ -73,14 +73,26 @@ export const UserAvatarIcon: FC<Props> = ({
             </StyledPopupUserContainer>
           </StyledPopupUserInfoContainer>
         )}
-      </StyledUserAvatarIconContainer>
+      </StyledUserAvatarIconModalContainer>
     )
 }
 
-const StyledUserAvatarIconContainer = styled.div<{ size: number }>`
+const StyledUserAvatarIconListContainer = styled.div`
   position: relative;
-  width: ${({ size }) => calculateVhBasedOnFigma(size)};
-  height: ${({ size }) => calculateVhBasedOnFigma(size)};
+  width: ${calculateVhBasedOnFigma(50)};
+  height: ${calculateVhBasedOnFigma(50)};
+`
+
+const StyledUserAvatarIconTaskContainer = styled.div`
+  position: relative;
+  width: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  height: ${calculateMinSizeBasedOnFigmaHeight(24)};
+`
+
+const StyledUserAvatarIconModalContainer = styled.div`
+  position: relative;
+  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
 `
 
 const StyledUserCloseButton = styled.button`
@@ -98,36 +110,36 @@ const StyledUserCloseButton = styled.button`
   }
 `
 
-const StyledUserAvatarIconListContainer = styled.div<{
-  iconImage: string
-  size: number
-}>`
-  width: ${({ size }) => calculateVhBasedOnFigma(size)};
-  height: ${({ size }) => calculateVhBasedOnFigma(size)};
+const userAvatarIconCss = css`
+  width: 100%;
+  height: 100%;
   border-radius: 4px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+`
+
+const StyledUserAvatarListIcon = styled.div<{ iconImage: string }>`
   box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: url(${({ iconImage }) => iconImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  ${userAvatarIconCss}
 `
 
-const StyledUserAvatarIconTaskContainer = styled.div<{
-  iconImage: string
-  size: number
-}>`
-  width: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
-  height: ${({ size }) => calculateMinSizeBasedOnFigmaHeight(size)};
-  border-radius: 2px;
+const StyledUserAvatarTaskIcon = styled.div<{ iconImage: string }>`
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   background: url(${({ iconImage }) => iconImage});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  ${userAvatarIconCss}
+`
+
+const StyledUserAvatarModalIcon = styled.div<{ iconImage: string }>`
+  border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+  background: url(${({ iconImage }) => iconImage});
+  ${userAvatarIconCss}
 `
 
 const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
+  z-index: ${({ theme }) => theme.Z_INDEX.POPOVER};
   position: absolute;
   bottom: ${({ bottom }) => calculateVhBasedOnFigma(-bottom)};
   left: -20%;
