@@ -207,7 +207,7 @@ export const ProjectDetailHeader: FC<Props> = ({
   )
 }
 
-const StyledHeaderWrapper = styled.div`
+const StyledHeaderWrapper = styled.header`
   position: relative;
   z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   position: fixed;
