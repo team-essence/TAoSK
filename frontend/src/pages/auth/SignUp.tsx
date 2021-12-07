@@ -17,7 +17,7 @@ import { SelectField } from 'components/ui/form/SelectField'
 import { ItemInputField } from 'components/ui/form/ItemInputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 
@@ -58,8 +58,8 @@ export const SignUp: FC = () => {
             <StyledRightColumn
               margin={
                 innerWidth <= 1210
-                  ? `0 auto ${calculateMinSizeBasedOnFigmaWidth(24)} auto`
-                  : `0 0 ${calculateMinSizeBasedOnFigmaWidth(24)} 0`
+                  ? `0 auto ${calculateMinSizeBasedOnFigma(24)} auto`
+                  : `0 0 ${calculateMinSizeBasedOnFigma(24)} 0`
               }>
               <StyledInputField
                 label="冒険者名"
@@ -145,8 +145,8 @@ export const SignUp: FC = () => {
                 items={certifications}
                 setItems={setCertifications}
                 inputAspect={{
-                  width: calculateMinSizeBasedOnFigmaWidth(400),
-                  height: calculateMinSizeBasedOnFigmaWidth(40),
+                  width: calculateMinSizeBasedOnFigma(400),
+                  height: calculateMinSizeBasedOnFigma(40),
                 }}
                 placeholder="保有資格を入力してください"
               />
@@ -155,8 +155,8 @@ export const SignUp: FC = () => {
                 items={interests}
                 setItems={setInterests}
                 inputAspect={{
-                  width: calculateMinSizeBasedOnFigmaWidth(400),
-                  height: calculateMinSizeBasedOnFigmaWidth(40),
+                  width: calculateMinSizeBasedOnFigma(400),
+                  height: calculateMinSizeBasedOnFigma(40),
                 }}
                 placeholder="興味のあることを入力してください"
               />
@@ -170,8 +170,8 @@ export const SignUp: FC = () => {
               <StyledSignUpButton
                 text="登録"
                 aspect={{
-                  width: calculateMinSizeBasedOnFigmaWidth(120),
-                  height: calculateMinSizeBasedOnFigmaWidth(32),
+                  width: calculateMinSizeBasedOnFigma(120),
+                  height: calculateMinSizeBasedOnFigma(32),
                 }}
                 outerBgColor={
                   isDisabled
@@ -209,18 +209,18 @@ const StyledSignUp = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(840)};
+  width: ${calculateMinSizeBasedOnFigma(840)};
   height: 100%;
-  margin: ${calculateMinSizeBasedOnFigmaWidth(26)} 0;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(64)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(26)} 0;
+  padding: ${calculateMinSizeBasedOnFigma(64)} 0;
   background-image: url('contract-paper.png');
   background-size: 100% 100%;
 `
 const StyledLogoImg = styled.img`
-  height: ${calculateMinSizeBasedOnFigmaWidth(108)};
+  height: ${calculateMinSizeBasedOnFigma(108)};
 `
 const StyledH1 = styled.h1`
-  margin: ${calculateMinSizeBasedOnFigmaWidth(33)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(33)} 0;
   background: -webkit-linear-gradient(
     top,
     ${({ theme }) => theme.COLORS.TENN},
@@ -237,17 +237,17 @@ const StyledFormWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: flex-start;
-  width: ${calculateMinSizeBasedOnFigmaWidth(706)};
+  width: ${calculateMinSizeBasedOnFigma(706)};
 `
 const StyledRightColumn = styled.div.attrs<{ margin: string }>(({ margin }) => ({
   margin,
 }))<{ margin: string }>`
   margin: ${({ margin }) => margin};
-  width: ${calculateMinSizeBasedOnFigmaWidth(480)};
+  width: ${calculateMinSizeBasedOnFigma(480)};
 `
 const formTagCss = css`
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
@@ -280,11 +280,11 @@ const StyledImageInputField = styled(ImageInputField).attrs<{ innerWidth: number
 )<{ innerWidth: number }>`
   margin: ${({ innerWidth }) =>
     innerWidth <= 1210
-      ? `0 auto ${calculateMinSizeBasedOnFigmaWidth(24)} auto`
-      : `0 0 ${calculateMinSizeBasedOnFigmaWidth(24)} 0`};
+      ? `0 auto ${calculateMinSizeBasedOnFigma(24)} auto`
+      : `0 0 ${calculateMinSizeBasedOnFigma(24)} 0`};
 `
 const StyledItemInputField = styled(ItemInputField)`
-  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(24)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(24)};
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
@@ -298,7 +298,7 @@ const StyledBackground = styled.div`
   background-position: 50% 100%;
 `
 const StyledTerms = styled.p`
-  margin: ${calculateMinSizeBasedOnFigmaWidth(24)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(24)} 0;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
 `

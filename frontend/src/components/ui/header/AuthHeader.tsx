@@ -2,14 +2,14 @@ import React, { FC } from 'react'
 import { theme } from 'styles/theme'
 import styled from 'styled-components'
 import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useNavigate } from 'react-router-dom'
 
 export const AuthHeader: FC = () => {
   const navigate = useNavigate()
   const commonButtonProps = {
-    width: calculateMinSizeBasedOnFigmaWidth(120),
-    height: calculateMinSizeBasedOnFigmaWidth(40),
+    width: calculateMinSizeBasedOnFigma(120),
+    height: calculateMinSizeBasedOnFigma(40),
     borderRadius: '2px',
   }
   const registerButtonProps = {
@@ -52,24 +52,24 @@ const StyledHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(28)};
+  padding: 0 ${calculateMinSizeBasedOnFigma(28)};
   width: 100vw;
-  height: ${calculateMinSizeBasedOnFigmaWidth(70)};
+  height: ${calculateMinSizeBasedOnFigma(70)};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
 `
 const StyledLogoWrapper = styled.div`
   object-fit: contain;
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+  height: ${calculateMinSizeBasedOnFigma(43)};
   cursor: pointer;
 `
 const StyledLogo = styled.img`
-  height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+  height: ${calculateMinSizeBasedOnFigma(43)};
 `
 const StyledButtonsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  gap: ${calculateMinSizeBasedOnFigma(14)};
   height: 100%;
 `

@@ -2,7 +2,7 @@ import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useIncrementAndDecrement } from 'hooks/useIncrementAndDecrement'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 
@@ -43,10 +43,10 @@ const StyledStatusWrapper = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  padding-left: ${calculateMinSizeBasedOnFigmaWidth(4)};
-  padding-right: ${calculateMinSizeBasedOnFigmaWidth(15)};
+  padding-left: ${calculateMinSizeBasedOnFigma(4)};
+  padding-right: ${calculateMinSizeBasedOnFigma(15)};
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaWidth(38)};
+  height: ${calculateMinSizeBasedOnFigma(38)};
   border: solid 2px ${({ theme }) => convertIntoRGBA(theme.COLORS.TOBACCO_BROWN, 0.6)};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.COLORS.BIZARRE};
@@ -62,12 +62,12 @@ const iconBoxCss = (
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(28)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(28)};
+  width: ${calculateMinSizeBasedOnFigma(28)};
+  height: ${calculateMinSizeBasedOnFigma(28)};
   border: solid 1px ${({ theme }) => theme.COLORS.ALTO};
   background-color: ${innerBg};
   border-radius: 4px;
-  box-shadow: 0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)}
+  box-shadow: 0 ${calculateMinSizeBasedOnFigma(4)} ${calculateMinSizeBasedOnFigma(4)}
     ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)} inset;
   &:after {
     content: '';
@@ -105,7 +105,7 @@ const StyledStatusIcon = styled.div<{ status: Status }>`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   object-fit: contain;
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(20)};
+  width: ${calculateMinSizeBasedOnFigma(20)};
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -143,7 +143,7 @@ const StyledStatusIcon = styled.div<{ status: Status }>`
   }}
 `
 const StyledStatusName = styled.p`
-  margin-left: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  margin-left: ${calculateMinSizeBasedOnFigma(4)};
   flex-grow: 1;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
@@ -152,12 +152,12 @@ const StyledCountWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(84)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(28)};
+  width: ${calculateMinSizeBasedOnFigma(84)};
+  height: ${calculateMinSizeBasedOnFigma(28)};
 `
 const countBtnCss = css`
-  width: ${calculateMinSizeBasedOnFigmaWidth(24)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(26)};
+  width: ${calculateMinSizeBasedOnFigma(24)};
+  height: ${calculateMinSizeBasedOnFigma(26)};
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

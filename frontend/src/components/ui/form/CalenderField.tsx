@@ -1,10 +1,7 @@
 import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
-import {
-  calculateMinSizeBasedOnFigmaHeight,
-  calculateMinSizeBasedOnFigmaWidth,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
@@ -37,8 +34,7 @@ export const CalenderField: FC<Props> = ({
 
   return (
     <div className={className}>
-      <StyledLabelWrapper
-        marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigmaWidth(24)}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigma(24)}>
         <label color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -71,8 +67,8 @@ const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: st
   position: relative;
   display: flex;
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaHeight(40)};
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+  margin-top: ${calculateMinSizeBasedOnFigma(4)};
   border: solid 1px
     ${({ theme, shouldShowError, errorColor }) =>
       shouldShowError ? errorColor : convertIntoRGBA(theme.COLORS.WHITE, 0.6)};
@@ -82,7 +78,7 @@ const StyledCalenderIconWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(35)};
+  width: ${calculateMinSizeBasedOnFigma(35)};
   height: 100%;
   border-radius: 4px 0px 0px 4px;
   background-color: ${({ theme }) => theme.COLORS.GALLERY};
@@ -90,13 +86,13 @@ const StyledCalenderIconWrapper = styled.div`
 const StyledCalenderIcon = styled.img`
   object-fit: contain;
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(27)};
+  width: ${calculateMinSizeBasedOnFigma(27)};
 `
 const StyledInput = styled.input`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   width: 100%;
   height: 100%;
-  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding-left: ${calculateMinSizeBasedOnFigma(8)};
   border: none;
   border-radius: 0px 4px 4px 0px;
 

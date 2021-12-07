@@ -5,7 +5,7 @@ import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>
@@ -52,8 +52,8 @@ export const ItemInputField: FC<Props> = props => {
         <CoarseButton
           text="追加"
           aspect={{
-            width: calculateMinSizeBasedOnFigmaWidth(64),
-            height: calculateMinSizeBasedOnFigmaWidth(40),
+            width: calculateMinSizeBasedOnFigma(64),
+            height: calculateMinSizeBasedOnFigma(40),
           }}
           outerBgColor={
             isDisabled
@@ -88,11 +88,11 @@ const StyledRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  gap: ${calculateMinSizeBasedOnFigma(16)};
+  margin-top: ${calculateMinSizeBasedOnFigma(4)};
 `
 const StyledItemsNum = styled.span`
-  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding-left: ${calculateMinSizeBasedOnFigma(8)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
 `
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
@@ -101,7 +101,7 @@ const StyledMaxItems = styled.span<{ isMax: boolean }>`
 const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
-  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding-left: ${calculateMinSizeBasedOnFigma(8)};
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
@@ -114,7 +114,7 @@ const StyledItemsWrapper = styled.div<{ width: string }>`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(12)};
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  gap: ${calculateMinSizeBasedOnFigma(12)};
+  margin-top: ${calculateMinSizeBasedOnFigma(12)};
   width: ${({ width }) => width};
 `

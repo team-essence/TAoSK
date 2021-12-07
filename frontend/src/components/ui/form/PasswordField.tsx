@@ -4,7 +4,7 @@ import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
@@ -42,8 +42,8 @@ export const PasswordField: FC<Props> = ({
         <StyledCoarseButton
           text={shouldShowPassword ? '非表示' : '表示'}
           aspect={{
-            width: calculateMinSizeBasedOnFigmaWidth(53),
-            height: calculateMinSizeBasedOnFigmaWidth(30),
+            width: calculateMinSizeBasedOnFigma(53),
+            height: calculateMinSizeBasedOnFigma(30),
           }}
           outerBgColor={
             value
@@ -69,6 +69,6 @@ const StyledWrapper = styled.div`
 `
 const StyledCoarseButton = styled(CoarseButton)`
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigmaWidth(5)};
-  right: ${calculateMinSizeBasedOnFigmaWidth(7)};
+  top: ${calculateMinSizeBasedOnFigma(5)};
+  right: ${calculateMinSizeBasedOnFigma(7)};
 `

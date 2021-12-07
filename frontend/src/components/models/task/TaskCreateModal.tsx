@@ -15,10 +15,7 @@ import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
-import {
-  calculateMinSizeBasedOnFigmaWidth,
-  calculateMinSizeBasedOnFigmaHeight,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
 
 type Props = {
@@ -92,9 +89,9 @@ export const TaskCreateModal: FC<Props> = ({
 
 const StyledModal = styled(Modal)`
   box-sizing: border-box;
-  width: ${calculateMinSizeBasedOnFigmaWidth(790)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(709)};
-  padding: ${calculateMinSizeBasedOnFigmaHeight(46)} ${calculateMinSizeBasedOnFigmaWidth(26)};
+  width: ${calculateMinSizeBasedOnFigma(790)};
+  height: ${calculateMinSizeBasedOnFigma(709)};
+  padding: ${calculateMinSizeBasedOnFigma(46)} ${calculateMinSizeBasedOnFigma(26)};
 `
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -115,12 +112,12 @@ const StyledBorder = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
 const StyledLeftColumn = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+  width: ${calculateMinSizeBasedOnFigma(434)};
 `
 const StyledRightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  width: ${calculateMinSizeBasedOnFigma(270)};
   height: 100%;
 `
 const fieldStyle = (
@@ -148,20 +145,20 @@ const fieldStyle = (
 const StyledInputField = styled(InputField)`
   ${fieldStyle(css`
     width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    height: ${calculateMinSizeBasedOnFigma(40)};
   `)}
 `
 const StyledOverviewField = styled(TextAreaField)`
   ${fieldStyle(css`
     width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(180)};
+    height: ${calculateMinSizeBasedOnFigma(180)};
   `)}
 `
 const StyledStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  gap: ${calculateMinSizeBasedOnFigma(8)};
 `
 const StyledStatusTitle = styled.p`
   ${({ theme }) => css`
@@ -175,24 +172,24 @@ const StyledTaskCreateButton = styled.button`
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  width: ${calculateMinSizeBasedOnFigmaWidth(160)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  width: ${calculateMinSizeBasedOnFigma(160)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
   background-image: url('/svg/gold-button.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   ${({ theme }) => css`
     filter: drop-shadow(
-        0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)}
+        0 ${calculateMinSizeBasedOnFigma(4)} ${calculateMinSizeBasedOnFigma(4)}
           ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
       )
       drop-shadow(
-        0 ${calculateMinSizeBasedOnFigmaWidth(1.5)} ${calculateMinSizeBasedOnFigmaWidth(1)}
+        0 ${calculateMinSizeBasedOnFigma(1.5)} ${calculateMinSizeBasedOnFigma(1)}
           ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
       );
   `}
 `
 const StyledTaskCreateText = styled.p`
-  height: ${calculateMinSizeBasedOnFigmaWidth(30)};
+  height: ${calculateMinSizeBasedOnFigma(30)};
   text-align: center;
   ${({ theme }) => css`
     ${strokeTextShadow('1.2px', theme.COLORS.MONDO)}

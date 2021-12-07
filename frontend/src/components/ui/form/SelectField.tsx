@@ -2,7 +2,7 @@ import React, { FC, SelectHTMLAttributes, useState, FocusEvent, ChangeEvent } fr
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
@@ -42,8 +42,7 @@ export const SelectField: FC<Props> = ({
 
   return (
     <div className={className}>
-      <StyledLabelWrapper
-        marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigmaWidth(24)}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigma(24)}>
         <StyledLabel color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -90,25 +89,24 @@ const StyledLabel = styled.label`
 `
 const StyledSelectWrapper = styled.div`
   position: relative;
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  margin-top: ${calculateMinSizeBasedOnFigma(4)};
 
   &:after {
     content: '';
     position: absolute;
-    top: calc(${calculateMinSizeBasedOnFigmaWidth(20)} - ${calculateMinSizeBasedOnFigmaWidth(2)});
-    right: ${calculateMinSizeBasedOnFigmaWidth(14)};
-    border-top: ${calculateMinSizeBasedOnFigmaWidth(7)} solid
-      ${({ theme }) => theme.COLORS.CHOCOLATE};
-    border-right: ${calculateMinSizeBasedOnFigmaWidth(6)} solid transparent;
-    border-left: ${calculateMinSizeBasedOnFigmaWidth(6)} solid transparent;
+    top: calc(${calculateMinSizeBasedOnFigma(20)} - ${calculateMinSizeBasedOnFigma(2)});
+    right: ${calculateMinSizeBasedOnFigma(14)};
+    border-top: ${calculateMinSizeBasedOnFigma(7)} solid ${({ theme }) => theme.COLORS.CHOCOLATE};
+    border-right: ${calculateMinSizeBasedOnFigma(6)} solid transparent;
+    border-left: ${calculateMinSizeBasedOnFigma(6)} solid transparent;
   }
 `
 const StyledSelect = styled.select<StyledSelectProps>`
   -webkit-appearance: none;
   appearance: none;
-  width: ${calculateMinSizeBasedOnFigmaWidth(480)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  width: ${calculateMinSizeBasedOnFigma(480)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+  padding-left: ${calculateMinSizeBasedOnFigma(8)};
   border: solid 1px
     ${({ theme, shouldShowError, errorColor }) =>
       shouldShowError ? errorColor : theme.COLORS.CHOCOLATE};

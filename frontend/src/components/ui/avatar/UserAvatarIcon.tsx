@@ -1,11 +1,9 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { useHover } from 'hooks/useHover'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   avatarStyleType: AVATAR_STYLE
@@ -79,33 +77,33 @@ export const UserAvatarIcon: FC<Props> = ({
 
 const StyledUserAvatarIconListContainer = styled.div`
   position: relative;
-  width: ${calculateVhBasedOnFigma(50)};
-  height: ${calculateVhBasedOnFigma(50)};
+  width: ${calculateMinSizeBasedOnFigma(50)};
+  height: ${calculateMinSizeBasedOnFigma(50)};
 `
 
 const StyledUserAvatarIconTaskContainer = styled.div`
   position: relative;
-  width: ${calculateMinSizeBasedOnFigmaHeight(24)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  width: ${calculateMinSizeBasedOnFigma(24)};
+  height: ${calculateMinSizeBasedOnFigma(24)};
 `
 
 const StyledUserAvatarIconModalContainer = styled.div`
   position: relative;
-  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  width: ${calculateMinSizeBasedOnFigma(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
 `
 
 const StyledUserCloseButton = styled.button`
   position: absolute;
-  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  width: ${calculateMinSizeBasedOnFigma(14)};
+  height: ${calculateMinSizeBasedOnFigma(14)};
   top: -4px;
   right: -4px;
 
   img {
     display: block;
-    width: ${calculateMinSizeBasedOnFigmaWidth(14)};
-    height: ${calculateMinSizeBasedOnFigmaWidth(14)};
+    width: ${calculateMinSizeBasedOnFigma(14)};
+    height: ${calculateMinSizeBasedOnFigma(14)};
     object-fit: contain;
   }
 `
@@ -141,10 +139,10 @@ const StyledUserAvatarModalIcon = styled.div<{ iconImage: string }>`
 const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
   z-index: ${({ theme }) => theme.Z_INDEX.POPOVER};
   position: absolute;
-  bottom: ${({ bottom }) => calculateVhBasedOnFigma(-bottom)};
+  bottom: ${({ bottom }) => calculateMinSizeBasedOnFigma(-bottom)};
   left: -20%;
-  width: ${calculateVhBasedOnFigma(240)};
-  height: ${calculateVhBasedOnFigma(60)};
+  width: ${calculateMinSizeBasedOnFigma(240)};
+  height: ${calculateMinSizeBasedOnFigma(60)};
   box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: ${({ theme }) => convertIntoRGBA(theme.COLORS.MINE_SHAFT, 0.9)};
@@ -158,27 +156,27 @@ const StyledPopupUserContainer = styled.div``
 
 const StyledPopupUserName = styled.p`
   color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${calculateVhBasedOnFigma(16)};
+  font-size: ${calculateMinSizeBasedOnFigma(16)};
 `
 
 const StyledPopupUserOccupation = styled.p`
   color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${calculateVhBasedOnFigma(12)};
+  font-size: ${calculateMinSizeBasedOnFigma(12)};
 `
 
 const StyledPopupUserIconContainer = styled.div`
   margin: 0;
   position: relative;
   left: -2px;
-  width: ${calculateVhBasedOnFigma(60)};
-  height: ${calculateVhBasedOnFigma(60)};
+  width: ${calculateMinSizeBasedOnFigma(60)};
+  height: ${calculateMinSizeBasedOnFigma(60)};
 
   img {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
     border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
     border-radius: 4px;
-    width: ${calculateVhBasedOnFigma(60)};
-    height: ${calculateVhBasedOnFigma(60)};
+    width: ${calculateMinSizeBasedOnFigma(60)};
+    height: ${calculateMinSizeBasedOnFigma(60)};
     object-fit: cover;
   }
 `
