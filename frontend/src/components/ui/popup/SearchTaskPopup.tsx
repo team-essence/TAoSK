@@ -59,7 +59,6 @@ export const SearchTaskPopup: FC<Props> = ({ className, searchedTasks }) => {
                           listIndex={searchedTask.lint_index}
                           listLength={length}
                           chatCount={task.chatCount}
-                          allocations={task.allocations}
                           end_date={task.end_date}
                           overview={task.overview}
                         />

@@ -16,7 +16,7 @@ type Props = {
   className?: string
   listIndex: number
   listLength: number
-} & Omit<Task, 'vertical_sort' | 'id'>
+} & Omit<Task, 'vertical_sort' | 'id' | 'allocations'>
 
 export const TaskCardPopup: FC<Props> = ({
   title,
@@ -29,7 +29,6 @@ export const TaskCardPopup: FC<Props> = ({
   listIndex,
   listLength,
   chatCount,
-  allocations,
   end_date,
 }) => {
   const params: Params[] = [
@@ -40,16 +39,6 @@ export const TaskCardPopup: FC<Props> = ({
     { param: 'design', value: design },
     { param: 'plan', value: plan },
   ]
-  const max = params.reduce((prev, current) => (prev.value > current.value ? prev : current))
-  const assignedUsers = allocations.map((item, index, array) =>
-    index < 6 ? (
-      <UserAvatarIcon avatarStyleType={AVATAR_STYLE.TASK} iconImage={item.icon_image} />
-    ) : (
-      index === array.length - 1 && (
-        <UserCount userCount={array.length - 6} avatarStyleType={AVATAR_STYLE.TASK} />
-      )
-    ),
-  )
 
   return (
     <StyledContainer>
@@ -57,9 +46,6 @@ export const TaskCardPopup: FC<Props> = ({
         <StyledTitle>{title}</StyledTitle>
         <StyledFlexContainer>
           <div>
-            {allocations.length !== 0 && (
-              <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
-            )}
             <StyledFootContainer>
               {end_date && (
                 <>
@@ -81,24 +67,12 @@ export const TaskCardPopup: FC<Props> = ({
               )}
             </StyledFootContainer>
           </div>
-          <StyledWeaponImageContainer>
-            <StyledWeaponImage
-              src={changeWeaponImage(listIndex, listLength, max.param)}
-              alt="weapon"
-            />
-          </StyledWeaponImageContainer>
         </StyledFlexContainer>
       </StyledInnerWrap>
     </StyledContainer>
   )
 }
 
-const StyledLi = styled.li`
-  position: relative;
-  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  user-select: none;
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
-`
 const StyledContainer = styled.div`
   height: auto;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
@@ -119,11 +93,6 @@ const StyledTitle = styled.h3`
   overflow: hidden;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
-  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
-`
-const StyledWeaponImage = styled.img`
-  aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(37)};
 `
 const StyledDeadlineImage = styled.img`
   aspect-ratio: 1 / 1;
@@ -160,10 +129,6 @@ const StyledFlexContainer = styled.div`
   justify-content: space-between;
   align-items: flex-end;
 `
-const StyledAvatarContainer = styled.div`
-  display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(2)};
-`
 const StyledCommentContainer = styled.div`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
@@ -185,7 +150,7 @@ const StyledDateContainer = styled.div<{ listIndex: number; listLength: number }
   ${({ listIndex, listLength }) =>
     listIndex === 0
       ? css`
-          background-color: ${({ theme }) => theme.COLORS.OLIVE_GREEN};
+          background-color: ${({ theme }) => theme.COLORS.CITRON};
         `
       : listIndex < listLength && listIndex !== listLength - 1
       ? css`

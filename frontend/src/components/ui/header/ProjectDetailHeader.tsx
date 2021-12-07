@@ -39,6 +39,10 @@ export const ProjectDetailHeader: FC<Props> = ({
   company,
   list,
 }) => {
+  const [searchTaskEvent, setSearchTaskEvent] = useState<React.MouseEvent<
+    HTMLDivElement,
+    MouseEvent
+  > | null>(null)
   const [isNotificationHover, notificationEventHoverHandlers] = useHover()
   const [isClickNotification, setIsClickNotification] = useState(false)
   const [isUserMenuHover, userMenuEventHoverHandlers] = useHover()
@@ -105,6 +109,7 @@ export const ProjectDetailHeader: FC<Props> = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     isClick: boolean,
   ) => {
+    setSearchTaskEvent(event)
     !isClick && allClose()
     setIsSearchTaskPopup(isSearchTaskPopup => !isSearchTaskPopup)
     document.addEventListener('click', closeSearchTaskPopup)
@@ -121,6 +126,11 @@ export const ProjectDetailHeader: FC<Props> = ({
     logger.debug(taskSearch(list, debouncedInputText))
     setSearchTasks(taskSearch(list, debouncedInputText))
   }, [debouncedInputText])
+
+  useEffect(() => {
+    if (!searchTaskInput || !searchTaskEvent || isSearchTaskPopup) return
+    handleSearchTaskPopup(searchTaskEvent, isSearchTaskPopup)
+  }, [searchTaskInput])
 
   return (
     <StyledHeaderWrapper className={className}>
