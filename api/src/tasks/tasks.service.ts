@@ -21,8 +21,6 @@ export class TasksService {
     private listRepository: Repository<List>,
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
   ) {}
 
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<Task[]> {
@@ -39,6 +37,7 @@ export class TasksService {
 
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
+
       await this.taskRepository.save(task).catch((err) => {
         new InternalServerErrorException();
       });
@@ -86,8 +85,6 @@ export class TasksService {
     return task;
   }
 
-  //タスク編集
-  // ・タイトル変更
   async updateTitle(taskId: number, title: string): Promise<Task> {
     let task = await this.taskRepository.findOne({
       where: {
@@ -109,7 +106,7 @@ export class TasksService {
 
     return task;
   }
-  // ・概要変更
+
   async updateOverview(taskId: number, overview: string): Promise<Task> {
     let task = await this.taskRepository.findOne({
       where: {
@@ -131,7 +128,7 @@ export class TasksService {
 
     return task;
   }
-  // ・ステータス変更
+
   async updateParameters(
     taskId: number,
     technology: number,
@@ -166,7 +163,7 @@ export class TasksService {
 
     return task;
   }
-  // ・期日変更
+
   async updateEndDate(taskId: number, end_date: string): Promise<Task> {
     let task = await this.taskRepository.findOne({
       where: {
@@ -188,7 +185,7 @@ export class TasksService {
 
     return task;
   }
-  // タスク削除
+
   async deleteTask(taskId: number): Promise<Task[]> {
     const task = await this.taskRepository.findOne({
       where: {
@@ -201,11 +198,6 @@ export class TasksService {
     });
 
     const tasks = this.taskRepository.find({
-      where: {
-        task: {
-          id: taskId,
-        },
-      },
       relations: ['project', 'list'],
     });
 

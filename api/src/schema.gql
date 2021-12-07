@@ -81,7 +81,7 @@ type Task {
   completed_flg: Boolean!
   project: Project!
   list: List!
-  chat: [Chat!]!
+  chats: [Chat!]!
   chatCount: Float!
   allocations: [Allocation!]!
   created_at: DateTime!
@@ -182,6 +182,7 @@ type Query {
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!
+  completedTask(userId: String!): [Allocation!]!
   getChats(taskId: Float!): [Chat!]!
 }
 
@@ -313,6 +314,7 @@ input UpdateTask {
   id: String!
   vertical_sort: Float!
   list_id: String!
+  completed_flg: Boolean!
 }
 
 input NewTaskInput {
