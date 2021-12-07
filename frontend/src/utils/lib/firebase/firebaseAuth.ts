@@ -20,6 +20,6 @@ export const firebaseAuth = {
   },
   // ログアウト
   signOut: () => {
-    signOut(auth)
+    return signOut(auth)
   },
 } as const

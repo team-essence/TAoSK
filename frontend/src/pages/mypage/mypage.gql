@@ -26,5 +26,15 @@ query GetUser($id: String!) {
       id
       name
     }
+
+    invitations {
+      id
+      created_at
+
+      project {
+        id
+        name
+      }
+    }
   }
 }

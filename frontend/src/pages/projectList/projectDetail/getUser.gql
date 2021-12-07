@@ -14,5 +14,15 @@ query GetCurrentUser($id: String!) {
     plan
     design
     exp
+
+    invitations {
+      id
+      created_at
+
+      project {
+        id
+        name
+      }
+    }
   }
 }

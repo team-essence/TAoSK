@@ -1,24 +1,31 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
-import { avatarGroups } from 'types/avatarGroups'
+import type { UserDatas } from 'types/userDatas'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE
-  groups?: avatarGroups
+  userDatas?: UserDatas
   className?: string
+  onClickDeleteBtn?: (index: number) => void
 }
 
-export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, className }) => {
+export const UserCount: FC<Props> = ({
+  userCount,
+  avatarStyleType,
+  userDatas = [],
+  className,
+  onClickDeleteBtn,
+}) => {
   const [isPopup, setIsPopUp] = useState(false)
 
-  const closeModal = useCallback(event => {
+  const closeModal = useCallback(() => {
     setIsPopUp(false)
     document.removeEventListener('click', closeModal)
   }, [])
@@ -35,44 +42,50 @@ export const UserCount: FC<Props> = ({ userCount, avatarStyleType, groups, class
     event.stopPropagation()
   }
 
-  if (avatarStyleType === AVATAR_STYLE.LIST && groups)
+  if (avatarStyleType === AVATAR_STYLE.LIST && userDatas.length) {
     return (
-      <StyledUserCountContainer className={className}>
-        <StyledUserCountListContainer onClick={handlePopUp}>
-          <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
-        </StyledUserCountListContainer>
-
+      <>
+        <StyledUserCountContainer className={className}>
+          <StyledUserCountListContainer onClick={handlePopUp}>
+            <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
+          </StyledUserCountListContainer>
+        </StyledUserCountContainer>
         {isPopup && (
           <ManyUserAvatar
-            groups={groups}
+            userDatas={userDatas}
+            userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
           />
         )}
-      </StyledUserCountContainer>
+      </>
     )
-  else if (avatarStyleType === AVATAR_STYLE.MODAL && groups)
+  } else if (avatarStyleType === AVATAR_STYLE.MODAL && userDatas.length) {
     return (
-      <StyledUserCountContainer className={className}>
-        <StyledUserCountModalContainer onClick={handlePopUp}>
-          <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
-        </StyledUserCountModalContainer>
-
+      <>
+        <StyledUserCountContainer className={className}>
+          <StyledUserCountModalContainer onClick={handlePopUp}>
+            <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
+          </StyledUserCountModalContainer>
+        </StyledUserCountContainer>
         {isPopup && (
           <ManyUserAvatar
-            groups={groups}
+            userDatas={userDatas}
+            userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
+            onClickDeleteBtn={onClickDeleteBtn}
           />
         )}
-      </StyledUserCountContainer>
+      </>
     )
-  else
+  } else {
     return (
       <StyledUserCountTaskContainer className={className}>
         <StyledCountText avatarStyleType={avatarStyleType}>+{userCount}</StyledCountText>
       </StyledUserCountTaskContainer>
     )
+  }
 }
 
 const StyledUserCountContainer = styled.div`

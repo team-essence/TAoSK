@@ -5,11 +5,11 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import styled from 'styled-components'
 
 type Props = {
-  handleAddTask: (list_id: number) => void
+  onClick: () => void
 }
 
-export const CreateTaskButton: FC<Props> = ({ handleAddTask }) => {
-  return <StyledContainer onClick={() => handleAddTask(1)}>+ タスクを追加</StyledContainer>
+export const CreateTaskButton: FC<Props> = ({ onClick }) => {
+  return <StyledContainer onClick={onClick}>+ タスクを追加</StyledContainer>
 }
 
 const StyledContainer = styled.button`

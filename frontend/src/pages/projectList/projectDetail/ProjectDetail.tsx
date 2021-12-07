@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
@@ -10,7 +10,6 @@ import {
   useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
-  useAddTaskMutation,
   useCreateListMutation,
   useUpdateListSortMutation,
 } from './projectDetail.gen'
@@ -22,18 +21,20 @@ import { List } from 'types/list'
 import { Task } from 'types/task'
 import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
-import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Loading } from 'components/ui/loading/Loading'
+import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
+import { Notifications } from 'types/notification'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
   const { id } = useParams()
   const { currentUser } = useAuthContext()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
+  const [notifications, setNotifications] = useState<Notifications>([])
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -94,7 +95,18 @@ export const ProjectDetail: FC = () => {
       setList(sortList)
     },
   })
-  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})
+  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
+    onCompleted(data) {
+      const notifications: Notifications = data.user.invitations.map(invitation => {
+        return {
+          id: invitation.project.id,
+          name: invitation.project.name,
+          createAt: invitation.created_at,
+        }
+      })
+      setNotifications(notifications)
+    },
+  })
   const [updateOnlineFlag] = useUpdateOnlineFlagMutation()
   const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
   const [createInvitation] = useCreateInvitationMutation({
@@ -116,15 +128,6 @@ export const ProjectDetail: FC = () => {
       toast.error('タスクの移動に失敗しました')
     },
   })
-  const [addTask] = useAddTaskMutation({
-    onCompleted(data) {
-      toast.success('タスクを作成しました')
-    },
-    onError(err) {
-      toast.error('タスクの作成失敗しました')
-    },
-  })
-  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
@@ -391,29 +394,6 @@ export const ProjectDetail: FC = () => {
     })
   }
 
-  const handleAddTask = (list_id: number) => {
-    addTask({
-      variables: {
-        newTask: {
-          title:
-            '心拍数と集中力を測定してfirestore上に送れるようにする心拍数と集中力を測定してfirestore上に送れるようにする',
-          overview: 'hoge',
-          // 一旦ステータスはランダムにした
-          technology: Math.floor(Math.random() * 11),
-          achievement: Math.floor(Math.random() * 11),
-          solution: Math.floor(Math.random() * 11),
-          motivation: Math.floor(Math.random() * 11),
-          plan: Math.floor(Math.random() * 11),
-          design: Math.floor(Math.random() * 11),
-          vertical_sort: list[list_id].tasks.length,
-          end_date: '2021/12/30',
-          project_id: String(id),
-          list_id: String(list_id),
-        },
-      },
-    })
-  }
-
   const handleCreateList = async () => {
     await createList({
       variables: {
@@ -427,58 +407,52 @@ export const ProjectDetail: FC = () => {
   if (!projectData.data) return <Loading />
 
   return (
-    <ProjectDetailContainer>
-      <ProjectTitleContainer>
-        プロジェクト詳細
-        <button style={{ border: 'solid' }}>招待</button>
-        <input type="text" {...inputUserName} placeholder="ユーザ名" />
-        {debouncedInputText &&
-          searchSameCompanyUsersData.data?.searchSameCompanyUsers.map(searchSameCompanyUsers =>
-            selectUserIds.includes(searchSameCompanyUsers.id) ? (
-              <></>
-            ) : (
-              <div key={searchSameCompanyUsers.id}>
-                <h2>名前: {searchSameCompanyUsers.name}</h2>
-                <p>id: {searchSameCompanyUsers.id}</p>
-                <button
-                  onClick={() => handleInvitation(searchSameCompanyUsers.id, String(id))}
-                  style={{ border: 'solid' }}>
-                  招待する
-                </button>
-              </div>
-            ),
-          )}
-      </ProjectTitleContainer>
-      <ProjectDetailLeftContainer>
-        <ProjectDrawer
-          groups={projectData.data?.getProjectById.groups}
-          lists={list}
-          handleAddTask={handleAddTask}
-          onDragEnd={onDragEnd}
-        />
-        {!!currentUserData.data && (
-          <ProjectMyInfo
-            {...currentUserData.data.user}
-            iconImage={currentUserData.data.user.icon_image}
-            occupationId={currentUserData.data.user.occupation_id}
-            totalExp={currentUserData.data.user.exp}
+    <>
+      <ProjectDetailHeader
+        iconImage={currentUserData.data!.user.icon_image}
+        name={currentUserData.data!.user.name}
+        uid={currentUserData.data!.user.id}
+        totalExp={currentUserData.data!.user.exp}
+        company={currentUserData.data!.user.company}
+        notifications={notifications}
+        list={list}
+      />
+
+      <ProjectDetailContainer>
+        <ProjectDetailLeftContainer>
+          <ProjectDrawer
+            groups={projectData.data?.getProjectById.groups}
+            lists={list}
+            onDragEnd={onDragEnd}
           />
-        )}
-      </ProjectDetailLeftContainer>
-      <ProjectDetailRightContainer>
-        <ProjectRight
-          onClick={handleCreateList}
-          monsterHp={projectData.data.getProjectById.hp}
-          monsterName={projectData.data.getProjectById.monster.name}
-          gameLogs={logs}
-        />
-      </ProjectDetailRightContainer>
-      <TaskCreateModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
-    </ProjectDetailContainer>
+          {!!currentUserData.data && (
+            <ProjectMyInfo
+              {...currentUserData.data.user}
+              iconImage={currentUserData.data.user.icon_image}
+              occupationId={currentUserData.data.user.occupation_id}
+              totalExp={currentUserData.data.user.exp}
+            />
+          )}
+        </ProjectDetailLeftContainer>
+        <ProjectDetailRightContainer>
+          <ProjectRight
+            onClick={handleCreateList}
+            monsterHp={projectData.data.getProjectById.hp}
+            monsterName={projectData.data.getProjectById.monster.name}
+            gameLogs={logs}
+          />
+        </ProjectDetailRightContainer>
+      </ProjectDetailContainer>
+
+      <StyledBackground />
+    </>
   )
 }
 
 const ProjectDetailContainer = styled.div`
+  padding-top: calc(
+    ${({ theme }) => theme.HEADER_HEIGHT} + ${calculateMinSizeBasedOnFigmaWidth(8)}
+  );
   width: 100vw;
   height: 100vh;
   display: grid;
@@ -486,14 +460,9 @@ const ProjectDetailContainer = styled.div`
   grid-template-rows: auto 1fr;
 `
 
-const ProjectTitleContainer = styled.p`
-  grid-row: 1 / 2;
-  grid-column: 1 / 3;
-`
-
 const ProjectDetailLeftContainer = styled.div`
   height: 100%;
-  grid-row: 2 / 3;
+  grid-row: 1 / 2;
   grid-column: 1 / 2;
   overflow-x: auto;
   white-space: nowrap;
@@ -501,6 +470,27 @@ const ProjectDetailLeftContainer = styled.div`
 
 const ProjectDetailRightContainer = styled.div`
   height: 100%;
-  grid-row: 2 / 3;
+  grid-row: 1 / 2;
   grid-column: 2 / 3;
+`
+
+const StyledTaskListContainer = styled.div`
+  display: flex;
+`
+
+const StyledBackground = styled.div`
+  ${({ theme }) => css`
+    z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
+    top: ${theme.HEADER_HEIGHT};
+    height: calc(100vh - ${theme.HEADER_HEIGHT});
+  `};
+
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  background: url('/images/project-detail_background.webp');
+  background-attachment: fixed;
+  background-position: cover;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 `

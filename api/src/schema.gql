@@ -77,7 +77,7 @@ type Task {
   plan: Float!
   design: Float!
   vertical_sort: Float!
-  end_date: DateTime!
+  end_date: String!
   project: Project!
   list: List!
   chat: [Chat!]!
@@ -172,6 +172,7 @@ type Query {
   allUsers: [User!]!
   user(id: String!): User!
   findHrUsers(company: String!): [User!]!
+  findProjectDetailSameCompanyUsers(searchUser: ProjectDetailUserSearchInput!): [User!]!
   certifications(user_ids: [String!]!): [Certification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
@@ -181,6 +182,12 @@ type Query {
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!
   getChats(taskId: Float!): [Chat!]!
+}
+
+input ProjectDetailUserSearchInput {
+  project_id: String!
+  input: String!
+  company: String!
 }
 
 type Mutation {
@@ -203,6 +210,7 @@ type Mutation {
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
+  createAllocation(newAllocation: NewAllocationInput!): Allocation!
 }
 
 input NewCertificationClientInput {
@@ -314,6 +322,11 @@ input NewTaskInput {
   end_date: String!
   project_id: String!
   list_id: String!
+}
+
+input NewAllocationInput {
+  user_id: String!
+  task_id: String!
 }
 
 type Subscription {

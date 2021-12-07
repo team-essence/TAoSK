@@ -107,6 +107,8 @@ const StyledStatusIcon = styled.div<{ status: Status }>`
   aspect-ratio: 1 / 1;
   width: ${calculateMinSizeBasedOnFigmaWidth(20)};
   background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
   ${({ status }) => {
     switch (status) {
       case 'technology':
@@ -157,6 +159,8 @@ const countBtnCss = css`
   width: ${calculateMinSizeBasedOnFigmaWidth(24)};
   height: ${calculateMinSizeBasedOnFigmaWidth(26)};
   background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 `
 const StyledPlusBtn = styled.button<{ disabled: boolean }>`
   ${countBtnCss}

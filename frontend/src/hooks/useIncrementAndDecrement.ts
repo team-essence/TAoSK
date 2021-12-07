@@ -8,6 +8,9 @@ type UseIncrementAndDecrementReturn = {
   isDisabledDecrement: boolean
 }
 
+/**
+ * 獲得ステータスポイントを増減するのに使う
+ */
 export const useIncrementAndDecrement = (
   max: number,
   min: number,

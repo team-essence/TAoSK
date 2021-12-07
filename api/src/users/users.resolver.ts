@@ -7,6 +7,7 @@ import { NewInterestClientInput } from 'src/interests/dto/newInterest.input';
 import { NewCertificationClientInput } from 'src/certifications/dto/newCertification.input';
 import { PubSub } from 'graphql-subscriptions';
 import { SearchUserInput } from './dto/searchUser.input';
+import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -38,6 +39,19 @@ export class UsersResolver {
     return this.usersService.getHrAllUsers(company).catch((err) => {
       throw err;
     });
+  }
+
+  @Query(() => [User])
+  public async findProjectDetailSameCompanyUsers(
+    @Args({ name: 'searchUser' }) searchUser: ProjectDetailUserSearchInput,
+  ): Promise<User[]> {
+    return this.usersService
+      .projectDetailSearchSameCompanyUsers({
+        projectDetailSearchSameCompanyUsers: searchUser,
+      })
+      .catch((err) => {
+        throw err;
+      });
   }
 
   @Mutation(() => User)

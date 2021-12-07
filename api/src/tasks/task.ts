@@ -75,9 +75,12 @@ export class Task {
   vertical_sort: number;
 
   //期日
-  @Column({ type: 'datetime' })
+  @Column({
+    type: 'varchar',
+    length: 20,
+  })
   @Field()
-  end_date: Date;
+  end_date: string;
 
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })

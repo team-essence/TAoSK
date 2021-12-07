@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DROP_TYPE } from 'consts/dropType'
@@ -12,6 +12,7 @@ import {
   useUpdateListNameMutation,
   useRemoveListMutation,
 } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControlTextArea'
@@ -25,23 +26,15 @@ type Props = {
   className?: string
   listIndex: number
   listLength: number
-  handleAddTask: (list_id: number) => void
 } & Omit<List, 'sort_id' | 'index'>
 
-export const TaskColumn: FC<Props> = ({
-  id,
-  list_id,
-  title,
-  tasks,
-  listIndex,
-  listLength,
-  handleAddTask,
-}) => {
+export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
   const controll = useControllTextArea()
   const { anchorEl, openPopover, closePopover } = usePopover()
   const [updateListName] = useUpdateListNameMutation()
   const [removeList] = useRemoveListMutation()
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
@@ -123,9 +116,16 @@ export const TaskColumn: FC<Props> = ({
                 </StyledHeadCotanier>
                 <StyledTaskListContainer>
                   {listIndex === 0 && (
-                    <StyledButtonContainer>
-                      <CreateTaskButton handleAddTask={handleAddTask} />
-                    </StyledButtonContainer>
+                    <>
+                      <StyledButtonContainer>
+                        <CreateTaskButton onClick={() => setShouldShowModal(true)} />
+                      </StyledButtonContainer>
+                      <TaskCreateModal
+                        shouldShow={shouldShowModal}
+                        setShouldShow={setShouldShowModal}
+                        verticalSort={tasks.length}
+                      />
+                    </>
                   )}
                   <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
                   {listProvided.placeholder}
@@ -190,22 +190,17 @@ const StyledTaskListContainer = styled.div`
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(4)};
   overflow-x: hidden;
   overflow-y: auto;
-  /* -ms-overflow-style: none;
-  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none;
-  } */
-  /* &::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
   &::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => theme.COLORS.OLIVE_GREEN};
+    background-color: ${({ theme }) => theme.COLORS.SWIRL};
     border-radius: 100px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #c7c7c7;
+    background-color: ${({ theme }) => theme.COLORS.COTTON_SEED};
     border-radius: 100px;
-  } */
+  }
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;
