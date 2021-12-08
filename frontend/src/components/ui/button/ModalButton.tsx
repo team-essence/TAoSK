@@ -42,6 +42,7 @@ const StyledButton = styled.button<{ disabled: boolean }>`
   ${({ disabled }) => {
     if (disabled) {
       return css`
+        cursor: not-allowed;
         filter: grayscale(80%) opacity(0.5);
       `
     } else {

@@ -167,6 +167,7 @@ const StyledPlusBtn = styled.button<{ disabled: boolean }>`
   ${({ disabled }) =>
     disabled
       ? css`
+          cursor: not-allowed;
           background-image: url('/svg/status-plus-disabled.svg');
         `
       : css`
@@ -178,6 +179,7 @@ const StyledMinusBtn = styled.button`
   ${({ disabled }) =>
     disabled
       ? css`
+          cursor: not-allowed;
           background-image: url('/svg/status-minus-disabled.svg');
         `
       : css`

@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 
 type BgSrc = 'grain.png' | 'light-grain.png'
@@ -26,7 +26,7 @@ export const CoarseButton: FC<Props> = ({
   border = `solid 1px ${theme.COLORS.BRANDY}`,
   bgSrcs = { inner: '/grain.png', outer: '/grain.png' },
   onClick,
-  isDisabled,
+  isDisabled = false,
 }) => {
   return (
     <StyledButton
@@ -47,25 +47,36 @@ export const CoarseButton: FC<Props> = ({
   )
 }
 
-type Aspect = Record<'width' | 'height', string>
-type FontColor = Record<'color', string>
-type BgColor = Record<'bgColor', string>
-type BgImageUrl = Record<'bgSrc', string>
-type Border = Record<'border', string>
+type FontColor = { color: string }
+type BgColor = { bgColor: string }
+type BgImageUrl = { bgSrc: string }
+type Border = { border: string }
+type ButtonStyle = Record<'width' | 'height', string> &
+  FontColor &
+  BgImageUrl & { disabled: boolean }
 
 const centeringFlexStyle = `
   display: flex;
   justify-content: center;
   align-items: center;
 `
-const StyledButton = styled.button<Aspect & FontColor & BgImageUrl>`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+const StyledButton = styled.button<ButtonStyle>`
   border-radius: 2px;
-  background-image: url(${({ bgSrc }) => bgSrc});
-  color: ${({ color }) => color};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
+
+  ${({ width, height, color, bgSrc, theme }) => css`
+    width: ${width};
+    height: ${height};
+    background-image: url(${bgSrc});
+    color: ${color};
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+    font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+  `}
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      cursor: not-allowed;
+    `}
 `
 const StyledOuterMask = styled.div<BgColor>`
   ${centeringFlexStyle}
