@@ -1,9 +1,8 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, SetStateAction, Dispatch } from 'react'
 import { Link } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useTrySignOut } from 'hooks/useTrySignOut'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
-import { UserAccountSettingModal } from 'components/models/user/UserAccountSettingModal'
 import Exp from 'utils/exp/exp'
 import styled from 'styled-components'
 
@@ -16,6 +15,7 @@ type Props = {
   uid: string
   iconImage: string
   totalExp: number
+  setShouldShowModal: Dispatch<SetStateAction<boolean>>
 }
 
 export const UserMenuPopup: FC<Props> = ({
@@ -27,8 +27,8 @@ export const UserMenuPopup: FC<Props> = ({
   uid,
   iconImage,
   totalExp,
+  setShouldShowModal,
 }) => {
-  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const trySignOut = useTrySignOut()
 
   return (
@@ -62,7 +62,6 @@ export const UserMenuPopup: FC<Props> = ({
           <Link to={`/mypage/${uid}`}>マイページ</Link>
         </p>
         <button onClick={() => setShouldShowModal(true)}>アカウント設定</button>
-        <UserAccountSettingModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
       </StyledAccountRelationshipContainer>
 
       <StyledLSignOutContainer>

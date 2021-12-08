@@ -39,6 +39,7 @@ export const ProjectDetailHeader: FC<Props> = ({
   company,
   list,
 }) => {
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const [searchTaskEvent, setSearchTaskEvent] = useState<React.MouseEvent<
     HTMLDivElement,
     MouseEvent
@@ -186,6 +187,7 @@ export const ProjectDetailHeader: FC<Props> = ({
           name={name}
           uid={uid}
           totalExp={totalExp}
+          setShouldShowModal={setShouldShowModal}
         />
       </StyledPopupContainer>
 
