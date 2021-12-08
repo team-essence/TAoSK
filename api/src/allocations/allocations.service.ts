@@ -44,4 +44,19 @@ export class AllocationsService {
 
     return allocation;
   }
+
+  completedTask(userId: string): Promise<Allocation[]> {
+    const allocations = this.allocationRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+        task: {
+          completed_flg: true,
+        },
+      },
+      relations: ['task'],
+    });
+    return allocations;
+  }
 }

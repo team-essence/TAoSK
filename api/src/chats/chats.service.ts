@@ -63,6 +63,7 @@ export class ChatsService {
       where: {
         id: chatId,
       },
+      relations: ['user'],
     });
 
     chat.comment = comment;
