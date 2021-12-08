@@ -71,6 +71,7 @@ query GetProject($id: String!) {
         vertical_sort
         end_date
         chatCount
+        completed_flg
 
         allocations {
           id

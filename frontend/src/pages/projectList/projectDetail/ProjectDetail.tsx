@@ -35,6 +35,7 @@ export const ProjectDetail: FC = () => {
   const { currentUser } = useAuthContext()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
+  const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -47,7 +48,6 @@ export const ProjectDetail: FC = () => {
         logger.debug(gameLog)
         const init = {
           context: gameLog.context,
-          // TODO: Redundant double negationが出たため`!!`が入力出来ず
           userName: gameLog.user.name,
           createdAt: time.getTime(),
         }
@@ -56,6 +56,19 @@ export const ProjectDetail: FC = () => {
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
         const tasks = list.tasks.map(task => {
+          setMonsterHPRemaining(monsterHPRemaining => {
+            if (task.completed_flg) return monsterHPRemaining
+
+            return (
+              monsterHPRemaining +
+              task.technology +
+              task.achievement +
+              task.solution +
+              task.motivation +
+              task.plan +
+              task.design
+            )
+          })
           const allocations = task.allocations.map(allocation => {
             return {
               id: allocation.user.id,
@@ -454,6 +467,7 @@ export const ProjectDetail: FC = () => {
         <ProjectDetailRightContainer>
           <ProjectRight
             onClick={handleCreateList}
+            monsterHPRemaining={monsterHPRemaining}
             monsterHp={projectData.data.getProjectById.hp}
             monsterName={projectData.data.getProjectById.monster.name}
             gameLogs={logs}
