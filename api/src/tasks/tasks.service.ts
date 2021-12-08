@@ -59,7 +59,11 @@ export class TasksService {
     const project = await this.projectRepository.findOne(newTask.project_id);
     if (!project) throw new NotFoundException();
 
-    const list = await this.listRepository.findOne(newTask.list_id);
+    const list = await this.listRepository.findOne({
+      where: {
+        list_id: newTask.list_id,
+      },
+    });
     if (!list) throw new NotFoundException();
 
     const task = this.taskRepository.create({

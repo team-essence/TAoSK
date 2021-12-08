@@ -22,7 +22,10 @@ type UseTaskCreateFormReturn<T> = {
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
 }
 
-type UseTaskCreateForm<T> = (args: { verticalSort: number }) => UseTaskCreateFormReturn<T>
+type UseTaskCreateForm<T> = (args: {
+  verticalSort: number
+  list_id: string
+}) => UseTaskCreateFormReturn<T>
 
 /**
  * タスク追加処理の初期設定を行う
@@ -35,7 +38,7 @@ type UseTaskCreateForm<T> = (args: { verticalSort: number }) => UseTaskCreateFor
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort }) => {
+export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort, list_id }) => {
   const { id: projectId } = useParams()
   const {
     register,
@@ -100,7 +103,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
           vertical_sort: verticalSort,
           end_date: date,
           project_id: String(projectId),
-          list_id: '1',
+          list_id: list_id,
           completed_flg: false,
         },
       },
