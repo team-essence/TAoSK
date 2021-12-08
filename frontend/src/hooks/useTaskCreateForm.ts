@@ -86,6 +86,8 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
   }, [watchAllFields, errors])
 
   const handleAddTask = useCallback(() => {
+    if (!currentUser) return
+
     const { title, overview, date } = getValues()
     const { technology, achievement, solution, motivation, design, plan } = status
     addTask({
@@ -104,7 +106,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
           project_id: String(projectId),
           list_id: '1',
           completed_flg: false,
-          user_id: currentUser!.uid,
+          user_id: currentUser.uid,
         },
       },
     })
