@@ -13,8 +13,8 @@ import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
+import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
 
@@ -79,9 +79,7 @@ export const TaskCreateModal: FC<Props> = ({
             </StyledStatusWrapper>
           </StyledRightColumn>
         </StyledInputsWrapper>
-        <StyledTaskCreateButton onClick={handleAddTask} disabled={isDisabled}>
-          <StyledTaskCreateText>作成</StyledTaskCreateText>
-        </StyledTaskCreateButton>
+        <StyledTaskCreateButton text="作成" onClick={handleAddTask} disabled={isDisabled} />
       </StyledFormWrapper>
     </StyledModal>
   )
@@ -174,34 +172,6 @@ const StyledStatusTitle = styled.p`
     font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
   `}
 `
-const StyledTaskCreateButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+const StyledTaskCreateButton = styled(ModalButton)`
   margin: ${calculateMinSizeBasedOnFigma(31)} auto 0;
-  width: ${calculateMinSizeBasedOnFigma(160)};
-  height: ${calculateMinSizeBasedOnFigma(40)};
-  background-image: url('/svg/gold-button.svg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  ${({ theme }) => css`
-    filter: drop-shadow(
-        0 ${calculateMinSizeBasedOnFigma(4)} ${calculateMinSizeBasedOnFigma(4)}
-          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
-      )
-      drop-shadow(
-        0 ${calculateMinSizeBasedOnFigma(1.5)} ${calculateMinSizeBasedOnFigma(1)}
-          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
-      );
-  `}
-`
-const StyledTaskCreateText = styled.p`
-  height: ${calculateMinSizeBasedOnFigma(30)};
-  text-align: center;
-  ${({ theme }) => css`
-    ${strokeTextShadow('1.2px', theme.COLORS.MONDO)}
-    color: ${theme.COLORS.WHITE};
-    font-size: ${theme.FONT_SIZES.SIZE_20};
-    font-weight: ${theme.FONT_WEIGHTS.BOLD};
-  `}
 `
