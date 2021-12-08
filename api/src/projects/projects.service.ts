@@ -15,6 +15,7 @@ import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
 import { v4 as uuidv4 } from 'uuid';
 import { GameLog } from 'src/game-logs/game-log';
+import { EndProjectInput } from './dto/endProject.input';
 
 @Injectable()
 export class ProjectsService {
@@ -149,5 +150,35 @@ export class ProjectsService {
     if (!project) throw new NotFoundException();
 
     return project;
+  }
+
+  async completedProject(endProject: EndProjectInput): Promise<boolean> {
+    try {
+      const project = await this.projectRepository.findOne(
+        endProject.project_id,
+      );
+      if (!project) throw new NotFoundException();
+
+      project.project_end_flg = true;
+      await this.projectRepository.save(project).catch((err) => {
+        new InternalServerErrorException();
+      });
+
+      const user = await this.userRepository.findOne(endProject.user_id);
+      if (!user) throw new NotFoundException();
+
+      const log = this.gameLogRepository.create({
+        context: 'プロジェクト',
+        user,
+        project,
+      });
+      this.gameLogRepository.save(log).catch((err) => {
+        new InternalServerErrorException();
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 }

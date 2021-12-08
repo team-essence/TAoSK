@@ -202,6 +202,7 @@ type Mutation {
   addInterest(newInterest: NewInterestInput!): Interest!
   addCompany(newCompany: NewCompanyInput!): Company!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
+  completedProject(endProject: EndProjectInput!): Boolean!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   createList(newList: NewListInput!): List!
@@ -283,6 +284,11 @@ input NewProjectInput {
   project_end_flg: Boolean!
 }
 
+input EndProjectInput {
+  project_id: String!
+  user_id: String!
+}
+
 input NewListInput {
   name: String!
   project_id: String!
@@ -311,6 +317,7 @@ input UpdateListSortObject {
 input UpdateTaskSort {
   tasks: [UpdateTask!]!
   project_id: String!
+  user_id: String!
 }
 
 input UpdateTask {

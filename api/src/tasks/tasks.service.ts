@@ -32,6 +32,9 @@ export class TasksService {
     for (let index = 0; index < updateTask.tasks.length; index++) {
       const task = await this.taskRepository.findOne(
         updateTask.tasks[index].id,
+        {
+          relations: ['allocations', 'allocations.user'],
+        },
       );
       if (!task) throw new NotFoundException();
 
@@ -44,8 +47,7 @@ export class TasksService {
       task.list = list;
 
       if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
-        const user = await this.userRepository.findOne(updateTask.user_id);
-        if (!user) throw new NotFoundException();
+        task.completed_flg = updateTask.tasks[index].completed_flg;
 
         const project = await this.projectRepository.findOne(
           updateTask.project_id,
@@ -60,12 +62,42 @@ export class TasksService {
           task.design +
           task.plan;
 
+        // 経験値付与
+        task.allocations.map(async (allocation) => {
+          const user = await this.userRepository.findOne(allocation.user.id);
+
+          const beforeLevel = (user.exp / 100) | 0;
+          const sumExp = user.exp + totalDamage;
+          const afterLevel = (sumExp / 100) | 0;
+
+          if (afterLevel > beforeLevel) {
+            const log = this.gameLogRepository.create({
+              context: 'レベル',
+              user,
+              project,
+            });
+            this.gameLogRepository.save(log).catch((err) => {
+              throw err;
+            });
+          }
+
+          user.exp = sumExp;
+          await this.userRepository.save(user).catch((err) => {
+            throw err;
+          });
+        });
+
+        // ログ
+        const logUser = await this.userRepository.findOne(updateTask.user_id);
+        if (!logUser) throw new NotFoundException();
         const log = this.gameLogRepository.create({
-          context: `${totalDamage}ダメージ`,
-          user,
+          context: `${totalDamage}のダメージ`,
+          user: logUser,
           project,
         });
-        this.gameLogRepository.save(log);
+        this.gameLogRepository.save(log).catch((err) => {
+          throw err;
+        });
       }
 
       await this.taskRepository.save(task).catch((err) => {

@@ -11,7 +11,7 @@ export class UpdateTaskSort {
   project_id: string;
 
   @IsString()
-  @IsString()
+  @Field()
   user_id: string;
 }
 
