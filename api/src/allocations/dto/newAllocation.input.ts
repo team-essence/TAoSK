@@ -18,10 +18,6 @@ export class NewAllocationInput {
 export class assignTaskInput {
   @Field(() => [assignUserInput])
   users: assignUserInput[];
-
-  @Field()
-  @IsString()
-  task_id: string;
 }
 
 @InputType()

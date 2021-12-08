@@ -9,7 +9,7 @@ import { Task } from 'src/tasks/task';
 import { User } from 'src/users/user';
 import { Repository } from 'typeorm';
 import { Allocation } from './allocation';
-import { assignTaskInput, NewAllocationInput } from './dto/newAllocation.input';
+import { NewAllocationInput } from './dto/newAllocation.input';
 
 @Injectable()
 export class AllocationsService {
@@ -45,32 +45,32 @@ export class AllocationsService {
     return allocation;
   }
 
-  async assignTask(assignUser: assignTaskInput): Promise<Allocation[]> {
-    for (let index = 0; index < assignUser.users.length; index++) {
-      const user = await this.userRepository.findOne(
-        assignUser.users[index].user_id,
-      );
+  // async assignTask(assignUser: assignTaskInput): Promise<Allocation[]> {
+  //   for (let index = 0; index < assignUser.users.length; index++) {
+  //     const user = await this.userRepository.findOne(
+  //       assignUser.users[index].user_id,
+  //     );
 
-      const task = await this.taskRepository.findOne(assignUser.task_id);
+  //     const task = await this.taskRepository.findOne(assignUser.task_id);
 
-      const allocation = this.allocationRepository.create({ user, task });
+  //     const allocation = this.allocationRepository.create({ user, task });
 
-      await this.allocationRepository.save(allocation).catch(() => {
-        new InternalServerErrorException();
-      });
-    }
+  //     await this.allocationRepository.save(allocation).catch(() => {
+  //       new InternalServerErrorException();
+  //     });
+  //   }
 
-    const allocations = this.allocationRepository.find({
-      relations: ['user', 'task'],
-      where: {
-        task: {
-          id: assignUser.task_id,
-        },
-      },
-    });
+  //   const allocations = this.allocationRepository.find({
+  //     relations: ['user', 'task'],
+  //     where: {
+  //       task: {
+  //         id: assignUser.task_id,
+  //       },
+  //     },
+  //   });
 
-    return allocations;
-  }
+  //   return allocations;
+  // }
 
   async unassign(userId: string, taskId): Promise<Allocation[]> {
     const allocation = await this.allocationRepository.findOne({

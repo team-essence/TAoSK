@@ -15,6 +15,7 @@ import { Allocation } from 'src/allocations/allocation';
     TypeOrmModule.forFeature([List]),
     TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Allocation]),
   ],
   providers: [TasksResolver, TasksService],
 })

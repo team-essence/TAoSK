@@ -18,14 +18,14 @@ export class AllocationsResolver {
       });
   }
 
-  @Mutation(() => [Allocation])
-  public async assignTask(
-    @Args({ name: 'assignTask' }) assignTask: assignTaskInput,
-  ): Promise<Allocation[]> {
-    return await this.allocationService.assignTask(assignTask).catch((err) => {
-      throw err;
-    });
-  }
+  // @Mutation(() => [Allocation])
+  // public async assignTask(
+  //   @Args({ name: 'assignTask' }) assignTask: assignTaskInput,
+  // ): Promise<Allocation[]> {
+  //   return await this.allocationService.assignTask(assignTask).catch((err) => {
+  //     throw err;
+  //   });
+  // }
 
   @Mutation(() => [Allocation])
   public async unassignTask(
