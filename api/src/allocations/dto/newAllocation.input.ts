@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString, IsNotEmpty, IsInt } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class NewAllocationInput {
@@ -12,4 +12,21 @@ export class NewAllocationInput {
   @IsString()
   @Field()
   task_id: string;
+}
+
+@InputType()
+export class assignTaskInput {
+  @Field(() => [assignUserInput])
+  users: assignUserInput[];
+
+  @Field()
+  @IsString()
+  task_id: string;
+}
+
+@InputType()
+class assignUserInput {
+  @Field()
+  @IsString()
+  user_id: string;
 }

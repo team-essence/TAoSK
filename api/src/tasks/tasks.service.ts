@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
-import { User } from 'src/users/user';
 import { Repository } from 'typeorm';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
@@ -38,7 +37,7 @@ export class TasksService {
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
 
-      await this.taskRepository.save(task).catch((err) => {
+      await this.taskRepository.save(task).catch(() => {
         new InternalServerErrorException();
       });
     }

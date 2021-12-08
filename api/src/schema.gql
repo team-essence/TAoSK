@@ -215,6 +215,8 @@ type Mutation {
   updateTaskEndDate(taskId: Float!, end_date: String!): Task!
   deleteTask(taskId: Float!): [Task!]!
   createAllocation(newAllocation: NewAllocationInput!): Allocation!
+  assignTask(assignTask: assignTaskInput!): [Allocation!]!
+  unassignTask(task_id: Float!, user_id: String!): [Allocation!]!
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
@@ -336,6 +338,15 @@ input NewTaskInput {
 input NewAllocationInput {
   user_id: String!
   task_id: String!
+}
+
+input assignTaskInput {
+  users: [assignUserInput!]!
+  task_id: String!
+}
+
+input assignUserInput {
+  user_id: String!
 }
 
 type Subscription {
