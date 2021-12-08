@@ -46,11 +46,11 @@ export const TaskCard: FC<Props> = ({
   ]
   const max = params.reduce((prev, current) => (prev.value > current.value ? prev : current))
   const assignedUsers = allocations.map((item, index, array) =>
-    index < 6 ? (
-      <UserAvatarIcon avatarStyleType={AVATAR_STYLE.TASK} iconImage={item.icon_image} />
+    index < 5 ? (
+      <UserAvatarIcon key={index} avatarStyleType={AVATAR_STYLE.TASK} iconImage={item.icon_image} />
     ) : (
       index === array.length - 1 && (
-        <UserCount userCount={array.length - 6} avatarStyleType={AVATAR_STYLE.TASK} />
+        <UserCount key={index} userCount={array.length - 5} avatarStyleType={AVATAR_STYLE.TASK} />
       )
     ),
   )

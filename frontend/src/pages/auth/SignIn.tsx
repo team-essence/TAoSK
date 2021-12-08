@@ -59,7 +59,7 @@ export const SignIn: FC = () => {
               <StyledTextLineWrapper>
                 <StyledP>TAoSKのアカウントはまだお持ちでないですか？</StyledP>
                 <StyledP>
-                  ここから<StyledLink to="/signup">登録</StyledLink>
+                  ここから<StyledLink to="/">登録</StyledLink>
                 </StyledP>
               </StyledTextLineWrapper>
               <StyledP>

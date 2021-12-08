@@ -24,7 +24,7 @@ export const CoarseButton: FC<Props> = ({
   innerBgColor,
   color,
   border = `solid 1px ${theme.COLORS.BRANDY}`,
-  bgSrcs = { inner: 'grain.png', outer: 'grain.png' },
+  bgSrcs = { inner: '/grain.png', outer: '/grain.png' },
   onClick,
   isDisabled,
 }) => {

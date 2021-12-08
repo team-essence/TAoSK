@@ -185,7 +185,7 @@ const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
 const StyledTaskListContainer = styled.div`
-  max-height: ${calculateVhBasedOnFigma(620)};
+  max-height: ${calculateVhBasedOnFigma(580)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(4)};
   overflow-x: hidden;

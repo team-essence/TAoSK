@@ -411,11 +411,11 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <ProjectDetailHeader
-        iconImage={currentUserData.data!.user.icon_image}
-        name={currentUserData.data!.user.name}
-        uid={currentUserData.data!.user.id}
-        totalExp={currentUserData.data!.user.exp}
-        company={currentUserData.data!.user.company}
+        iconImage={String(currentUserData.data?.user.icon_image)}
+        name={String(currentUserData.data?.user.name)}
+        uid={String(currentUserData.data?.user.id)}
+        totalExp={Number(currentUserData.data?.user.exp)}
+        company={String(currentUserData.data?.user.company)}
         notifications={notifications}
         list={list}
       />
@@ -467,6 +467,12 @@ const ProjectDetailLeftContainer = styled.div`
   grid-row: 1 / 2;
   grid-column: 1 / 2;
   overflow-x: auto;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   white-space: nowrap;
 `
 
@@ -474,10 +480,6 @@ const ProjectDetailRightContainer = styled.div`
   height: 100%;
   grid-row: 1 / 2;
   grid-column: 2 / 3;
-`
-
-const StyledTaskListContainer = styled.div`
-  display: flex;
 `
 
 const StyledBackground = styled.div`

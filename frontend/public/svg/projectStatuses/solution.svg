@@ -1,22 +1,36 @@
-<svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_3470_65764)">
-<rect x="6.75" y="0.75" width="74.5" height="74.5" rx="4.25" fill="white" stroke="#333333" stroke-width="0.5"/>
-<rect x="8" y="2" width="72" height="72" rx="3" fill="#333333" stroke="#E5C5AD" stroke-width="2"/>
-<rect x="9.90869" y="3.90234" width="68.1905" height="68.1961" rx="2" fill="#D4C25C"/>
-<rect x="12.5747" y="6.57422" width="62.8456" height="62.8507" rx="2.25" stroke="white" stroke-opacity="0.6" stroke-width="0.5"/>
-<rect x="11.6006" y="5.60059" width="64.7939" height="64.7992" rx="2.25" stroke="white" stroke-opacity="0.6" stroke-width="0.5"/>
-<path d="M59.0239 30.6393C59.0246 26.4643 57.329 22.6756 54.5922 19.9409C51.8581 17.2047 48.0687 15.5092 43.8944 15.5098C39.7202 15.5092 35.9307 17.2047 33.1967 19.9416C30.4598 22.6756 28.7642 26.4643 28.7649 30.6393C28.7642 33.4317 29.5268 36.0539 30.8517 38.2983H30.851C30.8524 38.3011 30.8553 38.3039 30.8567 38.3067C30.8602 38.3124 30.8624 38.318 30.8658 38.3236L30.8672 38.323C31.8318 40.0305 33.2129 41.3736 34.2886 42.6133C34.8304 43.2331 35.2947 43.8213 35.6064 44.3715C35.9202 44.9246 36.0792 45.4177 36.0898 45.9116V54.2945C36.0905 56.8809 38.1857 58.9767 40.7727 58.9774H41.4439C41.9012 59.8717 42.8214 60.4902 43.8944 60.4902C44.9673 60.4902 45.8876 59.8717 46.3449 58.9775H47.0161C49.6031 58.9768 51.6983 56.8809 51.699 54.2946V45.9123V45.9116C51.7096 45.4177 51.8686 44.9245 52.1824 44.3715C52.6482 43.5441 53.4643 42.6401 54.3578 41.6557C55.2428 40.6736 56.2011 39.6041 56.9223 38.3229L56.923 38.3235C56.9258 38.3193 56.9279 38.3138 56.9307 38.3095C56.9328 38.3053 56.9356 38.3024 56.9377 38.2982H56.937C58.2619 36.0539 59.0246 33.4317 59.0239 30.6393ZM48.799 56.0774C48.3395 56.5355 47.7162 56.8155 47.0161 56.8162H40.7726C40.0725 56.8155 39.4492 56.5355 38.9898 56.0774C38.5318 55.618 38.2517 54.9939 38.251 54.2945V53.8266L48.8045 56.0704C48.8025 56.0725 48.8011 56.0753 48.799 56.0774ZM49.5378 54.2945C49.5378 54.4486 49.5188 54.5978 49.4927 54.7435L38.2511 52.3535V49.4083L49.5378 51.8081V54.2945V54.2945ZM49.5378 50.3342L38.2511 47.9343V46.9697H49.5378V50.3342ZM55.0642 37.2218L55.0551 37.2366L55.0494 37.2465C54.3022 38.6001 53.0359 39.8687 51.8728 41.1914C51.2923 41.8569 50.7379 42.5409 50.3031 43.3028C50.0393 43.7672 49.8296 44.2724 49.6939 44.8077H38.0949C37.9591 44.2717 37.7495 43.7672 37.4849 43.3028C36.8319 42.1623 35.9152 41.1872 35.0344 40.2064C34.1507 39.2312 33.3008 38.2597 32.7393 37.2465L32.7323 37.2352L32.7245 37.2219C31.582 35.2927 30.9269 33.0476 30.9261 30.6393C30.9269 27.0546 32.3762 23.8196 34.7247 21.4698C37.0748 19.1205 40.3097 17.6718 43.8944 17.6711C47.4791 17.6718 50.7141 19.1205 53.064 21.4697C55.4124 23.8195 56.8618 27.0545 56.8625 30.6392C56.8618 33.0476 56.2068 35.2926 55.0642 37.2218Z" fill="white" fill-opacity="0.5"/>
+<svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g filter="url(#filter0_d_4006_97599)">
+<rect x="6.74902" y="0.75" width="74.5" height="74.5" rx="4.25" fill="white" stroke="#333333" stroke-width="0.5"/>
+<rect x="7.99902" y="2" width="72" height="72" rx="3" fill="#333333" stroke="#E5C5AD" stroke-width="2"/>
+<rect x="9.90723" y="3.90234" width="68.1905" height="68.1961" rx="2" fill="#65BAAA"/>
+<rect x="12.5732" y="6.57422" width="62.8456" height="62.8507" rx="2.25" stroke="white" stroke-opacity="0.6" stroke-width="0.5"/>
+<rect x="11.5986" y="5.60059" width="64.7939" height="64.7992" rx="2.25" stroke="white" stroke-opacity="0.6" stroke-width="0.5"/>
+<g opacity="0.6" clip-path="url(#clip0_4006_97599)">
+<mask id="mask0_4006_97599" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-4" y="-10" width="96" height="96">
+<rect width="66.8215" height="66.8216" transform="matrix(0.707107 -0.707107 0.707106 0.707108 -3.25098 38)" fill="url(#pattern0)"/>
+</mask>
+<g mask="url(#mask0_4006_97599)">
+<rect x="15.999" y="11" width="50" height="50" fill="white"/>
+</g>
+</g>
 </g>
 <defs>
-<filter id="filter0_d_3470_65764" x="0.5" y="0.5" width="81" height="81" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_4006_97599" x="0.499023" y="0.5" width="81" height="81" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dx="-4" dy="4"/>
 <feGaussianBlur stdDeviation="1"/>
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3470_65764"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3470_65764" result="shape"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_4006_97599"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_4006_97599" result="shape"/>
 </filter>
+<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_4006_97599" transform="scale(0.02)"/>
+</pattern>
+<clipPath id="clip0_4006_97599">
+<rect width="54" height="54" fill="white" transform="translate(16.999 11)"/>
+</clipPath>
+<image id="image0_4006_97599" width="50" height="50" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAiFJREFUaIHtmk9IVFEUxn8jGoY2FAgujUBoBpxFNEFoNP2xIloptAlt4cJFiygaB7FlIjpBf6BFixbVeiQiJBvLkafOYsRFgRIPJF0ZPkimpNLgtVJ0I4X3HHnX+a3e6rvv4zvn3Mt9D0r8G/VHm/zdfocdcz55V81EmdZCgcZ1XT85NK6SijWJlIzsKVzX9QGSQ+PivWJNIipGCpkMhUwGyVRUjOSePQg1XGrn10qV2BpqpVU9V6R6rsibD19EUin1yP/SlzodApgozNPdP2Y8lXLTgtvRGK8T01Y1cr83DcDJC1eNa5d6ZCfURg4Y11QtrfJjhwD4OvvdvLZxxW1o3lcEIOtljWurldb1loQ/M/sRgJH0vZBpfTUj0UiMaCRGV1cnD19PG99H1IxUjA5TMTqM99Pl2okFEuduGDUj2iOe5208Hzx+CoCXLSluT34ObmlJo2ZkecphecqhbbCfpcVXfqBKazNrZy4CULO/nkdjv8m9f2K0vNSMrI/egYGnpHofB7dHng/mQtFIDJC5SlVt9uxqmOxqmHhNs3Ft1SPKn+lvANTeNH9o3JXxK3FotGYfUS2tOz1JMW1VIxOFeTFtNSPrNyeN8TqunD0c3H1EGrVEfhwJA4ikAUqJJDpu+Z/evqCyakVsDZVE4q2tAKQvN4mkARb1iCj5fN6Or7qO40jKb8Ga0rLGiOjUerdUZERwUm3GmkTEseI3J03+AkQ0mGLrQorIAAAAAElFTkSuQmCC"/>
 </defs>
 </svg>

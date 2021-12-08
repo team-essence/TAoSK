@@ -17,7 +17,7 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
   return (
     <StyledContainer param={param}>
       <StyledParamContainer>
-        <StyledImage src="/svg/weapon/technology_bg.svg" alt="weapon" />
+        <StyledImage src={`/svg/status-${param}.svg`} alt="weapon" />
         <StyledParam>{convertParamIntoJp(param)}</StyledParam>
       </StyledParamContainer>
       <StyledRankContainer>
@@ -29,46 +29,39 @@ export const EmployeeStatus: FC<Props> = ({ param, value }) => {
 }
 
 const StyledContainer = styled.div<{ param: string }>`
-  min-width: ${calculateMinSizeBasedOnFigmaWidth(90)};
-  padding: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  min-width: ${calculateMinSizeBasedOnFigmaWidth(88)};
+  padding: ${calculateMinSizeBasedOnFigmaWidth(2)} ${calculateMinSizeBasedOnFigmaWidth(4)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
   ${({ param, theme }) => {
     switch (param) {
       case 'technology':
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.STATUS.TECHNOLOGY};
+          background: ${theme.COLORS.STATUS.TECHNOLOGY};
         `
       case 'achievement':
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.STATUS.ACHIEVEMENT};
+          background: ${theme.COLORS.STATUS.ACHIEVEMENT};
         `
       case 'solution':
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.STATUS.SOLUTION};
+          background: ${theme.COLORS.STATUS.SOLUTION};
         `
       case 'motivation':
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.STATUS.MOTIVATION};
+          background: ${theme.COLORS.STATUS.MOTIVATION};
         `
       case 'design':
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.STATUS.DESIGN};
+          background: ${theme.COLORS.STATUS.DESIGN};
         `
       case 'plan':
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.STATUS.PLAN};
+          background: ${theme.COLORS.STATUS.PLAN};
         `
       default:
         return css`
-          background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            ${theme.COLORS.MINE_SHAFT};
+          background: ${theme.COLORS.MINE_SHAFT};
         `
     }
   }}
@@ -89,18 +82,21 @@ const StyledRankContainer = styled(StyledFlexContainer)`
   background-color: ${({ theme }) => theme.COLORS.MATTERHORN};
 `
 const StyledImage = styled.img`
-  width: ${calculateMinSizeBasedOnFigmaWidth(14)};
+  aspect-ratio: 1/1;
+  width: ${calculateMinSizeBasedOnFigmaWidth(20)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(20)};
+  object-fit: cover;
 `
 const StyledParam = styled.div`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
-  background: linear-gradient(0deg, #2c2c2c, #2c2c2c 100%);
+  background: #2c2c2c;
   -webkit-background-clip: text;
-  -webkit-text-stroke: 2px transparent;
+  -webkit-text-stroke: 2.5px transparent;
 `
 const StyledRank = styled.p`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
