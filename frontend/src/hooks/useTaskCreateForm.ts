@@ -101,6 +101,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
           end_date: date,
           project_id: String(projectId),
           list_id: '1',
+          completed_flg: false,
         },
       },
     })
