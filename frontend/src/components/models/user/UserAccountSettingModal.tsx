@@ -1,4 +1,20 @@
 import React, { FC, useState, Dispatch, SetStateAction } from 'react'
+import { theme } from 'styles/theme'
+import { REGEX_EMAIL, REGEX_TEXT } from 'consts/regex'
+import { Modal } from 'components/ui/modal/Modal'
+import { TextAreaField } from 'components/ui/form/TextAreaField'
+import { InputField } from 'components/ui/form/InputField'
+import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { strokeTextShadow } from 'utils/strokeTextShadow'
+import toast from 'utils/toast/toast'
+import {
+  calculateMinSizeBasedOnFigmaWidth,
+  calculateMinSizeBasedOnFigmaHeight,
+} from 'utils/calculateSizeBasedOnFigma'
+import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
+import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
+import { useAuthContext } from 'providers/AuthProvider'
 import styled, {
   css,
   FlattenInterpolation,
@@ -6,20 +22,6 @@ import styled, {
   ThemeProps,
   DefaultTheme,
 } from 'styled-components'
-import { theme } from 'styles/theme'
-import { Modal } from 'components/ui/modal/Modal'
-import { TextAreaField } from 'components/ui/form/TextAreaField'
-import { InputField } from 'components/ui/form/InputField'
-import { CalenderField } from 'components/ui/form/CalenderField'
-import { SearchMemberField } from 'components/ui/form/SearchMemberField'
-import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { strokeTextShadow } from 'utils/strokeTextShadow'
-import {
-  calculateMinSizeBasedOnFigmaWidth,
-  calculateMinSizeBasedOnFigmaHeight,
-} from 'utils/calculateSizeBasedOnFigma'
-import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
 
 type Props = {
   shouldShow: boolean
@@ -28,13 +30,147 @@ type Props = {
 }
 
 export const UserAccountSettingModal: FC<Props> = ({ shouldShow, setShouldShow, className }) => {
+  const { currentUser } = useAuthContext()
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    isDisabled,
+    errors,
+    trigger,
+    resetEmailEntry,
+    resetNameEntry,
+  } = useAccountSettingForm()
+  const { name, email } = getValues()
+  // const isName = REGEX_TEXT.test(name)
+
+  const handleChangeEmail = async () => {
+    await firebaseAuth
+      .changeEmail(email)
+      .then(() => toast.success('送信完了しました'))
+      .catch(() => toast.error('送信に失敗しました'))
+  }
+
+  const handleChangePassword = async () => {
+    await firebaseAuth
+      .changePassword(currentUser?.email as string)
+      .then(() => toast.success('送信完了しました'))
+      .catch(() => toast.error('送信に失敗しました'))
+  }
+
   return (
     <StyledModal
       title="アカウント設定"
       shouldShow={shouldShow}
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
-      ああああ
+      <StyledFormWrapper>
+        <StyledInputsWrapper>
+          <StyledLeftColumn>
+            <StyledInputField
+              label="新しい冒険者名"
+              required={true}
+              placeholder="お名前を入力してください"
+              registration={register('name', {
+                required: '名前は必須です',
+                maxLength: { value: 50, message: '50文字以内で入力してください' },
+              })}
+              error={errors['name']}
+            />
+            <StyledButtonWrapper>
+              {/* TODO キャンセルしたときdisabledまで消える りょうがに聞く   */}
+              {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
+              <CoarseButton
+                text="保存"
+                aspect={{
+                  width: calculateMinSizeBasedOnFigmaWidth(64),
+                  height: calculateMinSizeBasedOnFigmaWidth(32),
+                }}
+                outerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
+                    : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
+                }
+                innerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
+                    : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
+                }
+                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
+                onClick={() => console.log('aa')}
+              />
+            </StyledButtonWrapper>
+            <StyledH5>メールアドレス</StyledH5>
+            <StyledText>{`メールアドレスは${currentUser?.email}です。`}</StyledText>
+            <StyledInputField
+              label="新しいメールアドレス"
+              placeholder="メールアドレスを入力してください"
+              registration={register('email', {
+                required: '未入力です',
+                maxLength: {
+                  value: 50,
+                  message: '50文字以内で入力してください',
+                },
+                pattern: {
+                  value: REGEX_EMAIL,
+                  message: '不正なメールアドレスです',
+                },
+              })}
+              error={errors['email']}
+            />
+            <StyledButtonWrapper>
+              {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
+              <CoarseButton
+                text="送信"
+                aspect={{
+                  width: calculateMinSizeBasedOnFigmaWidth(64),
+                  height: calculateMinSizeBasedOnFigmaWidth(32),
+                }}
+                outerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
+                    : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
+                }
+                innerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
+                    : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
+                }
+                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
+                onClick={handleChangeEmail}
+              />
+            </StyledButtonWrapper>
+            <StyledH5>パスワード再設定</StyledH5>
+            <StyledText>
+              「送信」を押すと現在登録さているメールアドレスへパスワード変更のメールが送信されます。
+            </StyledText>
+            <StyledSendButtonWrap>
+              <CoarseButton
+                text="送信"
+                aspect={{
+                  width: calculateMinSizeBasedOnFigmaWidth(64),
+                  height: calculateMinSizeBasedOnFigmaWidth(32),
+                }}
+                outerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
+                    : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
+                }
+                innerBgColor={
+                  isDisabled
+                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
+                    : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
+                }
+                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
+                onClick={handleChangePassword}
+                isDisabled={false}
+              />
+            </StyledSendButtonWrap>
+          </StyledLeftColumn>
+          <StyledBorder />
+          <StyledRightColumn>aaaaa</StyledRightColumn>
+        </StyledInputsWrapper>
+      </StyledFormWrapper>
     </StyledModal>
   )
 }
@@ -97,55 +233,34 @@ const StyledInputField = styled(InputField)`
   ${fieldStyle(css`
     width: 100%;
     height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    margin: 0;
   `)}
 `
-const StyledOverviewField = styled(TextAreaField)`
-  ${fieldStyle(css`
-    width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(180)};
-  `)}
-`
-const StyledStatusWrapper = styled.div`
+const StyledButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  width: 100%;
+  justify-content: flex-end;
+  position: relative;
+  bottom: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
-const StyledStatusTitle = styled.p`
-  ${({ theme }) => css`
-    color: ${theme.COLORS.TOBACCO_BROWN};
-    font-size: ${theme.FONT_SIZES.SIZE_16};
-    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
-  `}
-`
-const StyledTaskCreateButton = styled.button`
+const StyledSendButtonWrap = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  width: ${calculateMinSizeBasedOnFigmaWidth(160)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  background-image: url('/svg/gold-button.svg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  ${({ theme }) => css`
-    filter: drop-shadow(
-        0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)}
-          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
-      )
-      drop-shadow(
-        0 ${calculateMinSizeBasedOnFigmaWidth(1.5)} ${calculateMinSizeBasedOnFigmaWidth(1)}
-          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
-      );
-  `}
+  justify-content: flex-end;
+  width: 100%;
 `
-const StyledTaskCreateText = styled.p`
-  height: ${calculateMinSizeBasedOnFigmaWidth(30)};
-  text-align: center;
-  ${({ theme }) => css`
-    ${strokeTextShadow('1.2px', theme.COLORS.MONDO)}
-    color: ${theme.COLORS.WHITE};
-    font-size: ${theme.FONT_SIZES.SIZE_20};
-    font-weight: ${theme.FONT_WEIGHTS.BOLD};
-  `}
+const StyledCansellButton = styled.button`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
+  text-decoration-line: underline;
+  &:hover {
+    opacity: 0.7;
+  }
+`
+const StyledH5 = styled.h5`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
+  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+`
+const StyledText = styled.p`
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
 `
