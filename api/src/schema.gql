@@ -52,6 +52,7 @@ type Chat {
   id: ID!
   comment: String!
   task: Task!
+  user: User!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -77,6 +78,7 @@ type Task {
   design: Float!
   vertical_sort: Float!
   end_date: String!
+  completed_flg: Boolean!
   project: Project!
   list: List!
   chats: [Chat!]!
@@ -156,6 +158,7 @@ type User {
   invitations: [Invitation!]!
   allocations: [Allocation!]!
   gameLogs: [GameLog!]!
+  chat: [Chat!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -170,6 +173,7 @@ type Query {
   allUsers: [User!]!
   user(id: String!): User!
   findHrUsers(company: String!): [User!]!
+  findProjectDetailSameCompanyUsers(searchUser: ProjectDetailUserSearchInput!): [User!]!
   certifications(user_ids: [String!]!): [Certification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
@@ -178,6 +182,14 @@ type Query {
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!
+  completedTask(userId: String!): [Allocation!]!
+  getChats(taskId: Float!): [Chat!]!
+}
+
+input ProjectDetailUserSearchInput {
+  project_id: String!
+  input: String!
+  company: String!
 }
 
 type Mutation {
@@ -197,7 +209,15 @@ type Mutation {
   updateListSort(updateListSort: UpdateListSort!): Boolean!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
   addTask(newTask: NewTaskInput!): Task!
+  updateTaskTitle(taskId: Float!, title: String!): Task!
+  updateTaskOverview(taskId: Float!, overview: String!): Task!
+  updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): Task!
+  updateTaskEndDate(taskId: Float!, end_date: String!): Task!
+  deleteTask(taskId: Float!): [Task!]!
   createAllocation(newAllocation: NewAllocationInput!): Allocation!
+  addChat(userId: String!, taskId: Float!, comment: String!): Chat!
+  updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
+  deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
 }
 
 input NewCertificationClientInput {
@@ -294,6 +314,7 @@ input UpdateTask {
   id: String!
   vertical_sort: Float!
   list_id: String!
+  completed_flg: Boolean!
 }
 
 input NewTaskInput {
@@ -309,6 +330,7 @@ input NewTaskInput {
   end_date: String!
   project_id: String!
   list_id: String!
+  completed_flg: Boolean!
 }
 
 input NewAllocationInput {

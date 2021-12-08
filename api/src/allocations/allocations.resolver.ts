@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Allocation } from './allocation';
 import { AllocationsService } from './allocations.service';
 import { NewAllocationInput } from './dto/newAllocation.input';
@@ -16,5 +16,14 @@ export class AllocationsResolver {
       .catch((err) => {
         throw err;
       });
+  }
+
+  @Query(() => [Allocation])
+  public async completedTask(
+    @Args('userId') userId: string,
+  ): Promise<Allocation[]> {
+    return await this.allocationService.completedTask(userId).catch((err) => {
+      throw err;
+    });
   }
 }

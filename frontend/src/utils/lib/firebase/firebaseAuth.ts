@@ -1,5 +1,11 @@
 import { auth } from 'utils/lib/firebase/firebaseInitial'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+  updateEmail,
+} from 'firebase/auth'
 
 export const firebaseAuth = {
   /**
@@ -20,6 +26,21 @@ export const firebaseAuth = {
   },
   // ログアウト
   signOut: () => {
-    signOut(auth)
+    return signOut(auth)
+  },
+  /**
+   * メールアドレス変更メールを送信
+   * @param {string} email [メールアドレス]
+   */
+  changeEmail: async (email: string) => {
+    if (!auth.currentUser) return
+    await updateEmail(auth.currentUser, email)
+  },
+  /**
+   * パスワード変更メールを送信
+   * @param {string} email [メールアドレス]
+   */
+  changePassword: async (email: string) => {
+    return await sendPasswordResetEmail(auth, email)
   },
 } as const

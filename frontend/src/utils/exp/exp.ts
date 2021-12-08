@@ -9,7 +9,7 @@ export default class Exp {
    * @memberof exp
    */
   public static toLevel(exp: number): number {
-    return (exp / 100) | 0
+    return ((exp / 100) | 0) + 1
   }
 
   /**

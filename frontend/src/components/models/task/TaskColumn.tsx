@@ -185,27 +185,22 @@ const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
 const StyledTaskListContainer = styled.div`
-  max-height: ${calculateVhBasedOnFigma(620)};
+  max-height: ${calculateVhBasedOnFigma(580)};
   padding: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
   margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(4)};
   overflow-x: hidden;
   overflow-y: auto;
-  /* -ms-overflow-style: none;
-  scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none;
-  } */
-  /* &::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
   }
   &::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => theme.COLORS.OLIVE_GREEN};
+    background-color: ${({ theme }) => theme.COLORS.SWIRL};
     border-radius: 100px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #c7c7c7;
+    background-color: ${({ theme }) => theme.COLORS.COTTON_SEED};
     border-radius: 100px;
-  } */
+  }
 `
 const StyledInnerHeadWrap = styled.div`
   display: flex;

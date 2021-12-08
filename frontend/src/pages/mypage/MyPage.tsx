@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetUserLazyQuery } from './mypage.gen'
@@ -12,11 +12,24 @@ import {
 import { MyPageUserInfo } from 'components/models/myPage/MyPageUserInfo'
 import { MyPageStatus } from 'components/models/myPage/MyPageStatus'
 import { MyPageTags } from 'components/models/myPage/MyPageTags'
+import { Notifications } from 'types/notification'
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext()
   const { id } = useParams()
-  const [getUserById, userQuery] = useGetUserLazyQuery()
+  const [notifications, setNotifications] = useState<Notifications>([])
+  const [getUserById, userQuery] = useGetUserLazyQuery({
+    onCompleted(data) {
+      const notifications = data.user.invitations.map(invitation => {
+        return {
+          id: invitation.project.id,
+          name: invitation.project.name,
+          createAt: invitation.created_at,
+        }
+      })
+      setNotifications(notifications)
+    },
+  })
 
   useEffect(() => {
     if (!currentUser) return
@@ -29,7 +42,13 @@ export const MyPage: FC = () => {
 
   return (
     <>
-      <ProjectListHeader />
+      <ProjectListHeader
+        iconImage={userQuery.data.user.icon_image}
+        name={userQuery.data.user.name}
+        uid={userQuery.data.user.id}
+        totalExp={userQuery.data.user.exp}
+        notifications={notifications}
+      />
 
       <StyledMyPageContainer>
         <StyledMyPageGridContainer>

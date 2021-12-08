@@ -82,6 +82,11 @@ export class Task {
   @Field()
   end_date: string;
 
+  //完了フラグ
+  @Column({ type: 'boolean' })
+  @Field()
+  completed_flg: boolean;
+
   //プロジェクトID
   @Field(() => Project, { defaultValue: '' })
   @ManyToOne(() => Project, (project) => project.tasks)

@@ -11,7 +11,7 @@ import styled, { css } from 'styled-components'
 
 type Props = {
   className?: string
-} & Omit<GetUserQuery['user'], 'company' | 'memo'>
+} & Omit<GetUserQuery['user'], 'company' | 'memo' | 'invitations'>
 
 export const EmployeeInformation: FC<Props> = ({
   id,

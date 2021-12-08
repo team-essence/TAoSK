@@ -19,7 +19,7 @@ type Props = {
   className?: string
   level: number
 } & PopoverProps &
-  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | 'online_flg'>
+  Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | 'online_flg' | 'invitations'>
 
 export const EmployeePopover: FC<Props> = ({
   id,
@@ -122,7 +122,7 @@ export const EmployeePopover: FC<Props> = ({
 }
 
 const StyledContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(340)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(332)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
@@ -184,17 +184,17 @@ const StyledLowerRow = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(16)};
   overflow-x: hidden;
   overflow-y: auto;
-  /* &::-webkit-scrollbar {
-    width: 8px;
+  &::-webkit-scrollbar {
+    width: ${calculateMinSizeBasedOnFigmaWidth(4)};
   }
   &::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-    border-radius: 100px;
+    border-radius: 2px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #c7c7c7;
-    border-radius: 100px;
-  } */
+    background-color: ${({ theme }) => theme.COLORS.GRAY};
+    border-radius: 2px;
+  }
 `
 const StyledH4 = styled.h4`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};

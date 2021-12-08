@@ -14,14 +14,20 @@ type Props = {
   children: ReactNode
 }
 
-export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
+export const Modal: FC<Props> = ({
+  title = 'タスク作成',
+  shouldShow,
+  onClickCloseBtn,
+  className,
+  children,
+}) => {
   return (
     <>
       <StyledWrapper className={className} shouldShow={shouldShow}>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
-        {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
+        <StyledNamePlate>{title}</StyledNamePlate>
         {children}
         <StyledBackgroundDragonSymbol />
       </StyledWrapper>

@@ -14,12 +14,25 @@ import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster
 import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { calculateVwBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { Notifications } from 'types/notification'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
   const router = useNavigate()
-  const [getUserById, userData] = useUsersLazyQuery()
+  const [getUserById, userData] = useUsersLazyQuery({
+    onCompleted(data) {
+      const notifications = data.user.invitations.map(invitation => {
+        return {
+          id: invitation.project.id,
+          name: invitation.project.name,
+          createAt: invitation.created_at,
+        }
+      })
+      setNotifications(notifications)
+    },
+  })
   const [selectProject, setSelectProject] = useState(0)
+  const [notifications, setNotifications] = useState<Notifications>([])
 
   useEffect(() => {
     if (!currentUser) return
@@ -36,7 +49,14 @@ export const ProjectList: FC = () => {
 
   return (
     <>
-      <ProjectListHeader />
+      <ProjectListHeader
+        iconImage={userData.data.user.icon_image}
+        name={userData.data.user.name}
+        uid={userData.data.user.id}
+        totalExp={userData.data.user.exp}
+        notifications={notifications}
+      />
+
       <StyledProjectListPageContainer>
         <StyledProjectListContainer>
           <StyledProjectListWrapper>
