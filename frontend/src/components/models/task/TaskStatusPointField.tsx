@@ -46,7 +46,7 @@ const StyledStatusWrapper = styled.div`
   padding-left: ${calculateMinSizeBasedOnFigma(4)};
   padding-right: ${calculateMinSizeBasedOnFigma(15)};
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigma(38)};
+  height: ${calculateMinSizeBasedOnFigma(34)};
   border: solid 2px ${({ theme }) => convertIntoRGBA(theme.COLORS.TOBACCO_BROWN, 0.6)};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.COLORS.BIZARRE};
@@ -58,7 +58,7 @@ const iconBoxCss = (
   afterBg: string,
 ): FlattenInterpolation<ThemeProps<DefaultTheme>> => css`
   position: relative;
-  box-sizing: content-box;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;

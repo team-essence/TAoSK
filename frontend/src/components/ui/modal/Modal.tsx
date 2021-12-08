@@ -103,8 +103,8 @@ const StyledOverlay = styled.div<{ shouldShow: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   ${({ theme, shouldShow }) => css`
     z-index: ${theme.Z_INDEX.OVERLAY};
     display: ${shouldShow ? 'block' : 'none'};

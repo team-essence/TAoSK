@@ -65,8 +65,8 @@ export const TaskCreateModal: FC<Props> = ({
           </StyledLeftColumn>
           <StyledBorder />
           <StyledRightColumn>
-            <CalenderField label="期限" registration={register('date')} required={false} />
-            <SearchMemberField setUserDatas={setUserDatas} />
+            <StyledCalenderField label="期限" registration={register('date')} required={false} />
+            <StyledSearchMemberField setUserDatas={setUserDatas} />
 
             <StyledStatusWrapper className={className}>
               <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
@@ -87,11 +87,13 @@ export const TaskCreateModal: FC<Props> = ({
   )
 }
 
+const padding = `${calculateMinSizeBasedOnFigma(46)} ${calculateMinSizeBasedOnFigma(26)}
+${calculateMinSizeBasedOnFigma(24)}` // ts-styled-pluginエラーを避けるため
 const StyledModal = styled(Modal)`
   box-sizing: border-box;
   width: ${calculateMinSizeBasedOnFigma(790)};
   height: ${calculateMinSizeBasedOnFigma(709)};
-  padding: ${calculateMinSizeBasedOnFigma(46)} ${calculateMinSizeBasedOnFigma(26)};
+  padding: ${padding};
 `
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -103,8 +105,9 @@ const StyledFormWrapper = styled.div`
 const StyledInputsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-grow: 1;
   width: 100%;
-  height: 100%;
+  height: ${calculateMinSizeBasedOnFigma(541)};
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -154,6 +157,10 @@ const StyledOverviewField = styled(TextAreaField)`
     height: ${calculateMinSizeBasedOnFigma(180)};
   `)}
 `
+const StyledCalenderField = styled(CalenderField)`
+  margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
+`
+const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
 const StyledStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -171,7 +178,7 @@ const StyledTaskCreateButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: ${calculateMinSizeBasedOnFigma(31)} auto 0;
   width: ${calculateMinSizeBasedOnFigma(160)};
   height: ${calculateMinSizeBasedOnFigma(40)};
   background-image: url('/svg/gold-button.svg');

@@ -34,7 +34,7 @@ export const CalenderField: FC<Props> = ({
 
   return (
     <div className={className}>
-      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigma(24)}>
+      <StyledLabelWrapper>
         <label color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -56,9 +56,8 @@ export const CalenderField: FC<Props> = ({
   )
 }
 
-const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
-  ${({ marginBottom, theme }) => css`
-    margin-bottom: ${marginBottom};
+const StyledLabelWrapper = styled.div`
+  ${({ theme }) => css`
     color: ${theme.COLORS.TOBACCO_BROWN};
     font-weight: ${theme.FONT_WEIGHTS.BOLD};
   `}
