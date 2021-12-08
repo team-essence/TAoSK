@@ -31,7 +31,7 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 700;
     font-style: normal;
   }
-    @font-face {
+  @font-face {
     font-family: 'ZCOOL QingKe HuangYou';
     src: url('/fonts/ZCOOLQingKeHuangYou-Regular.ttf') format('truetype');
     font-weight: 400;
@@ -57,7 +57,7 @@ export const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.COLORS.WHITE};
     word-break: break-word;
     word-wrap: break-word;
-    font-family: "Mplus1Code", "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
+    font-family: "M PLUS 1p", "Inter", "BlinkMacSystemFont", "Hiragino Kaku Gothic ProN",
       "Hiragino Sans", Meiryo, sans-serif;
     font-weight: 500;
   }
