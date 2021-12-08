@@ -1,9 +1,9 @@
 export const GAME_LOG_TYPE = {
-  EAG: 'モンスターの卵',
-  COMPLETE_PROJECT: '完了',
+  CREATE_PROJECT: 'モンスター卵',
+  COMPLETE_PROJECT: 'プロジェクト',
   ONLINE: 'オンライン',
   OFFLINE: 'オフライン',
-  FIRST_TASK: 'モンスター',
+  CREATE_FIRST_TASK: 'モンスター',
   CREATE_TASK: 'タスク',
   CREATE_LIST: 'リスト',
   COMPLETE_TASK: 'のダメージ',

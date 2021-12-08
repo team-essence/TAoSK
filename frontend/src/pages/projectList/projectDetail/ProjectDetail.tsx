@@ -44,8 +44,10 @@ export const ProjectDetail: FC = () => {
 
       data.getProjectById.gameLogs.map(gameLog => {
         const time = new Date(gameLog.created_at)
+        logger.debug(gameLog)
         const init = {
           context: gameLog.context,
+          // TODO: Redundant double negationが出たため`!!`が入力出来ず
           userName: gameLog.user.name,
           createdAt: time.getTime(),
         }
@@ -93,6 +95,9 @@ export const ProjectDetail: FC = () => {
 
       logger.debug(sortList)
       setList(sortList)
+    },
+    onError(err) {
+      logger.debug(err)
     },
   })
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
