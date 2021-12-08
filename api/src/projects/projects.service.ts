@@ -14,6 +14,7 @@ import { getConnection, Repository } from 'typeorm';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
 import { v4 as uuidv4 } from 'uuid';
+import { GameLog } from 'src/game-logs/game-log';
 
 @Injectable()
 export class ProjectsService {
@@ -32,6 +33,8 @@ export class ProjectsService {
     private listRepository: Repository<List>,
     @InjectRepository(ListSort)
     private listSortRepository: Repository<ListSort>,
+    @InjectRepository(GameLog)
+    private gameLogRepository: Repository<GameLog>,
   ) {}
 
   async create({
@@ -84,6 +87,16 @@ export class ProjectsService {
       authority_flg: true,
     });
     await this.groupRepository.save(group).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    // ログの作成
+    const log = this.gameLogRepository.create({
+      context: 'モンスターの卵',
+      user: currentUser,
+      project,
+    });
+    await this.gameLogRepository.save(log).catch((err) => {
       new InternalServerErrorException();
     });
 

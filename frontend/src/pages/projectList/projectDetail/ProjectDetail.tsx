@@ -214,11 +214,12 @@ export const ProjectDetail: FC = () => {
   const [logs, setLogs] = useState<GameLogType[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
-  const handleBeforeUnloadEvent = async (userId: string) => {
+  const handleBeforeUnloadEvent = async (userId: string, projectId: string) => {
     logger.debug('でる')
     await updateOnlineFlag({
       variables: {
         id: userId,
+        project_id: projectId,
         isOnline: false,
       },
     })
@@ -241,6 +242,7 @@ export const ProjectDetail: FC = () => {
       await updateOnlineFlag({
         variables: {
           id: currentUser.uid,
+          project_id: String(id),
           isOnline: true,
         },
       })
@@ -256,12 +258,16 @@ export const ProjectDetail: FC = () => {
   }, [currentUser, id])
 
   useEffect(() => {
-    if (!currentUser) return
+    if (!currentUser || !id) return
     logger.debug('入る')
-    window.addEventListener('beforeunload', () => handleBeforeUnloadEvent(currentUser.uid))
+    window.addEventListener('beforeunload', () =>
+      handleBeforeUnloadEvent(currentUser.uid, String(id)),
+    )
     return () =>
-      window.removeEventListener('beforeunload', () => handleBeforeUnloadEvent(currentUser.uid))
-  }, [currentUser])
+      window.removeEventListener('beforeunload', () =>
+        handleBeforeUnloadEvent(currentUser.uid, String(id)),
+      )
+  }, [currentUser, id])
 
   useEffect(() => {
     searchSameCompanyUsers({
@@ -385,6 +391,7 @@ export const ProjectDetail: FC = () => {
         updateTasks: {
           tasks: joinUpdateTasks,
           project_id: String(id),
+          user_id: currentUser!.uid,
         },
       },
     })
@@ -404,9 +411,12 @@ export const ProjectDetail: FC = () => {
   const handleCreateList = async () => {
     await createList({
       variables: {
-        name: 'ほげ',
-        project_id: String(id),
-        task_list: 1,
+        newList: {
+          name: 'ほげ',
+          project_id: String(id),
+          task_list: 1,
+          user_id: currentUser!.uid,
+        },
       },
     })
   }

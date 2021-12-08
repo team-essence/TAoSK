@@ -85,9 +85,14 @@ export class UsersResolver {
   @Mutation(() => User)
   public async updateOnlineFlag(
     @Args({ name: 'id' }) id: string,
+    @Args({ name: 'project_id' }) project_id: string,
     @Args({ name: 'isOnline' }) isOnline: boolean,
   ) {
-    const user = await this.usersService.updateOnlineFlag(id, isOnline);
+    const user = await this.usersService.updateOnlineFlag(
+      id,
+      project_id,
+      isOnline,
+    );
     if (!user) throw new NotFoundException({ id, isOnline });
 
     return user;
