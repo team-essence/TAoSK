@@ -5,7 +5,7 @@ import {
   calculateMinSizeBasedOnFigmaHeight,
   calculateMinSizeBasedOnFigmaWidth,
 } from 'utils/calculateSizeBasedOnFigma'
-import { ProjectCreateListButton } from './ProjectCreateListButton'
+import { CreateListButton } from '../../ui/button/CreateListButton'
 import { ProjectGameLog } from './ProjectGameLog'
 import { ProjectMonster } from './ProjectMonster'
 
@@ -28,10 +28,8 @@ export const ProjectRight: FC<Props> = ({
 }) => {
   return (
     <StyledProjectRightContainer className={className}>
-      <ProjectCreateListButton onClick={onClick} />
-
+      <CreateListButton onClick={onClick} />
       <StyledProjectGameLog gameLogs={gameLogs} />
-
       <ProjectMonster hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
     </StyledProjectRightContainer>
   )
