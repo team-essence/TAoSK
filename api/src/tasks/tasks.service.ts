@@ -71,7 +71,7 @@ export class TasksService {
     const list = await this.listRepository.findOne(newTask.list_id);
     if (!list) throw new NotFoundException();
 
-    let task = this.taskRepository.create({
+    const task = this.taskRepository.create({
       title: newTask.title,
       overview: newTask.overview,
       technology: newTask.technology,
@@ -91,8 +91,6 @@ export class TasksService {
       throw err;
     });
 
-    const taskId = task.id;
-    task = await this.taskRepository.findOne(taskId);
     for (let index = 0; index < assignUser.users.length; index++) {
       const user = await this.userRepository.findOne(
         assignUser.users[index].user_id,
@@ -105,11 +103,7 @@ export class TasksService {
       });
     }
 
-    const tasks = this.taskRepository.findOne(taskId, {
-      relations: ['allocations', 'allocations.user'],
-    });
-
-    return tasks;
+    return task;
   }
 
   async updateTitle(taskId: number, title: string): Promise<Task> {
