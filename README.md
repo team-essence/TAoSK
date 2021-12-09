@@ -10,8 +10,6 @@
 
 ## 起動方法
 
-`docker-compose up`</br>
-or</br>
 `make up`</br>
 
 ## フロントエンド
@@ -22,8 +20,10 @@ or</br>
 frontend/
       ├─ public
       ├─ src/
-            ├─ pages/
             ├─ components/
+                  ├─ ui/
+                  ├─ models/
+            ├─ pages/
             ├─ hooks/
             ├─ consts/
             ├─ providers/
@@ -35,7 +35,7 @@ frontend/
 
 | ディレクトリ | 役割                   |
 | ------------ | ---------------------- |
-| components   | 中身の構成はまだ未定   |
+| components   | ui: 各パーツ models: ビジネスロジック   |
 | pages        | 各ページのトップ |
 | hooks        | hooks関数       |
 | consts       | 変更が無い値     |
@@ -189,18 +189,16 @@ const StyledContainer = styled.div`
 
 ## バックエンド
 
-### 起動方法
-
-#### 初回起動時
-
-`make init-database`
-
 ### GQL を試す
 
 下記で playground が起動する
 `http://localhost:3700/graphql`
 
 ### docker 内の mysql に入る方法
+
+`make sql`
+
+or<br />
 
 該当するコンテナ ID を探す
 `docker ps`
