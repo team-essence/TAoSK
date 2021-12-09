@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, { FC, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -31,6 +31,10 @@ export const CalenderField: FC<Props> = ({
     inputAttributes.onBlur && inputAttributes.onBlur(e)
     setHasBlured(true)
   }
+
+  useEffect(() => {
+    return () => setHasBlured(false)
+  }, [])
 
   return (
     <div className={className}>

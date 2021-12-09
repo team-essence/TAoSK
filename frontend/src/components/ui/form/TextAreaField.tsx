@@ -1,4 +1,11 @@
-import React, { FC, TextareaHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, {
+  FC,
+  useEffect,
+  TextareaHTMLAttributes,
+  useState,
+  FocusEvent,
+  ReactNode,
+} from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -32,6 +39,10 @@ export const TextAreaField: FC<Props> = ({
     textAreaAttributes.onBlur && textAreaAttributes.onBlur(e)
     setHasBlured(true)
   }
+
+  useEffect(() => {
+    return () => setHasBlured(false)
+  }, [])
 
   return (
     <div className={className}>

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback, Dispatch, SetStateAction } fr
 import { useParams } from 'react-router-dom'
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
 import type { UserDatas } from 'types/userDatas'
+import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 
@@ -12,8 +13,6 @@ type StatusCounts = Record<
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
-
-export type AddTaskMutationOptions = Parameters<typeof useAddTaskMutation>[0]
 
 type UseTaskCreateFormReturn<T> = {
   handleAddTask: () => void
@@ -27,7 +26,7 @@ type UseTaskCreateFormReturn<T> = {
 type UseTaskCreateForm<T> = (args: {
   verticalSort: number
   list_id: string
-  addTaskMutationOptions: AddTaskMutationOptions
+  closeModal: () => void
 }) => UseTaskCreateFormReturn<T>
 
 /**
@@ -44,7 +43,7 @@ type UseTaskCreateForm<T> = (args: {
 export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
   verticalSort,
   list_id,
-  addTaskMutationOptions,
+  closeModal,
 }) => {
   const { id: projectId } = useParams()
   const {
@@ -68,15 +67,25 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
     plan: 0,
   })
   const [userDatas, setUserDatas] = useState<UserDatas>([])
-  const [addTask] = useAddTaskMutation(addTaskMutationOptions)
+  const [addTask] = useAddTaskMutation({
+    onCompleted(data) {
+      setValue('title', '', { shouldValidate: true })
+      setValue('overview', '', { shouldValidate: true })
+      closeModal()
+      toast.success('タスクを作成しました')
+    },
+    onError(err) {
+      toast.error('タスクの作成失敗しました')
+    },
+  })
 
   useEffect(() => {
     const initializeInputValues = () => {
       setValue('title', '', { shouldValidate: true })
       setValue('overview', '', { shouldValidate: true })
+      setValue('date', '')
     }
     const hasError = Object.keys(errors).length
-
     if (!isComponentMounted.current) {
       initializeInputValues()
       isComponentMounted.current = true

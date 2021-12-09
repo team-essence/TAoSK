@@ -1,6 +1,5 @@
 import React, { FC, InputHTMLAttributes, ReactNode, useState, ChangeEvent } from 'react'
 import styled, { css } from 'styled-components'
-import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
