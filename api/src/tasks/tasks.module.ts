@@ -16,6 +16,7 @@ import { GameLog } from 'src/game-logs/game-log';
     TypeOrmModule.forFeature([List]),
     TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Allocation]),
     TypeOrmModule.forFeature([GameLog]),
   ],
   providers: [TasksResolver, TasksService],

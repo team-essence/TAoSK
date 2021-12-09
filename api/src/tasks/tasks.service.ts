@@ -4,6 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Allocation } from 'src/allocations/allocation';
+import { assignTaskInput } from 'src/allocations/dto/newAllocation.input';
 import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
@@ -24,6 +26,8 @@ export class TasksService {
     private projectRepository: Repository<Project>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Allocation)
+    private allocationRepository: Repository<Allocation>,
     @InjectRepository(GameLog)
     private gameLogRepository: Repository<GameLog>,
   ) {}
@@ -46,6 +50,7 @@ export class TasksService {
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
 
+      await this.taskRepository.save(task).catch(() => {
       if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
         task.completed_flg = updateTask.tasks[index].completed_flg;
 
@@ -117,6 +122,10 @@ export class TasksService {
     return tasks;
   }
 
+  async addTask(
+    newTask: NewTaskInput,
+    assignUser: assignTaskInput,
+  ): Promise<Task> {
   async addTask(newTask: NewTaskInput): Promise<Task> {
     const tasks = await this.taskRepository.find({
       where: {
@@ -191,6 +200,18 @@ export class TasksService {
     await this.taskRepository.save(task).catch((err) => {
       throw err;
     });
+
+    for (let index = 0; index < assignUser.users.length; index++) {
+      const user = await this.userRepository.findOne(
+        assignUser.users[index].user_id,
+      );
+
+      const allocation = this.allocationRepository.create({ user, task });
+
+      await this.allocationRepository.save(allocation).catch(() => {
+        new InternalServerErrorException();
+      });
+    }
 
     return task;
   }
