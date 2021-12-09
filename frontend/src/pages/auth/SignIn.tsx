@@ -5,10 +5,10 @@ import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignIn: FC = () => {
@@ -34,24 +34,8 @@ export const SignIn: FC = () => {
 
             <StyledSignInButton
               text="ログイン"
-              aspect={{
-                width: calculateMinSizeBasedOnFigmaWidth(120),
-                height: calculateMinSizeBasedOnFigmaWidth(32),
-              }}
-              outerBgColor={
-                isDisabled
-                  ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-                  : convertIntoRGBA(theme.COLORS.GOLD_SAND, 0.26)
-              }
-              innerBgColor={
-                isDisabled
-                  ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-                  : convertIntoRGBA(theme.COLORS.SWEET_CON, 0.55)
-              }
-              color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.CHOCOLATE}
-              border="none"
-              bgSrcs={isDisabled ? undefined : { outer: 'grain.png', inner: 'light-grain.png' }}
-              isDisabled={isDisabled}
+              bgSrcs={isDisabled ? undefined : { outer: '/grain.png', inner: '/light-grain.png' }}
+              disabled={isDisabled}
               onClick={handleSubmit(trySignIn)}
             />
 
@@ -59,7 +43,7 @@ export const SignIn: FC = () => {
               <StyledTextLineWrapper>
                 <StyledP>TAoSKのアカウントはまだお持ちでないですか？</StyledP>
                 <StyledP>
-                  ここから<StyledLink to="/signup">登録</StyledLink>
+                  ここから<StyledLink to="/">登録</StyledLink>
                 </StyledP>
               </StyledTextLineWrapper>
               <StyledP>
@@ -87,10 +71,10 @@ const StyledSignIn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(730)};
+  width: ${calculateMinSizeBasedOnFigma(730)};
   height: 100%;
-  margin: ${calculateMinSizeBasedOnFigmaWidth(113)} 0;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(30)} 0 ${calculateMinSizeBasedOnFigmaWidth(46)};
+  margin: ${calculateMinSizeBasedOnFigma(113)} 0;
+  padding: ${calculateMinSizeBasedOnFigma(30)} 0 ${calculateMinSizeBasedOnFigma(46)};
   background-image: url('sign-in-paper.png');
   background-size: 100% 100%;
 `
@@ -98,10 +82,10 @@ const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(480)};
+  width: ${calculateMinSizeBasedOnFigma(480)};
 `
 const StyledLogoImg = styled.img`
-  height: ${calculateMinSizeBasedOnFigmaWidth(170)};
+  height: ${calculateMinSizeBasedOnFigma(170)};
 `
 const StyledInputField = styled(InputField)`
   label {
@@ -111,7 +95,7 @@ const StyledInputField = styled(InputField)`
   }
   input {
     width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    height: ${calculateMinSizeBasedOnFigma(40)};
     border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
     border-radius: 2px;
     background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
@@ -130,8 +114,8 @@ const StyledParagraphWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(13)};
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(24)};
+  gap: ${calculateMinSizeBasedOnFigma(13)};
+  margin-top: ${calculateMinSizeBasedOnFigma(24)};
 `
 const StyledTextLineWrapper = styled.div`
   display: flex;
@@ -160,10 +144,43 @@ const StyledBackground = styled.div`
   background-size: cover;
   background-position: 50% 100%;
 `
-const StyledSignInButton = styled(CoarseButton)`
+
+type Disabled = { disabled: boolean }
+const StyledSignInButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
+  disabled,
+}))<Disabled>`
   display: block;
   margin: 0 auto;
+  width: ${calculateMinSizeBasedOnFigma(120)};
+  height: ${calculateMinSizeBasedOnFigma(32)};
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  > div > div > div {
+    border: none;
+  }
+
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
+        }
+      `
+    } else {
+      return css`
+        color: ${theme.COLORS.CHOCOLATE};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.GOLD_SAND, 0.26)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.SWEET_CON, 0.55)};
+          }
+        }
+      `
+    }
+  }}
 `

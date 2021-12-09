@@ -1,10 +1,10 @@
 import React, { FC, InputHTMLAttributes, ReactNode, useState, ChangeEvent } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
@@ -41,23 +41,8 @@ export const PasswordField: FC<Props> = ({
         onChange={onChange}>
         <StyledCoarseButton
           text={shouldShowPassword ? '非表示' : '表示'}
-          aspect={{
-            width: calculateMinSizeBasedOnFigmaWidth(53),
-            height: calculateMinSizeBasedOnFigmaWidth(30),
-          }}
-          outerBgColor={
-            value
-              ? convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
-              : convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-          }
-          innerBgColor={
-            value
-              ? convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
-              : convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-          }
-          color={!value ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
           onClick={() => setShouldShowPassword(!shouldShowPassword)}
-          isDisabled={!value}
+          disabled={!value}
         />
       </InputField>
     </StyledWrapper>
@@ -67,8 +52,36 @@ export const PasswordField: FC<Props> = ({
 const StyledWrapper = styled.div`
   position: relative;
 `
-const StyledCoarseButton = styled(CoarseButton)`
+type Disabled = { disabled: boolean }
+const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
+  disabled,
+}))<Disabled>`
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigmaWidth(5)};
-  right: ${calculateMinSizeBasedOnFigmaWidth(7)};
+  top: ${calculateMinSizeBasedOnFigma(5)};
+  right: ${calculateMinSizeBasedOnFigma(7)};
+  width: ${calculateMinSizeBasedOnFigma(53)};
+  height: ${calculateMinSizeBasedOnFigma(30)};
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
+        }
+      `
+    } else {
+      return css`
+        color: ${theme.COLORS.BRANDY};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)};
+          }
+        }
+      `
+    }
+  }}
 `

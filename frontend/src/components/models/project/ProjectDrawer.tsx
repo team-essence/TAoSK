@@ -3,14 +3,17 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
 import { DROP_TYPE } from 'consts/dropType'
 import { List } from 'types/list'
-import { GetProjectQuery } from 'pages/projectList/projectDetail/projectDetail.gen'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
+import {
+  calculateMinSizeBasedOnFigmaWidth,
+  calculateVwBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
 import { useLocalStorage } from 'hooks/useLocalStorage'
 import { EmployeeProjectMembers } from 'components/models/employee/EmployeeProjectMembers'
 import { EmployeeSignBoard } from 'components/models/employee/EmployeeSignBoard'
 import { TaskColumnList } from 'components/models/task/TaskColumnList'
 import Drawer from '@mui/material/Drawer'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
 
@@ -28,7 +31,7 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd }) => {
         <EmployeeProjectMembers groups={groups} />
       </Drawer>
       <StyledMaterialUiMain open={currentValue}>
-        <StyledMainWrap>
+        <StyledMainWrap isOpen={currentValue}>
           <Tesxt>
             <EmployeeSignBoard
               isOpen={currentValue}
@@ -38,10 +41,10 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd }) => {
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
-                <StyledContainer ref={provided.innerRef} {...provided.droppableProps}>
+                <StyledColumnContainer ref={provided.innerRef} {...provided.droppableProps}>
                   <TaskColumnList lists={lists} />
                   {provided.placeholder}
-                </StyledContainer>
+                </StyledColumnContainer>
               )}
             </Droppable>
           </DragDropContext>
@@ -54,13 +57,39 @@ export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd }) => {
 const StyledContainer = styled.div`
   display: flex;
 `
+const StyledColumnContainer = styled(StyledContainer)`
+  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(24)};
+  overflow-x: auto;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(250, 250, 250, 0.6);
+    border-radius: 10px;
+  }
+`
 const Tesxt = styled.div`
   position: relative;
   top: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
-const StyledMainWrap = styled.div`
+const StyledMainWrap = styled.div<{ isOpen: boolean }>`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  // TODO スクロールバーを表示するためにwidthを指定するとモニターとPCで幅が合わない
+  // ビジュアル的にはそもそもスクロールバーがない方がきれいに見える
+  /* ${({ isOpen }) =>
+    isOpen
+      ? css`
+          width: ${calculateVwBasedOnFigma(960)};
+        `
+      : css`
+          width: ${calculateVwBasedOnFigma(1160)};
+        `} */
 `
 const StyledDrawer = {
   width: calculateMinSizeBasedOnFigmaWidth(210),

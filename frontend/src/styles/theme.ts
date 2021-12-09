@@ -1,8 +1,8 @@
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import 'styled-components'
 
 export const theme = {
-  HEADER_HEIGHT: calculateMinSizeBasedOnFigmaWidth('70px'),
+  HEADER_HEIGHT: calculateMinSizeBasedOnFigma('70px'),
   Z_INDEX: {
     INDEX_MINUS_1: -1,
     INDEX_0: 0,
@@ -21,22 +21,22 @@ export const theme = {
     MODAL: 100,
   },
   FONT_SIZES: {
-    SIZE_10: calculateMinSizeBasedOnFigmaWidth('10px'),
-    SIZE_12: calculateMinSizeBasedOnFigmaWidth('12px'),
-    SIZE_14: calculateMinSizeBasedOnFigmaWidth('14px'),
-    SIZE_16: calculateMinSizeBasedOnFigmaWidth('16px'),
-    SIZE_18: calculateMinSizeBasedOnFigmaWidth('18px'),
-    SIZE_20: calculateMinSizeBasedOnFigmaWidth('20px'),
-    SIZE_22: calculateMinSizeBasedOnFigmaWidth('22px'),
-    SIZE_24: calculateMinSizeBasedOnFigmaWidth('24px'),
-    SIZE_28: calculateMinSizeBasedOnFigmaWidth('28px'),
-    SIZE_32: calculateMinSizeBasedOnFigmaWidth('32px'),
-    SIZE_36: calculateMinSizeBasedOnFigmaWidth('36px'),
-    SIZE_40: calculateMinSizeBasedOnFigmaWidth('40px'),
-    SIZE_48: calculateMinSizeBasedOnFigmaWidth('48px'),
-    SIZE_52: calculateMinSizeBasedOnFigmaWidth('52px'),
-    SIZE_56: calculateMinSizeBasedOnFigmaWidth('56px'),
-    SIZE_60: calculateMinSizeBasedOnFigmaWidth('60px'),
+    SIZE_10: calculateMinSizeBasedOnFigma('10px'),
+    SIZE_12: calculateMinSizeBasedOnFigma('12px'),
+    SIZE_14: calculateMinSizeBasedOnFigma('14px'),
+    SIZE_16: calculateMinSizeBasedOnFigma('16px'),
+    SIZE_18: calculateMinSizeBasedOnFigma('18px'),
+    SIZE_20: calculateMinSizeBasedOnFigma('20px'),
+    SIZE_22: calculateMinSizeBasedOnFigma('22px'),
+    SIZE_24: calculateMinSizeBasedOnFigma('24px'),
+    SIZE_28: calculateMinSizeBasedOnFigma('28px'),
+    SIZE_32: calculateMinSizeBasedOnFigma('32px'),
+    SIZE_36: calculateMinSizeBasedOnFigma('36px'),
+    SIZE_40: calculateMinSizeBasedOnFigma('40px'),
+    SIZE_48: calculateMinSizeBasedOnFigma('48px'),
+    SIZE_52: calculateMinSizeBasedOnFigma('52px'),
+    SIZE_56: calculateMinSizeBasedOnFigma('56px'),
+    SIZE_60: calculateMinSizeBasedOnFigma('60px'),
   },
   FONT_WEIGHTS: {
     LIGHT: 300,
@@ -162,12 +162,12 @@ export const theme = {
     },
 
     STATUS: {
-      TECHNOLOGY: '#6558B9',
-      ACHIEVEMENT: '#C26DBF',
-      SOLUTION: '#D4C25C',
-      MOTIVATION: '#BA7565',
-      DESIGN: '#65BAAA',
-      PLAN: '#8FBA65;',
+      TECHNOLOGY: '#D16060',
+      ACHIEVEMENT: '#D9754A',
+      SOLUTION: '#65BAAA',
+      MOTIVATION: '#8FBA65',
+      DESIGN: '#7567CB',
+      PLAN: '#D4C25C',
     },
   },
 } as const

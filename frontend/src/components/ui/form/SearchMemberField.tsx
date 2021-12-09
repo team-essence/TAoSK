@@ -1,7 +1,7 @@
 import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
 import { useSearchMember } from 'hooks/useSearchMember'
@@ -135,17 +135,18 @@ const StyledInputWrapper = styled.div`
     position: absolute;
     transform: translateY(-50%);
     top: 50%;
-    right: ${calculateMinSizeBasedOnFigmaWidth(8)};
-    width: ${calculateMinSizeBasedOnFigmaWidth(15)};
-    height: ${calculateMinSizeBasedOnFigmaWidth(15)};
+    right: ${calculateMinSizeBasedOnFigma(8)};
+    width: ${calculateMinSizeBasedOnFigma(15)};
+    height: ${calculateMinSizeBasedOnFigma(15)};
     background-image: url('/svg/search-icon.svg');
+    background-size: 100% 100%;
   }
 `
 const StyledInput = styled.input`
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  padding-right: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+  padding-left: ${calculateMinSizeBasedOnFigma(8)};
+  padding-right: ${calculateMinSizeBasedOnFigma(8)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 4px;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
@@ -163,7 +164,7 @@ const StyledSearchResultWrapper = styled.ul`
   flex-direction: column;
   list-style-type: none;
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaWidth(200)};
+  height: ${calculateMinSizeBasedOnFigma(200)};
   border: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   border-radius: 4px;
   background-color: ${({ theme }) => theme.COLORS.BLACK_WHITE};
@@ -172,21 +173,21 @@ const StyledListItem = styled.li<{ indexAt: 'first' | 'last' | 'other' }>`
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  gap: ${calculateMinSizeBasedOnFigma(8)};
   ${({ indexAt }) => {
     if (indexAt === 'first') {
       return css`
-        padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(8)}
-          ${calculateMinSizeBasedOnFigmaWidth(4)};
+        padding: ${calculateMinSizeBasedOnFigma(8)} ${calculateMinSizeBasedOnFigma(8)}
+          ${calculateMinSizeBasedOnFigma(4)};
       `
     } else if (indexAt === 'last') {
       return css`
-        padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(8)}
-          ${calculateMinSizeBasedOnFigmaWidth(8)};
+        padding: ${calculateMinSizeBasedOnFigma(4)} ${calculateMinSizeBasedOnFigma(8)}
+          ${calculateMinSizeBasedOnFigma(8)};
       `
     } else {
       return css`
-        padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(8)};
+        padding: ${calculateMinSizeBasedOnFigma(4)} ${calculateMinSizeBasedOnFigma(8)};
       `
     }
   }}
@@ -198,7 +199,7 @@ const StyledAvatar = styled.img`
   box-sizing: border-box;
   object-fit: contain;
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(30)};
+  width: ${calculateMinSizeBasedOnFigma(30)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.2)};
   border-radius: 2px;
 `
@@ -217,13 +218,13 @@ const StyledOccupation = styled.p`
 `
 const StyledSelectedMembersWrapper = styled.div``
 const StyledBorder = styled.div`
-  margin: ${calculateMinSizeBasedOnFigmaWidth(7)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(7)} 0;
   width: 100%;
   height: 1px;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
 const StyledSelectedMembersTitle = styled.p`
-  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(7)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(7)};
   ${({ theme }) => css`
     color: ${theme.COLORS.TOBACCO_BROWN};
     font-size: ${theme.FONT_SIZES.SIZE_14};
@@ -232,6 +233,6 @@ const StyledSelectedMembersTitle = styled.p`
 `
 const StyledMembersContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(6)};
+  gap: ${calculateMinSizeBasedOnFigma(6)};
   width: 100%;
 `

@@ -184,6 +184,7 @@ type Query {
   listsByProjectId(projectId: String!): [List!]!
   completedTask(userId: String!): [Allocation!]!
   getChats(taskId: Float!): [Chat!]!
+  findByProjectId(project_id: String!): [GameLog!]!
 }
 
 input ProjectDetailUserSearchInput {
@@ -195,12 +196,13 @@ input ProjectDetailUserSearchInput {
 type Mutation {
   addUser(newCertification: NewCertificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
   searchSameCompanyUsers(conditionSearchUser: SearchUserInput!): [User!]!
-  updateOnlineFlag(isOnline: Boolean!, id: String!): User!
+  updateOnlineFlag(isOnline: Boolean!, project_id: String!, id: String!): User!
   updateMemo(memo: String!, id: String!): User!
   addCertification(newCertification: NewCertificationInput!): Certification!
   addInterest(newInterest: NewInterestInput!): Interest!
   addCompany(newCompany: NewCompanyInput!): Company!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
+  completedProject(endProject: EndProjectInput!): Boolean!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   createList(newList: NewListInput!): List!
@@ -219,6 +221,7 @@ type Mutation {
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
+  createGameLog(newLog: NewLogInput!): GameLog!
 }
 
 input NewCertificationClientInput {
@@ -282,10 +285,16 @@ input NewProjectInput {
   project_end_flg: Boolean!
 }
 
+input EndProjectInput {
+  project_id: String!
+  user_id: String!
+}
+
 input NewListInput {
   name: String!
   project_id: String!
   task_list: Float!
+  user_id: String!
 }
 
 input UpdateListInput {
@@ -309,6 +318,7 @@ input UpdateListSortObject {
 input UpdateTaskSort {
   tasks: [UpdateTask!]!
   project_id: String!
+  user_id: String!
 }
 
 input UpdateTask {
@@ -328,6 +338,7 @@ input assignUserInput {
 
 input NewTaskInput {
   title: String!
+  user_id: String!
   overview: String!
   technology: Float!
   achievement: Float!
@@ -345,6 +356,12 @@ input NewTaskInput {
 input NewAllocationInput {
   user_id: String!
   task_id: String!
+}
+
+input NewLogInput {
+  context: String!
+  user_id: String!
+  project_id: String!
 }
 
 type Subscription {

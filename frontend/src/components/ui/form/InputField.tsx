@@ -1,7 +1,7 @@
 import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
@@ -35,8 +35,7 @@ export const InputField: FC<Props> = ({
 
   return (
     <div className={className}>
-      <StyledLabelWrapper
-        marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigmaWidth(24)}>
+      <StyledLabelWrapper marginBottom={shouldShowError ? '0px' : calculateMinSizeBasedOnFigma(24)}>
         <label color={shouldShowError ? errorColor : undefined}>
           {label}
           <StyledRequiredSpan> {required ? '*' : ''} </StyledRequiredSpan>
@@ -60,9 +59,9 @@ const StyledLabelWrapper = styled.div<{ marginBottom: string }>`
 `
 const StyledInputWrapper = styled.div<{ shouldShowError: boolean; errorColor: string }>`
   position: relative;
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  margin-top: ${calculateMinSizeBasedOnFigma(4)};
   input {
-    padding-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
+    padding-left: ${calculateMinSizeBasedOnFigma(8)};
     border-color: ${props => (props.shouldShowError ? props.errorColor : undefined)} !important;
   }
 `

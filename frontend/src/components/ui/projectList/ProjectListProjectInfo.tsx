@@ -2,9 +2,7 @@ import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
 import React, { FC, useMemo } from 'react'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
-import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
@@ -152,12 +150,12 @@ const StyledProjectInfoTitleContainer = styled.div`
 
   img {
     opacity: 0.2;
-    width: ${calculateMinSizeBasedOnFigmaWidth(98)};
+    width: ${calculateMinSizeBasedOnFigma(98)};
   }
 `
 
 const StyledProjectInfoTitle = styled.h3`
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
+  font-size: ${calculateMinSizeBasedOnFigma(16)};
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
 `
 
@@ -167,21 +165,21 @@ const StyledProjectInfoContainer = styled.div`
 `
 
 const StyledStyledProjectInfoText = styled.p`
-  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(12)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(12)};
   text-align: justify;
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
+  font-size: ${calculateMinSizeBasedOnFigma(16)};
 `
 
 const StyledStyledProjectInfoTextStory = styled(StyledStyledProjectInfoText)`
-  height: ${calculateVhBasedOnFigma(72)};
+  height: ${calculateMinSizeBasedOnFigma(72)};
 `
 
 const StyledStyledProjectInfoTextOverview = styled(StyledStyledProjectInfoText)`
-  height: ${calculateVhBasedOnFigma(180)};
+  height: ${calculateMinSizeBasedOnFigma(180)};
 `
 
 const StyledPartyContainer = styled.div`
   display: flex;
   position: relative;
-  gap: 0 ${calculateMinSizeBasedOnFigmaWidth(6)};
+  gap: 0 ${calculateMinSizeBasedOnFigma(6)};
 `

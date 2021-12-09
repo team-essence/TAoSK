@@ -32,14 +32,19 @@ export const ProjectMyStatuses: FC<Props> = ({
         <StyledStatusName>技術力</StyledStatusName>
       </StyledProjectMyStatusContainer>
 
+      <StyledProjectMyStatusContainer statusType="solution">
+        <StyledStatusRank>{status.toRank(solution)}</StyledStatusRank>
+        <StyledStatusName>解決力</StyledStatusName>
+      </StyledProjectMyStatusContainer>
+
       <StyledProjectMyStatusContainer statusType="achievement">
         <StyledStatusRank>{status.toRank(achievement)}</StyledStatusRank>
         <StyledStatusName>達成力</StyledStatusName>
       </StyledProjectMyStatusContainer>
 
-      <StyledProjectMyStatusContainer statusType="solution">
-        <StyledStatusRank>{status.toRank(solution)}</StyledStatusRank>
-        <StyledStatusName>解決力</StyledStatusName>
+      <StyledProjectMyStatusContainer statusType="plan">
+        <StyledStatusRank>{status.toRank(plan)}</StyledStatusRank>
+        <StyledStatusName>設計力</StyledStatusName>
       </StyledProjectMyStatusContainer>
 
       <StyledProjectMyStatusContainer statusType="motivation">
@@ -50,11 +55,6 @@ export const ProjectMyStatuses: FC<Props> = ({
       <StyledProjectMyStatusContainer statusType="design">
         <StyledStatusRank>{status.toRank(design)}</StyledStatusRank>
         <StyledStatusDesignName>デザイン</StyledStatusDesignName>
-      </StyledProjectMyStatusContainer>
-
-      <StyledProjectMyStatusContainer statusType="plan">
-        <StyledStatusRank>{status.toRank(plan)}</StyledStatusRank>
-        <StyledStatusName>設計力</StyledStatusName>
       </StyledProjectMyStatusContainer>
     </StyledProjectMyStatusesContainer>
   )

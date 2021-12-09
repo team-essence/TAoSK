@@ -7,11 +7,16 @@ export class NewLogInput {
   @Field()
   @IsString()
   @MaxLength(255)
-  comment: string;
+  context: string;
 
   //ユーザID
   @IsNotEmpty()
   @IsString()
   @Field()
   user_id: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  project_id: string;
 }

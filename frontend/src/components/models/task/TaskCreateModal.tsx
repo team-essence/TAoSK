@@ -13,12 +13,9 @@ import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
+import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { strokeTextShadow } from 'utils/strokeTextShadow'
-import {
-  calculateMinSizeBasedOnFigmaWidth,
-  calculateMinSizeBasedOnFigmaHeight,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
 
 type Props = {
@@ -26,6 +23,7 @@ type Props = {
   setShouldShow: Dispatch<SetStateAction<boolean>>
   className?: string
   verticalSort: number
+  list_id: string
 }
 
 export const TaskCreateModal: FC<Props> = ({
@@ -33,10 +31,12 @@ export const TaskCreateModal: FC<Props> = ({
   setShouldShow,
   className,
   verticalSort,
+  list_id,
 }) => {
   const { handleAddTask, isDisabled, register, errors, setStatus, setUserDatas } =
     useTaskCreateForm({
       verticalSort,
+      list_id,
     })
 
   return (
@@ -68,8 +68,8 @@ export const TaskCreateModal: FC<Props> = ({
           </StyledLeftColumn>
           <StyledBorder />
           <StyledRightColumn>
-            <CalenderField label="期限" registration={register('date')} required={false} />
-            <SearchMemberField setUserDatas={setUserDatas} />
+            <StyledCalenderField label="期限" registration={register('date')} required={false} />
+            <StyledSearchMemberField setUserDatas={setUserDatas} />
 
             <StyledStatusWrapper className={className}>
               <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
@@ -82,19 +82,19 @@ export const TaskCreateModal: FC<Props> = ({
             </StyledStatusWrapper>
           </StyledRightColumn>
         </StyledInputsWrapper>
-        <StyledTaskCreateButton onClick={handleAddTask} disabled={isDisabled}>
-          <StyledTaskCreateText>作成</StyledTaskCreateText>
-        </StyledTaskCreateButton>
+        <StyledTaskCreateButton text="作成" onClick={handleAddTask} disabled={isDisabled} />
       </StyledFormWrapper>
     </StyledModal>
   )
 }
 
+const padding = `${calculateMinSizeBasedOnFigma(46)} ${calculateMinSizeBasedOnFigma(26)}
+${calculateMinSizeBasedOnFigma(24)}` // ts-styled-pluginエラーを避けるため
 const StyledModal = styled(Modal)`
   box-sizing: border-box;
-  width: ${calculateMinSizeBasedOnFigmaWidth(790)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(709)};
-  padding: ${calculateMinSizeBasedOnFigmaHeight(46)} ${calculateMinSizeBasedOnFigmaWidth(26)};
+  width: ${calculateMinSizeBasedOnFigma(790)};
+  height: ${calculateMinSizeBasedOnFigma(709)};
+  padding: ${padding};
 `
 const StyledFormWrapper = styled.div`
   display: flex;
@@ -106,8 +106,9 @@ const StyledFormWrapper = styled.div`
 const StyledInputsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-grow: 1;
   width: 100%;
-  height: 100%;
+  height: ${calculateMinSizeBasedOnFigma(541)};
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -115,12 +116,12 @@ const StyledBorder = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
 const StyledLeftColumn = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+  width: ${calculateMinSizeBasedOnFigma(434)};
 `
 const StyledRightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  width: ${calculateMinSizeBasedOnFigma(270)};
   height: 100%;
 `
 const fieldStyle = (
@@ -148,20 +149,24 @@ const fieldStyle = (
 const StyledInputField = styled(InputField)`
   ${fieldStyle(css`
     width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+    height: ${calculateMinSizeBasedOnFigma(40)};
   `)}
 `
 const StyledOverviewField = styled(TextAreaField)`
   ${fieldStyle(css`
     width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(180)};
+    height: ${calculateMinSizeBasedOnFigma(180)};
   `)}
 `
+const StyledCalenderField = styled(CalenderField)`
+  margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
+`
+const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
 const StyledStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  gap: ${calculateMinSizeBasedOnFigma(8)};
 `
 const StyledStatusTitle = styled.p`
   ${({ theme }) => css`
@@ -170,34 +175,6 @@ const StyledStatusTitle = styled.p`
     font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
   `}
 `
-const StyledTaskCreateButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  width: ${calculateMinSizeBasedOnFigmaWidth(160)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  background-image: url('/svg/gold-button.svg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  ${({ theme }) => css`
-    filter: drop-shadow(
-        0 ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(4)}
-          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
-      )
-      drop-shadow(
-        0 ${calculateMinSizeBasedOnFigmaWidth(1.5)} ${calculateMinSizeBasedOnFigmaWidth(1)}
-          ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)}
-      );
-  `}
-`
-const StyledTaskCreateText = styled.p`
-  height: ${calculateMinSizeBasedOnFigmaWidth(30)};
-  text-align: center;
-  ${({ theme }) => css`
-    ${strokeTextShadow('1.2px', theme.COLORS.MONDO)}
-    color: ${theme.COLORS.WHITE};
-    font-size: ${theme.FONT_SIZES.SIZE_20};
-    font-weight: ${theme.FONT_WEIGHTS.BOLD};
-  `}
+const StyledTaskCreateButton = styled(ModalButton)`
+  margin: ${calculateMinSizeBasedOnFigma(31)} auto 0;
 `

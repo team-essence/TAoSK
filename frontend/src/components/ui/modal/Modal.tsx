@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent, ReactNode } from 'react'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
@@ -14,14 +14,20 @@ type Props = {
   children: ReactNode
 }
 
-export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
+export const Modal: FC<Props> = ({
+  title = 'タスク作成',
+  shouldShow,
+  onClickCloseBtn,
+  className,
+  children,
+}) => {
   return (
     <>
       <StyledWrapper className={className} shouldShow={shouldShow}>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
-        {title ? <StyledNamePlate>タスク作成</StyledNamePlate> : <></>}
+        <StyledNamePlate>{title}</StyledNamePlate>
         {children}
         <StyledBackgroundDragonSymbol />
       </StyledWrapper>
@@ -46,7 +52,7 @@ const StyledWrapper = styled.div<{ shouldShow: boolean }>`
 const StyledNamePlate = styled.p`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigmaWidth(-55 / 2)};
+  top: ${calculateMinSizeBasedOnFigma(-55 / 2)};
   left: 50%;
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
@@ -54,8 +60,8 @@ const StyledNamePlate = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(468)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(55)};
+  width: ${calculateMinSizeBasedOnFigma(468)};
+  height: ${calculateMinSizeBasedOnFigma(55)};
   background-image: url('/svg/nameplate.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -72,8 +78,8 @@ const StyledBackgroundDragonSymbol = styled.div`
   bottom: 0;
   left: 0;
   margin: auto;
-  width: ${calculateMinSizeBasedOnFigmaWidth(600)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(377)};
+  width: ${calculateMinSizeBasedOnFigma(600)};
+  height: ${calculateMinSizeBasedOnFigma(377)};
   background-image: url('/svg/dragon-symbol.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
@@ -84,10 +90,10 @@ const StyledCloseButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: ${calculateMinSizeBasedOnFigmaWidth(-40 / 2)};
-  right: ${calculateMinSizeBasedOnFigmaWidth(27)};
-  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  top: ${calculateMinSizeBasedOnFigma(-40 / 2)};
+  right: ${calculateMinSizeBasedOnFigma(27)};
+  width: ${calculateMinSizeBasedOnFigma(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
   border: solid 4px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.8)};
   border-radius: 100%;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
@@ -95,16 +101,16 @@ const StyledCloseButton = styled.button`
 const StyledCrossIcon = styled(CrossIcon)`
   height: 100%;
   svg {
-    width: ${calculateMinSizeBasedOnFigmaWidth(20)};
-    height: ${calculateMinSizeBasedOnFigmaWidth(20)};
+    width: ${calculateMinSizeBasedOnFigma(20)};
+    height: ${calculateMinSizeBasedOnFigma(20)};
   }
 `
 const StyledOverlay = styled.div<{ shouldShow: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   ${({ theme, shouldShow }) => css`
     z-index: ${theme.Z_INDEX.OVERLAY};
     display: ${shouldShow ? 'block' : 'none'};

@@ -42,8 +42,7 @@ export const useTextItems = (maxTextLength: number, maxItems: number): UseTextIt
   }
   const onClickAddButton = () => {
     if (isDisabled) return
-    items.push(value)
-    setItems(items.slice())
+    setItems([...items, value])
     setValue('')
   }
   const onKeyPress: KeyboardEventHandler<HTMLInputElement> = e => {

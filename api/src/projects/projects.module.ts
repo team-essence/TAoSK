@@ -22,6 +22,7 @@ import { ListSort } from 'src/list-sorts/list-sort';
     TypeOrmModule.forFeature([GameLog]),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Monster]),
+    TypeOrmModule.forFeature([GameLog]),
   ],
   providers: [ProjectsResolver, ProjectsService],
 })

@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom'
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
 import type { UserDatas } from 'types/userDatas'
 import toast from 'utils/toast/toast'
-import { useAddTaskMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
+import { useAuthContext } from 'providers/AuthProvider'
 
 type StatusCounts = Record<
   'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan',
@@ -22,7 +23,10 @@ type UseTaskCreateFormReturn<T> = {
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
 }
 
-type UseTaskCreateForm<T> = (args: { verticalSort: number }) => UseTaskCreateFormReturn<T>
+type UseTaskCreateForm<T> = (args: {
+  verticalSort: number
+  list_id: string
+}) => UseTaskCreateFormReturn<T>
 
 /**
  * タスク追加処理の初期設定を行う
@@ -35,7 +39,7 @@ type UseTaskCreateForm<T> = (args: { verticalSort: number }) => UseTaskCreateFor
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort }) => {
+export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort, list_id }) => {
   const { id: projectId } = useParams()
   const {
     register,
@@ -45,6 +49,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
     setValue,
     watch,
   } = useForm<FormInputs>({ mode: 'onChange' })
+  const { currentUser } = useAuthContext()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
@@ -84,6 +89,8 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
   }, [watchAllFields, errors])
 
   const handleAddTask = useCallback(() => {
+    if (!currentUser) return
+
     const { title, overview, date } = getValues()
     const { technology, achievement, solution, motivation, design, plan } = status
     addTask({
@@ -100,8 +107,9 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
           vertical_sort: verticalSort,
           end_date: date,
           project_id: String(projectId),
-          list_id: '1',
+          list_id: list_id,
           completed_flg: false,
+          user_id: currentUser.uid,
         },
       },
     })

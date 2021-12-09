@@ -13,6 +13,8 @@ import { ListSort } from 'src/list-sorts/list-sort';
 import { UpdateListInput } from './dto/updateList.input';
 import { RemoveListInput } from './dto/removeList.input';
 import { Task } from 'src/tasks/task';
+import { User } from 'src/users/user';
+import { GameLog } from 'src/game-logs/game-log';
 
 @Injectable()
 export class ListsService {
@@ -25,10 +27,15 @@ export class ListsService {
     private listSortRepository: Repository<ListSort>,
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(GameLog)
+    private gameLogRepository: Repository<GameLog>,
   ) {}
 
   async create(newList: NewListInput): Promise<List> {
     const project = await this.projectRepository.findOne(newList.project_id);
+    if (!project) throw new NotFoundException();
 
     const list = this.listRepository.create({
       list_id: uuidv4().slice(0, 8),
@@ -46,6 +53,19 @@ export class ListsService {
     await this.listSortRepository.save(newListSort).catch((err) => {
       throw err;
     });
+
+    const user = await this.userRepository.findOne(newList.user_id);
+    if (!user) throw new NotFoundException();
+
+    const log = this.gameLogRepository.create({
+      context: 'リスト',
+      user,
+      project,
+    });
+    await this.gameLogRepository.save(log).catch((err) => {
+      throw err;
+    });
+
     return await this.listRepository.findOne(list.id, {
       relations: [
         'listSorts',

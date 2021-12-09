@@ -3,12 +3,13 @@ import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
-import { NotificationPopup } from '../popup/NotificationPopup'
+import { UserAccountSettingModal } from 'components/models/user/UserAccountSettingModal'
+import { NotificationPopup } from 'components/ui/popup/NotificationPopup'
 import { useHover } from 'hooks/useHover'
-import { UserMenuPopup } from '../popup/UserMenuPopup'
+import { UserMenuPopup } from 'components/ui/popup/UserMenuPopup'
 import { Notifications } from 'types/notification'
-import { UserMenuHeader } from './UserMenuHeader'
-import { NotificationHeader } from './NotificationHeader'
+import { UserMenuHeader } from 'components/ui/header/UserMenuHeader'
+import { NotificationHeader } from 'components/ui/header/NotificationHeader'
 
 type Props = {
   className?: string
@@ -27,6 +28,7 @@ export const ProjectListHeader: FC<Props> = ({
   totalExp,
   notifications,
 }) => {
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const [isNotificationHover, notificationEventHoverHandlers] = useHover()
   const [isClickNotification, setIsClickNotification] = useState(false)
   const [isUserMenuHover, userMenuEventHoverHandlers] = useHover()
@@ -68,51 +70,54 @@ export const ProjectListHeader: FC<Props> = ({
   }
 
   return (
-    <StyledHeaderWrapper className={className}>
-      <StyledLogoWrapper>
-        <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
-      </StyledLogoWrapper>
+    <>
+      <StyledHeaderWrapper className={className}>
+        <StyledLogoWrapper>
+          <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
+        </StyledLogoWrapper>
 
-      <NotificationHeader
-        handlers={notificationEventHoverHandlers}
-        onClick={event => handleNotificationPopup(event, isClickNotification)}
-        isNotification={!!notifications.length}
-      />
-
-      <UserMenuHeader
-        handlers={userMenuEventHoverHandlers}
-        iconImage={iconImage}
-        onClick={event => handleUserMenuPopup(event, isClickUserMenu)}
-      />
-
-      <StyledPopupContainer onClick={event => event.stopPropagation()}>
-        <StyledNotificationPopup
-          isHover={!!isNotificationHover}
-          isClick={isClickNotification}
-          closeClick={() => setIsClickNotification(false)}
-          notifications={notifications}
+        <NotificationHeader
+          handlers={notificationEventHoverHandlers}
+          onClick={event => handleNotificationPopup(event, isClickNotification)}
+          isNotification={!!notifications.length}
         />
-      </StyledPopupContainer>
 
-      <StyledPopupContainer onClick={event => event.stopPropagation()}>
-        <StyledUserMenuPopup
-          isHover={!!isUserMenuHover}
-          isClick={isClickUserMenu}
-          closeClick={() => setIsClickUserMenu(false)}
+        <UserMenuHeader
+          handlers={userMenuEventHoverHandlers}
           iconImage={iconImage}
-          name={name}
-          uid={uid}
-          totalExp={totalExp}
+          onClick={event => handleUserMenuPopup(event, isClickUserMenu)}
         />
-      </StyledPopupContainer>
-    </StyledHeaderWrapper>
+
+        <StyledPopupContainer onClick={event => event.stopPropagation()}>
+          <StyledNotificationPopup
+            isHover={!!isNotificationHover}
+            isClick={isClickNotification}
+            closeClick={() => setIsClickNotification(false)}
+            notifications={notifications}
+          />
+        </StyledPopupContainer>
+
+        <StyledPopupContainer onClick={event => event.stopPropagation()}>
+          <StyledUserMenuPopup
+            isHover={!!isUserMenuHover}
+            isClick={isClickUserMenu}
+            closeClick={() => setIsClickUserMenu(false)}
+            iconImage={iconImage}
+            name={name}
+            uid={uid}
+            totalExp={totalExp}
+            setShouldShowModal={setShouldShowModal}
+          />
+        </StyledPopupContainer>
+      </StyledHeaderWrapper>
+      <UserAccountSettingModal shouldShow={shouldShowModal} setShouldShow={setShouldShowModal} />
+    </>
   )
 }
 
 const StyledHeaderWrapper = styled.div`
-  position: relative;
-  z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   position: fixed;
+  z-index: ${({ theme }) => theme.Z_INDEX.HEADER};
   display: flex;
   justify-content: space-between;
   align-items: center;

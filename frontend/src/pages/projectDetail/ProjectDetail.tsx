@@ -4,7 +4,7 @@ import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
-import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
+import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useGetProjectLazyQuery,
   useUpdateOnlineFlagMutation,
@@ -35,6 +35,7 @@ export const ProjectDetail: FC = () => {
   const { currentUser } = useAuthContext()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
+  const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -44,6 +45,7 @@ export const ProjectDetail: FC = () => {
 
       data.getProjectById.gameLogs.map(gameLog => {
         const time = new Date(gameLog.created_at)
+        logger.debug(gameLog)
         const init = {
           context: gameLog.context,
           userName: gameLog.user.name,
@@ -54,6 +56,19 @@ export const ProjectDetail: FC = () => {
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
         const tasks = list.tasks.map(task => {
+          setMonsterHPRemaining(monsterHPRemaining => {
+            if (task.completed_flg) return monsterHPRemaining
+
+            return (
+              monsterHPRemaining +
+              task.technology +
+              task.achievement +
+              task.solution +
+              task.motivation +
+              task.plan +
+              task.design
+            )
+          })
           const allocations = task.allocations.map(allocation => {
             return {
               id: allocation.user.id,
@@ -93,6 +108,9 @@ export const ProjectDetail: FC = () => {
 
       logger.debug(sortList)
       setList(sortList)
+    },
+    onError(err) {
+      logger.debug(err)
     },
   })
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
@@ -209,11 +227,12 @@ export const ProjectDetail: FC = () => {
   const [logs, setLogs] = useState<GameLogType[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
-  const handleBeforeUnloadEvent = async (userId: string) => {
+  const handleBeforeUnloadEvent = async (userId: string, projectId: string) => {
     logger.debug('でる')
     await updateOnlineFlag({
       variables: {
         id: userId,
+        project_id: projectId,
         isOnline: false,
       },
     })
@@ -236,6 +255,7 @@ export const ProjectDetail: FC = () => {
       await updateOnlineFlag({
         variables: {
           id: currentUser.uid,
+          project_id: String(id),
           isOnline: true,
         },
       })
@@ -251,12 +271,16 @@ export const ProjectDetail: FC = () => {
   }, [currentUser, id])
 
   useEffect(() => {
-    if (!currentUser) return
+    if (!currentUser || !id) return
     logger.debug('入る')
-    window.addEventListener('beforeunload', () => handleBeforeUnloadEvent(currentUser.uid))
+    window.addEventListener('beforeunload', () =>
+      handleBeforeUnloadEvent(currentUser.uid, String(id)),
+    )
     return () =>
-      window.removeEventListener('beforeunload', () => handleBeforeUnloadEvent(currentUser.uid))
-  }, [currentUser])
+      window.removeEventListener('beforeunload', () =>
+        handleBeforeUnloadEvent(currentUser.uid, String(id)),
+      )
+  }, [currentUser, id])
 
   useEffect(() => {
     searchSameCompanyUsers({
@@ -380,6 +404,7 @@ export const ProjectDetail: FC = () => {
         updateTasks: {
           tasks: joinUpdateTasks,
           project_id: String(id),
+          user_id: currentUser!.uid,
         },
       },
     })
@@ -399,9 +424,12 @@ export const ProjectDetail: FC = () => {
   const handleCreateList = async () => {
     await createList({
       variables: {
-        name: 'ほげ',
-        project_id: String(id),
-        task_list: 1,
+        newList: {
+          name: 'ほげ',
+          project_id: String(id),
+          task_list: 1,
+          user_id: currentUser!.uid,
+        },
       },
     })
   }
@@ -411,11 +439,11 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <ProjectDetailHeader
-        iconImage={currentUserData.data!.user.icon_image}
-        name={currentUserData.data!.user.name}
-        uid={currentUserData.data!.user.id}
-        totalExp={currentUserData.data!.user.exp}
-        company={currentUserData.data!.user.company}
+        iconImage={String(currentUserData.data?.user.icon_image)}
+        name={String(currentUserData.data?.user.name)}
+        uid={String(currentUserData.data?.user.id)}
+        totalExp={Number(currentUserData.data?.user.exp)}
+        company={String(currentUserData.data?.user.company)}
         notifications={notifications}
         list={list}
       />
@@ -439,6 +467,7 @@ export const ProjectDetail: FC = () => {
         <ProjectDetailRightContainer>
           <ProjectRight
             onClick={handleCreateList}
+            monsterHPRemaining={monsterHPRemaining}
             monsterHp={projectData.data.getProjectById.hp}
             monsterName={projectData.data.getProjectById.monster.name}
             gameLogs={logs}
@@ -467,6 +496,12 @@ const ProjectDetailLeftContainer = styled.div`
   grid-row: 1 / 2;
   grid-column: 1 / 2;
   overflow-x: auto;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   white-space: nowrap;
 `
 
@@ -474,10 +509,6 @@ const ProjectDetailRightContainer = styled.div`
   height: 100%;
   grid-row: 1 / 2;
   grid-column: 2 / 3;
-`
-
-const StyledTaskListContainer = styled.div`
-  display: flex;
 `
 
 const StyledBackground = styled.div`

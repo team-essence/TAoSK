@@ -7,7 +7,7 @@ import { useAuthContext } from 'providers/AuthProvider'
 import {
   useCreateInvitationMutation,
   useSearchUsersLazyQuery,
-} from 'pages/projectList/projectDetail/projectDetail.gen'
+} from 'pages/projectDetail/projectDetail.gen'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import logger from 'utils/debugger/logger'
 import { useParams } from 'react-router'

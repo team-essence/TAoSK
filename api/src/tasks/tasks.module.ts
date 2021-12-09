@@ -8,6 +8,7 @@ import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
 import { User } from 'src/users/user';
 import { Allocation } from 'src/allocations/allocation';
+import { GameLog } from 'src/game-logs/game-log';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Task]),
@@ -16,6 +17,7 @@ import { Allocation } from 'src/allocations/allocation';
     TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Allocation]),
+    TypeOrmModule.forFeature([GameLog]),
   ],
   providers: [TasksResolver, TasksService],
 })

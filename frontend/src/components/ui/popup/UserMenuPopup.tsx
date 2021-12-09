@@ -1,10 +1,10 @@
-import React, { FC } from 'react'
-import styled, { css } from 'styled-components'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
+import React, { FC, useState, SetStateAction, Dispatch } from 'react'
 import { Link } from 'react-router-dom'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useTrySignOut } from 'hooks/useTrySignOut'
+import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import Exp from 'utils/exp/exp'
+import styled from 'styled-components'
 
 type Props = {
   className?: string
@@ -15,6 +15,7 @@ type Props = {
   uid: string
   iconImage: string
   totalExp: number
+  setShouldShowModal: Dispatch<SetStateAction<boolean>>
 }
 
 export const UserMenuPopup: FC<Props> = ({
@@ -26,6 +27,7 @@ export const UserMenuPopup: FC<Props> = ({
   uid,
   iconImage,
   totalExp,
+  setShouldShowModal,
 }) => {
   const trySignOut = useTrySignOut()
 
@@ -57,10 +59,9 @@ export const UserMenuPopup: FC<Props> = ({
 
       <StyledAccountRelationshipContainer>
         <p>
-          <Link to={'/mypage/' + uid}>マイページ</Link>
+          <Link to={`/mypage/${uid}`}>マイページ</Link>
         </p>
-        {/* TODO: モーダルがきたらonClickを追加 */}
-        <button>アカウント設定</button>
+        <button onClick={() => setShouldShowModal(true)}>アカウント設定</button>
       </StyledAccountRelationshipContainer>
 
       <StyledLSignOutContainer>
@@ -80,11 +81,9 @@ const StyledUserInfoContainer = styled.div`
   align-items: center;
   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(6)};
 `
-
 const StyledUserIconImageContainer = styled.div`
   width: ${calculateMinSizeBasedOnFigmaWidth(40)};
   height: ${calculateMinSizeBasedOnFigmaWidth(40)};
-
   img {
     width: ${calculateMinSizeBasedOnFigmaWidth(40)};
     height: ${calculateMinSizeBasedOnFigmaWidth(40)};
@@ -94,15 +93,12 @@ const StyledUserIconImageContainer = styled.div`
     border: solid 1px ${({ theme }) => theme.COLORS.BRANDY};
   }
 `
-
 const StyledUserInfo = styled.div``
-
 const StyledUserNameContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
-
 const StyledUserName = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
@@ -113,7 +109,6 @@ const StyledUserName = styled.p`
   text-overflow: ellipsis;
   white-space: nowrap;
 `
-
 const StyledLevelContainer = styled.div`
   width: ${calculateMinSizeBasedOnFigmaWidth(45)};
   height: ${calculateMinSizeBasedOnFigmaWidth(18)};
@@ -123,13 +118,11 @@ const StyledLevelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   p {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
     color: ${({ theme }) => theme.COLORS.WHITE};
   }
 `
-
 const StyledUserUid = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
@@ -139,26 +132,25 @@ const StyledUserUid = styled.p`
   text-overflow: ellipsis;
   white-space: nowrap;
 `
-
 const StyledAccountRelationshipContainer = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(24)};
   border-bottom: solid ${calculateMinSizeBasedOnFigmaWidth(1)} ${({ theme }) => theme.COLORS.SILVER};
   display: flex;
   flex-direction: column;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
-
   p {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
     color: ${({ theme }) => theme.COLORS.FONT.BLACK};
     cursor: pointer;
-
+    &:hover {
+      opacity: 0.6;
+    }
     a {
       display: block;
       width: 100%;
     }
   }
-
   button {
     display: block;
     width: 100%;
@@ -166,17 +158,21 @@ const StyledAccountRelationshipContainer = styled.div`
     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
     color: ${({ theme }) => theme.COLORS.FONT.BLACK};
     text-align: left;
+    &:hover {
+      opacity: 0.6;
+    }
   }
 `
-
 const StyledLSignOutContainer = styled.div`
   padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(24)};
-
   button {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
     color: ${({ theme }) => theme.COLORS.FONT.BLACK};
     width: 100%;
     text-align: left;
+    &:hover {
+      opacity: 0.6;
+    }
   }
 `

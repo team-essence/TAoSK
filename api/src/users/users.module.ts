@@ -8,6 +8,7 @@ import { Certification } from 'src/certifications/certification';
 import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
 import { GameLog } from 'src/game-logs/game-log';
+import { Project } from 'src/projects/project';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -15,6 +16,7 @@ import { GameLog } from 'src/game-logs/game-log';
     TypeOrmModule.forFeature([Certification]),
     TypeOrmModule.forFeature([Group]),
     TypeOrmModule.forFeature([Invitation]),
+    TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([GameLog]),
   ],
   providers: [UsersResolver, UsersService],
