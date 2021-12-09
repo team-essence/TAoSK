@@ -1,47 +1,23 @@
 import React, { FC, MouseEvent } from 'react'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { theme } from 'styles/theme'
 
 type Props = {
   className?: string
-  width?: string
-  height?: string
-  border?: string
-  borderRadius?: string
-  bgColor?: string
-  fontColor?: string
   text: string
-  onClick?: (v: MouseEvent) => void
+  onClick?: (e: MouseEvent) => void
 }
 
-export const SimpleRoundedButton: FC<Props> = ({ className, text, ...WrapperStyles }) => {
+export const SimpleRoundedButton: FC<Props> = ({ className, text, onClick }) => {
   return (
-    <StyledButton className={className} {...WrapperStyles}>
+    <StyledButton className={className} onClick={onClick}>
       {text}
     </StyledButton>
   )
 }
 
-type StyledButtonProps = Omit<Props, 'text'>
-
-const StyledButton = styled.button<StyledButtonProps>`
+const StyledButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
-  border: ${({ border }) => border};
-  border-radius: ${({ borderRadius }) => borderRadius};
-  background-color: ${({ bgColor }) => bgColor};
-  color: ${({ fontColor }) => fontColor};
   text-align: center;
 `
-StyledButton.defaultProps = {
-  width: calculateMinSizeBasedOnFigmaWidth(120),
-  height: calculateMinSizeBasedOnFigmaWidth(40),
-  border: 'none',
-  borderRadius: '2px',
-  bgColor: theme.COLORS.DODGER_BLUE,
-  fontColor: theme.COLORS.WHITE,
-}
