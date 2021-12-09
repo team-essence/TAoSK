@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
 import { User } from 'src/users/user';
@@ -21,12 +22,19 @@ export class TasksService {
     private listRepository: Repository<List>,
     @InjectRepository(Project)
     private projectRepository: Repository<Project>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(GameLog)
+    private gameLogRepository: Repository<GameLog>,
   ) {}
 
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<Task[]> {
     for (let index = 0; index < updateTask.tasks.length; index++) {
       const task = await this.taskRepository.findOne(
         updateTask.tasks[index].id,
+        {
+          relations: ['allocations', 'allocations.user'],
+        },
       );
       if (!task) throw new NotFoundException();
 
@@ -37,6 +45,60 @@ export class TasksService {
 
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
+
+      if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
+        task.completed_flg = updateTask.tasks[index].completed_flg;
+
+        const project = await this.projectRepository.findOne(
+          updateTask.project_id,
+        );
+        if (!project) throw new NotFoundException();
+
+        const totalDamage =
+          task.technology +
+          task.achievement +
+          task.solution +
+          task.motivation +
+          task.design +
+          task.plan;
+
+        // 経験値付与
+        task.allocations.map(async (allocation) => {
+          const user = await this.userRepository.findOne(allocation.user.id);
+
+          const beforeLevel = (user.exp / 100) | 0;
+          const sumExp = user.exp + totalDamage;
+          const afterLevel = (sumExp / 100) | 0;
+
+          if (afterLevel > beforeLevel) {
+            const log = this.gameLogRepository.create({
+              context: 'レベル',
+              user,
+              project,
+            });
+            this.gameLogRepository.save(log).catch((err) => {
+              throw err;
+            });
+          }
+
+          user.exp = sumExp;
+          await this.userRepository.save(user).catch((err) => {
+            throw err;
+          });
+        });
+
+        // ログ
+        const logUser = await this.userRepository.findOne(updateTask.user_id);
+        if (!logUser) throw new NotFoundException();
+        const log = this.gameLogRepository.create({
+          context: `${totalDamage}のダメージ`,
+          user: logUser,
+          project,
+        });
+        this.gameLogRepository.save(log).catch((err) => {
+          throw err;
+        });
+      }
 
       await this.taskRepository.save(task).catch((err) => {
         new InternalServerErrorException();
@@ -56,11 +118,36 @@ export class TasksService {
   }
 
   async addTask(newTask: NewTaskInput): Promise<Task> {
+    const tasks = await this.taskRepository.find({
+      where: {
+        project: {
+          id: newTask.project_id,
+        },
+      },
+    });
+
     const project = await this.projectRepository.findOne(newTask.project_id);
     if (!project) throw new NotFoundException();
 
-    const list = await this.listRepository.findOne(newTask.list_id);
+    const list = await this.listRepository.findOne({
+      where: {
+        list_id: newTask.list_id,
+      },
+    });
     if (!list) throw new NotFoundException();
+
+    const addMonsterHP =
+      newTask.technology +
+      newTask.achievement +
+      newTask.solution +
+      newTask.motivation +
+      newTask.plan +
+      newTask.design;
+
+    project.hp += addMonsterHP;
+    await this.projectRepository.save(project).catch((err) => {
+      throw err;
+    });
 
     const task = this.taskRepository.create({
       title: newTask.title,
@@ -77,6 +164,29 @@ export class TasksService {
       project,
       list,
     });
+
+    const user = await this.userRepository.findOne(newTask.user_id);
+    if (!user) throw new NotFoundException();
+
+    if (!!tasks.length) {
+      const log = this.gameLogRepository.create({
+        context: 'タスク',
+        user,
+        project,
+      });
+      await this.gameLogRepository.save(log).catch((err) => {
+        throw err;
+      });
+    } else {
+      const log = this.gameLogRepository.create({
+        context: 'モンスター',
+        user,
+        project,
+      });
+      await this.gameLogRepository.save(log).catch((err) => {
+        throw err;
+      });
+    }
 
     await this.taskRepository.save(task).catch((err) => {
       throw err;

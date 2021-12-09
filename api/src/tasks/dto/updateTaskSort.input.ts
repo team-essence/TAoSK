@@ -9,6 +9,10 @@ export class UpdateTaskSort {
   @Field()
   @IsString()
   project_id: string;
+
+  @IsString()
+  @Field()
+  user_id: string;
 }
 
 @InputType()

@@ -13,6 +13,8 @@ import { Interest } from 'src/interests/interest';
 import { Certification } from 'src/certifications/certification';
 import { SearchUserInput } from './dto/searchUser.input';
 import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
+import { Project } from 'src/projects/project';
+import { GameLog } from 'src/game-logs/game-log';
 
 @Injectable()
 export class UsersService {
@@ -23,6 +25,10 @@ export class UsersService {
     private interestRepository: Repository<Interest>,
     @InjectRepository(Certification)
     private certificationRepository: Repository<Certification>,
+    @InjectRepository(Project)
+    private projectRepository: Repository<Project>,
+    @InjectRepository(GameLog)
+    private gameLogRepository: Repository<GameLog>,
   ) {}
 
   getAllUsers(): Promise<User[]> {
@@ -159,7 +165,7 @@ export class UsersService {
     return projectDetailSearchSameUsers;
   }
 
-  async updateOnlineFlag(id: string, isOnline: boolean) {
+  async updateOnlineFlag(id: string, project_id: string, isOnline: boolean) {
     const user = await this.usersRepository.findOne(id);
 
     if (!user) throw new NotFoundException();
@@ -167,6 +173,18 @@ export class UsersService {
     user.online_flg = isOnline;
     await this.usersRepository.save(user).catch((err) => {
       new InternalServerErrorException();
+    });
+
+    const project = await this.projectRepository.findOne(project_id);
+    if (!project) throw new NotFoundException();
+
+    const log = this.gameLogRepository.create({
+      context: isOnline ? 'オンライン' : 'オフライン',
+      user,
+      project,
+    });
+    await this.gameLogRepository.save(log).catch((err) => {
+      throw err;
     });
 
     return user;

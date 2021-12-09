@@ -124,6 +124,7 @@ export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, li
                         shouldShow={shouldShowModal}
                         setShouldShow={setShouldShowModal}
                         verticalSort={tasks.length}
+                        list_id={list_id}
                       />
                     </>
                   )}

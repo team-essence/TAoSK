@@ -23,6 +23,7 @@ type Props = {
   setShouldShow: Dispatch<SetStateAction<boolean>>
   className?: string
   verticalSort: number
+  list_id: string
 }
 
 export const TaskCreateModal: FC<Props> = ({
@@ -30,10 +31,12 @@ export const TaskCreateModal: FC<Props> = ({
   setShouldShow,
   className,
   verticalSort,
+  list_id,
 }) => {
   const { handleAddTask, isDisabled, register, errors, setStatus, setUserDatas } =
     useTaskCreateForm({
       verticalSort,
+      list_id,
     })
 
   return (

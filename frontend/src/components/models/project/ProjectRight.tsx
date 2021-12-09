@@ -13,6 +13,7 @@ type Props = {
   className?: string
   onClick: () => void
   monsterName: string
+  monsterHPRemaining: number
   monsterHp: number
   gameLogs: GameLogType[]
 }
@@ -21,6 +22,7 @@ export const ProjectRight: FC<Props> = ({
   className,
   onClick,
   monsterName,
+  monsterHPRemaining,
   monsterHp,
   gameLogs,
 }) => {
@@ -30,7 +32,7 @@ export const ProjectRight: FC<Props> = ({
 
       <StyledProjectGameLog gameLogs={gameLogs} />
 
-      <ProjectMonster name={monsterName} hp={monsterHp} />
+      <ProjectMonster hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
     </StyledProjectRightContainer>
   )
 }

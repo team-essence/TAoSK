@@ -16,4 +16,8 @@ export class NewListInput {
   @IsInt()
   @Field()
   task_list: number;
+
+  @IsString()
+  @Field()
+  user_id: string;
 }

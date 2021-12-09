@@ -9,6 +9,10 @@ export class NewTaskInput {
   @MaxLength(255)
   title: string;
 
+  @IsString()
+  @Field()
+  user_id: string;
+
   //概要
   @Field()
   @IsString()
