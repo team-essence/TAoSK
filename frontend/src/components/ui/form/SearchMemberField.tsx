@@ -26,21 +26,12 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas, userData
     selectedUserDatas,
     setSelectedUserDatas,
     value,
-    resetValue,
-  } = useSearchMember()
+  } = useSearchMember(userDatas)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserDatas.length,
   )
 
   useEffect(() => setUserDatas([...selectedUserDatas]), [selectedUserDatas])
-
-  useEffect(() => {
-    // タスク作成後にstateを初期化する
-    if (!userDatas.length && JSON.stringify(userDatas) !== JSON.stringify(selectedUserDatas)) {
-      setSelectedUserDatas(userDatas)
-      resetValue()
-    }
-  }, [userDatas])
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
   // const testAdd = (data: UserDatas[number]) => {

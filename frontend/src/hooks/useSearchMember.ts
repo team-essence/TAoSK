@@ -13,8 +13,10 @@ type UseSearchMemberReturn = {
   candidateUserDatas: UserDatas
   shouldShowResult: boolean
   value: string
-  resetValue: () => void
 }
+
+let cachedSelectedUserDatas: UserDatas = []
+let cachedValue = ''
 
 /**
  * メンバーを検索するために必要な処理の一群
@@ -29,18 +31,39 @@ type UseSearchMemberReturn = {
  * @return {string} returns.value - 検索欄に入力するinputタグのvalue
  * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
-export const useSearchMember = (): UseSearchMemberReturn => {
+export const useSearchMember = (userDatas: UserDatas): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
-  const [value, setValue] = useState<string>('')
+  const [value, setValue] = useState<string>(cachedValue || '')
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
   const [candidateUserDatas, setCandidateUserDatas] = useState<UserDatas>([])
-  const [selectedUserDatas, setSelectedUserDatas] = useState<UserDatas>([])
+  const [selectedUserDatas, setSelectedUserDatas] = useState<UserDatas>(
+    cachedSelectedUserDatas.length ? cachedSelectedUserDatas : [],
+  )
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
-  const resetValue = () => setValue('')
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const onFocus = () => setShouldShowResult(true)
   const onBlur = () => setShouldShowResult(false)
+
+  useEffect(() => {
+    // タスク作成後に選択済のユーザーを初期化する
+    if (!userDatas.length && JSON.stringify(userDatas) !== JSON.stringify(selectedUserDatas)) {
+      setSelectedUserDatas(userDatas)
+      setValue('')
+      cachedValue = ''
+      cachedSelectedUserDatas = []
+    }
+
+    return () => {
+      cachedSelectedUserDatas = selectedUserDatas
+    }
+  }, [userDatas])
+
+  useEffect(() => {
+    return () => {
+      cachedValue = value
+    }
+  }, [value])
 
   useEffect(() => {
     if (!debouncedInputText) {
@@ -76,6 +99,5 @@ export const useSearchMember = (): UseSearchMemberReturn => {
     candidateUserDatas,
     shouldShowResult,
     value,
-    resetValue,
   }
 }
