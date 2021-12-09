@@ -77,6 +77,7 @@ export const TaskCard: FC<Props> = ({
                         <StyledDeadlineImage
                           src={changeDeadlineImage(end_date, listIndex, listLength)}
                           alt="deadline"
+                          loading="lazy"
                         />
                         <StyledDateContainer listIndex={listIndex} listLength={listLength}>
                           <StyledClockImage src="/svg/clock.svg" alt="clock" />
