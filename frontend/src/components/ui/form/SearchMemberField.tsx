@@ -13,9 +13,10 @@ import type { UserDatas } from 'types/userDatas'
 type Props = {
   className?: string
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
+  userDatas: UserDatas
 }
 
-export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
+export const SearchMemberField: FC<Props> = ({ className, setUserDatas, userDatas }) => {
   const {
     onChange,
     onFocus,
@@ -24,12 +25,22 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     candidateUserDatas,
     selectedUserDatas,
     setSelectedUserDatas,
+    value,
+    resetValue,
   } = useSearchMember()
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserDatas.length,
   )
 
   useEffect(() => setUserDatas([...selectedUserDatas]), [selectedUserDatas])
+
+  useEffect(() => {
+    // タスク作成後にstateを初期化する
+    if (!userDatas.length && JSON.stringify(userDatas) !== JSON.stringify(selectedUserDatas)) {
+      setSelectedUserDatas(userDatas)
+      resetValue()
+    }
+  }, [userDatas])
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
   // const testAdd = (data: UserDatas[number]) => {
@@ -49,6 +60,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
         <StyledInput
           type="text"
           placeholder="パーティメンバーを検索"
+          value={value}
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}

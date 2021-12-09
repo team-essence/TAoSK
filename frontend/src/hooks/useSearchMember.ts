@@ -1,18 +1,19 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react'
+import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react'
 import { useDebounce } from 'hooks/useDebounce'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
-import { useInput } from 'hooks/useInput'
 import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import type { UserDatas } from 'types/userDatas'
 
 type UseSearchMemberReturn = {
-  onChange: ReturnType<typeof useInput>['onChange']
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
   onFocus: () => void
   onBlur: () => void
   selectedUserDatas: UserDatas
   setSelectedUserDatas: Dispatch<SetStateAction<UserDatas>>
   candidateUserDatas: UserDatas
   shouldShowResult: boolean
+  value: string
+  resetValue: () => void
 }
 
 /**
@@ -25,15 +26,19 @@ type UseSearchMemberReturn = {
  * @return {Dispatch<SetStateAction<UserDatas>>} returns.setSelectedUserDatas
  * @return {UserDatas} returns.candidateUserDatas - 検索結果のユーザーデータの配列
  * @return {boolean} returns.shouldShowResult - 検索結果を表示するか
+ * @return {string} returns.value - 検索欄に入力するinputタグのvalue
+ * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
 export const useSearchMember = (): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
-  const { value, onChange } = useInput('')
+  const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
   const [candidateUserDatas, setCandidateUserDatas] = useState<UserDatas>([])
   const [selectedUserDatas, setSelectedUserDatas] = useState<UserDatas>([])
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
+  const resetValue = () => setValue('')
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
   const onFocus = () => setShouldShowResult(true)
   const onBlur = () => setShouldShowResult(false)
 
@@ -70,5 +75,7 @@ export const useSearchMember = (): UseSearchMemberReturn => {
     setSelectedUserDatas,
     candidateUserDatas,
     shouldShowResult,
+    value,
+    resetValue,
   }
 }

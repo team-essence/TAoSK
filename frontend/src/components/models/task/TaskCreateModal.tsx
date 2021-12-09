@@ -33,7 +33,7 @@ export const TaskCreateModal: FC<Props> = ({
   verticalSort,
   list_id,
 }) => {
-  const { handleAddTask, isDisabled, register, errors, setStatus, setUserDatas } =
+  const { handleAddTask, isDisabled, register, errors, setStatus, userDatas, setUserDatas } =
     useTaskCreateForm({
       verticalSort,
       list_id,
@@ -70,7 +70,7 @@ export const TaskCreateModal: FC<Props> = ({
           <StyledBorder />
           <StyledRightColumn>
             <StyledCalenderField label="期限" registration={register('date')} required={false} />
-            <StyledSearchMemberField setUserDatas={setUserDatas} />
+            <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
 
             <StyledStatusWrapper className={className}>
               <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>

@@ -20,6 +20,7 @@ type UseTaskCreateFormReturn<T> = {
   isDisabled: boolean
   errors: FieldErrors
   setStatus: Dispatch<SetStateAction<StatusCounts>>
+  userDatas: UserDatas
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
 }
 
@@ -58,25 +59,29 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
-  const [status, setStatus] = useState<StatusCounts>({
+  const initialStatus = {
     technology: 0,
     achievement: 0,
     solution: 0,
     motivation: 0,
     design: 0,
     plan: 0,
-  })
+  }
+  const [status, setStatus] = useState<StatusCounts>(initialStatus)
   const [userDatas, setUserDatas] = useState<UserDatas>([])
   const [addTask] = useAddTaskMutation({
     onCompleted(data) {
       setValue('title', '', { shouldValidate: true })
       setValue('overview', '', { shouldValidate: true })
+      setValue('date', '')
+      setUserDatas([])
+      setStatus(initialStatus)
+
       closeModal()
       toast.success('タスクを作成しました')
     },
     onError(err) {
       toast.error('タスクの作成失敗しました')
-      console.log(err)
     },
   })
 
@@ -135,6 +140,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
     isDisabled,
     errors,
     setStatus,
+    userDatas,
     setUserDatas,
     handleAddTask: handleSubmit(handleAddTask),
   }
