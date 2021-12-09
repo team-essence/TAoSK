@@ -86,7 +86,7 @@ const StyledCoarseButton = styled(CoarseButton)`
   height: ${calculateMinSizeBasedOnFigma(40)};
 
   ${({ theme }) => css`
-    box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
+    box-shadow: 0px 2px 4px 0px ${convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
     color: ${theme.COLORS.BRANDY};
     > div {
       background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};

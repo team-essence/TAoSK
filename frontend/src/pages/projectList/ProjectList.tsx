@@ -145,7 +145,7 @@ const StyledProjectListContainer = styled.div`
   margin-left: ${calculateMinSizeBasedOnFigmaHeight(-10)};
   width: ${calculateMinSizeBasedOnFigmaWidth(437)};
   height: ${calculateMinSizeBasedOnFigmaHeight(786)};
-  background: url('svg/project-list_background.svg');
+  background: url('/svg/project-list_background.svg');
   background-position: cover;
   background-size: cover;
   background-repeat: no-repeat;
@@ -188,7 +188,7 @@ const StyledProjectDetailContainer = styled.div`
   margin-top: ${calculateVhBasedOnFigma(28)};
   width: ${calculateVwBasedOnFigma(977)};
   min-height: ${calculateVhBasedOnFigma(758)};
-  background: url('svg/project-detail_background.svg');
+  background: url('/svg/project-detail_background.svg');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
