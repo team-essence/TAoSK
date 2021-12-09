@@ -21,7 +21,7 @@ export const SearchTaskPopup: FC<Props> = ({ className, searchedTasks }) => {
 
     if (searchedTasks.length) {
       searchedTasks.map(searchedTask => {
-        setIsTask(searchedTask.isTask)
+        searchedTask.isTask && setIsTask(true)
       })
     }
   }, [searchedTasks])
