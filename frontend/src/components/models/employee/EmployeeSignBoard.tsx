@@ -35,6 +35,8 @@ const StyledContainer = styled.div`
   text-orientation: upright;
 `
 const StyledH3 = styled.h3`
+  font-family: 'ZCOOL QingKe HuangYou', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
+    'Hiragino Sans', Meiryo, sans-serif;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_18};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `

@@ -143,6 +143,8 @@ const StyledUserContainer = styled.div`
     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_20};
     color: ${({ theme }) => theme.COLORS.WHITE};
+    display: flex;
+    align-items: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -155,6 +157,8 @@ const StyledLevelContainer = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
   width: fit-content;
   height: ${calculateMinSizeBasedOnFigmaWidth(28)};
+  display: flex;
+  align-items: center;
 
   &::before {
     position: absolute;
