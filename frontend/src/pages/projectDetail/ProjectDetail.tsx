@@ -378,16 +378,18 @@ export const ProjectDetail: FC = () => {
     })
 
     //TODO: 完了にカードが移動したらcompleted_flgをtrueにする処理を書く必要あり
-    const updateTasks = sortListCopy.map(list => {
+    const updateTasks = sortListCopy.map((list, index, { length }) => {
+      logger.debug(length)
       return list.tasks.map((task, taskIndex) => {
         return {
           id: task.id,
           list_id: list.id,
           vertical_sort: taskIndex,
-          completed_flg: false,
+          completed_flg: index === length - 1 ? true : false,
         }
       })
     })
+    // return
 
     const joinUpdateTasks = []
     for (let index = 0; index < updateTasks.length; index++) {
