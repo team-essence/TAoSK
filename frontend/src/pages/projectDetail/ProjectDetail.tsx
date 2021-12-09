@@ -421,7 +421,7 @@ export const ProjectDetail: FC = () => {
     await createList({
       variables: {
         newList: {
-          name: 'ほげ',
+          name: 'リスト名',
           project_id: String(id),
           task_list: 1,
           user_id: currentUser!.uid,
@@ -444,8 +444,8 @@ export const ProjectDetail: FC = () => {
         list={list}
       />
 
-      <ProjectDetailContainer>
-        <ProjectDetailLeftContainer>
+      <StyledProjectDetailContainer>
+        <StyledProjectDetailLeftContainer>
           <ProjectDrawer
             groups={projectData.data?.getProjectById.groups}
             lists={list}
@@ -459,8 +459,8 @@ export const ProjectDetail: FC = () => {
               totalExp={currentUserData.data.user.exp}
             />
           )}
-        </ProjectDetailLeftContainer>
-        <ProjectDetailRightContainer>
+        </StyledProjectDetailLeftContainer>
+        <StyledProjectDetailRightContainer>
           <ProjectRight
             onClick={handleCreateList}
             monsterHPRemaining={monsterHPRemaining}
@@ -468,15 +468,15 @@ export const ProjectDetail: FC = () => {
             monsterName={projectData.data.getProjectById.monster.name}
             gameLogs={logs}
           />
-        </ProjectDetailRightContainer>
-      </ProjectDetailContainer>
+        </StyledProjectDetailRightContainer>
+      </StyledProjectDetailContainer>
 
       <StyledBackground />
     </>
   )
 }
 
-const ProjectDetailContainer = styled.div`
+const StyledProjectDetailContainer = styled.div`
   padding-top: calc(
     ${({ theme }) => theme.HEADER_HEIGHT} + ${calculateMinSizeBasedOnFigmaWidth(8)}
   );
@@ -486,8 +486,7 @@ const ProjectDetailContainer = styled.div`
   grid-template-columns: auto ${calculateMinSizeBasedOnFigmaWidth(283)};
   grid-template-rows: auto 1fr;
 `
-
-const ProjectDetailLeftContainer = styled.div`
+const StyledProjectDetailLeftContainer = styled.div`
   height: 100%;
   grid-row: 1 / 2;
   grid-column: 1 / 2;
@@ -500,20 +499,17 @@ const ProjectDetailLeftContainer = styled.div`
   }
   white-space: nowrap;
 `
-
-const ProjectDetailRightContainer = styled.div`
+const StyledProjectDetailRightContainer = styled.div`
   height: 100%;
   grid-row: 1 / 2;
   grid-column: 2 / 3;
 `
-
 const StyledBackground = styled.div`
   ${({ theme }) => css`
     z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
     top: ${theme.HEADER_HEIGHT};
     height: calc(100vh - ${theme.HEADER_HEIGHT});
   `};
-
   position: fixed;
   left: 0;
   width: 100vw;
