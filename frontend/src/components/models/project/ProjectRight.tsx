@@ -1,4 +1,5 @@
-import React, { FC } from 'react'
+import { useGameLog } from 'hooks/useGameLog'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { GameLogType } from 'types/gameLog'
 import {
@@ -15,7 +16,6 @@ type Props = {
   monsterName: string
   monsterHPRemaining: number
   monsterHp: number
-  gameLogs: GameLogType[]
 }
 
 export const ProjectRight: FC<Props> = ({
@@ -24,8 +24,9 @@ export const ProjectRight: FC<Props> = ({
   monsterName,
   monsterHPRemaining,
   monsterHp,
-  gameLogs,
 }) => {
+  const [gameLogs] = useGameLog()
+
   return (
     <StyledProjectRightContainer className={className}>
       <ProjectCreateListButton onClick={onClick} />

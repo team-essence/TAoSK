@@ -137,8 +137,6 @@ export class ProjectsService {
       .leftJoinAndSelect('tasks.allocations', 'allocations')
       .leftJoinAndSelect('tasks.chats', 'chats')
       .leftJoinAndSelect('allocations.user', 'allocationsUser')
-      .leftJoinAndSelect('project.gameLogs', 'gameLogs')
-      .leftJoinAndSelect('gameLogs.user', 'gameLogsUser')
       .leftJoinAndSelect('project.groups', 'groups')
       .leftJoinAndSelect('groups.user', 'groupsUser')
       .leftJoinAndSelect('groupsUser.interests', 'interests')

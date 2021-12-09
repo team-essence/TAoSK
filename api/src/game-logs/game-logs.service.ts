@@ -23,9 +23,16 @@ export class GameLogsService {
 
   findByProjectId(project_id: string): Promise<GameLog[]> {
     const logs = this.gameLogRepository.find({
-      project: {
-        id: project_id,
+      where: {
+        project: {
+          id: project_id,
+        },
       },
+      order: {
+        created_at: 'DESC',
+      },
+      take: 25,
+      relations: ['user'],
     });
 
     if (!logs) throw new NotFoundException();

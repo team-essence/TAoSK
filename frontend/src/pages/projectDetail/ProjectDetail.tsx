@@ -19,7 +19,6 @@ import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { List } from 'types/list'
 import { Task } from 'types/task'
-import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
@@ -41,17 +40,6 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
-      })
-
-      data.getProjectById.gameLogs.map(gameLog => {
-        const time = new Date(gameLog.created_at)
-        logger.debug(gameLog)
-        const init = {
-          context: gameLog.context,
-          userName: gameLog.user.name,
-          createdAt: time.getTime(),
-        }
-        setLogs(log => [...log, init].sort((a, b) => a.createdAt - b.createdAt))
       })
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
@@ -224,7 +212,6 @@ export const ProjectDetail: FC = () => {
   })
 
   const [list, setList] = useState<List[]>([])
-  const [logs, setLogs] = useState<GameLogType[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string, projectId: string) => {
@@ -472,7 +459,6 @@ export const ProjectDetail: FC = () => {
             monsterHPRemaining={monsterHPRemaining}
             monsterHp={projectData.data.getProjectById.hp}
             monsterName={projectData.data.getProjectById.monster.name}
-            gameLogs={logs}
           />
         </ProjectDetailRightContainer>
       </ProjectDetailContainer>

@@ -5,17 +5,6 @@ query GetProject($id: String!) {
     hp
     difficulty
 
-    gameLogs {
-      id
-      context
-      created_at
-
-      user {
-        id
-        name
-      }
-    }
-
     monster {
       id
       name
@@ -95,6 +84,19 @@ query SearchUsers($searchUser: ProjectDetailUserSearchInput!) {
 
     invitations {
       id
+    }
+  }
+}
+
+query GetGameLogsByProjectId($project_id: String!) {
+  findLogsByProjectId(project_id: $project_id) {
+    id
+    context
+    created_at
+
+    user {
+      id
+      name
     }
   }
 }
