@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback, Dispatch, SetStateAction } fr
 import { useParams } from 'react-router-dom'
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
 import type { UserDatas } from 'types/userDatas'
-import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 
@@ -13,6 +12,8 @@ type StatusCounts = Record<
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
+
+export type AddTaskMutationOptions = Parameters<typeof useAddTaskMutation>[0]
 
 type UseTaskCreateFormReturn<T> = {
   handleAddTask: () => void
@@ -26,6 +27,7 @@ type UseTaskCreateFormReturn<T> = {
 type UseTaskCreateForm<T> = (args: {
   verticalSort: number
   list_id: string
+  addTaskMutationOptions: AddTaskMutationOptions
 }) => UseTaskCreateFormReturn<T>
 
 /**
@@ -39,7 +41,11 @@ type UseTaskCreateForm<T> = (args: {
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort, list_id }) => {
+export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
+  verticalSort,
+  list_id,
+  addTaskMutationOptions,
+}) => {
   const { id: projectId } = useParams()
   const {
     register,
@@ -62,14 +68,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
     plan: 0,
   })
   const [userDatas, setUserDatas] = useState<UserDatas>([])
-  const [addTask] = useAddTaskMutation({
-    onCompleted(data) {
-      toast.success('タスクを作成しました')
-    },
-    onError(err) {
-      toast.error('タスクの作成失敗しました')
-    },
-  })
+  const [addTask] = useAddTaskMutation(addTaskMutationOptions)
 
   useEffect(() => {
     const initializeInputValues = () => {

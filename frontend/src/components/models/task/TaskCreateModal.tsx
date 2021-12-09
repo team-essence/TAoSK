@@ -16,7 +16,8 @@ import { TaskStatusPointField } from 'components/models/task/TaskStatusPointFiel
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { useTaskCreateForm, AddTaskMutationOptions } from 'hooks/useTaskCreateForm'
+import toast from 'utils/toast/toast'
 
 type Props = {
   shouldShow: boolean
@@ -33,10 +34,21 @@ export const TaskCreateModal: FC<Props> = ({
   verticalSort,
   list_id,
 }) => {
+  const addTaskMutationOptions: AddTaskMutationOptions = {
+    onCompleted() {
+      setShouldShow(false)
+      toast.success('タスクを作成しました')
+    },
+    onError() {
+      toast.error('タスクの作成失敗しました')
+    },
+  }
+
   const { handleAddTask, isDisabled, register, errors, setStatus, setUserDatas } =
     useTaskCreateForm({
       verticalSort,
       list_id,
+      addTaskMutationOptions,
     })
 
   return (
