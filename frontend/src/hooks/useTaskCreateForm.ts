@@ -97,7 +97,6 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
     const users = userDatas.map(data => {
       return { user_id: data.id }
     })
-    console.log(users)
     addTask({
       variables: {
         newTask: {
