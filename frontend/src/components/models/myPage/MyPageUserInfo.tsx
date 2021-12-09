@@ -140,17 +140,18 @@ const StyledLevelContainer = styled.div`
 
 const StyledLevelLabel = styled.p`
   position: absolute;
-  top: ${calculateMinSizeBasedOnFigmaWidth(-4)};
+  top: ${calculateMinSizeBasedOnFigmaWidth(-2)};
   left: ${calculateMinSizeBasedOnFigmaWidth(2)};
   color: ${({ theme }) => theme.COLORS.WHITE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
 `
 
 const StyledLevel = styled.p`
   color: ${({ theme }) => theme.COLORS.WHITE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_40};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
+  letter-spacing: 0;
 `
 
 const StyledUserInfoContainer = styled.div`
@@ -187,6 +188,7 @@ const StyledUserInfoWrapper = styled.div`
 
 const StyledCompanyContainer = styled(StyledUserInfoWrapper)`
   text-align: center;
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.NORMAL};
 `
 
 const StyledOccupationContainer = styled(StyledUserInfoWrapper)`
