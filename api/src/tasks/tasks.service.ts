@@ -71,7 +71,7 @@ export class TasksService {
     const list = await this.listRepository.findOne(newTask.list_id);
     if (!list) throw new NotFoundException();
 
-    const task = this.taskRepository.create({
+    let task = this.taskRepository.create({
       title: newTask.title,
       overview: newTask.overview,
       technology: newTask.technology,
@@ -92,13 +92,11 @@ export class TasksService {
     });
 
     const taskId = task.id;
-
+    task = await this.taskRepository.findOne(taskId);
     for (let index = 0; index < assignUser.users.length; index++) {
       const user = await this.userRepository.findOne(
         assignUser.users[index].user_id,
       );
-
-      const task = await this.taskRepository.findOne(taskId);
 
       const allocation = this.allocationRepository.create({ user, task });
 
