@@ -173,9 +173,7 @@ type Query {
   allUsers: [User!]!
   user(id: String!): User!
   findHrUsers(company: String!): [User!]!
-  findProjectDetailSameCompanyUsers(
-    searchUser: ProjectDetailUserSearchInput!
-  ): [User!]!
+  findProjectDetailSameCompanyUsers(searchUser: ProjectDetailUserSearchInput!): [User!]!
   certifications(user_ids: [String!]!): [Certification!]!
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
@@ -196,11 +194,7 @@ input ProjectDetailUserSearchInput {
 }
 
 type Mutation {
-  addUser(
-    newCertification: NewCertificationClientInput!
-    newInterest: NewInterestClientInput!
-    newUser: NewUserInput!
-  ): User!
+  addUser(newCertification: NewCertificationClientInput!, newInterest: NewInterestClientInput!, newUser: NewUserInput!): User!
   searchSameCompanyUsers(conditionSearchUser: SearchUserInput!): [User!]!
   updateOnlineFlag(isOnline: Boolean!, project_id: String!, id: String!): User!
   updateMemo(memo: String!, id: String!): User!
@@ -209,11 +203,7 @@ type Mutation {
   addCompany(newCompany: NewCompanyInput!): Company!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
   completedProject(endProject: EndProjectInput!): Boolean!
-  joinProject(
-    projectId: String!
-    userId: String!
-    invitationId: String!
-  ): Group!
+  joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   createList(newList: NewListInput!): List!
   updateListName(updateList: UpdateListInput!): List!
@@ -223,15 +213,7 @@ type Mutation {
   addTask(assignTask: AssignTaskInput!, newTask: NewTaskInput!): Task!
   updateTaskTitle(taskId: Float!, title: String!): Task!
   updateTaskOverview(taskId: Float!, overview: String!): Task!
-  updateTaskParameters(
-    taskId: Float!
-    design: Float!
-    plan: Float!
-    motivation: Float!
-    solution: Float!
-    achievement: Float!
-    technology: Float!
-  ): Task!
+  updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): Task!
   updateTaskEndDate(taskId: Float!, end_date: String!): Task!
   deleteTask(taskId: Float!): [Task!]!
   createAllocation(newAllocation: NewAllocationInput!): Allocation!

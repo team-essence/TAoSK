@@ -68,6 +68,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
     },
     onError(err) {
       toast.error('タスクの作成失敗しました')
+      console.log(err)
     },
   })
 
@@ -93,6 +94,10 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
 
     const { title, overview, date } = getValues()
     const { technology, achievement, solution, motivation, design, plan } = status
+    const users = userDatas.map(data => {
+      return { user_id: data.id }
+    })
+    console.log(users)
     addTask({
       variables: {
         newTask: {
@@ -110,6 +115,9 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
           list_id: list_id,
           completed_flg: false,
           user_id: currentUser.uid,
+        },
+        assignTask: {
+          users,
         },
       },
     })

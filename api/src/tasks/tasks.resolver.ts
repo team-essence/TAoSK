@@ -21,7 +21,7 @@ export class TasksResolver {
   @Mutation(() => Task)
   public async addTask(
     @Args({ name: 'newTask' }) newTask: NewTaskInput,
-    @Args({ name: 'AssignTask' }) assignTask: AssignTaskInput,
+    @Args({ name: 'assignTask' }) assignTask: AssignTaskInput,
   ) {
     return await this.taskService.addTask(newTask, assignTask).catch((err) => {
       throw err;
