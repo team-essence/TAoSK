@@ -107,7 +107,11 @@ export class TasksService {
       });
     }
 
-    return task;
+    const tasks = this.taskRepository.findOne(taskId, {
+      relations: ['allocations', 'allocations.user'],
+    });
+
+    return tasks;
   }
 
   async updateTitle(taskId: number, title: string): Promise<Task> {

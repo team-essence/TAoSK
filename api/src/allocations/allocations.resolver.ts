@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Allocation } from './allocation';
 import { AllocationsService } from './allocations.service';
-import { assignTaskInput, NewAllocationInput } from './dto/newAllocation.input';
+import { NewAllocationInput } from './dto/newAllocation.input';
 
 @Resolver()
 export class AllocationsResolver {

@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { assignTaskInput } from 'src/allocations/dto/newAllocation.input';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
