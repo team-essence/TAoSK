@@ -92,7 +92,8 @@ const StyledStatusCardContainer = styled.div`
   overflow: hidden;
 
   img {
-    margin-left: 8px;
+    width: ${calculateMinSizeBasedOnFigmaWidth(20)};
+    margin-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
   }
 
   h5 {
