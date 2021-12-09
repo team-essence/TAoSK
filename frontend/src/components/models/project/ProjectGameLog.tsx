@@ -2,38 +2,47 @@ import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { GameLogType } from 'types/gameLog'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
+import { GAME_LOG_TYPE } from 'consts/gameLog'
+import { theme } from 'styles/theme'
 
 type Props = {
   className?: string
   gameLogs: GameLogType[]
 }
 
-export const GAME_LOG_TYPE = {
-  CREATE: '作成',
-  DAMAGE: 'ダメージ',
-  HP: 'HP',
-} as const
-type GAME_LOG_TYPE = typeof GAME_LOG_TYPE[keyof typeof GAME_LOG_TYPE]
-
 export const ProjectGameLog: FC<Props> = ({ className, gameLogs }) => {
-  const startText = (userName: string, context: string) => {
-    if (context.includes(GAME_LOG_TYPE.CREATE)) {
-      return `${userName}はタスクを`
-    } else if (context.includes(GAME_LOG_TYPE.DAMAGE)) {
-      return `${userName}は`
+  const endText = (context: string) => {
+    if (context.includes(GAME_LOG_TYPE.CREATE_PROJECT)) {
+      return 'が出現した！'
+    } else if (context.includes(GAME_LOG_TYPE.COMPLETE_PROJECT)) {
+      return 'が完了した！'
+    } else if (context.includes(GAME_LOG_TYPE.ONLINE)) {
+      return 'になりました'
+    } else if (context.includes(GAME_LOG_TYPE.OFFLINE)) {
+      return 'になりました'
+    } else if (context.includes(GAME_LOG_TYPE.CREATE_FIRST_TASK)) {
+      return 'が出現した！'
+    } else if (context.includes(GAME_LOG_TYPE.CREATE_TASK)) {
+      return 'を作成した'
+    } else if (context.includes(GAME_LOG_TYPE.CREATE_LIST)) {
+      return 'を作成した'
+    } else if (context.includes(GAME_LOG_TYPE.COMPLETE_TASK)) {
+      return 'を与えた'
     } else {
-      return `${userName}の`
+      return 'が上がった！'
     }
   }
 
-  const endText = (context: string) => {
-    if (context.includes(GAME_LOG_TYPE.CREATE)) {
-      return 'した！'
-    } else if (context.includes(GAME_LOG_TYPE.DAMAGE)) {
-      return 'を与えた！'
-    } else {
-      return 'になった！'
-    }
+  const isUserName = (context: string) => {
+    return (
+      !context.includes(GAME_LOG_TYPE.CREATE_PROJECT) &&
+      !context.includes(GAME_LOG_TYPE.COMPLETE_PROJECT) &&
+      !context.includes(GAME_LOG_TYPE.CREATE_FIRST_TASK)
+    )
+  }
+
+  const caseParticle = (context: string) => {
+    return context.includes(GAME_LOG_TYPE.LEVEL_UP) ? 'の' : 'が'
   }
 
   return (
@@ -45,7 +54,12 @@ export const ProjectGameLog: FC<Props> = ({ className, gameLogs }) => {
       <StyledProjectGameLogTextContainer>
         {gameLogs.map((gameLog, index) => (
           <StyledProjectGameLogText key={index}>
-            {startText(gameLog.userName, gameLog.context)}
+            {isUserName(gameLog.context) && (
+              <>
+                <StyledProjectGameLogUserName>{gameLog.userName}</StyledProjectGameLogUserName>
+                {caseParticle(gameLog.context)}
+              </>
+            )}
             <StyledProjectGameLogSpanColor gameLogText={gameLog.context}>
               {gameLog.context}
             </StyledProjectGameLogSpanColor>
@@ -94,19 +108,63 @@ const StyledProjectGameLogText = styled.p`
   letter-spacing: 0;
 `
 
+const StyledProjectGameLogUserName = styled.span`
+  color: ${({ theme }) => theme.COLORS.SHIP_COVE};
+`
+
 const StyledProjectGameLogSpanColor = styled.span<{ gameLogText: string }>`
   ${({ gameLogText, theme }) => css`
-    ${gameLogText.includes(GAME_LOG_TYPE.CREATE) &&
+    ${gameLogText.includes(GAME_LOG_TYPE.CREATE_PROJECT) &&
+    css`
+      color: ${theme.COLORS.ERROR};
+    `}
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.COMPLETE_PROJECT) &&
     css`
       color: ${theme.COLORS.GREEN};
     `}
-    ${gameLogText.includes(GAME_LOG_TYPE.DAMAGE) &&
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.ONLINE) &&
+    css`
+      color: ${theme.COLORS.GREEN};
+    `}
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.OFFLINE) &&
     css`
       color: ${theme.COLORS.ERROR};
     `}
-    ${gameLogText.includes(GAME_LOG_TYPE.HP) &&
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.CREATE_FIRST_TASK) &&
     css`
       color: ${theme.COLORS.ERROR};
+    `}
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.CREATE_TASK) &&
+    css`
+      color: ${theme.COLORS.GREEN};
+    `}
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.CREATE_LIST) &&
+    css`
+      color: ${theme.COLORS.GREEN};
+    `}
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.COMPLETE_TASK) &&
+    css`
+      color: ${theme.COLORS.ERROR};
+    `}
+  `}
+  ${({ gameLogText, theme }) => css`
+    ${gameLogText.includes(GAME_LOG_TYPE.LEVEL_UP) &&
+    css`
+      color: ${theme.COLORS.GREEN};
     `}
   `}
   padding: 0 ${calculateMinSizeBasedOnFigmaHeight(3)};

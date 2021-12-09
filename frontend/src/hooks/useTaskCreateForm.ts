@@ -4,6 +4,7 @@ import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
 import type { UserDatas } from 'types/userDatas'
 import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { useAuthContext } from 'providers/AuthProvider'
 
 type StatusCounts = Record<
   'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan',
@@ -45,6 +46,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
     setValue,
     watch,
   } = useForm<FormInputs>({ mode: 'onChange' })
+  const { currentUser } = useAuthContext()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
@@ -84,6 +86,8 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
   }, [watchAllFields, errors])
 
   const handleAddTask = useCallback(() => {
+    if (!currentUser) return
+
     const { title, overview, date } = getValues()
     const { technology, achievement, solution, motivation, design, plan } = status
     addTask({
@@ -102,6 +106,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort 
           project_id: String(projectId),
           list_id: '1',
           completed_flg: false,
+          user_id: currentUser.uid,
         },
       },
     })

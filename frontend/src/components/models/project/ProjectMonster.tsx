@@ -5,10 +5,11 @@ import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFi
 type Props = {
   className?: string
   name: string
+  hpRemaining: number
   hp: number
 }
 
-export const ProjectMonster: FC<Props> = ({ className, name, hp }) => {
+export const ProjectMonster: FC<Props> = ({ className, name, hp, hpRemaining }) => {
   return (
     <StyledProjectMonster className={className}>
       <StyledMonsterStatus>
@@ -18,8 +19,10 @@ export const ProjectMonster: FC<Props> = ({ className, name, hp }) => {
 
         <StyledStatusBarContainer>
           <h5>HP</h5>
-          <p>{hp}/1000</p>
-          <StyledHpBar rate={hp} />
+          <p>
+            {hpRemaining}/{hp}
+          </p>
+          <StyledHpBar rate={hpRemaining} max={hp} />
         </StyledStatusBarContainer>
 
         <StyledMonsterStatusBackgroundImg
@@ -112,7 +115,7 @@ const StyledBar = styled.div`
   height: ${calculateMinSizeBasedOnFigmaHeight(12)};
 `
 
-const StyledHpBar = styled(StyledBar)<{ rate: number }>`
+const StyledHpBar = styled(StyledBar)<{ rate: number; max: number }>`
   &::before {
     content: '';
     position: absolute;
@@ -129,7 +132,7 @@ const StyledHpBar = styled(StyledBar)<{ rate: number }>`
     content: '';
     position: absolute;
     top: 0;
-    width: ${({ rate }) => rate * 0.1}%;
+    width: ${({ rate, max }) => (rate / max) * 100}%;
     height: 100%;
     background: ${({ theme }) => theme.COLORS.MONSTER_HP};
     border-radius: ${calculateMinSizeBasedOnFigmaHeight(100)};

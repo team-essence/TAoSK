@@ -1,5 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { EndProjectInput } from './dto/endProject.input';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
 import { ProjectsService } from './projects.service';
@@ -32,5 +33,12 @@ export class ProjectsResolver {
       });
 
     return newProjectData;
+  }
+
+  @Mutation(() => Boolean)
+  async completedProject(
+    @Args({ name: 'endProject' }) endProject: EndProjectInput,
+  ) {
+    return this.projectService.completedProject(endProject);
   }
 }
