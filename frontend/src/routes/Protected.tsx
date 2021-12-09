@@ -5,7 +5,7 @@ import { Loading } from 'components/ui/loading/Loading'
 
 const { ProjectList } = lazyImport(() => import('pages/projectList/ProjectList'), 'ProjectList')
 const { ProjectDetail } = lazyImport(
-  () => import('pages/projectList/projectDetail/ProjectDetail'),
+  () => import('pages/projectDetail/ProjectDetail'),
   'ProjectDetail',
 )
 const { MyPage } = lazyImport(() => import('pages/mypage/MyPage'), 'MyPage')

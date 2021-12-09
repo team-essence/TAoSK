@@ -38,11 +38,38 @@ export class AllocationsService {
       task,
     });
 
-    await this.allocationRepository.save(allocation).catch((err) => {
+    await this.allocationRepository.save(allocation).catch(() => {
       new InternalServerErrorException();
     });
 
     return allocation;
+  }
+
+  async unassign(userId: string, taskId): Promise<Allocation[]> {
+    const allocation = await this.allocationRepository.findOne({
+      user: {
+        id: userId,
+      },
+      task: {
+        id: taskId,
+      },
+    });
+
+    this.allocationRepository.remove(allocation).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    const allocations = this.allocationRepository.find({
+      where: {
+        task: {
+          id: taskId,
+        },
+      },
+      relations: ['user', 'task'],
+    });
+    if (!allocations) throw new NotFoundException();
+
+    return allocations;
   }
 
   completedTask(userId: string): Promise<Allocation[]> {
@@ -57,6 +84,7 @@ export class AllocationsService {
       },
       relations: ['task'],
     });
+
     return allocations;
   }
 }

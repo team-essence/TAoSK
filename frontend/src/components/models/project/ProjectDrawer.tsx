@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
 import { DROP_TYPE } from 'consts/dropType'
 import { List } from 'types/list'
-import { GetProjectQuery } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVwBasedOnFigma,

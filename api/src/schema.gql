@@ -210,13 +210,14 @@ type Mutation {
   removeList(removeList: RemoveListInput): Boolean!
   updateListSort(updateListSort: UpdateListSort!): Boolean!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
-  addTask(newTask: NewTaskInput!): Task!
+  addTask(assignTask: AssignTaskInput!, newTask: NewTaskInput!): Task!
   updateTaskTitle(taskId: Float!, title: String!): Task!
   updateTaskOverview(taskId: Float!, overview: String!): Task!
   updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): Task!
   updateTaskEndDate(taskId: Float!, end_date: String!): Task!
   deleteTask(taskId: Float!): [Task!]!
   createAllocation(newAllocation: NewAllocationInput!): Allocation!
+  unAssignTask(task_id: Float!, user_id: String!): [Allocation!]!
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
@@ -325,6 +326,14 @@ input UpdateTask {
   vertical_sort: Float!
   list_id: String!
   completed_flg: Boolean!
+}
+
+input AssignTaskInput {
+  users: [AssignUserInput!]!
+}
+
+input AssignUserInput {
+  user_id: String!
 }
 
 input NewTaskInput {

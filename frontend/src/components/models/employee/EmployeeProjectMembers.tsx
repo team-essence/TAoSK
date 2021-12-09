@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { GetProjectQuery } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVhBasedOnFigma,
