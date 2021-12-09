@@ -68,7 +68,6 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
     },
     onError(err) {
       toast.error('タスクの作成失敗しました')
-      console.log(err)
     },
   })
 

@@ -139,7 +139,6 @@ export const ProjectDetail: FC = () => {
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
-      toast.success('タスクを移動しました')
     },
     onError(err) {
       logger.debug(err)
@@ -149,7 +148,7 @@ export const ProjectDetail: FC = () => {
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
-      toast.success('リスト作成成功！')
+      toast.success('リストを作成しました')
       const newListData = data.createList
 
       const tasks = newListData.tasks.map(task => {
@@ -210,16 +209,13 @@ export const ProjectDetail: FC = () => {
       })
     },
     onError(err) {
-      toast.error('リスト作成失敗！')
+      toast.error('リスト作成に失敗しました')
     },
   })
 
   const [updateList] = useUpdateListSortMutation({
-    onCompleted(data) {
-      toast.success('リスト更新成功！')
-    },
     onError(err) {
-      toast.error('リスト更新失敗')
+      toast.error('リスト更新に失敗しました')
     },
   })
 
