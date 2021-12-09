@@ -184,7 +184,7 @@ type Query {
   listsByProjectId(projectId: String!): [List!]!
   completedTask(userId: String!): [Allocation!]!
   getChats(taskId: Float!): [Chat!]!
-  findByProjectId(project_id: String!): [GameLog!]!
+  findLogsByProjectId(project_id: String!): [GameLog!]!
 }
 
 input ProjectDetailUserSearchInput {
