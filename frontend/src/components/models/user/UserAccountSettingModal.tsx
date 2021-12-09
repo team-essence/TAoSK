@@ -9,6 +9,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import toast from 'utils/toast/toast'
 import {
+  calculateMinSizeBasedOnFigma,
   calculateMinSizeBasedOnFigmaWidth,
   calculateMinSizeBasedOnFigmaHeight,
 } from 'utils/calculateSizeBasedOnFigma'
@@ -80,25 +81,7 @@ export const UserAccountSettingModal: FC<Props> = ({ shouldShow, setShouldShow, 
             <StyledButtonWrapper>
               {/* TODO キャンセルしたときdisabledまで消える りょうがに聞く   */}
               {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
-              <CoarseButton
-                text="保存"
-                aspect={{
-                  width: calculateMinSizeBasedOnFigmaWidth(64),
-                  height: calculateMinSizeBasedOnFigmaWidth(32),
-                }}
-                outerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-                    : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
-                }
-                innerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-                    : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
-                }
-                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
-                onClick={() => console.log('aa')}
-              />
+              <StyledCoarseButton text="保存" onClick={() => console.log('aa')} />
             </StyledButtonWrapper>
             <StyledH5>メールアドレス</StyledH5>
             <StyledText>{`メールアドレスは${currentUser?.email}です。`}</StyledText>
@@ -120,51 +103,14 @@ export const UserAccountSettingModal: FC<Props> = ({ shouldShow, setShouldShow, 
             />
             <StyledButtonWrapper>
               {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
-              <CoarseButton
-                text="送信"
-                aspect={{
-                  width: calculateMinSizeBasedOnFigmaWidth(64),
-                  height: calculateMinSizeBasedOnFigmaWidth(32),
-                }}
-                outerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-                    : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
-                }
-                innerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-                    : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
-                }
-                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
-                onClick={handleChangeEmail}
-              />
+              <CoarseButton text="送信" onClick={handleChangeEmail} />
             </StyledButtonWrapper>
             <StyledH5>パスワード再設定</StyledH5>
             <StyledText>
               「送信」を押すと現在登録さているメールアドレスへパスワード変更のメールが送信されます。
             </StyledText>
             <StyledSendButtonWrap>
-              <CoarseButton
-                text="送信"
-                aspect={{
-                  width: calculateMinSizeBasedOnFigmaWidth(64),
-                  height: calculateMinSizeBasedOnFigmaWidth(32),
-                }}
-                outerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-                    : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
-                }
-                innerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-                    : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
-                }
-                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
-                onClick={handleChangePassword}
-                isDisabled={false}
-              />
+              <StyledCoarseButton text="送信" onClick={handleChangePassword} disabled={false} />
             </StyledSendButtonWrap>
           </StyledLeftColumn>
           <StyledBorder />
@@ -249,6 +195,37 @@ const StyledSendButtonWrap = styled.div`
   justify-content: flex-end;
   width: 100%;
 `
+type Disabled = { disabled?: boolean }
+const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled = false }) => ({
+  disabled,
+}))<Disabled>`
+  width: ${calculateMinSizeBasedOnFigma(64)};
+  height: ${calculateMinSizeBasedOnFigma(32)};
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
+        }
+      `
+    } else {
+      return css`
+        color: ${theme.COLORS.BRANDY};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)};
+          }
+        }
+      `
+    }
+  }}
+`
+
 const StyledCansellButton = styled.button`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   text-decoration-line: underline;

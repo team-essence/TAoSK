@@ -80,7 +80,7 @@ const Tesxt = styled.div`
 const StyledMainWrap = styled.div<{ isOpen: boolean }>`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
-  TODO // スクロールバーを表示するためにwidthを指定するとモニターとPCで幅が合わない
+  // TODO スクロールバーを表示するためにwidthを指定するとモニターとPCで幅が合わない
   // ビジュアル的にはそもそもスクロールバーがない方がきれいに見える
   /* ${({ isOpen }) =>
     isOpen

@@ -1,12 +1,10 @@
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
 import type { UserDatas } from 'types/userDatas'
-import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   userCount: number
@@ -94,8 +92,8 @@ const StyledUserCountContainer = styled.div`
 `
 
 const StyledUserCountListContainer = styled.div`
-  width: ${calculateVhBasedOnFigma(50)};
-  height: ${calculateVhBasedOnFigma(50)};
+  width: ${calculateMinSizeBasedOnFigma(50)};
+  height: ${calculateMinSizeBasedOnFigma(50)};
   border: solid 2px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   background: ${({ theme }) => theme.COLORS.MINE_SHAFT};
   border-radius: 4px;
@@ -106,8 +104,8 @@ const StyledUserCountListContainer = styled.div`
 `
 
 const StyledUserCountModalContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(40)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  width: ${calculateMinSizeBasedOnFigma(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
   background: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 2px;
   display: flex;
@@ -117,8 +115,8 @@ const StyledUserCountModalContainer = styled.div`
 `
 
 const StyledUserCountTaskContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(24)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  width: ${calculateMinSizeBasedOnFigma(24)};
+  height: ${calculateMinSizeBasedOnFigma(24)};
   border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 2px;
   display: flex;

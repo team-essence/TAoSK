@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   className?: string
@@ -53,28 +53,28 @@ const StyledTextWrapper = styled.div`
   align-items: center;
 `
 const StyledText = styled.span`
-  padding: ${calculateMinSizeBasedOnFigmaWidth(2)} ${calculateMinSizeBasedOnFigmaWidth(10)};
+  padding: ${calculateMinSizeBasedOnFigma(2)} ${calculateMinSizeBasedOnFigma(10)};
 `
 const StyledCrossIcon = styled(CrossIcon)`
   height: 100%;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(10)} ${calculateMinSizeBasedOnFigmaWidth(7)}
-    ${calculateMinSizeBasedOnFigmaWidth(10)} 0;
+  padding: ${calculateMinSizeBasedOnFigma(10)} ${calculateMinSizeBasedOnFigma(7)}
+    ${calculateMinSizeBasedOnFigma(10)} 0;
   svg {
-    width: ${calculateMinSizeBasedOnFigmaWidth(8)};
-    height: ${calculateMinSizeBasedOnFigmaWidth(8)};
+    width: ${calculateMinSizeBasedOnFigma(8)};
+    height: ${calculateMinSizeBasedOnFigma(8)};
   }
 `
 const StyledInnerBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
   opacity: 0.8;
-  top: calc(50% + ${calculateMinSizeBasedOnFigmaWidth(0.5)});
+  top: calc(50% + ${calculateMinSizeBasedOnFigma(0.5)});
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
-  width: calc(100% - ${calculateMinSizeBasedOnFigmaWidth(4)});
-  height: calc(100% - ${calculateMinSizeBasedOnFigmaWidth(4)});
+  width: calc(100% - ${calculateMinSizeBasedOnFigma(4)});
+  height: calc(100% - ${calculateMinSizeBasedOnFigma(4)});
   border-radius: 2px;
   background-image: url('light-grain.png');
   background-size: cover;
