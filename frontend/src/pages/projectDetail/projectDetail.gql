@@ -163,8 +163,8 @@ mutation UpdateTaskSort($updateTasks: UpdateTaskSort!) {
   }
 }
 
-mutation AddTask($newTask: NewTaskInput!) {
-  addTask(newTask: $newTask) {
+mutation AddTask($newTask: NewTaskInput!, $assignTask: AssignTaskInput!) {
+  addTask(newTask: $newTask, assignTask: $assignTask) {
     id
     overview
   }

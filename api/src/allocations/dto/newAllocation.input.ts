@@ -15,13 +15,13 @@ export class NewAllocationInput {
 }
 
 @InputType()
-export class assignTaskInput {
-  @Field(() => [assignUserInput])
-  users: assignUserInput[];
+export class AssignTaskInput {
+  @Field(() => [AssignUserInput])
+  users: AssignUserInput[];
 }
 
 @InputType()
-class assignUserInput {
+class AssignUserInput {
   @Field()
   @IsString()
   user_id: string;

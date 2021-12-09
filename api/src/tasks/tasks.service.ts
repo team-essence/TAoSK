@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Allocation } from 'src/allocations/allocation';
-import { assignTaskInput } from 'src/allocations/dto/newAllocation.input';
+import { AssignTaskInput } from 'src/allocations/dto/newAllocation.input';
 import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
@@ -127,7 +127,7 @@ export class TasksService {
 
   async addTask(
     newTask: NewTaskInput,
-    assignUser: assignTaskInput,
+    assignUser: AssignTaskInput,
   ): Promise<Task> {
     const tasks = await this.taskRepository.find({
       where: {
