@@ -1,8 +1,7 @@
 import React, { FC, useRef } from 'react'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import styled from 'styled-components'
-import { theme } from 'styles/theme'
+import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
@@ -42,17 +41,7 @@ export const ImageInputField: FC<Props> = ({
         />
       </StyledLabel>
 
-      <StyledCoarseButton
-        text="画像をアップロード"
-        aspect={{
-          width: calculateMinSizeBasedOnFigma(190),
-          height: calculateMinSizeBasedOnFigma(40),
-        }}
-        outerBgColor={convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)}
-        innerBgColor={convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)}
-        color={theme.COLORS.BRANDY}
-        onClick={onClickUploadBtn}
-      />
+      <StyledCoarseButton text="画像をアップロード" onClick={onClickUploadBtn} />
       <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
     </StyledAllWrapper>
   )
@@ -86,12 +75,24 @@ const StyledImage = styled.img<{ defaultSrc: boolean }>`
 const StyledDisappearedInput = styled.input`
   display: none;
 `
-const StyledCoarseButton = styled(CoarseButton)`
-  margin: ${calculateMinSizeBasedOnFigma(4)} 0;
-  box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
-`
 const StyledDeleteButton = styled.button`
   margin: ${calculateMinSizeBasedOnFigma(4)} 0;
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+`
+const StyledCoarseButton = styled(CoarseButton)`
+  margin: ${calculateMinSizeBasedOnFigma(4)} 0;
+  width: ${calculateMinSizeBasedOnFigma(190)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+
+  ${({ theme }) => css`
+    box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
+    color: ${theme.COLORS.BRANDY};
+    > div {
+      background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
+      > div > div {
+        background-color: ${convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)};
+      }
+    }
+  `}
 `

@@ -169,22 +169,7 @@ export const SignUp: FC = () => {
 
               <StyledSignUpButton
                 text="登録"
-                aspect={{
-                  width: calculateMinSizeBasedOnFigma(120),
-                  height: calculateMinSizeBasedOnFigma(32),
-                }}
-                outerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-                    : convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)
-                }
-                innerBgColor={
-                  isDisabled
-                    ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-                    : convertIntoRGBA(theme.COLORS.ERROR, 0.5)
-                }
-                color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.TEQUILA}
-                isDisabled={isDisabled}
+                disabled={isDisabled}
                 onClick={handleSubmit(trySignUp)}
               />
             </StyledRightColumn>
@@ -306,8 +291,42 @@ const StyledTermsLink = styled(Link)`
   color: ${({ theme }) => theme.COLORS.BRIGHT_TURQUOISE};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
-const StyledSignUpButton = styled(CoarseButton)`
+type Disabled = { disabled: boolean }
+const StyledSignUpButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
+  disabled,
+}))<Disabled>`
   display: block;
   margin: 0 auto;
+  width: ${calculateMinSizeBasedOnFigma(120)};
+  height: ${calculateMinSizeBasedOnFigma(32)};
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  > div > div > div {
+    border: none;
+  }
+
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
+        }
+      `
+    } else {
+      return css`
+        color: ${theme.COLORS.TEQUILA};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.CHOCOLATE, 0.3)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.ERROR, 0.5)};
+          }
+        }
+      `
+    }
+  }}
 `

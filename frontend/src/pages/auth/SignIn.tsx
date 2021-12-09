@@ -8,7 +8,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useSignInForm } from 'hooks/useSignInForm'
 import { useTrySignIn } from 'hooks/useTrySignIn'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 
 export const SignIn: FC = () => {
@@ -34,24 +34,8 @@ export const SignIn: FC = () => {
 
             <StyledSignInButton
               text="ログイン"
-              aspect={{
-                width: calculateMinSizeBasedOnFigma(120),
-                height: calculateMinSizeBasedOnFigma(32),
-              }}
-              outerBgColor={
-                isDisabled
-                  ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-                  : convertIntoRGBA(theme.COLORS.GOLD_SAND, 0.26)
-              }
-              innerBgColor={
-                isDisabled
-                  ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-                  : convertIntoRGBA(theme.COLORS.SWEET_CON, 0.55)
-              }
-              color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.CHOCOLATE}
-              border="none"
-              bgSrcs={isDisabled ? undefined : { outer: 'grain.png', inner: 'light-grain.png' }}
-              isDisabled={isDisabled}
+              bgSrcs={isDisabled ? undefined : { outer: '/grain.png', inner: '/light-grain.png' }}
+              disabled={isDisabled}
               onClick={handleSubmit(trySignIn)}
             />
 
@@ -160,10 +144,43 @@ const StyledBackground = styled.div`
   background-size: cover;
   background-position: 50% 100%;
 `
-const StyledSignInButton = styled(CoarseButton)`
+
+type Disabled = { disabled: boolean }
+const StyledSignInButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
+  disabled,
+}))<Disabled>`
   display: block;
   margin: 0 auto;
+  width: ${calculateMinSizeBasedOnFigma(120)};
+  height: ${calculateMinSizeBasedOnFigma(32)};
   box-shadow: 0px 2px 4px 0px ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.25)};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  > div > div > div {
+    border: none;
+  }
+
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
+        }
+      `
+    } else {
+      return css`
+        color: ${theme.COLORS.CHOCOLATE};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.GOLD_SAND, 0.26)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.SWEET_CON, 0.55)};
+          }
+        }
+      `
+    }
+  }}
 `

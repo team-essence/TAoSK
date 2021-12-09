@@ -1,5 +1,5 @@
 import React, { FC, useEffect, Dispatch } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -49,26 +49,7 @@ export const ItemInputField: FC<Props> = props => {
           placeholder={placeholder}
           {...inputAspect}
         />
-        <CoarseButton
-          text="追加"
-          aspect={{
-            width: calculateMinSizeBasedOnFigma(64),
-            height: calculateMinSizeBasedOnFigma(40),
-          }}
-          outerBgColor={
-            isDisabled
-              ? convertIntoRGBA(theme.COLORS.ALTO, 0.55)
-              : convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)
-          }
-          innerBgColor={
-            isDisabled
-              ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64)
-              : convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)
-          }
-          color={isDisabled ? theme.COLORS.SILVER : theme.COLORS.BRANDY}
-          onClick={onClickAddButton}
-          isDisabled={isDisabled}
-        />
+        <StyledCoarseButton text="追加" onClick={onClickAddButton} disabled={isDisabled} />
       </StyledRow>
       <StyledItemsWrapper width={inputAspect.width}>
         {items.map((item, index) => (
@@ -117,4 +98,35 @@ const StyledItemsWrapper = styled.div<{ width: string }>`
   gap: ${calculateMinSizeBasedOnFigma(12)};
   margin-top: ${calculateMinSizeBasedOnFigma(12)};
   width: ${({ width }) => width};
+`
+
+type Disabled = { disabled: boolean }
+const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
+  disabled,
+}))<Disabled>`
+  width: ${calculateMinSizeBasedOnFigma(64)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
+        }
+      `
+    } else {
+      return css`
+        color: ${theme.COLORS.BRANDY};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)};
+          }
+        }
+      `
+    }
+  }}
 `
