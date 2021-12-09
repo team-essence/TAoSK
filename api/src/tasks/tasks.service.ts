@@ -50,7 +50,10 @@ export class TasksService {
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
 
-      await this.taskRepository.save(task).catch(() => {
+      await this.taskRepository.save(task).catch((err) => {
+        throw err;
+      });
+
       if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
         task.completed_flg = updateTask.tasks[index].completed_flg;
 
@@ -108,25 +111,24 @@ export class TasksService {
       await this.taskRepository.save(task).catch((err) => {
         new InternalServerErrorException();
       });
-    }
 
-    const tasks = this.taskRepository.find({
-      relations: ['project'],
-      where: {
-        project: {
-          id: updateTask.project_id,
+      const tasks = this.taskRepository.find({
+        relations: ['project'],
+        where: {
+          project: {
+            id: updateTask.project_id,
+          },
         },
-      },
-    });
-    if (!tasks) throw new NotFoundException();
-    return tasks;
+      });
+      if (!tasks) throw new NotFoundException();
+      return tasks;
+    }
   }
 
   async addTask(
     newTask: NewTaskInput,
     assignUser: assignTaskInput,
   ): Promise<Task> {
-  async addTask(newTask: NewTaskInput): Promise<Task> {
     const tasks = await this.taskRepository.find({
       where: {
         project: {
