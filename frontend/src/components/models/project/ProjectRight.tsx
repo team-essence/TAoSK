@@ -1,5 +1,5 @@
-import { useGameLog } from 'hooks/useGameLog'
 import React, { FC, useState } from 'react'
+import { useGameLog } from 'hooks/useGameLog'
 import styled from 'styled-components'
 import { GameLogType } from 'types/gameLog'
 import {

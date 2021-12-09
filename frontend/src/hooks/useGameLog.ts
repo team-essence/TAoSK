@@ -1,5 +1,5 @@
-import { useGetGameLogsByProjectIdLazyQuery } from 'pages/projectDetail/projectDetail.gen'
 import { useEffect, useState } from 'react'
+import { useGetGameLogsByProjectIdLazyQuery } from 'pages/projectDetail/projectDetail.gen'
 import { useParams } from 'react-router-dom'
 import { GameLogType } from 'types/gameLog'
 
