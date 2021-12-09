@@ -11,7 +11,7 @@ import {
 import {
   useUpdateListNameMutation,
   useRemoveListMutation,
-} from 'pages/projectList/projectDetail/projectDetail.gen'
+} from 'pages/projectDetail/projectDetail.gen'
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'

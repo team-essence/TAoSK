@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
 import type { UserDatas } from 'types/userDatas'
 import toast from 'utils/toast/toast'
-import { useAddTaskMutation } from 'pages/projectList/projectDetail/projectDetail.gen'
+import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 
 type StatusCounts = Record<

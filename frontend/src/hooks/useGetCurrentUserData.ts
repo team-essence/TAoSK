@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useGetCurrentUserLazyQuery } from 'pages/projectList/projectDetail/getUser.gen'
+import { useGetCurrentUserLazyQuery } from 'pages/projectDetail/getUser.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 
 type UseGetCurrentUserDataReturn = {

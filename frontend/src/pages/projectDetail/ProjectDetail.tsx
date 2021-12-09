@@ -4,7 +4,7 @@ import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetCurrentUserLazyQuery } from './getUser.gen'
-import { useSearchSameCompanyUsersMutation } from '../projectList.gen'
+import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useGetProjectLazyQuery,
   useUpdateOnlineFlagMutation,
