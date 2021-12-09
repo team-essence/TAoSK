@@ -19,7 +19,7 @@ export class AllocationsResolver {
   }
 
   @Mutation(() => [Allocation])
-  public async unassignTask(
+  public async unAssignTask(
     @Args({ name: 'user_id' }) userId: string,
     @Args({ name: 'task_id' }) taskId: number,
   ): Promise<Allocation[]> {

@@ -210,14 +210,14 @@ type Mutation {
   removeList(removeList: RemoveListInput): Boolean!
   updateListSort(updateListSort: UpdateListSort!): Boolean!
   updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
-  addTask(assignTask: assignTaskInput!, newTask: NewTaskInput!): Task!
+  addTask(assignTask: AssignTaskInput!, newTask: NewTaskInput!): Task!
   updateTaskTitle(taskId: Float!, title: String!): Task!
   updateTaskOverview(taskId: Float!, overview: String!): Task!
   updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): Task!
   updateTaskEndDate(taskId: Float!, end_date: String!): Task!
   deleteTask(taskId: Float!): [Task!]!
   createAllocation(newAllocation: NewAllocationInput!): Allocation!
-  unassignTask(task_id: Float!, user_id: String!): [Allocation!]!
+  unAssignTask(task_id: Float!, user_id: String!): [Allocation!]!
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
@@ -328,11 +328,11 @@ input UpdateTask {
   completed_flg: Boolean!
 }
 
-input assignTaskInput {
-  users: [assignUserInput!]!
+input AssignTaskInput {
+  users: [AssignUserInput!]!
 }
 
-input assignUserInput {
+input AssignUserInput {
   user_id: String!
 }
 
