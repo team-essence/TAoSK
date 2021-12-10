@@ -29,7 +29,7 @@ export class GameLogsService {
         },
       },
       order: {
-        created_at: 'DESC',
+        id: 'DESC',
       },
       take: 25,
       relations: ['user'],
