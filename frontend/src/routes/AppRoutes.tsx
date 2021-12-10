@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useParams, useRoutes } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import { useAuthContext } from 'providers/AuthProvider'
 import { NotFound } from 'pages/notFound/NotFound'
 import { protectedRoutes } from './Protected'
@@ -10,7 +10,6 @@ import { useUpdateOnlineFlagMutation } from 'pages/projectDetail/projectDetail.g
 export const AppRoutes: FC = () => {
   const { currentUser } = useAuthContext()
   const [projectId, setProjectId] = useState('')
-  const { id } = useParams()
   const commonRoutes = [{ path: '*', element: <NotFound /> }]
   const routes = currentUser ? protectedRoutes : publicRoutes
 
