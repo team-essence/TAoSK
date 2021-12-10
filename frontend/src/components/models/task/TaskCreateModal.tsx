@@ -17,6 +17,7 @@ import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { STATUS_TYPE } from 'consts/status'
 
 type Props = {
   shouldShow: boolean
@@ -33,7 +34,7 @@ export const TaskCreateModal: FC<Props> = ({
   verticalSort,
   list_id,
 }) => {
-  const { handleAddTask, isDisabled, register, errors, setStatus, userDatas, setUserDatas } =
+  const { handleAddTask, isDisabled, register, errors, setStatusCounts, userDatas, setUserDatas } =
     useTaskCreateForm({
       verticalSort,
       list_id,
@@ -74,12 +75,13 @@ export const TaskCreateModal: FC<Props> = ({
 
             <StyledStatusWrapper className={className}>
               <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-              <TaskStatusPointField status="technology" setStatus={setStatus} />
-              <TaskStatusPointField status="achievement" setStatus={setStatus} />
-              <TaskStatusPointField status="solution" setStatus={setStatus} />
-              <TaskStatusPointField status="motivation" setStatus={setStatus} />
-              <TaskStatusPointField status="design" setStatus={setStatus} />
-              <TaskStatusPointField status="plan" setStatus={setStatus} />
+              {Object.values(STATUS_TYPE).map((status, index) => (
+                <TaskStatusPointField
+                  status={status}
+                  setStatusCounts={setStatusCounts}
+                  key={index}
+                />
+              ))}
             </StyledStatusWrapper>
           </StyledRightColumn>
         </StyledInputsWrapper>

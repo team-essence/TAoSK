@@ -5,11 +5,9 @@ import type { UserDatas } from 'types/userDatas'
 import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
+import { StatusParam } from 'types/status'
 
-type StatusCounts = Record<
-  'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan',
-  number
->
+type StatusCounts = Record<StatusParam, number>
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
@@ -19,7 +17,7 @@ type UseTaskCreateFormReturn<T> = {
   register: UseFormRegister<T>
   isDisabled: boolean
   errors: FieldErrors
-  setStatus: Dispatch<SetStateAction<StatusCounts>>
+  setStatusCounts: Dispatch<SetStateAction<StatusCounts>>
   userDatas: UserDatas
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
 }
@@ -59,7 +57,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
-  const initialStatus = {
+  const initialStatusCounts = {
     technology: 0,
     achievement: 0,
     solution: 0,
@@ -67,7 +65,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
     design: 0,
     plan: 0,
   }
-  const [status, setStatus] = useState<StatusCounts>(initialStatus)
+  const [statusCounts, setStatusCounts] = useState<StatusCounts>(initialStatusCounts)
   const [userDatas, setUserDatas] = useState<UserDatas>([])
   const [addTask] = useAddTaskMutation({
     onCompleted(data) {
@@ -75,7 +73,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
       setValue('overview', '', { shouldValidate: true })
       setValue('date', '')
       setUserDatas([])
-      setStatus(initialStatus)
+      setStatusCounts(initialStatusCounts)
 
       closeModal()
       toast.success('タスクを作成しました')
@@ -106,7 +104,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
     if (!currentUser) return
 
     const { title, overview, date } = getValues()
-    const { technology, achievement, solution, motivation, design, plan } = status
+    const { technology, achievement, solution, motivation, design, plan } = statusCounts
     const users = userDatas.map(data => {
       return { user_id: data.id }
     })
@@ -133,13 +131,13 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
         },
       },
     })
-  }, [status, userDatas])
+  }, [statusCounts, userDatas])
 
   return {
     register,
     isDisabled,
     errors,
-    setStatus,
+    setStatusCounts,
     userDatas,
     setUserDatas,
     handleAddTask: handleSubmit(handleAddTask),
