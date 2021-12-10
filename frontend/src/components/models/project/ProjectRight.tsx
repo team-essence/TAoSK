@@ -1,11 +1,12 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
+import { useGameLog } from 'hooks/useGameLog'
 import styled from 'styled-components'
 import { GameLogType } from 'types/gameLog'
 import {
   calculateMinSizeBasedOnFigmaHeight,
   calculateMinSizeBasedOnFigmaWidth,
 } from 'utils/calculateSizeBasedOnFigma'
-import { ProjectCreateListButton } from './ProjectCreateListButton'
+import { CreateListButton } from '../../ui/button/CreateListButton'
 import { ProjectGameLog } from './ProjectGameLog'
 import { ProjectMonster } from './ProjectMonster'
 
@@ -15,7 +16,6 @@ type Props = {
   monsterName: string
   monsterHPRemaining: number
   monsterHp: number
-  gameLogs: GameLogType[]
 }
 
 export const ProjectRight: FC<Props> = ({
@@ -24,14 +24,13 @@ export const ProjectRight: FC<Props> = ({
   monsterName,
   monsterHPRemaining,
   monsterHp,
-  gameLogs,
 }) => {
+  const [gameLogs] = useGameLog()
+
   return (
     <StyledProjectRightContainer className={className}>
-      <ProjectCreateListButton onClick={onClick} />
-
+      <CreateListButton onClick={onClick} />
       <StyledProjectGameLog gameLogs={gameLogs} />
-
       <ProjectMonster hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
     </StyledProjectRightContainer>
   )

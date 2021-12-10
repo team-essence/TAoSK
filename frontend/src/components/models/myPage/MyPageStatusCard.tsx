@@ -29,7 +29,7 @@ export const STATUS_TYPE = {
 type STATUS_TYPE = typeof STATUS_TYPE[keyof typeof STATUS_TYPE]
 
 export const MyPageStatusCard: FC<Props> = ({ className, statusType, statValue }) => {
-  const defaultImgFolder = '/svg/myPageStatus'
+  const defaultImgFolder = '/myPageStatus'
 
   const statusTitle = (statusType: STATUS_TYPE) => {
     switch (statusType) {
@@ -51,17 +51,17 @@ export const MyPageStatusCard: FC<Props> = ({ className, statusType, statValue }
   const statusImg = (statusType: STATUS_TYPE) => {
     switch (statusType) {
       case STATUS_TYPE.TECHNOLOGY:
-        return `${defaultImgFolder}/technology.svg`
+        return `${defaultImgFolder}/technology.png`
       case STATUS_TYPE.SOLUTION:
-        return `${defaultImgFolder}/solution.svg`
+        return `${defaultImgFolder}/solution.png`
       case STATUS_TYPE.ACHIEVEMENT:
-        return `${defaultImgFolder}/achievement.svg`
+        return `${defaultImgFolder}/achievement.png`
       case STATUS_TYPE.MOTIVATION:
-        return `${defaultImgFolder}/motivation.svg`
+        return `${defaultImgFolder}/motivation.png`
       case STATUS_TYPE.DESIGN:
-        return `${defaultImgFolder}/design.svg`
+        return `${defaultImgFolder}/design.png`
       case STATUS_TYPE.PLAN:
-        return `${defaultImgFolder}/plan.svg`
+        return `${defaultImgFolder}/plan.png`
     }
   }
 
@@ -92,7 +92,8 @@ const StyledStatusCardContainer = styled.div`
   overflow: hidden;
 
   img {
-    margin-left: 8px;
+    width: ${calculateMinSizeBasedOnFigmaWidth(20)};
+    margin-left: ${calculateMinSizeBasedOnFigmaWidth(8)};
   }
 
   h5 {

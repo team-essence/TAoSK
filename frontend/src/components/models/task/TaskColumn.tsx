@@ -3,6 +3,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DROP_TYPE } from 'consts/dropType'
 import { theme } from 'styles/theme'
+import toast from 'utils/toast/toast'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
   calculateMinSizeBasedOnFigmaWidth,
@@ -54,6 +55,8 @@ export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, li
 
   const handleRemoveList = (id: number) => {
     removeList({ variables: { id } })
+      .then(() => toast.success(`${title}を削除しました`))
+      .catch(() => toast.error(`${title}の削除に失敗しました`))
   }
 
   return (

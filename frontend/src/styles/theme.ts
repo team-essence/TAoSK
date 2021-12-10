@@ -119,39 +119,39 @@ export const theme = {
 
     GRADATION: {
       TECHNOLOGY: {
-        START: '#514694',
-        CENTER: '#6A5EB6',
-        END: '#4D428C',
+        START: '#A84D4D',
+        CENTER: '#D16060',
+        END: '#A64545',
       },
 
       SOLUTION: {
-        START: '#BFA921',
-        CENTER: '#D7BE2C',
-        END: '#C2AC2E',
+        START: '#45877B',
+        CENTER: '#65BAAA',
+        END: '#489788',
       },
 
       ACHIEVEMENT: {
-        START: '#AC46A9',
-        CENTER: '#C768C4',
-        END: '#983996',
+        START: '#B2562F',
+        CENTER: '#D9754A',
+        END: '#A75735',
       },
 
       MOTIVATION: {
-        START: '#7B4336',
-        CENTER: '#B16F60',
-        END: '#9D4430',
+        START: '#6A9B3A',
+        CENTER: '#8FBA65',
+        END: '#649237',
       },
 
       DESIGN: {
-        START: '#339A85',
-        CENTER: '#60B1A1',
-        END: '#2E8E7B',
+        START: '#5645C0',
+        CENTER: '#7567CB',
+        END: '#4F3CC0',
       },
 
       PLAN: {
-        START: '#68973A',
-        CENTER: '#88B160',
-        END: '#5A8B29',
+        START: '#BFAD40',
+        CENTER: '#D4C25C',
+        END: '#B2A139',
       },
     },
 

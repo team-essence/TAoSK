@@ -118,9 +118,11 @@ const StyledLevelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   p {
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
     color: ${({ theme }) => theme.COLORS.WHITE};
+    line-height: 0;
   }
 `
 const StyledUserUid = styled.p`

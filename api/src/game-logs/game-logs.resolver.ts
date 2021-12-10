@@ -8,7 +8,7 @@ export class GameLogsResolver {
   constructor(private gameLogService: GameLogsService) {}
 
   @Query(() => [GameLog])
-  public async findByProjectId(
+  public async findLogsByProjectId(
     @Args({ name: 'project_id' }) project_id: string,
   ) {
     return await this.gameLogService

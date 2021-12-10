@@ -1,5 +1,8 @@
 import React, { FC } from 'react'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import {
+  calculateMinSizeBasedOnFigma,
+  calculateMinSizeBasedOnFigmaWidth,
+} from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 
 type Props = {
@@ -43,4 +46,5 @@ const StyledCircle = styled.div<{ status: boolean }>`
 const StyledLabel = styled.h3`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   color: ${({ theme }) => theme.COLORS.WHITE};
+  line-height: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
 `

@@ -19,7 +19,6 @@ import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { List } from 'types/list'
 import { Task } from 'types/task'
-import { GameLogType } from 'types/gameLog'
 import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
@@ -41,17 +40,6 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
         setSelectUserIds(groupList => [...groupList, group.user.id])
-      })
-
-      data.getProjectById.gameLogs.map(gameLog => {
-        const time = new Date(gameLog.created_at)
-        logger.debug(gameLog)
-        const init = {
-          context: gameLog.context,
-          userName: gameLog.user.name,
-          createdAt: time.getTime(),
-        }
-        setLogs(log => [...log, init].sort((a, b) => a.createdAt - b.createdAt))
       })
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
@@ -139,7 +127,6 @@ export const ProjectDetail: FC = () => {
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
-      toast.success('タスクを移動しました')
     },
     onError(err) {
       logger.debug(err)
@@ -149,7 +136,7 @@ export const ProjectDetail: FC = () => {
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
-      toast.success('リスト作成成功！')
+      toast.success('リストを作成しました')
       const newListData = data.createList
 
       const tasks = newListData.tasks.map(task => {
@@ -210,21 +197,17 @@ export const ProjectDetail: FC = () => {
       })
     },
     onError(err) {
-      toast.error('リスト作成失敗！')
+      toast.error('リスト作成に失敗しました')
     },
   })
 
   const [updateList] = useUpdateListSortMutation({
-    onCompleted(data) {
-      toast.success('リスト更新成功！')
-    },
     onError(err) {
-      toast.error('リスト更新失敗')
+      toast.error('リスト更新に失敗しました')
     },
   })
 
   const [list, setList] = useState<List[]>([])
-  const [logs, setLogs] = useState<GameLogType[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   const handleBeforeUnloadEvent = async (userId: string, projectId: string) => {
@@ -427,7 +410,7 @@ export const ProjectDetail: FC = () => {
     await createList({
       variables: {
         newList: {
-          name: 'ほげ',
+          name: 'リスト名',
           project_id: String(id),
           task_list: 1,
           user_id: currentUser!.uid,
@@ -450,8 +433,8 @@ export const ProjectDetail: FC = () => {
         list={list}
       />
 
-      <ProjectDetailContainer>
-        <ProjectDetailLeftContainer>
+      <StyledProjectDetailContainer>
+        <StyledProjectDetailLeftContainer>
           <ProjectDrawer
             groups={projectData.data?.getProjectById.groups}
             lists={list}
@@ -465,24 +448,23 @@ export const ProjectDetail: FC = () => {
               totalExp={currentUserData.data.user.exp}
             />
           )}
-        </ProjectDetailLeftContainer>
-        <ProjectDetailRightContainer>
+        </StyledProjectDetailLeftContainer>
+        <StyledProjectDetailRightContainer>
           <ProjectRight
             onClick={handleCreateList}
             monsterHPRemaining={monsterHPRemaining}
             monsterHp={projectData.data.getProjectById.hp}
             monsterName={projectData.data.getProjectById.monster.name}
-            gameLogs={logs}
           />
-        </ProjectDetailRightContainer>
-      </ProjectDetailContainer>
+        </StyledProjectDetailRightContainer>
+      </StyledProjectDetailContainer>
 
       <StyledBackground />
     </>
   )
 }
 
-const ProjectDetailContainer = styled.div`
+const StyledProjectDetailContainer = styled.div`
   padding-top: calc(
     ${({ theme }) => theme.HEADER_HEIGHT} + ${calculateMinSizeBasedOnFigmaWidth(8)}
   );
@@ -492,8 +474,7 @@ const ProjectDetailContainer = styled.div`
   grid-template-columns: auto ${calculateMinSizeBasedOnFigmaWidth(283)};
   grid-template-rows: auto 1fr;
 `
-
-const ProjectDetailLeftContainer = styled.div`
+const StyledProjectDetailLeftContainer = styled.div`
   height: 100%;
   grid-row: 1 / 2;
   grid-column: 1 / 2;
@@ -506,20 +487,17 @@ const ProjectDetailLeftContainer = styled.div`
   }
   white-space: nowrap;
 `
-
-const ProjectDetailRightContainer = styled.div`
+const StyledProjectDetailRightContainer = styled.div`
   height: 100%;
   grid-row: 1 / 2;
   grid-column: 2 / 3;
 `
-
 const StyledBackground = styled.div`
   ${({ theme }) => css`
     z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
     top: ${theme.HEADER_HEIGHT};
     height: calc(100vh - ${theme.HEADER_HEIGHT});
   `};
-
   position: fixed;
   left: 0;
   width: 100vw;
