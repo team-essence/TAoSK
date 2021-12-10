@@ -10,11 +10,11 @@ type Props = {
   onClick: () => void
 }
 
-export const ProjectCreateListButton: FC<Props> = ({ className, onClick }) => {
-  return <StyledProjectCreateListButton className={className} onClick={onClick} />
+export const CreateListButton: FC<Props> = ({ className, onClick }) => {
+  return <StyledCreateListButton className={className} onClick={onClick} />
 }
 
-const StyledProjectCreateListButton = styled.button`
+const StyledCreateListButton = styled.button`
   width: ${calculateMinSizeBasedOnFigmaHeight(270)};
   height: ${calculateMinSizeBasedOnFigmaHeight(52.06)};
   background: url('/svg/create-list_button.svg');
