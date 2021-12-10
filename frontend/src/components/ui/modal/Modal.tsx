@@ -21,23 +21,18 @@ export const Modal: FC<Props> = ({
   className,
   children,
 }) => {
+  if (!shouldShow) return <></>
   return (
     <>
-      {shouldShow ? (
-        <>
-          <StyledWrapper className={className}>
-            <StyledCloseButton onClick={onClickCloseBtn}>
-              <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
-            </StyledCloseButton>
-            <StyledNamePlate>{title}</StyledNamePlate>
-            {children}
-            <StyledBackgroundDragonSymbol />
-          </StyledWrapper>
-          <StyledOverlay shouldShow={shouldShow} onClick={onClickCloseBtn} />
-        </>
-      ) : (
-        <></>
-      )}
+      <StyledWrapper className={className}>
+        <StyledCloseButton onClick={onClickCloseBtn}>
+          <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
+        </StyledCloseButton>
+        <StyledNamePlate>{title}</StyledNamePlate>
+        {children}
+        <StyledBackgroundDragonSymbol />
+      </StyledWrapper>
+      <StyledOverlay shouldShow={shouldShow} onClick={onClickCloseBtn} />
     </>
   )
 }
