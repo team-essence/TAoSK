@@ -6,6 +6,7 @@ import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 import { StatusParam } from 'types/status'
+import { INITIAL_STATUS_COUNTS } from 'consts/status'
 
 type StatusCounts = Record<StatusParam, number>
 
@@ -17,6 +18,7 @@ type UseTaskCreateFormReturn<T> = {
   register: UseFormRegister<T>
   isDisabled: boolean
   errors: FieldErrors
+  statusCounts: StatusCounts
   setStatusCounts: Dispatch<SetStateAction<StatusCounts>>
   userDatas: UserDatas
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
@@ -57,15 +59,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
-  const initialStatusCounts = {
-    technology: 0,
-    achievement: 0,
-    solution: 0,
-    motivation: 0,
-    design: 0,
-    plan: 0,
-  }
-  const [statusCounts, setStatusCounts] = useState<StatusCounts>(initialStatusCounts)
+  const [statusCounts, setStatusCounts] = useState<StatusCounts>({ ...INITIAL_STATUS_COUNTS })
   const [userDatas, setUserDatas] = useState<UserDatas>([])
   const [addTask] = useAddTaskMutation({
     onCompleted(data) {
@@ -73,7 +67,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
       setValue('overview', '', { shouldValidate: true })
       setValue('date', '')
       setUserDatas([])
-      setStatusCounts(initialStatusCounts)
+      setStatusCounts({ ...INITIAL_STATUS_COUNTS })
 
       closeModal()
       toast.success('タスクを作成しました')
@@ -137,6 +131,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
     register,
     isDisabled,
     errors,
+    statusCounts,
     setStatusCounts,
     userDatas,
     setUserDatas,

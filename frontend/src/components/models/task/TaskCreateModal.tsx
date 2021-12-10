@@ -34,12 +34,20 @@ export const TaskCreateModal: FC<Props> = ({
   verticalSort,
   list_id,
 }) => {
-  const { handleAddTask, isDisabled, register, errors, setStatusCounts, userDatas, setUserDatas } =
-    useTaskCreateForm({
-      verticalSort,
-      list_id,
-      closeModal: () => setShouldShow(false),
-    })
+  const {
+    handleAddTask,
+    isDisabled,
+    register,
+    errors,
+    statusCounts,
+    setStatusCounts,
+    userDatas,
+    setUserDatas,
+  } = useTaskCreateForm({
+    verticalSort,
+    list_id,
+    closeModal: () => setShouldShow(false),
+  })
 
   return (
     <StyledModal
@@ -78,6 +86,7 @@ export const TaskCreateModal: FC<Props> = ({
               {Object.values(STATUS_TYPE).map((status, index) => (
                 <TaskStatusPointField
                   status={status}
+                  statusCounts={statusCounts}
                   setStatusCounts={setStatusCounts}
                   key={index}
                 />

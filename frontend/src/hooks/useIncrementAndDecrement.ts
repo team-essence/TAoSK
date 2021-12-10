@@ -1,7 +1,8 @@
-import { useState, useCallback, useLayoutEffect } from 'react'
+import { useState, useCallback, useLayoutEffect, Dispatch, SetStateAction } from 'react'
 
 type UseIncrementAndDecrementReturn = {
   count: number
+  setCount: Dispatch<SetStateAction<number>>
   increment: () => void
   decrement: () => void
   isDisabledIncrement: boolean
@@ -37,5 +38,5 @@ export const useIncrementAndDecrement = (
     }
   }, [count])
 
-  return { count, increment, decrement, isDisabledIncrement, isDisabledDecrement }
+  return { count, setCount, increment, decrement, isDisabledIncrement, isDisabledDecrement }
 }
