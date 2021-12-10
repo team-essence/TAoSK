@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { BAR_TYPE } from 'consts/bar'
-import exp from 'utils/exp/exp'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { yanoneKaffeesatz } from 'styles/fontFamily/fontFamily'
+import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import exp from 'utils/exp/exp'
 
 type Props = {
   className?: string
@@ -17,29 +17,25 @@ export const ProjectMyBars: FC<Props> = ({ className, hp, mp, totalExp }) => {
     <StyledProjectMyBarsContainer className={className}>
       <StyledStatusHPBarContainer>
         <h4>HP</h4>
-
         <StyledStatusBackground color={BAR_TYPE.HP_BG} width={133}>
           <StyledStatusBar color={BAR_TYPE.HP} width={129} rate={hp} isSilver={true}>
             <p>{hp}/100</p>
           </StyledStatusBar>
         </StyledStatusBackground>
       </StyledStatusHPBarContainer>
-
       <StyledStatusMPBarContainer>
         <h4>MP</h4>
-
         <StyledStatusBackground color={BAR_TYPE.MP_BG} width={133}>
           <StyledStatusBar color={BAR_TYPE.MP} width={129} rate={mp} isSilver={true}>
             <p>{mp}/100</p>
           </StyledStatusBar>
         </StyledStatusBackground>
       </StyledStatusMPBarContainer>
-
       <StyledStatusEXPBarContainer>
         <h4>EXP</h4>
-
         <StyledStatusBackground color={BAR_TYPE.EXP_BG} width={293}>
           <StyledStatusBar
+            isSilver={true}
             color={BAR_TYPE.EXP}
             width={289}
             rate={exp.toRemainderExp(totalExp)}></StyledStatusBar>
@@ -58,7 +54,6 @@ const StyledProjectMyBarsContainer = styled.div`
   grid-template-rows: 1fr 1fr;
   gap: 5px 0;
 `
-
 const StyledStatusBarContainer = styled.div`
   display: grid;
   grid-template-columns: auto auto;
@@ -74,7 +69,6 @@ const StyledStatusBarContainer = styled.div`
     line-height: 0;
   }
 `
-
 const StyledStatusHPBarContainer = styled(StyledStatusBarContainer)`
   padding-left: ${calculateMinSizeBasedOnFigmaWidth(7)};
   justify-content: flex-start;
@@ -85,7 +79,6 @@ const StyledStatusMPBarContainer = styled(StyledStatusBarContainer)`
 const StyledStatusEXPBarContainer = styled(StyledStatusBarContainer)`
   grid-column: 1 / 3;
 `
-
 const StyledStatusBackground = styled.div<{ color: BAR_TYPE; width: number }>`
   position: relative;
   border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
@@ -93,7 +86,6 @@ const StyledStatusBackground = styled.div<{ color: BAR_TYPE; width: number }>`
   height: ${calculateMinSizeBasedOnFigmaWidth(12)};
   background: ${({ color }) => color};
 `
-
 const StyledStatusBar = styled.div<{
   color: BAR_TYPE
   width: number
@@ -105,12 +97,10 @@ const StyledStatusBar = styled.div<{
   right: 0;
   width: ${({ width }) => calculateMinSizeBasedOnFigmaWidth(width)};
   height: ${calculateMinSizeBasedOnFigmaWidth(12)};
-
   p {
     position: absolute;
     bottom: -5px;
     right: ${calculateMinSizeBasedOnFigmaWidth(1)};
-
     ${({ theme }) => css`
       width: ${calculateMinSizeBasedOnFigmaWidth(58)};
       text-align: center;
@@ -128,14 +118,12 @@ const StyledStatusBar = styled.div<{
       -webkit-text-stroke: 3px transparent;
     `}
   }
-
   &::before {
     content: '';
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
     position: absolute;
     width: 100%;
     height: 100%;
-
     ${({ theme, isSilver }) => css`
       ${isSilver &&
       css`
@@ -143,7 +131,6 @@ const StyledStatusBar = styled.div<{
       `}
     `}
   }
-
   &::after {
     content: '';
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
