@@ -17,6 +17,7 @@ import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { STATUS_TYPE } from 'consts/status'
 
 type Props = {
   shouldShow: boolean
@@ -33,11 +34,20 @@ export const TaskCreateModal: FC<Props> = ({
   verticalSort,
   list_id,
 }) => {
-  const { handleAddTask, isDisabled, register, errors, setStatus, setUserDatas } =
-    useTaskCreateForm({
-      verticalSort,
-      list_id,
-    })
+  const {
+    handleAddTask,
+    isDisabled,
+    register,
+    errors,
+    statusCounts,
+    setStatusCounts,
+    userDatas,
+    setUserDatas,
+  } = useTaskCreateForm({
+    verticalSort,
+    list_id,
+    closeModal: () => setShouldShow(false),
+  })
 
   return (
     <StyledModal
@@ -69,16 +79,18 @@ export const TaskCreateModal: FC<Props> = ({
           <StyledBorder />
           <StyledRightColumn>
             <StyledCalenderField label="期限" registration={register('date')} required={false} />
-            <StyledSearchMemberField setUserDatas={setUserDatas} />
+            <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
 
             <StyledStatusWrapper className={className}>
               <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-              <TaskStatusPointField status="technology" setStatus={setStatus} />
-              <TaskStatusPointField status="achievement" setStatus={setStatus} />
-              <TaskStatusPointField status="solution" setStatus={setStatus} />
-              <TaskStatusPointField status="motivation" setStatus={setStatus} />
-              <TaskStatusPointField status="design" setStatus={setStatus} />
-              <TaskStatusPointField status="plan" setStatus={setStatus} />
+              {Object.values(STATUS_TYPE).map((status, index) => (
+                <TaskStatusPointField
+                  status={status}
+                  statusCounts={statusCounts}
+                  setStatusCounts={setStatusCounts}
+                  key={index}
+                />
+              ))}
             </StyledStatusWrapper>
           </StyledRightColumn>
         </StyledInputsWrapper>

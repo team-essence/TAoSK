@@ -1,4 +1,11 @@
-import React, { FC, SelectHTMLAttributes, useState, FocusEvent, ChangeEvent } from 'react'
+import React, {
+  FC,
+  useEffect,
+  SelectHTMLAttributes,
+  useState,
+  FocusEvent,
+  ChangeEvent,
+} from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -39,6 +46,10 @@ export const SelectField: FC<Props> = ({
     selectAttributes.onBlur && selectAttributes.onBlur(e)
     setHasBlured(true)
   }
+
+  useEffect(() => {
+    return () => setHasBlured(false)
+  })
 
   return (
     <div className={className}>

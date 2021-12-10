@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, { FC, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -32,6 +32,10 @@ export const InputField: FC<Props> = ({
     inputAttributes.onBlur && inputAttributes.onBlur(e)
     setHasBlured(true)
   }
+
+  useEffect(() => {
+    return () => setHasBlured(false)
+  }, [])
 
   return (
     <div className={className}>

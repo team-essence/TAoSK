@@ -5,11 +5,10 @@ import type { UserDatas } from 'types/userDatas'
 import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
+import { StatusParam } from 'types/status'
+import { INITIAL_STATUS_COUNTS } from 'consts/status'
 
-type StatusCounts = Record<
-  'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan',
-  number
->
+type StatusCounts = Record<StatusParam, number>
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
@@ -19,13 +18,16 @@ type UseTaskCreateFormReturn<T> = {
   register: UseFormRegister<T>
   isDisabled: boolean
   errors: FieldErrors
-  setStatus: Dispatch<SetStateAction<StatusCounts>>
+  statusCounts: StatusCounts
+  setStatusCounts: Dispatch<SetStateAction<StatusCounts>>
+  userDatas: UserDatas
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
 }
 
 type UseTaskCreateForm<T> = (args: {
   verticalSort: number
   list_id: string
+  closeModal: () => void
 }) => UseTaskCreateFormReturn<T>
 
 /**
@@ -39,7 +41,11 @@ type UseTaskCreateForm<T> = (args: {
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort, list_id }) => {
+export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
+  verticalSort,
+  list_id,
+  closeModal,
+}) => {
   const { id: projectId } = useParams()
   const {
     register,
@@ -53,17 +59,17 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
-  const [status, setStatus] = useState<StatusCounts>({
-    technology: 0,
-    achievement: 0,
-    solution: 0,
-    motivation: 0,
-    design: 0,
-    plan: 0,
-  })
+  const [statusCounts, setStatusCounts] = useState<StatusCounts>({ ...INITIAL_STATUS_COUNTS })
   const [userDatas, setUserDatas] = useState<UserDatas>([])
   const [addTask] = useAddTaskMutation({
     onCompleted(data) {
+      setValue('title', '', { shouldValidate: true })
+      setValue('overview', '', { shouldValidate: true })
+      setValue('date', '')
+      setUserDatas([])
+      setStatusCounts({ ...INITIAL_STATUS_COUNTS })
+
+      closeModal()
       toast.success('タスクを作成しました')
     },
     onError(err) {
@@ -75,9 +81,9 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
     const initializeInputValues = () => {
       setValue('title', '', { shouldValidate: true })
       setValue('overview', '', { shouldValidate: true })
+      setValue('date', '')
     }
     const hasError = Object.keys(errors).length
-
     if (!isComponentMounted.current) {
       initializeInputValues()
       isComponentMounted.current = true
@@ -92,7 +98,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
     if (!currentUser) return
 
     const { title, overview, date } = getValues()
-    const { technology, achievement, solution, motivation, design, plan } = status
+    const { technology, achievement, solution, motivation, design, plan } = statusCounts
     const users = userDatas.map(data => {
       return { user_id: data.id }
     })
@@ -119,13 +125,15 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({ verticalSort,
         },
       },
     })
-  }, [status, userDatas])
+  }, [statusCounts, userDatas])
 
   return {
     register,
     isDisabled,
     errors,
-    setStatus,
+    statusCounts,
+    setStatusCounts,
+    userDatas,
     setUserDatas,
     handleAddTask: handleSubmit(handleAddTask),
   }

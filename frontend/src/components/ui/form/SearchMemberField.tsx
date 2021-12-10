@@ -13,9 +13,10 @@ import type { UserDatas } from 'types/userDatas'
 type Props = {
   className?: string
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
+  userDatas: UserDatas
 }
 
-export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
+export const SearchMemberField: FC<Props> = ({ className, setUserDatas, userDatas }) => {
   const {
     onChange,
     onFocus,
@@ -24,7 +25,8 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
     candidateUserDatas,
     selectedUserDatas,
     setSelectedUserDatas,
-  } = useSearchMember()
+    value,
+  } = useSearchMember(userDatas)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserDatas.length,
   )
@@ -49,6 +51,7 @@ export const SearchMemberField: FC<Props> = ({ className, setUserDatas }) => {
         <StyledInput
           type="text"
           placeholder="パーティメンバーを検索"
+          value={value}
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}

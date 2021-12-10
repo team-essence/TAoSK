@@ -21,9 +21,10 @@ export const Modal: FC<Props> = ({
   className,
   children,
 }) => {
+  if (!shouldShow) return <></>
   return (
     <>
-      <StyledWrapper className={className} shouldShow={shouldShow}>
+      <StyledWrapper className={className}>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
@@ -36,10 +37,9 @@ export const Modal: FC<Props> = ({
   )
 }
 
-const StyledWrapper = styled.div<{ shouldShow: boolean }>`
+const StyledWrapper = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
   position: fixed;
-  display: ${({ shouldShow }) => (shouldShow ? 'block' : 'none')};
   top: 0;
   right: 0;
   bottom: 0;

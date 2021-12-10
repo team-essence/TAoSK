@@ -1,25 +1,46 @@
-import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
+import React, { FC, useEffect, useRef, Dispatch, SetStateAction } from 'react'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
+import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useIncrementAndDecrement } from 'hooks/useIncrementAndDecrement'
-import { convertParamIntoJp } from 'utils/convertParamIntoJp'
-
-type Status = 'technology' | 'achievement' | 'solution' | 'motivation' | 'design' | 'plan'
+import { StatusParam } from 'types/status'
+import { INITIAL_STATUS_COUNTS } from 'consts/status'
 
 type Props = {
   className?: string
-  status: Status
-  setStatus: Dispatch<SetStateAction<Record<Status, number>>>
+  status: StatusParam
+  statusCounts: Record<StatusParam, number>
+  setStatusCounts: Dispatch<SetStateAction<Record<StatusParam, number>>>
 }
 
-export const TaskStatusPointField: FC<Props> = ({ className, status, setStatus }) => {
-  const { count, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
+const isEqual = <T,>(a: T, b: T) => JSON.stringify(a) === JSON.stringify(b)
+
+export const TaskStatusPointField: FC<Props> = ({
+  className,
+  status,
+  statusCounts,
+  setStatusCounts,
+}) => {
+  const { count, setCount, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
     useIncrementAndDecrement(10, 0)
+  const isComponentMounted = useRef<boolean>(false)
 
   useEffect(() => {
-    setStatus(prev => ({ ...prev, [status]: count }))
+    const setCachedStatusCounts = () => {
+      if (!isEqual(statusCounts, INITIAL_STATUS_COUNTS)) {
+        // モーダルを開いた時にstatusCountsの値が初期値でなかった時
+        setCount(statusCounts[status])
+      }
+    }
+
+    if (isComponentMounted.current) {
+      setStatusCounts(prev => ({ ...prev, [status]: count }))
+    } else {
+      setCachedStatusCounts()
+      isComponentMounted.current = true
+    }
   }, [count])
 
   return (
@@ -79,7 +100,7 @@ const iconBoxCss = (
     background-color: ${afterBg};
   }
 `
-const StyledIconBox = styled.div<{ status: Status }>`
+const StyledIconBox = styled.div<{ status: StatusParam }>`
   ${({ status, theme }) => {
     switch (status) {
       case 'technology':
@@ -101,7 +122,7 @@ const StyledIconBox = styled.div<{ status: Status }>`
     }
   }}
 `
-const StyledStatusIcon = styled.div<{ status: Status }>`
+const StyledStatusIcon = styled.div<{ status: StatusParam }>`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   object-fit: contain;
   aspect-ratio: 1 / 1;
