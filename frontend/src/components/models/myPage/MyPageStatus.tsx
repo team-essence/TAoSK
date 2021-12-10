@@ -29,9 +29,9 @@ export const MyPageStatus: FC<Props> = ({
         <MyPageStatusCard statusType={STATUS_TYPE.TECHNOLOGY} statValue={technology} />
         <MyPageStatusCard statusType={STATUS_TYPE.SOLUTION} statValue={solution} />
         <MyPageStatusCard statusType={STATUS_TYPE.ACHIEVEMENT} statValue={achievement} />
+        <MyPageStatusCard statusType={STATUS_TYPE.PLAN} statValue={plan} />
         <MyPageStatusCard statusType={STATUS_TYPE.MOTIVATION} statValue={motivation} />
         <MyPageStatusCard statusType={STATUS_TYPE.DESIGN} statValue={design} />
-        <MyPageStatusCard statusType={STATUS_TYPE.PLAN} statValue={plan} />
       </StyledStatusCardContainer>
 
       <StyleMyPageStatusBackground
