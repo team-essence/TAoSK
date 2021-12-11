@@ -40,6 +40,7 @@ export const ProjectDetailHeader: FC<Props> = ({
   company,
   list,
 }) => {
+  const navigate = useNavigate()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const [searchTaskEvent, setSearchTaskEvent] = useState<React.MouseEvent<
     HTMLDivElement,
@@ -138,7 +139,7 @@ export const ProjectDetailHeader: FC<Props> = ({
     <>
       <StyledHeaderWrapper className={className}>
         <StyledLeftContainer>
-          <StyledLogoWrapper>
+          <StyledLogoWrapper onClick={() => navigate('/')}>
             <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
           </StyledLogoWrapper>
 
@@ -240,6 +241,7 @@ const StyledLeftContainer = styled.div`
 
 const StyledLogo = styled.img`
   height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+  cursor: pointer;
 `
 
 const StyledPopupContainer = styled.div``
