@@ -6,14 +6,14 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import exp from 'utils/exp/exp'
 
 type Props = {
-  iconImage: string
-  name: string
-  uid: string
-  company: string
-  totalExp: number
-  occupationId: number
-  hp: number
-  mp: number
+  iconImage?: string
+  name?: string
+  uid?: string
+  company?: string
+  totalExp?: number
+  occupationId?: number
+  hp?: number
+  mp?: number
 }
 
 export const MyPageUserInfo: FCX<Props> = ({
@@ -38,7 +38,7 @@ export const MyPageUserInfo: FCX<Props> = ({
           <StyledUserDataContainer>
             <StyledLevelContainer>
               <StyledLevelLabel>lv.</StyledLevelLabel>
-              <StyledLevel>{exp.toLevel(totalExp)}</StyledLevel>
+              <StyledLevel>{exp.toLevel(totalExp as number)}</StyledLevel>
             </StyledLevelContainer>
 
             <StyledUserNameAndUidContainer>
@@ -52,20 +52,20 @@ export const MyPageUserInfo: FCX<Props> = ({
           </StyledCompanyContainer>
 
           <StyledOccupationContainer>
-            <p>{occupationList[occupationId]}</p>
+            <p>{occupationList[occupationId as number]}</p>
           </StyledOccupationContainer>
 
           <StyledParameterContainer>
             <StyledStatusBarContainer>
               <h5>HP</h5>
               <p>{hp}/100</p>
-              <StyledHpBar rate={hp} />
+              <StyledHpBar rate={hp as number} />
             </StyledStatusBarContainer>
 
             <StyledStatusBarContainer>
               <h5>MP</h5>
               <p>{mp}/100</p>
-              <StyledMpBar rate={mp} />
+              <StyledMpBar rate={mp as number} />
             </StyledStatusBarContainer>
           </StyledParameterContainer>
         </StyledUserInfoContainer>

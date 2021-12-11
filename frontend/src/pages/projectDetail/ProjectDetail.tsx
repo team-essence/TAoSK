@@ -24,11 +24,10 @@ import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { Loading } from 'components/ui/loading/Loading'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
+import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
-import { LazyLoading } from 'components/ui/loading/LazyLoading'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -386,14 +385,6 @@ export const ProjectDetail: FC = () => {
       },
     })
   }
-
-  const [a, setA] = useState(true)
-  useLayoutEffect(() => {
-    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-    sleep(5000).then(() => setA(false))
-  }, [])
-
-  // if (!projectData.data) return <Loading />
 
   return (
     <>

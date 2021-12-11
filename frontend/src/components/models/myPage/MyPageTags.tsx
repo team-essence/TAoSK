@@ -6,12 +6,12 @@ import logger from 'utils/debugger/logger'
 import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
 type Props = {
-  interests: {
+  interests?: {
     __typename?: 'Interest' | undefined
     id: number
     context: string
   }[]
-  certifications: {
+  certifications?: {
     __typename?: 'Certification' | undefined
     id: number
     name: string
@@ -29,7 +29,7 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
-          {interests.map((interest, index) => (
+          {interests?.map((interest, index) => (
             <Tag name={interest.context} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
@@ -40,7 +40,7 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
-          {certifications.map((certification, index) => (
+          {certifications?.map((certification, index) => (
             <Tag name={certification.name} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
