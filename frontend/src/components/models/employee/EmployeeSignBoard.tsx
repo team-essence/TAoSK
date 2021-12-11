@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,12 +6,11 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
-  className?: string
   isOpen: boolean
   handleClick: () => void
 }
 
-export const EmployeeSignBoard: FC<Props> = ({ className, isOpen, handleClick }) => {
+export const EmployeeSignBoard: FCX<Props> = ({ className, isOpen, handleClick }) => {
   return (
     <StyledContainer className={className} onClick={handleClick}>
       <StyledH3>MEMBER</StyledH3>

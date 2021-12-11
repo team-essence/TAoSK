@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react'
+import React, { FCX, MouseEvent } from 'react'
 import styled from 'styled-components'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -6,12 +6,11 @@ import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   itemName: string
   onClick?: (e: MouseEvent) => void
 }
 
-export const InputItem: FC<Props> = ({ className, itemName, onClick }) => {
+export const InputItem: FCX<Props> = ({ className, itemName, onClick }) => {
   return (
     <StyledOuterWrapper className={className}>
       <StyledOuterMask>

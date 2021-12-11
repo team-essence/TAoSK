@@ -1,6 +1,6 @@
+import React, { FCX } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import type { UserDatas } from 'types/userDatas'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -14,10 +14,9 @@ type Props = {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   userDatas: UserDatas
   userCount: number
-  className?: string
 }
 
-export const ManyUserAvatar: FC<Props> = ({
+export const ManyUserAvatar: FCX<Props> = ({
   avatarStyleType,
   onClickDeleteBtn,
   userDatas,

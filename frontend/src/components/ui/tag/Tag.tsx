@@ -1,11 +1,10 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 
 type Props = {
-  className?: string
   name: string
   onClick?: () => void
   tagType: TAG_TYPE
@@ -19,7 +18,7 @@ export const TAG_TYPE = {
 } as const
 export type TAG_TYPE = typeof TAG_TYPE[keyof typeof TAG_TYPE]
 
-export const Tag: FC<Props> = ({ className, name, onClick, tagType }) => {
+export const Tag: FCX<Props> = ({ className, name, onClick, tagType }) => {
   return (
     <StyledTagContainer className={className}>
       <StyledTagTriangle tagType={tagType} />

@@ -1,4 +1,4 @@
-import React, { FC, InputHTMLAttributes, ReactNode, useState, ChangeEvent } from 'react'
+import React, { FCX, InputHTMLAttributes, ReactNode, useState, ChangeEvent } from 'react'
 import styled, { css } from 'styled-components'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { InputField } from 'components/ui/form/InputField'
@@ -7,7 +7,6 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
-  className?: string
   label?: string
   error?: FieldError | undefined
   children?: ReactNode
@@ -17,7 +16,7 @@ type Props = {
   type?: 'text' | 'password'
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const PasswordField: FC<Props> = ({
+export const PasswordField: FCX<Props> = ({
   className,
   type = 'password',
   registration,

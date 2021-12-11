@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { occupationList } from 'consts/occupationList'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -7,7 +7,6 @@ import { ProjectMyBars } from './ProjectMyBars'
 import { ProjectMyStatuses } from './ProjectMyStatuses'
 
 type Props = {
-  className?: string
   iconImage: string
   occupationId: number
   name: string
@@ -22,7 +21,7 @@ type Props = {
   plan: number
 }
 
-export const ProjectMyInfo: FC<Props> = ({
+export const ProjectMyInfo: FCX<Props> = ({
   className,
   iconImage,
   occupationId,

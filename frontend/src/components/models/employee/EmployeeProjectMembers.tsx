@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 import {
   calculateMinSizeBasedOnFigmaWidth,
@@ -9,12 +9,9 @@ import { EmployeeInformation } from 'components/models/employee/EmployeeInformat
 import styled from 'styled-components'
 
 type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
+type Props = Partial<Groups>
 
-type Props = {
-  className?: string
-} & Partial<Groups>
-
-export const EmployeeProjectMembers: FC<Props> = ({ groups }) => {
+export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
   return (
     <StyledContainer>
       <StyledLabelContainer>

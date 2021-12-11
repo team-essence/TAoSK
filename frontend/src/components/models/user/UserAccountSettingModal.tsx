@@ -1,4 +1,4 @@
-import React, { FC, useState, Dispatch, SetStateAction } from 'react'
+import React, { FCX, useState, Dispatch, SetStateAction } from 'react'
 import { theme } from 'styles/theme'
 import { REGEX_EMAIL, REGEX_TEXT } from 'consts/regex'
 import { Modal } from 'components/ui/modal/Modal'
@@ -30,7 +30,7 @@ type Props = {
   className?: string
 }
 
-export const UserAccountSettingModal: FC<Props> = ({ shouldShow, setShouldShow, className }) => {
+export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
   const { currentUser } = useAuthContext()
   const {
     register,

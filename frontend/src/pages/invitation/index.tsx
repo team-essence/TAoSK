@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useNavigate, useParams } from 'react-router'
 import logger from 'utils/debugger/logger'
@@ -6,7 +6,7 @@ import { useGetInvitationByUserIdLazyQuery, useJoinProjectMutation } from './Inv
 import { GQL_ERROR_MESSAGE } from 'consts/gqlErrorMessage'
 import toast from 'utils/toast/toast'
 
-export const Invitation = () => {
+export const Invitation: FC = () => {
   const navigate = useNavigate()
   const { currentUser } = useAuthContext()
   const { projectId } = useParams()

@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
-import styled, { css } from 'styled-components'
+import React, { FCX, useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import date from 'utils/date/date'
@@ -7,14 +7,13 @@ import logger from 'utils/debugger/logger'
 import { Notifications } from 'types/notification'
 
 type Props = {
-  className?: string
   isHover: boolean
   isClick: boolean
   closeClick: () => void
   notifications: Notifications
 }
 
-export const NotificationPopup: FC<Props> = ({
+export const NotificationPopup: FCX<Props> = ({
   className,
   isHover,
   isClick,

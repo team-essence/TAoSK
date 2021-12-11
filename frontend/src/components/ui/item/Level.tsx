@@ -1,16 +1,15 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 
 type StyleSize = 'small' | 'normal' | 'large'
 
 type Props = {
-  className?: string
   level: number
   size: StyleSize
 }
 
-export const Level: FC<Props> = ({ className, level, size }) => {
+export const Level: FCX<Props> = ({ className, level, size }) => {
   return <StyledLevel className={className} size={size}>{`lv.${level}`}</StyledLevel>
 }
 

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FCX, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Notifications } from 'types/notification'
@@ -20,7 +20,6 @@ import { SearchTaskPopup } from 'components/ui/popup/SearchTaskPopup'
 import { UserAccountSettingModal } from 'components/models/user/UserAccountSettingModal'
 
 type Props = {
-  className?: string
   iconImage: string
   name: string
   uid: string
@@ -30,7 +29,7 @@ type Props = {
   list: List[]
 }
 
-export const ProjectDetailHeader: FC<Props> = ({
+export const ProjectDetailHeader: FCX<Props> = ({
   className,
   iconImage,
   name,

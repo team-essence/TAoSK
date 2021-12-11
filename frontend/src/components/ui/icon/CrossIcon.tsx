@@ -1,15 +1,14 @@
-import React, { FC, MouseEvent, SVGAttributes } from 'react'
+import React, { FCX, MouseEvent, SVGAttributes } from 'react'
 import styled from 'styled-components'
 
 type Props = {
-  className?: string
   onClick?: (e: MouseEvent) => void
   color: string
   strokeLinecap?: SVGAttributes<SVGPathElement>['strokeLinecap']
   strokeWidth?: SVGAttributes<SVGPathElement>['strokeWidth']
 }
 
-export const CrossIcon: FC<Props> = ({
+export const CrossIcon: FCX<Props> = ({
   className,
   onClick,
   color,

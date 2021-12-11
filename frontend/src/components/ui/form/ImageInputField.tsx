@@ -1,18 +1,17 @@
-import React, { FC, useRef } from 'react'
+import React, { FCX, useRef } from 'react'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   image: string
   defaultSrc: string
   handleUploadImg: (e: React.ChangeEvent<HTMLInputElement>) => void
   initializeUploadImg: () => void
 }
 
-export const ImageInputField: FC<Props> = ({
+export const ImageInputField: FCX<Props> = ({
   className,
   image,
   defaultSrc,

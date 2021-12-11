@@ -1,10 +1,9 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { MyPageStatusCard, STATUS_TYPE } from './MyPageStatusCard'
 
 type Props = {
-  className?: string
   technology: number
   solution: number
   achievement: number
@@ -13,7 +12,7 @@ type Props = {
   plan: number
 }
 
-export const MyPageStatus: FC<Props> = ({
+export const MyPageStatus: FCX<Props> = ({
   className,
   technology,
   solution,

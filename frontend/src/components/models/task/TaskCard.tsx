@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
 import { Params } from 'types/status'
@@ -14,13 +14,12 @@ import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   taskIndex: number
   listIndex: number
   listLength: number
 } & Omit<Task, 'vertical_sort'>
 
-export const TaskCard: FC<Props> = ({
+export const TaskCard: FCX<Props> = ({
   id,
   title,
   technology,

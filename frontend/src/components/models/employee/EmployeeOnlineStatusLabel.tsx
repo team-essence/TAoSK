@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import {
   calculateMinSizeBasedOnFigma,
   calculateMinSizeBasedOnFigmaWidth,
@@ -6,12 +6,11 @@ import {
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   label: string
   status: boolean
 }
 
-export const EmployeeOnlineStatusLabel: FC<Props> = ({ label, status }) => {
+export const EmployeeOnlineStatusLabel: FCX<Props> = ({ label, status }) => {
   return (
     <StyledContainer>
       <StyledCircle status={status} />

@@ -33,17 +33,17 @@ frontend/
             ├─ styles/
 ```
 
-| ディレクトリ | 役割                   |
-| ------------ | ---------------------- |
-| components   | ui: 各パーツ models: ビジネスロジック   |
-| pages        | 各ページのトップ |
-| hooks        | hooks関数       |
-| consts       | 変更が無い値     |
-| providers    | providerの設定       |
-| routes       | ルーティングの設定      |
-| utils        | 通常関数            |
-| env          | env系の設定       |
-| styles       | 初期スタイル設定       |
+| ディレクトリ | 役割                                  |
+| ------------ | ------------------------------------- |
+| components   | ui: 各パーツ models: ビジネスロジック |
+| pages        | 各ページのトップ                      |
+| hooks        | hooks 関数                            |
+| consts       | 変更が無い値                          |
+| providers    | provider の設定                       |
+| routes       | ルーティングの設定                    |
+| utils        | 通常関数                              |
+| env          | env 系の設定                          |
+| styles       | 初期スタイル設定                      |
 
 ### コード規約
 
@@ -79,18 +79,19 @@ frontend/
     - アクター: 人事、一般ユーザー
   - 例えば、同じ画面でも一般ユーザーと人事で表示内容が異なる場合、それぞれでコンポーネントを分ける
     - テキストが少し分岐する程度なら分けなくても良いが、処理そのものが変わるような場合は分ける
-- コンポーネント作成時は、必ず props で className を受け取れれうようにし、一番外側の要素に className を渡すようにする
-  - これをしないと、`styled(Component)``` のようにコンポーネントをスタイル拡張する際に、スタイルが付与できなくなる
-  - 詳しくはこの記事を参考: [TypeScript 利用時の styled-components の拡張方法について - Qiita](https://qiita.com/s-age/items/d85fc08ed8650c5361c1)
-  ```tsx
-  type Props = {
-    className?: string;
-  };
+- コンポーネント作成時は、props で className を受け取れるようにするために、FCX の型を仕様する
 
-  const Text: FC<Props> = (props) => {
+  - これをしないと、`styled(Component)``` のようにコンポーネントをスタイル拡張する際に、スタイルが付与できなくなる
+  - 詳しくはこの記事を参考: [React.FC 型を拡張する - Qiita](https://qiita.com/Takepepe/items/f66c7e2e1d22b431f148)
+
+  ```tsx
+  import React, { FCX } from "react";
+
+  const Text: FCX<Props> = (props) => {
     return <Component className={props.className}>hoge</Component>;
   };
   ```
+
 - コンポーネントに margin をつけない
   - 参考: [UI コンポーネントにはマージンをつけるな！絶対にだ！！ - Qiita](https://qiita.com/otsukayuhi/items/d88b5158745f700be534)
 
