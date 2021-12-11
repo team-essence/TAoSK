@@ -1,0 +1,33 @@
+{
+  "styled-components": {
+    "scope": "typescriptreact,typescript",
+    "prefix": "callstyle",
+    "body": ["const Styled$1 = styled.$2`", "  $3", "`"],
+    "description": "styled-componentsを使うときのの雛形"
+  },
+
+  "styled-components use global theme": {
+    "scope": "css,scss,typescriptreact,typescript",
+    "prefix": "calltheme",
+    "body": ["\\${({ theme }) =>", "  css`", "    $1", "  `", "}"],
+    "description": "styled-componentでtheme.tsのthemeを使いたい時"
+  },
+
+  "React FC": {
+    "scope": "typescriptreact",
+    "prefix": "fc",
+    "body": [
+      "import React, { FC } from 'react'",
+      "import styled, { css } from 'styled-components'\n",
+      "type Props = { className?: string }\n",
+      "export const $1: FC<Props> = ({ className }) => {",
+      "  return (",
+      "    <div className={className}>",
+      "      $2",
+      "    </div>",
+      "  )",
+      "}\n"
+    ],
+    "description": "React関数コンポーネントの雛形"
+  }
+}
