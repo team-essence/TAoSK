@@ -27,6 +27,7 @@ export const ProjectListHeader: FCX<Props> = ({
   totalExp,
   notifications,
 }) => {
+  const navigate = useNavigate()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const [isNotificationHover, notificationEventHoverHandlers] = useHover()
   const [isClickNotification, setIsClickNotification] = useState(false)
@@ -71,7 +72,7 @@ export const ProjectListHeader: FCX<Props> = ({
   return (
     <>
       <StyledHeaderWrapper className={className}>
-        <StyledLogoWrapper>
+        <StyledLogoWrapper onClick={() => navigate('/')}>
           <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
         </StyledLogoWrapper>
 
@@ -134,6 +135,7 @@ const StyledLogoWrapper = styled.div`
 
 const StyledLogo = styled.img`
   height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+  cursor: pointer;
 `
 
 const StyledPopupContainer = styled.div``
