@@ -42,17 +42,15 @@ export class TasksService {
       );
       if (!task) throw new NotFoundException();
 
-      const list = await this.listRepository.findOne(
-        updateTask.tasks[index].list_id,
-      );
+      const list = await this.listRepository.findOne({
+        where: {
+          list_id: updateTask.tasks[index].list_id,
+        },
+      });
       if (!list) throw new NotFoundException();
 
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
-
-      await this.taskRepository.save(task).catch((err) => {
-        throw err;
-      });
 
       if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
         task.completed_flg = updateTask.tasks[index].completed_flg;
@@ -111,18 +109,18 @@ export class TasksService {
       await this.taskRepository.save(task).catch((err) => {
         new InternalServerErrorException();
       });
-
-      const tasks = this.taskRepository.find({
-        relations: ['project'],
-        where: {
-          project: {
-            id: updateTask.project_id,
-          },
-        },
-      });
-      if (!tasks) throw new NotFoundException();
-      return tasks;
     }
+
+    const tasks = this.taskRepository.find({
+      relations: ['project'],
+      where: {
+        project: {
+          id: updateTask.project_id,
+        },
+      },
+    });
+    if (!tasks) throw new NotFoundException();
+    return tasks;
   }
 
   async addTask(
