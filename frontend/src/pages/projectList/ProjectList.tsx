@@ -12,6 +12,7 @@ import logger from 'utils/debugger/logger'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
 import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
+import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { calculateVwBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { Notifications } from 'types/notification'
@@ -45,15 +46,14 @@ export const ProjectList: FC = () => {
 
   if (!currentUser) return <Navigate to="/signup" />
 
-  if (!userData.data) return <Loading />
-
   return (
     <>
+      <LazyLoading />
       <ProjectListHeader
-        iconImage={userData.data.user.icon_image}
-        name={userData.data.user.name}
-        uid={userData.data.user.id}
-        totalExp={userData.data.user.exp}
+        iconImage={userData.data?.user.icon_image}
+        name={userData.data?.user.name}
+        uid={userData.data?.user.id}
+        totalExp={userData.data?.user.exp}
         notifications={notifications}
       />
 
@@ -70,7 +70,7 @@ export const ProjectList: FC = () => {
 
             <StyledProjectListScroll>
               <StyledProjectList>
-                {userData.data.user.groups.map((group, index) => (
+                {userData.data?.user.groups.map((group, index) => (
                   <StyledProject key={index} onClick={() => setSelectProject(index)}>
                     <ProjectListItem
                       activeStatue={
@@ -89,7 +89,7 @@ export const ProjectList: FC = () => {
         </StyledProjectListContainer>
 
         <StyledProjectDetailContainer>
-          {!!userData.data.user.groups.length && (
+          {!!userData.data?.user.groups.length && (
             <StyledProjectDetail>
               <StyledProjectTitleContainer>
                 <StyledProjectTitle>

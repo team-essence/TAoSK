@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -28,6 +28,7 @@ import { Loading } from 'components/ui/loading/Loading'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
+import { LazyLoading } from 'components/ui/loading/LazyLoading'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -386,10 +387,17 @@ export const ProjectDetail: FC = () => {
     })
   }
 
-  if (!projectData.data) return <Loading />
+  const [a, setA] = useState(true)
+  useLayoutEffect(() => {
+    const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+    sleep(5000).then(() => setA(false))
+  }, [])
+
+  // if (!projectData.data) return <Loading />
 
   return (
     <>
+      <LazyLoading />
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}
@@ -420,8 +428,8 @@ export const ProjectDetail: FC = () => {
           <ProjectRight
             onClick={handleCreateList}
             monsterHPRemaining={monsterHPRemaining}
-            monsterHp={projectData.data.getProjectById.hp}
-            monsterName={projectData.data.getProjectById.monster.name}
+            monsterHp={projectData.data?.getProjectById.hp}
+            monsterName={projectData.data?.getProjectById.monster.name}
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>

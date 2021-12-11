@@ -12,10 +12,10 @@ import { UserMenuHeader } from 'components/ui/header/UserMenuHeader'
 import { NotificationHeader } from 'components/ui/header/NotificationHeader'
 
 type Props = {
-  iconImage: string
-  name: string
-  uid: string
-  totalExp: number
+  iconImage?: string
+  name?: string
+  uid?: string
+  totalExp?: number
   notifications: Notifications
 }
 
@@ -84,7 +84,7 @@ export const ProjectListHeader: FCX<Props> = ({
 
         <UserMenuHeader
           handlers={userMenuEventHoverHandlers}
-          iconImage={iconImage}
+          iconImage={iconImage as string}
           onClick={event => handleUserMenuPopup(event, isClickUserMenu)}
         />
 
@@ -102,10 +102,10 @@ export const ProjectListHeader: FCX<Props> = ({
             isHover={!!isUserMenuHover}
             isClick={isClickUserMenu}
             closeClick={() => setIsClickUserMenu(false)}
-            iconImage={iconImage}
-            name={name}
-            uid={uid}
-            totalExp={totalExp}
+            iconImage={iconImage as string}
+            name={name as string}
+            uid={uid as string}
+            totalExp={totalExp as number}
             setShouldShowModal={setShouldShowModal}
           />
         </StyledPopupContainer>
