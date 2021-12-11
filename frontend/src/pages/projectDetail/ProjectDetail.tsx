@@ -337,7 +337,7 @@ export const ProjectDetail: FC = () => {
       return list.tasks.map((task, taskIndex) => {
         return {
           id: task.id,
-          list_id: list.id,
+          list_id: list.list_id,
           vertical_sort: taskIndex,
           completed_flg: index === length - 1 ? true : false,
         }
