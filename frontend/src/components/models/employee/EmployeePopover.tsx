@@ -83,7 +83,7 @@ export const EmployeePopover: FCX<Props> = ({
             </div>
           </StyledFlexWrapper>
           <StyledName>{name}</StyledName>
-          <StyledId>{`#${id}`}</StyledId>
+          <StyledId>{`@${id}`}</StyledId>
         </StyledUpperRowContainer>
         <StyledBorder />
         <StyledLowerRow>
