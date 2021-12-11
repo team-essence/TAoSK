@@ -1,13 +1,11 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FCX, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import logger from 'utils/debugger/logger'
 import { theme } from 'styles/theme'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 type Props = {
-  className?: string
   popupType: POPUP_TYPE
   title: string
   children: ReactNode
@@ -24,7 +22,7 @@ export const POPUP_TYPE = {
 } as const
 export type POPUP_TYPE = typeof POPUP_TYPE[keyof typeof POPUP_TYPE]
 
-export const CoverPopup: FC<Props> = ({
+export const CoverPopup: FCX<Props> = ({
   className,
   popupType,
   title,

@@ -1,15 +1,14 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   name: string
   hpRemaining: number
   hp: number
 }
 
-export const ProjectMonster: FC<Props> = ({ className, name, hp, hpRemaining }) => {
+export const ProjectMonster: FCX<Props> = ({ className, name, hp, hpRemaining }) => {
   return (
     <StyledProjectMonster className={className}>
       <StyledMonsterStatus>

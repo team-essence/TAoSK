@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, VFC } from 'react'
+import React, { Suspense, useRef, FCX } from 'react'
 import { Mesh } from 'three'
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -6,7 +6,7 @@ import Model from './DragonIdle'
 import styled from 'styled-components'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
-export const MonsterAvatar: VFC = () => {
+export const MonsterAvatar: FCX = () => {
   return (
     <StyledMonsterAvatarContainer>
       <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>

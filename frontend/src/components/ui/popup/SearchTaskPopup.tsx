@@ -1,19 +1,16 @@
-import { title } from 'process'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FCX, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { SearchTask } from 'types/task'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import logger from 'utils/debugger/logger'
 import { TaskCardPopup } from './TaskCardPopup'
 
 type Props = {
-  className?: string
   searchedTasks: SearchTask[]
 }
 
 // TODO: モーダルが出来次第、タスクモーダルが開く処理をかく
-export const SearchTaskPopup: FC<Props> = ({ className, searchedTasks }) => {
+export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
   const [isTask, setIsTask] = useState(false)
 
   useEffect(() => {

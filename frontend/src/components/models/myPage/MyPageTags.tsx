@@ -1,12 +1,11 @@
+import React, { FCX } from 'react'
 import { EditButton } from 'components/ui/button/EditButton'
-import React, { FC } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import logger from 'utils/debugger/logger'
 import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
 type Props = {
-  className?: string
   interests: {
     __typename?: 'Interest' | undefined
     id: number
@@ -19,7 +18,7 @@ type Props = {
   }[]
 }
 
-export const MyPageTags: FC<Props> = ({ className, interests, certifications }) => {
+export const MyPageTags: FCX<Props> = ({ className, interests, certifications }) => {
   // TODO: モーダルが追加されたらonClickを変更していく
   return (
     <StyledMyPageTagsContainer className={className}>

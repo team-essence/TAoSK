@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FCX, ReactNode } from 'react'
 import Popover, { PopoverOrigin } from '@mui/material/Popover'
 import { PopoverProps } from 'types/popover'
 
@@ -6,7 +6,7 @@ type Props = {
   children: ReactNode
 } & PopoverProps
 
-export const BasicPopover: FC<Props> = ({
+export const BasicPopover: FCX<Props> = ({
   children,
   anchorEl,
   vertical,

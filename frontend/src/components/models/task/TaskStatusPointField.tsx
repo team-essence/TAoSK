@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, Dispatch, SetStateAction } from 'react'
+import React, { FCX, useEffect, useRef, Dispatch, SetStateAction } from 'react'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
@@ -9,7 +9,6 @@ import { StatusParam } from 'types/status'
 import { INITIAL_STATUS_COUNTS } from 'consts/status'
 
 type Props = {
-  className?: string
   status: StatusParam
   statusCounts: Record<StatusParam, number>
   setStatusCounts: Dispatch<SetStateAction<Record<StatusParam, number>>>
@@ -17,7 +16,7 @@ type Props = {
 
 const isEqual = <T,>(a: T, b: T) => JSON.stringify(a) === JSON.stringify(b)
 
-export const TaskStatusPointField: FC<Props> = ({
+export const TaskStatusPointField: FCX<Props> = ({
   className,
   status,
   statusCounts,

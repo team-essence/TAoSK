@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FCX, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -12,7 +12,6 @@ import { UserMenuHeader } from 'components/ui/header/UserMenuHeader'
 import { NotificationHeader } from 'components/ui/header/NotificationHeader'
 
 type Props = {
-  className?: string
   iconImage: string
   name: string
   uid: string
@@ -20,7 +19,7 @@ type Props = {
   notifications: Notifications
 }
 
-export const ProjectListHeader: FC<Props> = ({
+export const ProjectListHeader: FCX<Props> = ({
   className,
   iconImage,
   name,

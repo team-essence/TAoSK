@@ -1,6 +1,6 @@
+import React, { FCX, useMemo } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
-import React, { FC, useMemo } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
@@ -50,7 +50,7 @@ type Props = {
   }[]
 }
 
-export const ProjectListProjectInfo: FC<Props> = ({
+export const ProjectListProjectInfo: FCX<Props> = ({
   story,
   overview,
   selectProject,

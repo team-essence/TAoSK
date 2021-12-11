@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { usePopover } from 'hooks/usePopover'
@@ -9,11 +9,9 @@ import { StatusBar } from 'components/ui/item/StatusBar'
 import Exp from 'utils/exp/exp'
 import styled, { css } from 'styled-components'
 
-type Props = {
-  className?: string
-} & Omit<GetUserQuery['user'], 'company' | 'memo' | 'invitations'>
+type Props = Omit<GetUserQuery['user'], 'company' | 'memo' | 'invitations'>
 
-export const EmployeeInformation: FC<Props> = ({
+export const EmployeeInformation: FCX<Props> = ({
   id,
   occupation_id,
   name,

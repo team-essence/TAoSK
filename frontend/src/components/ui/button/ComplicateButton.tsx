@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
@@ -15,7 +15,7 @@ export const BUTTON_COLOR_TYPE = {
 } as const
 type BUTTON_COLOR_TYPE = typeof BUTTON_COLOR_TYPE[keyof typeof BUTTON_COLOR_TYPE]
 
-export const ComplicateButton: FC<Props> = ({ buttonColorType, text, onClick }) => {
+export const ComplicateButton: FCX<Props> = ({ buttonColorType, text, onClick }) => {
   return (
     <StyledComplicateButton onClick={onClick}>
       <img src={`/svg/${buttonColorType}`} alt="ボタン画像" />

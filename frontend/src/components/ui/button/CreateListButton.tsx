@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 import {
   calculateMinSizeBasedOnFigmaHeight,
@@ -6,11 +6,10 @@ import {
 } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   onClick: () => void
 }
 
-export const CreateListButton: FC<Props> = ({ className, onClick }) => {
+export const CreateListButton: FCX<Props> = ({ className, onClick }) => {
   return <StyledCreateListButton className={className} onClick={onClick} />
 }
 

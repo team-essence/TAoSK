@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { StatusParam } from 'types/status'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -10,7 +10,7 @@ type Props = {
   value: number
 }
 
-export const EmployeeStatus: FC<Props> = ({ param, value }) => {
+export const EmployeeStatus: FCX<Props> = ({ param, value }) => {
   const rank = Status.toRank(value)
   const proficiency = Status.toRemainderStatus(value)
 

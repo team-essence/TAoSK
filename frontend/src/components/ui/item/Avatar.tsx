@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { DEFAUT_USER } from 'consts/defaultImages'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
@@ -6,12 +6,11 @@ import styled, { css } from 'styled-components'
 type StyleSize = 'small' | 'normal' | 'large'
 
 type Props = {
-  className?: string
   image: string
   size: StyleSize
 }
 
-export const Avatar: FC<Props> = ({ className, image, size }) => {
+export const Avatar: FCX<Props> = ({ className, image, size }) => {
   return (
     <StyledAvatar
       className={className}

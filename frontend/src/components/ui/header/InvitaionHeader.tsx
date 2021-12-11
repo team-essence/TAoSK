@@ -1,9 +1,8 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   handlers:
     | boolean
     | {
@@ -13,7 +12,7 @@ type Props = {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
-export const InvitationHeader: FC<Props> = ({ className, handlers, onClick }) => {
+export const InvitationHeader: FCX<Props> = ({ className, handlers, onClick }) => {
   return (
     <StyledInvitationHeaderContainer className={className} {...handlers} onClick={onClick}>
       <p>招待</p>

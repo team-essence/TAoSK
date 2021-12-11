@@ -1,4 +1,4 @@
-import React, { FC, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, { FCX, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -6,7 +6,6 @@ import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 type Props = {
-  className?: string
   label?: string
   error?: FieldError | undefined
   children?: ReactNode
@@ -15,7 +14,7 @@ type Props = {
   required?: boolean
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const CalenderField: FC<Props> = ({
+export const CalenderField: FCX<Props> = ({
   className,
   errorColor = theme.COLORS.ERROR,
   label,

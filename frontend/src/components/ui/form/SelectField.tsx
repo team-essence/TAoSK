@@ -1,5 +1,5 @@
 import React, {
-  FC,
+  FCX,
   useEffect,
   SelectHTMLAttributes,
   useState,
@@ -13,7 +13,6 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
-  className?: string
   label?: string
   error?: FieldError | undefined
   registration: Partial<UseFormRegisterReturn>
@@ -23,7 +22,7 @@ type Props = {
   options: Record<'value' | 'item', string>[]
 } & SelectHTMLAttributes<HTMLSelectElement>
 
-export const SelectField: FC<Props> = ({
+export const SelectField: FCX<Props> = ({
   className,
   options,
   errorColor = theme.COLORS.ERROR,

@@ -1,9 +1,8 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   handlers:
     | boolean
     | {
@@ -14,7 +13,7 @@ type Props = {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
-export const UserMenuHeader: FC<Props> = ({ className, handlers, iconImage, onClick }) => {
+export const UserMenuHeader: FCX<Props> = ({ className, handlers, iconImage, onClick }) => {
   return (
     <StyledUserMenuHeaderContainer {...handlers} onClick={onClick} className={className}>
       <StyledUserMenuIcon>

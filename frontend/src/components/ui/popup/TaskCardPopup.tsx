@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { Task } from 'types/task'
 import { Params } from 'types/status'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -13,12 +13,11 @@ import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   listIndex: number
   listLength: number
 } & Omit<Task, 'vertical_sort' | 'id' | 'allocations'>
 
-export const TaskCardPopup: FC<Props> = ({
+export const TaskCardPopup: FCX<Props> = ({
   title,
   technology,
   achievement,

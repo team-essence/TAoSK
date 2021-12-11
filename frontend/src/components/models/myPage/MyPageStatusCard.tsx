@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import {
   achievementLabelColor,
@@ -13,7 +13,6 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import status from 'utils/status/status'
 
 type Props = {
-  className?: string
   statusType: STATUS_TYPE
   statValue: number
 }
@@ -28,7 +27,7 @@ export const STATUS_TYPE = {
 } as const
 type STATUS_TYPE = typeof STATUS_TYPE[keyof typeof STATUS_TYPE]
 
-export const MyPageStatusCard: FC<Props> = ({ className, statusType, statValue }) => {
+export const MyPageStatusCard: FCX<Props> = ({ className, statusType, statValue }) => {
   const defaultImgFolder = '/myPageStatus'
 
   const statusTitle = (statusType: STATUS_TYPE) => {

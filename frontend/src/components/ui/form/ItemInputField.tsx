@@ -1,4 +1,4 @@
-import React, { FC, useEffect, Dispatch } from 'react'
+import React, { FCX, useEffect, Dispatch } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { InputItem } from 'components/ui/form/InputItem'
@@ -10,7 +10,6 @@ import { max } from 'consts/certificationsAndInterests'
 
 type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
-  className?: string
   label: string
   placeholder?: string
   inputAspect: InputAspectStyles
@@ -18,7 +17,7 @@ type Props = {
   setItems: Dispatch<React.SetStateAction<string[]>>
 }
 
-export const ItemInputField: FC<Props> = props => {
+export const ItemInputField: FCX<Props> = props => {
   const { className, label, placeholder, inputAspect, setItems } = props
   const {
     value,

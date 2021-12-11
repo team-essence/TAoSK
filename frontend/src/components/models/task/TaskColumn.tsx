@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FCX, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DROP_TYPE } from 'consts/dropType'
@@ -24,12 +24,11 @@ import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   listIndex: number
   listLength: number
 } & Omit<List, 'sort_id' | 'index'>
 
-export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
+export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
   const controll = useControllTextArea()
   const { anchorEl, openPopover, closePopover } = usePopover()

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FCX, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
@@ -14,14 +14,13 @@ import { useParams } from 'react-router'
 import toast from 'utils/toast/toast'
 
 type Props = {
-  className?: string
   isHover: boolean
   isClick: boolean
   company: string
   closeClick: () => void
 }
 
-export const InvitationPopup: FC<Props> = ({
+export const InvitationPopup: FCX<Props> = ({
   className,
   isHover,
   isClick,

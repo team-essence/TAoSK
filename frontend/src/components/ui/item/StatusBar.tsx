@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 
@@ -12,7 +12,7 @@ type Props = {
   onlineFlg: boolean
 }
 
-export const StatusBar: FC<Props> = ({ type, size, rate, onlineFlg }) => {
+export const StatusBar: FCX<Props> = ({ type, size, rate, onlineFlg }) => {
   return <StyledStatusBar type={type} size={size} rate={rate} onlineFlg={onlineFlg} />
 }
 
