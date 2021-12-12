@@ -1,5 +1,9 @@
 import { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react'
 import type { UserDatas } from 'types/userDatas'
+import {
+  useUnAssignTaskMutation,
+  useCreateAllocationMutation,
+} from 'pages/projectDetail/projectDetail.gen'
 
 type UseTaskUserSelectFormReturn = {
   userDatas: UserDatas
@@ -13,12 +17,30 @@ type UseTaskUserSelectForm = {
 export const useTaskUserSelectForm: UseTaskUserSelectForm = ({ id, initialUserDatas }) => {
   const [userDatas, setUserDatas] = useState<UserDatas>([...initialUserDatas])
   const preUserDatas = useRef<UserDatas>([...initialUserDatas])
+  const [unAssignTaskMutation] = useUnAssignTaskMutation()
+  const [createAllocationMutation] = useCreateAllocationMutation()
 
   useEffect(() => {
     const { type, diff } = getDiffUserDatas(userDatas, preUserDatas.current)
     if (!diff) return
-    console.log(type)
-    console.log(diff)
+
+    if (type === 'added') {
+      createAllocationMutation({
+        variables: {
+          newAllocation: {
+            user_id: diff.id,
+            task_id: id,
+          },
+        },
+      })
+    } else {
+      unAssignTaskMutation({
+        variables: {
+          taskId: Number(id),
+          userId: diff.id,
+        },
+      })
+    }
 
     preUserDatas.current = [...userDatas]
   }, [userDatas])
