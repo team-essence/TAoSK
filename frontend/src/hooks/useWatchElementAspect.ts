@@ -16,25 +16,23 @@ type UseWatchElementWidthReturn<T extends HTMLElement> = {
  */
 export const useWatchElementAspect = <T extends HTMLElement>(): UseWatchElementWidthReturn<T> => {
   const sizeInspectedEl = createRef<T>()
-  const [observer, setObserver] = useState<ResizeObserver>()
   const [width, setWidth] = useState<number>(0)
   const [height, setHeight] = useState<number>(0)
 
   useLayoutEffect(() => {
-    if (sizeInspectedEl?.current && !observer) {
-      const obs = new ResizeObserver(entries => {
-        // clientRectでは小数点以下が切り捨てられてしまうためgetBoundingClientRectを使用
-        setWidth(entries[0].target.getBoundingClientRect().width)
-        setHeight(entries[0].target.getBoundingClientRect().height)
-      })
-      obs.observe(sizeInspectedEl.current)
+    if (!sizeInspectedEl.current) return
 
-      setWidth(sizeInspectedEl.current.getBoundingClientRect().width)
-      setHeight(sizeInspectedEl.current.getBoundingClientRect().height)
-      setObserver(obs)
-    }
+    const obs = new ResizeObserver(entries => {
+      // clientRectでは小数点以下が切り捨てられてしまうためgetBoundingClientRectを使用
+      setWidth(entries[0].target.getBoundingClientRect().width)
+      setHeight(entries[0].target.getBoundingClientRect().height)
+    })
+    obs.observe(sizeInspectedEl.current)
 
-    return () => observer?.disconnect()
+    setWidth(sizeInspectedEl.current.getBoundingClientRect().width)
+    setHeight(sizeInspectedEl.current.getBoundingClientRect().height)
+
+    return () => obs.disconnect()
   }, [sizeInspectedEl])
 
   return { sizeInspectedEl, width, height }

@@ -1,6 +1,7 @@
 import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -18,20 +19,23 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
 
   if (state === 'view') {
     return (
-      <StyledViewWrapper className={className} onClick={() => setState('edit')}>
+      <StyledViewWrapper className={className}>
         <StyledH3>概要</StyledH3>
-        <StyledOverview>{newOverview}</StyledOverview>
-        <StyledAnnotation>
-          クリックで編集
-          <FontAwesomeIcon icon={faPencilAlt} />
-        </StyledAnnotation>
+        <StyledClickableArea onClick={() => setState('edit')}>
+          <StyledOverview>{newOverview}</StyledOverview>
+          <StyledAnnotation>
+            クリックで編集
+            <FontAwesomeIcon icon={faPencilAlt} />
+          </StyledAnnotation>
+        </StyledClickableArea>
       </StyledViewWrapper>
     )
   } else {
     return (
       <StyledEditWrapper className={className}>
         <StyledH3>概要</StyledH3>
-        <StyledTextarea
+        <StyledFlexTextarea
+          initialVal={newOverview}
           {...register('overview', {
             maxLength: { value: 1024, message: '1024文字以内で入力してください' },
           })}
@@ -52,7 +56,6 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
 }
 
 const StyledViewWrapper = styled.div`
-  cursor: pointer;
   display: flex;
   flex-direction: column;
 `
@@ -65,6 +68,9 @@ const StyledH3 = styled.h3`
       font-weight: ${theme.FONT_WEIGHTS.BOLD};
       color: ${theme.COLORS.TOBACCO_BROWN};
     `}
+`
+const StyledClickableArea = styled.div`
+  cursor: pointer;
 `
 const StyledOverview = styled.p`
   display: inline-block;
@@ -101,14 +107,26 @@ const StyledEditWrapper = styled.div`
   gap: ${calculateMinSizeBasedOnFigma(8)};
   width: 100%;
 `
-const StyledTextarea = styled.textarea<{ hasError: boolean }>`
+const StyledFlexTextarea = styled(FlexTextarea)<{ hasError: boolean }>`
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigma(180)};
-  padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
-  ${({ hasError, theme }) =>
-    hasError &&
+
+  ${({ theme, hasError }) =>
     css`
-      border-color: ${theme.COLORS.ERROR} !important;
+      font-size: ${theme.FONT_SIZES.SIZE_14};
+      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+      color: ${theme.COLORS.TOBACCO_BROWN};
+
+      > div {
+        padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
+        min-height: ${calculateMinSizeBasedOnFigma(180)};
+      }
+      textarea {
+        padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
+        ${hasError &&
+        css`
+          border-color: ${theme.COLORS.ERROR} !important;
+        `}
+      }
     `}
 `
 const StyledBottomRow = styled.div`
