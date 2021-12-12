@@ -19,6 +19,7 @@ import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewFi
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
+import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { STATUS_TYPE } from 'consts/status'
 import { Task } from 'types/task'
 
@@ -31,12 +32,17 @@ export const TaskEditModal: FCX<Props> = ({
   shouldShow,
   setShouldShow,
   className,
-  ...taskInfo
+  id,
+  title,
+  overview,
+  end_date,
+  allocations,
 }) => {
   const { onChange, register } = useTaskEndDateEditForm({
-    id: taskInfo.id,
-    initialEndDate: taskInfo.end_date,
+    id,
+    initialEndDate: end_date,
   })
+  const { userDatas, setUserDatas } = useTaskUserSelectForm({ id, initialUserDatas: allocations })
 
   return (
     <StyledModal
@@ -44,8 +50,8 @@ export const TaskEditModal: FCX<Props> = ({
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
       <StyledLeftColumn>
-        <StyledTaskEditTitleField id={taskInfo.id} title={taskInfo.title} />
-        <StyledTaskEditOverviewField id={taskInfo.id} overview={taskInfo.overview} />
+        <StyledTaskEditTitleField id={id} title={title} />
+        <StyledTaskEditOverviewField id={id} overview={overview} />
       </StyledLeftColumn>
       <StyledBorder />
       <StyledRightColumn>
@@ -55,9 +61,9 @@ export const TaskEditModal: FCX<Props> = ({
           required={false}
           onChange={onChange}
         />
-        {/* <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+        <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
 
-        <StyledStatusWrapper className={className}>
+        {/* <StyledStatusWrapper className={className}>
           <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
           {Object.values(STATUS_TYPE).map((status, index) => (
             <TaskStatusPointField
