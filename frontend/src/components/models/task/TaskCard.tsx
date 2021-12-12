@@ -154,6 +154,7 @@ const StyledClockImage = styled.img`
 const StyledDate = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_10};
   color: ${({ theme }) => theme.COLORS.WHITE};
+  letter-spacing: 0.2;
 `
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};

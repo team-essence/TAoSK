@@ -94,10 +94,22 @@ const StyledProjectGameLogTextContainer = styled.div`
   transform: translateX(-50%);
   width: ${calculateMinSizeBasedOnFigmaHeight(195)};
   height: ${calculateMinSizeBasedOnFigmaHeight(216)};
-  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   gap: ${calculateMinSizeBasedOnFigmaHeight(2)} 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #d4b99f;
+    border-radius: 100px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #c9ae95;
+    border-radius: 100px;
+  }
 `
 
 const StyledProjectGameLogText = styled.p`

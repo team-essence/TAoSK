@@ -60,8 +60,8 @@ export const MyPage: FC = () => {
             company={userQuery.data?.user.company ?? ''}
             totalExp={userQuery.data?.user.exp ?? 0}
             occupationId={userQuery.data?.user.occupation_id ?? 1}
-            hp={userQuery.data?.user.hp ?? 0}
-            mp={userQuery.data?.user.mp ?? 0}
+            hp={userQuery.data?.user.hp ?? 100}
+            mp={userQuery.data?.user.mp ?? 100}
           />
 
           <MyPageStatus

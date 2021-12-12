@@ -4,6 +4,7 @@ import { AppRoutes } from 'routes/AppRoutes'
 import { AppProvider } from 'providers/AppProvider'
 import { GlobalStyle } from 'styles/globalStyle'
 import { ToastContainer } from 'react-toastify'
+import { ContentWrapper } from 'components/ui/wrapper/ContentWrapper'
 
 const App: FC = () => {
   return (
@@ -11,7 +12,9 @@ const App: FC = () => {
       <GlobalStyle />
       <ToastContainer />
       <BrowserRouter>
-        <AppRoutes />
+        <ContentWrapper>
+          <AppRoutes />
+        </ContentWrapper>
       </BrowserRouter>
     </AppProvider>
   )
