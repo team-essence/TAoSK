@@ -8,14 +8,12 @@ type Props = {
   hp: number
 }
 
-export const ProjectMonster: FCX<Props> = ({ className, name, hp, hpRemaining }) => {
+export const Monster2DInformation: FCX<Props> = ({ className, name, hp, hpRemaining }) => {
   return (
-    <StyledProjectMonster className={className}>
+    <StyledContainer className={className}>
       <StyledMonsterStatus>
         <StyledMonsterHeadImg src="/svg/dragon-head_1.svg" alt="モンスターの頭" />
-
         <StyledMonsterName>{name}</StyledMonsterName>
-
         <StyledStatusBarContainer>
           <h5>HP</h5>
           <p>
@@ -23,35 +21,29 @@ export const ProjectMonster: FCX<Props> = ({ className, name, hp, hpRemaining })
           </p>
           <StyledHpBar rate={hpRemaining} max={hp} />
         </StyledStatusBarContainer>
-
         <StyledMonsterStatusBackgroundImg
           src="/svg/monster-status_background.svg"
           alt="モンスターステータスの背景画像"
         />
       </StyledMonsterStatus>
-
       <StyledProjectMonsterImg src="/monster.png" />
-    </StyledProjectMonster>
+    </StyledContainer>
   )
 }
 
-const StyledProjectMonster = styled.div``
-
+const StyledContainer = styled.div``
 const StyledMonsterStatus = styled.div`
   position: relative;
 `
-
 const StyledMonsterStatusBackgroundImg = styled.img`
   width: ${calculateMinSizeBasedOnFigma(295)};
 `
-
 const StyledMonsterHeadImg = styled.img`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigma(17)};
   left: ${calculateMinSizeBasedOnFigma(22)};
   width: ${calculateMinSizeBasedOnFigma(41)};
 `
-
 const StyledMonsterName = styled.h5`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigma(10)};
@@ -60,13 +52,11 @@ const StyledMonsterName = styled.h5`
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `
-
 const StyledProjectMonsterImg = styled.img`
   margin: 0 auto;
   display: block;
   width: ${calculateMinSizeBasedOnFigma(220)};
 `
-
 const StyledStatusBarContainer = styled.div`
   position: absolute;
   left: ${calculateMinSizeBasedOnFigma(82)};
@@ -74,10 +64,8 @@ const StyledStatusBarContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0 ${calculateMinSizeBasedOnFigma(8)};
-
   font-family: 'Yanone Kaffeesatz', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
     'Hiragino Sans', Meiryo, sans-serif;
-
   h5 {
     position: relative;
     color: ${({ theme }) => theme.COLORS.WHITE};
@@ -86,13 +74,11 @@ const StyledStatusBarContainer = styled.div`
     height: fit-content;
     /* line-height: ${({ theme }) => theme.FONT_SIZES.SIZE_24}; */
   }
-
   p {
     padding-left: 1px;
     position: absolute;
     right: ${calculateMinSizeBasedOnFigma(-10)};
     bottom: ${calculateMinSizeBasedOnFigma(2)};
-
     ${({ theme }) => css`
       width: ${calculateMinSizeBasedOnFigma(68)};
       text-align: center;
@@ -108,13 +94,11 @@ const StyledStatusBarContainer = styled.div`
     `}
   }
 `
-
 const StyledBar = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigma(170)};
   height: ${calculateMinSizeBasedOnFigma(12)};
 `
-
 const StyledHpBar = styled(StyledBar)<{ rate: number; max: number }>`
   &::before {
     content: '';
@@ -127,7 +111,6 @@ const StyledHpBar = styled(StyledBar)<{ rate: number; max: number }>`
     border-radius: ${calculateMinSizeBasedOnFigma(100)};
     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   }
-
   &::after {
     content: '';
     position: absolute;

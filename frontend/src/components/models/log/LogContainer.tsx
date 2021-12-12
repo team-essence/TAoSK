@@ -3,13 +3,12 @@ import styled, { css } from 'styled-components'
 import { GameLogType } from 'types/gameLog'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { GAME_LOG_TYPE } from 'consts/gameLog'
-import { theme } from 'styles/theme'
 
 type Props = {
   gameLogs: GameLogType[]
 }
 
-export const ProjectGameLog: FCX<Props> = ({ className, gameLogs }) => {
+export const LogContainer: FCX<Props> = ({ className, gameLogs }) => {
   const endText = (context: string) => {
     if (context.includes(GAME_LOG_TYPE.CREATE_PROJECT)) {
       return 'が出現した！'
@@ -45,50 +44,44 @@ export const ProjectGameLog: FCX<Props> = ({ className, gameLogs }) => {
   }
 
   return (
-    <StyledProjectGameLogContainer className={className}>
+    <StyledContainer className={className}>
       <h4>
         <img src="/svg/game-log.svg" alt="GAME LOG" />
       </h4>
-
-      <StyledProjectGameLogTextContainer>
+      <StyledLogTextContainer>
         {gameLogs.map((gameLog, index) => (
-          <StyledProjectGameLogText key={index}>
+          <StyledLogText key={index}>
             {isUserName(gameLog.context) && (
               <>
-                <StyledProjectGameLogUserName>{gameLog.userName}</StyledProjectGameLogUserName>
+                <StyledLogUserName>{gameLog.userName}</StyledLogUserName>
                 {caseParticle(gameLog.context)}
               </>
             )}
-            <StyledProjectGameLogSpanColor gameLogText={gameLog.context}>
-              {gameLog.context}
-            </StyledProjectGameLogSpanColor>
+            <StyledLogSpanColor gameLogText={gameLog.context}>{gameLog.context}</StyledLogSpanColor>
             {endText(gameLog.context)}
-          </StyledProjectGameLogText>
+          </StyledLogText>
         ))}
-      </StyledProjectGameLogTextContainer>
-    </StyledProjectGameLogContainer>
+      </StyledLogTextContainer>
+    </StyledContainer>
   )
 }
 
-const StyledProjectGameLogContainer = styled.div`
+const StyledContainer = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaHeight(278)};
   height: ${calculateMinSizeBasedOnFigmaHeight(343.66)};
   background: url('/svg/game-log_background.svg');
   background-repeat: no-repeat;
   background-size: contain;
-
   h4 {
     margin: ${calculateMinSizeBasedOnFigmaHeight(31)} 0 ${calculateMinSizeBasedOnFigmaHeight(18)};
     text-align: center;
-
     img {
       width: ${calculateMinSizeBasedOnFigmaHeight(150)};
     }
   }
 `
-
-const StyledProjectGameLogTextContainer = styled.div`
+const StyledLogTextContainer = styled.div`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -111,19 +104,16 @@ const StyledProjectGameLogTextContainer = styled.div`
     border-radius: 100px;
   }
 `
-
-const StyledProjectGameLogText = styled.p`
+const StyledLogText = styled.p`
   font-size: ${calculateMinSizeBasedOnFigmaHeight(12)};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
   color: ${({ theme }) => theme.COLORS.SPICY_MIX};
   letter-spacing: 0;
 `
-
-const StyledProjectGameLogUserName = styled.span`
+const StyledLogUserName = styled.span`
   color: ${({ theme }) => theme.COLORS.SHIP_COVE};
 `
-
-const StyledProjectGameLogSpanColor = styled.span<{ gameLogText: string }>`
+const StyledLogSpanColor = styled.span<{ gameLogText: string }>`
   ${({ gameLogText, theme }) => css`
     ${gameLogText.includes(GAME_LOG_TYPE.CREATE_PROJECT) &&
     css`
