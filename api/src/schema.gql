@@ -184,6 +184,7 @@ type Query {
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
   getCompany(uid: String!): Company!
+  getOccupations: [Occupation!]!
   getProjectById(id: String!): Project!
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
@@ -207,6 +208,7 @@ type Mutation {
   addCertification(newCertification: NewCertificationInput!): Certification!
   addInterest(newInterest: NewInterestInput!): Interest!
   addCompany(newCompany: NewCompanyInput!): Company!
+  creteOccupation(name: String!): Occupation!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
   completedProject(endProject: EndProjectInput!): Boolean!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
