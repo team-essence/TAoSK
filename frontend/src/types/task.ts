@@ -2,6 +2,7 @@ export type Allocation = {
   id: string
   name: string
   icon_image: string
+  occupation_id: number
 }
 
 export type Task = {

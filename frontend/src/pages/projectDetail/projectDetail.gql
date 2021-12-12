@@ -69,6 +69,7 @@ query GetProject($id: String!) {
             id
             name
             icon_image
+            occupation_id
           }
         }
       }
@@ -152,6 +153,7 @@ query GetListsByProjectId($projectId: String!) {
           id
           name
           icon_image
+          occupation_id
         }
       }
     }
@@ -251,6 +253,7 @@ mutation CreateList($newList: NewListInput!) {
           id
           name
           icon_image
+          occupation_id
         }
       }
     }
