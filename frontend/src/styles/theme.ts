@@ -19,6 +19,7 @@ export const theme = {
     UNDER_POPOVER: 98,
     POPOVER: 99,
     MODAL: 100,
+    LOADING: 999,
   },
   FONT_SIZES: {
     SIZE_10: calculateMinSizeBasedOnFigma('10px'),
@@ -103,6 +104,8 @@ export const theme = {
     DOVE_GRAY: '#707070',
     SILVER_CHALICE: '#B1B1B1',
     CITRON: '#98B819',
+    AKAROA: '#d4b99f',
+    RODEO_DUST: '#c9ae95',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',

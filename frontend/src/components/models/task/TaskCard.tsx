@@ -79,6 +79,7 @@ export const TaskCard: FCX<Props> = ({
                           src={changeDeadlineImage(end_date, listIndex, listLength)}
                           alt="deadline"
                           loading="lazy"
+                          decoding="async"
                         />
                         <StyledDateContainer listIndex={listIndex} listLength={listLength}>
                           <StyledClockImage src="/svg/clock.svg" alt="clock" />
@@ -153,6 +154,7 @@ const StyledClockImage = styled.img`
 const StyledDate = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_10};
   color: ${({ theme }) => theme.COLORS.WHITE};
+  letter-spacing: 0.2;
 `
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};

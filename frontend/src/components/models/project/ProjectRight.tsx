@@ -1,14 +1,10 @@
-import React, { FCX, useState } from 'react'
+import React, { FCX } from 'react'
 import { useGameLog } from 'hooks/useGameLog'
 import styled from 'styled-components'
-import { GameLogType } from 'types/gameLog'
-import {
-  calculateMinSizeBasedOnFigmaHeight,
-  calculateMinSizeBasedOnFigmaWidth,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { CreateListButton } from 'components/ui/button/CreateListButton'
-import { ProjectGameLog } from './ProjectGameLog'
-import { ProjectMonster } from './ProjectMonster'
+import { LogContainer } from 'components/models/log/LogContainer'
+import { Monster2DInformation } from 'components/models/monster/Monster2DInformation'
 
 type Props = {
   onClick: () => void
@@ -30,7 +26,7 @@ export const ProjectRight: FCX<Props> = ({
     <StyledProjectRightContainer className={className}>
       <CreateListButton onClick={onClick} />
       <StyledProjectGameLog gameLogs={gameLogs} />
-      <ProjectMonster hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
+      <Monster2DInformation hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
     </StyledProjectRightContainer>
   )
 }
@@ -41,7 +37,7 @@ const StyledProjectRightContainer = styled.div`
   align-items: center;
 `
 
-const StyledProjectGameLog = styled(ProjectGameLog)`
+const StyledProjectGameLog = styled(LogContainer)`
   margin-top: ${calculateMinSizeBasedOnFigmaHeight(16)};
   margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(24)};
 `

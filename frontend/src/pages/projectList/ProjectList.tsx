@@ -1,20 +1,21 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { DEFAUT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
-import styled from 'styled-components'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
-import { Loading } from 'components/ui/loading/Loading'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
-import logger from 'utils/debugger/logger'
-import { ACTIVE_STATUS, ProjectListItem } from 'components/ui/projectList/ProjectListItem'
-import { ProjectListMonster } from 'components/ui/projectList/ProjectListMonster'
-import { ProjectListProjectInfo } from 'components/ui/projectList/ProjectListProjectInfo'
+import { ACTIVE_STATUS, ProjectListItem } from 'components/models/projectList/ProjectListItem'
+import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
+import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
+import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { calculateVwBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { Notifications } from 'types/notification'
+import logger from 'utils/debugger/logger'
+import styled from 'styled-components'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -45,15 +46,14 @@ export const ProjectList: FC = () => {
 
   if (!currentUser) return <Navigate to="/signup" />
 
-  if (!userData.data) return <Loading />
-
   return (
     <>
+      <LazyLoading />
       <ProjectListHeader
-        iconImage={userData.data.user.icon_image}
-        name={userData.data.user.name}
-        uid={userData.data.user.id}
-        totalExp={userData.data.user.exp}
+        iconImage={userData.data?.user.icon_image ?? DEFAUT_USER}
+        name={userData.data?.user.name ?? ''}
+        uid={userData.data?.user.id ?? ''}
+        totalExp={userData.data?.user.exp ?? 0}
         notifications={notifications}
       />
 
@@ -70,7 +70,7 @@ export const ProjectList: FC = () => {
 
             <StyledProjectListScroll>
               <StyledProjectList>
-                {userData.data.user.groups.map((group, index) => (
+                {userData.data?.user.groups.map((group, index) => (
                   <StyledProject key={index} onClick={() => setSelectProject(index)}>
                     <ProjectListItem
                       activeStatue={
@@ -89,7 +89,7 @@ export const ProjectList: FC = () => {
         </StyledProjectListContainer>
 
         <StyledProjectDetailContainer>
-          {!!userData.data.user.groups.length && (
+          {!!userData.data?.user.groups.length && (
             <StyledProjectDetail>
               <StyledProjectTitleContainer>
                 <StyledProjectTitle>
@@ -112,7 +112,9 @@ export const ProjectList: FC = () => {
                   buttonColorType={BUTTON_COLOR_TYPE.RED}
                   text="クエスト開始"
                   onClick={() =>
-                    handleTransitionToProject(userData.data!.user.groups[selectProject].project.id)
+                    handleTransitionToProject(
+                      userData.data?.user.groups[selectProject].project.id ?? '',
+                    )
                   }
                 />
               </StyledComplicateButtonContainer>
