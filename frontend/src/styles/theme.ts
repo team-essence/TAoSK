@@ -62,6 +62,7 @@ export const theme = {
     TENN: '#C95900',
     TEMPTRESS: '#3F0000',
     RED_OXIDE: '#660303',
+    RED_BERRY: '#970000',
     CHOCOLATE: '#4D2709',
     BRANDY: '#E0C29F',
     BRIDAL_HEATH: '#FFFAF4',

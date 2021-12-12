@@ -1,10 +1,9 @@
 import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
-import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTaskTitleEditForm } from 'hooks/useTaskTitleEditForm'
 
 type Props = {
@@ -41,7 +40,7 @@ export const TaskEditTitleField: FCX<Props> = ({ className, id, title }) => {
             <StyledCancelButton onClick={() => setState('view')}>
               <StyledCancelText>キャンセル</StyledCancelText>
             </StyledCancelButton>
-            <StyledCoarseButton text="追加" onClick={onClickSaveButton} disabled={disabled} />
+            <CoarseRedOxideButton text="追加" onClick={onClickSaveButton} disabled={disabled} />
           </StyledButtonWrapper>
         </StyledBottomRow>
       </StyledEditWrapper>
@@ -135,34 +134,4 @@ const StyledCancelText = styled.p`
         background-color: ${theme.COLORS.TOBACCO_BROWN};
       `}
   }
-`
-type Disabled = { disabled: boolean }
-const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
-  disabled,
-}))<Disabled>`
-  width: ${calculateMinSizeBasedOnFigma(64)};
-  height: ${calculateMinSizeBasedOnFigma(32)};
-  ${({ disabled, theme }) => {
-    if (disabled) {
-      return css`
-        color: ${theme.COLORS.SILVER};
-        > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
-          > div > div {
-            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
-          }
-        }
-      `
-    } else {
-      return css`
-        color: ${theme.COLORS.BRANDY};
-        > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
-          > div > div {
-            background-color: ${convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)};
-          }
-        }
-      `
-    }
-  }}
 `
