@@ -18,7 +18,7 @@ import { TaskEditTitleField } from 'components/models/task/TaskEditTitleField'
 import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { STATUS_TYPE } from 'consts/status'
 import { Task } from 'types/task'
 
@@ -33,6 +33,11 @@ export const TaskEditModal: FCX<Props> = ({
   className,
   ...taskInfo
 }) => {
+  const { onChange, register } = useTaskEndDateEditForm({
+    id: taskInfo.id,
+    initialEndDate: taskInfo.end_date,
+  })
+
   return (
     <StyledModal
       shouldShow={shouldShow}
@@ -44,20 +49,25 @@ export const TaskEditModal: FCX<Props> = ({
       </StyledLeftColumn>
       <StyledBorder />
       <StyledRightColumn>
-        {/* <StyledCalenderField label="期限" registration={} required={false} />
-            <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+        <StyledCalenderField
+          label="期限"
+          registration={register('date')}
+          required={false}
+          onChange={onChange}
+        />
+        {/* <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
 
-            <StyledStatusWrapper className={className}>
-              <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-              {Object.values(STATUS_TYPE).map((status, index) => (
-                <TaskStatusPointField
-                  status={status}
-                  statusCounts={statusCounts}
-                  setStatusCounts={setStatusCounts}
-                  key={index}
-                />
-              ))}
-            </StyledStatusWrapper> */}
+        <StyledStatusWrapper className={className}>
+          <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
+          {Object.values(STATUS_TYPE).map((status, index) => (
+            <TaskStatusPointField
+              status={status}
+              statusCounts={statusCounts}
+              setStatusCounts={setStatusCounts}
+              key={index}
+            />
+          ))}
+        </StyledStatusWrapper> */}
       </StyledRightColumn>
     </StyledModal>
   )
@@ -89,6 +99,13 @@ const StyledRightColumn = styled.div`
   height: 100%;
 `
 const fieldStyle = css`
+  label {
+    ${({ theme }) => css`
+      color: ${theme.COLORS.TOBACCO_BROWN};
+      font-size: ${theme.FONT_SIZES.SIZE_16};
+      font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+    `}
+  }
   input,
   textarea {
     border: solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};

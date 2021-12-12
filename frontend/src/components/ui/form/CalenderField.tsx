@@ -1,4 +1,12 @@
-import React, { FCX, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, {
+  FCX,
+  useEffect,
+  InputHTMLAttributes,
+  useState,
+  ChangeEvent,
+  FocusEvent,
+  ReactNode,
+} from 'react'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -26,8 +34,13 @@ export const CalenderField: FCX<Props> = ({
 }) => {
   const [hasBlured, setHasBlured] = useState<boolean>(false)
   const shouldShowError = !!(hasBlured && error?.message)
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    inputAttributes.onChange && inputAttributes.onChange(e)
+    registration.onChange && registration.onChange(e)
+  }
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
     inputAttributes.onBlur && inputAttributes.onBlur(e)
+    registration.onBlur && registration.onBlur(e)
     setHasBlured(true)
   }
 
@@ -45,7 +58,13 @@ export const CalenderField: FCX<Props> = ({
             <StyledCalenderIconWrapper>
               <StyledCalenderIcon src="/images/calender-icon.png" alt="カレンダーのアイコン" />
             </StyledCalenderIconWrapper>
-            <StyledInput {...registration} {...inputAttributes} onBlur={onBlur} type="date" />
+            <StyledInput
+              {...registration}
+              {...inputAttributes}
+              onChange={onChange}
+              onBlur={onBlur}
+              type="date"
+            />
           </StyledInputWrapper>
           {children}
         </label>
