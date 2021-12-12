@@ -356,7 +356,7 @@ export const ProjectDetail: FC = () => {
         updateTasks: {
           tasks: joinUpdateTasks,
           project_id: String(id),
-          user_id: currentUser!.uid,
+          user_id: currentUser?.uid ?? '',
         },
       },
     })
@@ -380,7 +380,7 @@ export const ProjectDetail: FC = () => {
           name: 'リスト名',
           project_id: String(id),
           task_list: 1,
-          user_id: currentUser!.uid,
+          user_id: currentUser?.uid ?? '',
         },
       },
     })
@@ -419,8 +419,8 @@ export const ProjectDetail: FC = () => {
           <ProjectRight
             onClick={handleCreateList}
             monsterHPRemaining={monsterHPRemaining}
-            monsterHp={projectData.data?.getProjectById.hp}
-            monsterName={projectData.data?.getProjectById.monster.name}
+            monsterHp={projectData.data?.getProjectById.hp ?? 100}
+            monsterName={projectData.data?.getProjectById.monster.name ?? ''}
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>

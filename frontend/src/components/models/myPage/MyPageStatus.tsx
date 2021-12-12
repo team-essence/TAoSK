@@ -4,12 +4,12 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { MyPageStatusCard, STATUS_TYPE } from './MyPageStatusCard'
 
 type Props = {
-  technology?: number
-  solution?: number
-  achievement?: number
-  motivation?: number
-  design?: number
-  plan?: number
+  technology: number
+  solution: number
+  achievement: number
+  motivation: number
+  design: number
+  plan: number
 }
 
 export const MyPageStatus: FCX<Props> = ({
@@ -25,12 +25,12 @@ export const MyPageStatus: FCX<Props> = ({
     <StyledMyPageStatusContainer className={className}>
       <StyledStatusCardContainer>
         <h4>ステータス</h4>
-        <MyPageStatusCard statusType={STATUS_TYPE.TECHNOLOGY} statValue={technology as number} />
-        <MyPageStatusCard statusType={STATUS_TYPE.SOLUTION} statValue={solution as number} />
-        <MyPageStatusCard statusType={STATUS_TYPE.ACHIEVEMENT} statValue={achievement as number} />
-        <MyPageStatusCard statusType={STATUS_TYPE.PLAN} statValue={plan as number} />
-        <MyPageStatusCard statusType={STATUS_TYPE.MOTIVATION} statValue={motivation as number} />
-        <MyPageStatusCard statusType={STATUS_TYPE.DESIGN} statValue={design as number} />
+        <MyPageStatusCard statusType={STATUS_TYPE.TECHNOLOGY} statValue={technology} />
+        <MyPageStatusCard statusType={STATUS_TYPE.SOLUTION} statValue={solution} />
+        <MyPageStatusCard statusType={STATUS_TYPE.ACHIEVEMENT} statValue={achievement} />
+        <MyPageStatusCard statusType={STATUS_TYPE.PLAN} statValue={plan} />
+        <MyPageStatusCard statusType={STATUS_TYPE.MOTIVATION} statValue={motivation} />
+        <MyPageStatusCard statusType={STATUS_TYPE.DESIGN} statValue={design} />
       </StyledStatusCardContainer>
 
       <StyleMyPageStatusBackground

@@ -12,9 +12,9 @@ import { ProjectMonster } from './ProjectMonster'
 
 type Props = {
   onClick: () => void
-  monsterName?: string
+  monsterName: string
   monsterHPRemaining: number
-  monsterHp?: number
+  monsterHp: number
 }
 
 export const ProjectRight: FCX<Props> = ({
@@ -30,11 +30,7 @@ export const ProjectRight: FCX<Props> = ({
     <StyledProjectRightContainer className={className}>
       <CreateListButton onClick={onClick} />
       <StyledProjectGameLog gameLogs={gameLogs} />
-      <ProjectMonster
-        hpRemaining={monsterHPRemaining}
-        name={monsterName as string}
-        hp={monsterHp as number}
-      />
+      <ProjectMonster hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
     </StyledProjectRightContainer>
   )
 }
