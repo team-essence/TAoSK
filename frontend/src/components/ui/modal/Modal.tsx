@@ -27,7 +27,7 @@ export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, classNam
         {children}
         <StyledBackgroundDragonSymbol />
       </StyledWrapper>
-      <StyledOverlay shouldShow={shouldShow} onClick={onClickCloseBtn} />
+      <StyledOverlay onClick={onClickCloseBtn} />
     </>
   )
 }
@@ -100,15 +100,14 @@ const StyledCrossIcon = styled(CrossIcon)`
     height: ${calculateMinSizeBasedOnFigma(20)};
   }
 `
-const StyledOverlay = styled.div<{ shouldShow: boolean }>`
+const StyledOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  ${({ theme, shouldShow }) => css`
+  ${({ theme }) => css`
     z-index: ${theme.Z_INDEX.OVERLAY};
-    display: ${shouldShow ? 'block' : 'none'};
     background-color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.65)};
   `}
 `

@@ -182,7 +182,7 @@ type Query {
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
   listsByProjectId(projectId: String!): [List!]!
-  CompletedTask(userId: String!): [Allocation!]!
+  completedTask(userId: String!): [Allocation!]!
   getChats(taskId: Float!): [Chat!]!
   findLogsByProjectId(project_id: String!): [GameLog!]!
 }
@@ -216,8 +216,8 @@ type Mutation {
   updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): Task!
   updateTaskEndDate(taskId: Float!, end_date: String!): Task!
   deleteTask(taskId: Float!): [Task!]!
-  CreateAllocation(newAllocation: NewAllocationInput!): Allocation!
-  UnAssignTask(task_id: Float!, user_id: String!): [Allocation!]!
+  createAllocation(newAllocation: NewAllocationInput!): Allocation!
+  unAssignTask(task_id: Float!, user_id: String!): [Allocation!]!
   addChat(userId: String!, taskId: Float!, comment: String!): Chat!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!

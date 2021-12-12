@@ -7,12 +7,14 @@ import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskEditTitleField } from 'components/models/task/TaskEditTitleField'
 import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewField'
 import { TaskEditStatusPointField } from 'components/models/task/TaskEditStatusPointField'
+import { ConfirmPopup } from 'components/ui/popup/ConfirmPopup'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
+import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 
 type Props = {
@@ -41,6 +43,10 @@ export const TaskEditModal: FCX<Props> = ({
     initialEndDate: end_date,
   })
   const { userDatas, setUserDatas } = useTaskUserSelectForm({ id, initialUserDatas: allocations })
+  const { onClickDeleteButton, shouldShowConfirmPopup, setShouldShowConfirmPopup } = useDeleteTask({
+    id,
+    setShouldShowEditModal: setShouldShow,
+  })
 
   return (
     <StyledModal
@@ -69,7 +75,17 @@ export const TaskEditModal: FCX<Props> = ({
           design={design}
           plan={plan}
         />
-        <StyledDeleteButton text="タスクを削除" disabled={false} />
+        <StyledDeleteButtonWrapper>
+          <StyledDeleteButton text="タスクを削除" onClick={() => setShouldShowConfirmPopup(true)} />
+          <StyledConfirmPopup
+            title="カードを削除しますか?"
+            description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
+            buttonText="削除"
+            shouldShow={shouldShowConfirmPopup}
+            onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
+            onClickConfirmBtn={onClickDeleteButton}
+          />
+        </StyledDeleteButtonWrapper>
       </StyledRightColumn>
     </StyledModal>
   )
@@ -135,34 +151,28 @@ const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberFi
 const StyledTaskEditStatusPointField = styled(TaskEditStatusPointField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(30)};
 `
-type Disabled = { disabled: boolean }
-const StyledDeleteButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
-  disabled,
-}))<Disabled>`
+const StyledDeleteButtonWrapper = styled.div`
+  position: relative;
+`
+const StyledDeleteButton = styled(CoarseButton)`
   width: 100%;
   height: ${calculateMinSizeBasedOnFigma(32)};
-  ${({ disabled, theme }) => {
-    if (disabled) {
-      return css`
-        color: ${theme.COLORS.SILVER};
-        > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
-          > div > div {
-            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
-          }
+  ${({ theme }) =>
+    css`
+      ${strokeTextShadow('1px', theme.COLORS.MONDO)};
+      color: ${theme.COLORS.WHITE};
+      > div {
+        background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
+        > div > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.RED_BERRY, 0.6)};
         }
-      `
-    } else {
-      return css`
-        ${strokeTextShadow('1px', theme.COLORS.MONDO)};
-        color: ${theme.COLORS.WHITE};
-        > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
-          > div > div {
-            background-color: ${convertIntoRGBA(theme.COLORS.RED_BERRY, 0.6)};
-          }
-        }
-      `
-    }
-  }}
+      }
+    `}
+`
+const StyledConfirmPopup = styled(ConfirmPopup)`
+  position: absolute;
+  bottom: 100%;
+  left: 10%;
+  width: ${calculateMinSizeBasedOnFigma(318)};
+  height: ${calculateMinSizeBasedOnFigma(188)};
 `
