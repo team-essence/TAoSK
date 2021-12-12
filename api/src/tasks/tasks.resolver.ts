@@ -43,9 +43,11 @@ export class TasksResolver {
     @Args({ name: 'overview' }) overview: string,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    return await this.taskService.updateTitle(taskId, overview).catch((err) => {
-      throw err;
-    });
+    return await this.taskService
+      .updateOverview(taskId, overview)
+      .catch((err) => {
+        throw err;
+      });
   }
 
   @Mutation(() => Task)

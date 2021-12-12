@@ -19,7 +19,7 @@
     "body": [
       "import React, { FCX } from 'react'",
       "import styled, { css } from 'styled-components'\n",
-      "type Props = { className?: string }\n",
+      "type Props = { $3 }\n",
       "export const $1: FCX<Props> = ({ className }) => {",
       "  return (",
       "    <div className={className}>",
@@ -38,7 +38,7 @@
       "import { $2 } from 'react'\n",
       "type Use$1Return = {\n",
       "}\n",
-      "export const use$1 = (): Use$1 => {",
+      "export const use$1 = (): Use$1Return => {",
       "  $3",
       "  return",
       "}"

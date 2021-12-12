@@ -171,6 +171,12 @@ mutation UpdateTaskTitle($taskId: Float!, $title: String!) {
   }
 }
 
+mutation UpdateTaskOverview($taskId: Float!, $overview: String!) {
+  updateTaskOverview(taskId: $taskId, overview: $overview) {
+    overview
+  }
+}
+
 mutation AddTask($newTask: NewTaskInput!, $assignTask: AssignTaskInput!) {
   addTask(newTask: $newTask, assignTask: $assignTask) {
     id

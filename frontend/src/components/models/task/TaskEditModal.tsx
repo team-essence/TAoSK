@@ -15,6 +15,7 @@ import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { TaskEditTitleField } from 'components/models/task/TaskEditTitleField'
+import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
@@ -39,6 +40,7 @@ export const TaskEditModal: FCX<Props> = ({
       className={className}>
       <StyledLeftColumn>
         <StyledTaskEditTitleField id={taskInfo.id} title={taskInfo.title} />
+        <StyledTaskEditOverviewField id={taskInfo.id} overview={taskInfo.overview} />
       </StyledLeftColumn>
       <StyledBorder />
       <StyledRightColumn>
@@ -70,6 +72,7 @@ const StyledModal = styled(Modal)`
   width: ${calculateMinSizeBasedOnFigma(871)};
   height: ${calculateMinSizeBasedOnFigma(704)};
   padding: ${padding};
+  white-space: pre-line;
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -93,12 +96,18 @@ const fieldStyle = css`
     background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.84)};
     color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
     &::placeholder {
+      font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
       color: ${({ theme }) => theme.COLORS.SILVER};
     }
   }
 `
 const StyledTaskEditTitleField = styled(TaskEditTitleField)`
   ${fieldStyle}
+  margin-bottom: ${calculateMinSizeBasedOnFigma(27)};
+`
+const StyledTaskEditOverviewField = styled(TaskEditOverviewField)`
+  ${fieldStyle}
+  margin-bottom: ${calculateMinSizeBasedOnFigma(30)};
 `
 const StyledCalenderField = styled(CalenderField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(19)};

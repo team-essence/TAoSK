@@ -1,37 +1,39 @@
 import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { useTaskTitleEditForm } from 'hooks/useTaskTitleEditForm'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
+import { useTaskOverviewEditForm } from 'hooks/useTaskOverviewEditForm'
 
 type Props = {
-  className?: string
   id: string
-  title: string
+  overview: string
 }
 
-export const TaskEditTitleField: FCX<Props> = ({ className, id, title }) => {
-  const { state, setState, newTitle, onClickSaveButton, disabled, register, error } =
-    useTaskTitleEditForm({ id, initialTitle: title })
+export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) => {
+  const { state, setState, newOverview, onClickSaveButton, disabled, register, error } =
+    useTaskOverviewEditForm({ id, initialOverview: overview })
 
   if (state === 'view') {
     return (
       <StyledViewWrapper className={className} onClick={() => setState('edit')}>
-        <StyledH2>{newTitle}</StyledH2>
-        <StyledFontAwesomeIcon icon={faPencilAlt} />
+        <StyledH3>概要</StyledH3>
+        <StyledOverview>{newOverview}</StyledOverview>
+        <StyledAnnotation>
+          クリックで編集
+          <FontAwesomeIcon icon={faPencilAlt} />
+        </StyledAnnotation>
       </StyledViewWrapper>
     )
   } else {
     return (
       <StyledEditWrapper className={className}>
-        <StyledInput
-          type="text"
-          {...register('title', {
-            required: 'タイトルは必須です',
-            maxLength: { value: 255, message: '255文字以内で入力してください' },
+        <StyledH3>概要</StyledH3>
+        <StyledTextarea
+          {...register('overview', {
+            maxLength: { value: 1024, message: '1024文字以内で入力してください' },
           })}
           hasError={!!error?.message}
         />
@@ -52,21 +54,42 @@ export const TaskEditTitleField: FCX<Props> = ({ className, id, title }) => {
 const StyledViewWrapper = styled.div`
   cursor: pointer;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  flex-direction: column;
 `
-const StyledH2 = styled.h2`
+const StyledH3 = styled.h3`
+  width: 100%;
+  margin-bottom: ${calculateMinSizeBasedOnFigma(8)};
   ${({ theme }) =>
     css`
-      font-size: ${theme.FONT_SIZES.SIZE_20};
+      font-size: ${theme.FONT_SIZES.SIZE_16};
       font-weight: ${theme.FONT_WEIGHTS.BOLD};
       color: ${theme.COLORS.TOBACCO_BROWN};
     `}
 `
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+const StyledOverview = styled.p`
+  display: inline-block;
+  width: 100%;
+  margin-bottom: ${calculateMinSizeBasedOnFigma(5)};
+  padding: ${calculateMinSizeBasedOnFigma(11)};
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
   ${({ theme }) =>
     css`
+      border: solid 1px ${convertIntoRGBA(theme.COLORS.WHITE, 0.6)};
+      background-color: ${convertIntoRGBA(theme.COLORS.SILVER, 0.4)};
       font-size: ${theme.FONT_SIZES.SIZE_14};
+      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+      color: ${theme.COLORS.TOBACCO_BROWN};
+    `}
+`
+const StyledAnnotation = styled.p`
+  width: 100%;
+  text-align: right;
+  ${({ theme }) =>
+    css`
+      font-size: ${theme.FONT_SIZES.SIZE_10};
+      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
       color: ${theme.COLORS.TOBACCO_BROWN};
     `}
 `
@@ -78,10 +101,10 @@ const StyledEditWrapper = styled.div`
   gap: ${calculateMinSizeBasedOnFigma(8)};
   width: 100%;
 `
-const StyledInput = styled.input<{ hasError: boolean }>`
+const StyledTextarea = styled.textarea<{ hasError: boolean }>`
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigma(40)};
-  padding-left: ${calculateMinSizeBasedOnFigma(8)};
+  height: ${calculateMinSizeBasedOnFigma(180)};
+  padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
   ${({ hasError, theme }) =>
     hasError &&
     css`

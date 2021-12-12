@@ -154,6 +154,7 @@ const fieldStyle = (
     background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.84)};
     color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
     &::placeholder {
+      font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
       color: ${({ theme }) => theme.COLORS.SILVER};
     }
   }
