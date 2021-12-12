@@ -14,6 +14,7 @@ import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
+import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 
@@ -47,57 +48,66 @@ export const TaskEditModal: FCX<Props> = ({
     id,
     setShouldShowEditModal: setShouldShow,
   })
+  const { leftColumnRef, rightColumnRef, scrollableRef, scrollHeight } =
+    useModalInterlockingScroll()
 
   return (
-    <StyledModal
-      shouldShow={shouldShow}
-      onClickCloseBtn={() => setShouldShow(false)}
-      className={className}>
-      <StyledTaskEditTitleField id={id} title={title} />
-      <StyledContentsWrapper>
-        <StyledLeftColumn>
-          <StyledTaskEditOverviewField id={id} overview={overview} />
-        </StyledLeftColumn>
-        <StyledBorder />
-        <StyledRightColumn>
-          <StyledCalenderField
-            label="期限"
-            registration={register('date')}
-            required={false}
-            onChange={onChange}
-          />
-          <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
-          <StyledTaskEditStatusPointField
-            id={id}
-            technology={technology}
-            solution={solution}
-            achievement={achievement}
-            motivation={motivation}
-            design={design}
-            plan={plan}
-          />
-          <StyledDeleteButtonWrapper>
-            <StyledDeleteButton
-              text="タスクを削除"
-              onClick={() => setShouldShowConfirmPopup(true)}
+    <>
+      <StyledModal
+        shouldShow={shouldShow}
+        onClickCloseBtn={() => setShouldShow(false)}
+        className={className}>
+        <StyledTaskEditTitleField id={id} title={title} />
+        <StyledContentsWrapper>
+          <StyledLeftColumn ref={leftColumnRef}>
+            <StyledTaskEditOverviewField id={id} overview={overview} />
+          </StyledLeftColumn>
+          <StyledBorder />
+          <StyledRightColumn ref={rightColumnRef}>
+            <StyledCalenderField
+              label="期限"
+              registration={register('date')}
+              required={false}
+              onChange={onChange}
             />
-            <StyledConfirmPopup
-              title="カードを削除しますか?"
-              description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
-              buttonText="削除"
-              shouldShow={shouldShowConfirmPopup}
-              onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
-              onClickConfirmBtn={onClickDeleteButton}
+            <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+            <StyledTaskEditStatusPointField
+              id={id}
+              technology={technology}
+              solution={solution}
+              achievement={achievement}
+              motivation={motivation}
+              design={design}
+              plan={plan}
             />
-          </StyledDeleteButtonWrapper>
-        </StyledRightColumn>
-      </StyledContentsWrapper>
-    </StyledModal>
+            <StyledDeleteButtonWrapper>
+              <StyledDeleteButton
+                text="タスクを削除"
+                onClick={() => setShouldShowConfirmPopup(true)}
+              />
+              <StyledConfirmPopup
+                title="カードを削除しますか?"
+                description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
+                buttonText="削除"
+                shouldShow={shouldShowConfirmPopup}
+                onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
+                onClickConfirmBtn={onClickDeleteButton}
+              />
+            </StyledDeleteButtonWrapper>
+          </StyledRightColumn>
+        </StyledContentsWrapper>
+      </StyledModal>
+
+      {shouldShow && (
+        <StyledScrollableOverlay ref={scrollableRef} onClick={() => setShouldShow(false)}>
+          <StyledScrollableDummy height={scrollHeight} />
+        </StyledScrollableOverlay>
+      )}
+    </>
   )
 }
 
-const padding = `${calculateMinSizeBasedOnFigma(34)} ${calculateMinSizeBasedOnFigma(30)}
-${calculateMinSizeBasedOnFigma(34)}` // ts-styled-pluginエラーを避けるため
+const padding = `${calculateMinSizeBasedOnFigma(34)} ${calculateMinSizeBasedOnFigma(30)}` // ts-styled-pluginエラーを避けるため
 const StyledModal = styled(Modal)`
   display: flex;
   flex-direction: column;
@@ -110,7 +120,8 @@ const StyledModal = styled(Modal)`
 const StyledContentsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  height: ${calculateMinSizeBasedOnFigma(518)};
+  height: 100%;
+  min-height: 0;
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -120,12 +131,16 @@ const StyledBorder = styled.div`
 const StyledLeftColumn = styled.div`
   width: ${calculateMinSizeBasedOnFigma(509)};
   height: 100%;
+  overflow-x: visible;
+  overflow-y: hidden;
 `
 const StyledRightColumn = styled.div`
   display: flex;
   flex-direction: column;
   width: ${calculateMinSizeBasedOnFigma(270)};
   height: 100%;
+  overflow-x: visible;
+  overflow-y: hidden;
 `
 const fieldStyle = css`
   label {
@@ -187,4 +202,19 @@ const StyledConfirmPopup = styled(ConfirmPopup)`
   left: 10%;
   width: ${calculateMinSizeBasedOnFigma(318)};
   height: ${calculateMinSizeBasedOnFigma(188)};
+`
+const StyledScrollableOverlay = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.UPPER_OVERLAY};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  background-color: transparent;
+`
+const StyledScrollableDummy = styled.div<{ height: number }>`
+  width: 100%;
+  height: ${({ height }) => height}px;
+  background-color: transparent;
 `

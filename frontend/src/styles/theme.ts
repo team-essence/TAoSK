@@ -16,6 +16,7 @@ export const theme = {
     INDEX_8: 8,
     HEADER: 50,
     OVERLAY: 90,
+    UPPER_OVERLAY: 91,
     UNDER_POPOVER: 98,
     POPOVER: 99,
     MODAL: 100,
