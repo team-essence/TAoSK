@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FCX, useCallback, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -10,11 +10,10 @@ type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE
   userDatas?: UserDatas
-  className?: string
   onClickDeleteBtn?: (index: number) => void
 }
 
-export const UserCount: FC<Props> = ({
+export const UserCount: FCX<Props> = ({
   userCount,
   avatarStyleType,
   userDatas = [],

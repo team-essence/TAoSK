@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
 import { DROP_TYPE } from 'consts/dropType'
@@ -22,7 +22,7 @@ type Props = {
   onDragEnd: (result: DropResult) => Promise<void>
 } & Partial<Groups>
 
-export const ProjectDrawer: FC<Props> = ({ groups, lists, onDragEnd }) => {
+export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
   const { currentValue, setCurrentValue } = useLocalStorage<boolean>('isOpen', true)
 
   return (

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { GameLogType } from 'types/gameLog'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
@@ -6,11 +6,10 @@ import { GAME_LOG_TYPE } from 'consts/gameLog'
 import { theme } from 'styles/theme'
 
 type Props = {
-  className?: string
   gameLogs: GameLogType[]
 }
 
-export const ProjectGameLog: FC<Props> = ({ className, gameLogs }) => {
+export const ProjectGameLog: FCX<Props> = ({ className, gameLogs }) => {
   const endText = (context: string) => {
     if (context.includes(GAME_LOG_TYPE.CREATE_PROJECT)) {
       return 'が出現した！'

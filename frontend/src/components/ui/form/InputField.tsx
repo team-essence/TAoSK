@@ -1,11 +1,10 @@
-import React, { FC, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
+import React, { FCX, useEffect, InputHTMLAttributes, useState, FocusEvent, ReactNode } from 'react'
 import styled from 'styled-components'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
-  className?: string
   label?: string
   error?: FieldError | undefined
   children?: ReactNode
@@ -15,7 +14,7 @@ type Props = {
   type?: 'text' | 'email' | 'password'
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const InputField: FC<Props> = ({
+export const InputField: FCX<Props> = ({
   className,
   errorColor = theme.COLORS.ERROR,
   label,

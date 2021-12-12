@@ -13,7 +13,7 @@ export const changeWeaponImage = (listIndex: number, listLength: number, param: 
   } else if (listIndex < listLength && listIndex !== listLength - 1) {
     filePath = `/svg/weapon/progress-${param}.svg`
   } else {
-    filePath = ''
+    filePath = `/svg/weapon/${param}-clear.svg`
   }
 
   return filePath

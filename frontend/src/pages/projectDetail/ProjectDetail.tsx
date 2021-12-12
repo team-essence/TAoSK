@@ -27,9 +27,11 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { Loading } from 'components/ui/loading/Loading'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { Notifications } from 'types/notification'
+import { usePresence } from 'hooks/usePresence'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
+  usePresence()
   const { id } = useParams()
   const { currentUser } = useAuthContext()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
@@ -113,7 +115,7 @@ export const ProjectDetail: FC = () => {
       setNotifications(notifications)
     },
   })
-  const [updateOnlineFlag] = useUpdateOnlineFlagMutation()
+
   const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
   const [createInvitation] = useCreateInvitationMutation({
     onCompleted(data) {
@@ -210,17 +212,6 @@ export const ProjectDetail: FC = () => {
   const [list, setList] = useState<List[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
-  const handleBeforeUnloadEvent = async (userId: string, projectId: string) => {
-    logger.debug('でる')
-    await updateOnlineFlag({
-      variables: {
-        id: userId,
-        project_id: projectId,
-        isOnline: false,
-      },
-    })
-  }
-
   useEffect(() => {
     if (!currentUser) return
 
@@ -232,38 +223,14 @@ export const ProjectDetail: FC = () => {
   }, [currentUser])
 
   useEffect(() => {
-    if (!currentUser || !id) return
+    if (!id) return
 
-    const tryApi = async () => {
-      await updateOnlineFlag({
-        variables: {
-          id: currentUser.uid,
-          project_id: String(id),
-          isOnline: true,
-        },
-      })
-
-      getProjectById({
-        variables: {
-          id,
-        },
-      })
-    }
-
-    tryApi()
-  }, [currentUser, id])
-
-  useEffect(() => {
-    if (!currentUser || !id) return
-    logger.debug('入る')
-    window.addEventListener('beforeunload', () =>
-      handleBeforeUnloadEvent(currentUser.uid, String(id)),
-    )
-    return () =>
-      window.removeEventListener('beforeunload', () =>
-        handleBeforeUnloadEvent(currentUser.uid, String(id)),
-      )
-  }, [currentUser, id])
+    getProjectById({
+      variables: {
+        id,
+      },
+    })
+  }, [id])
 
   useEffect(() => {
     searchSameCompanyUsers({
@@ -370,7 +337,7 @@ export const ProjectDetail: FC = () => {
       return list.tasks.map((task, taskIndex) => {
         return {
           id: task.id,
-          list_id: list.id,
+          list_id: list.list_id,
           vertical_sort: taskIndex,
           completed_flg: index === length - 1 ? true : false,
         }

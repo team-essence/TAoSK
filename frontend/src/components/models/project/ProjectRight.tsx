@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FCX, useState } from 'react'
 import { useGameLog } from 'hooks/useGameLog'
 import styled from 'styled-components'
 import { GameLogType } from 'types/gameLog'
@@ -6,19 +6,18 @@ import {
   calculateMinSizeBasedOnFigmaHeight,
   calculateMinSizeBasedOnFigmaWidth,
 } from 'utils/calculateSizeBasedOnFigma'
-import { CreateListButton } from '../../ui/button/CreateListButton'
+import { CreateListButton } from 'components/ui/button/CreateListButton'
 import { ProjectGameLog } from './ProjectGameLog'
 import { ProjectMonster } from './ProjectMonster'
 
 type Props = {
-  className?: string
   onClick: () => void
   monsterName: string
   monsterHPRemaining: number
   monsterHp: number
 }
 
-export const ProjectRight: FC<Props> = ({
+export const ProjectRight: FCX<Props> = ({
   className,
   onClick,
   monsterName,

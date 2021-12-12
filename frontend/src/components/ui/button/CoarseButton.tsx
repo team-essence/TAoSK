@@ -1,16 +1,15 @@
-import React, { FC, MouseEvent } from 'react'
+import React, { FCX, MouseEvent } from 'react'
 import styled, { css } from 'styled-components'
 
 type BgSrc = '/grain.png' | '/light-grain.png'
 type Props = {
-  className?: string
   text: string
   bgSrcs?: Record<'outer' | 'inner', BgSrc>
   onClick?: (e: MouseEvent) => void
   disabled?: boolean
 }
 
-export const CoarseButton: FC<Props> = ({
+export const CoarseButton: FCX<Props> = ({
   className,
   text,
   bgSrcs = { inner: '/grain.png', outer: '/grain.png' },

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { occupationList } from 'consts/occupationList'
 import { PopoverProps } from 'types/popover'
@@ -16,12 +16,11 @@ import { Tag } from 'components/ui/tag/Tag'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   level: number
 } & PopoverProps &
   Omit<GetUserQuery['user'], 'company' | 'memo' | 'exp' | 'online_flg' | 'invitations'>
 
-export const EmployeePopover: FC<Props> = ({
+export const EmployeePopover: FCX<Props> = ({
   id,
   occupation_id,
   name,
@@ -84,7 +83,7 @@ export const EmployeePopover: FC<Props> = ({
             </div>
           </StyledFlexWrapper>
           <StyledName>{name}</StyledName>
-          <StyledId>{`#${id}`}</StyledId>
+          <StyledId>{`@${id}`}</StyledId>
         </StyledUpperRowContainer>
         <StyledBorder />
         <StyledLowerRow>

@@ -1,4 +1,4 @@
-import React, { FC, Dispatch, SetStateAction } from 'react'
+import React, { FCX, Dispatch, SetStateAction } from 'react'
 import styled, {
   css,
   FlattenInterpolation,
@@ -27,7 +27,7 @@ type Props = {
   list_id: string
 }
 
-export const TaskCreateModal: FC<Props> = ({
+export const TaskCreateModal: FCX<Props> = ({
   shouldShow,
   setShouldShow,
   className,

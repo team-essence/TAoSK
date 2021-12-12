@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { BAR_TYPE } from 'consts/bar'
 import { yanoneKaffeesatz } from 'styles/fontFamily/fontFamily'
@@ -6,13 +6,12 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import exp from 'utils/exp/exp'
 
 type Props = {
-  className?: string
   hp: number
   mp: number
   totalExp: number
 }
 
-export const ProjectMyBars: FC<Props> = ({ className, hp, mp, totalExp }) => {
+export const ProjectMyBars: FCX<Props> = ({ className, hp, mp, totalExp }) => {
   return (
     <StyledProjectMyBarsContainer className={className}>
       <StyledStatusHPBarContainer>

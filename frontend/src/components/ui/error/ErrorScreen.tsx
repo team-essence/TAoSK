@@ -1,11 +1,11 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 
 type Props = {
   error: Error
 }
 
-export const ErrorScreen: FC<Props> = ({ error }) => {
+export const ErrorScreen: FCX<Props> = ({ error }) => {
   return (
     <StyledErrorContainer>
       <h3>we are sorry... something went wrong.</h3>

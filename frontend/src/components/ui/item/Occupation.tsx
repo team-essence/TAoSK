@@ -1,16 +1,15 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 
 type StyleSize = 'small' | 'normal' | 'large'
 
 type Props = {
-  className?: string
   occupation: string
   size: StyleSize
 }
 
-export const Occupation: FC<Props> = ({ className, occupation, size }) => {
+export const Occupation: FCX<Props> = ({ className, occupation, size }) => {
   return (
     <StyledOccupation className={className} size={size}>
       {occupation}

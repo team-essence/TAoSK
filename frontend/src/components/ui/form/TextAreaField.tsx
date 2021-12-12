@@ -1,5 +1,5 @@
 import React, {
-  FC,
+  FCX,
   useEffect,
   TextareaHTMLAttributes,
   useState,
@@ -12,7 +12,6 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { UseFormRegisterReturn, FieldError } from 'react-hook-form'
 
 type Props = {
-  className?: string
   label?: string
   error?: FieldError | undefined
   children?: ReactNode
@@ -22,7 +21,7 @@ type Props = {
   type?: 'text' | 'email' | 'password'
 } & TextareaHTMLAttributes<HTMLTextAreaElement>
 
-export const TextAreaField: FC<Props> = ({
+export const TextAreaField: FCX<Props> = ({
   className,
   errorColor = theme.COLORS.ERROR,
   label,

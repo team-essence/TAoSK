@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, ReactNode } from 'react'
+import React, { FCX, MouseEvent, ReactNode } from 'react'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -10,11 +10,10 @@ type Props = {
   title?: string
   shouldShow: boolean
   onClickCloseBtn: (e?: MouseEvent) => void
-  className?: string
   children: ReactNode
 }
 
-export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
+export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   if (!shouldShow) return <></>
   return (
     <>

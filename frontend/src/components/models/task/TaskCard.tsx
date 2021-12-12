@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react'
+import React, { FCX, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
 import { Params } from 'types/status'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
@@ -15,13 +15,12 @@ import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   taskIndex: number
   listIndex: number
   listLength: number
 } & Omit<Task, 'vertical_sort'>
 
-export const TaskCard: FC<Props> = ({
+export const TaskCard: FCX<Props> = ({
   className,
   taskIndex,
   listIndex,
@@ -50,7 +49,9 @@ export const TaskCard: FC<Props> = ({
     { param: 'design', value: design },
     { param: 'plan', value: plan },
   ]
+
   const max = params.reduce((prev, current) => (prev.value > current.value ? prev : current))
+
   const assignedUsers = allocations.map((item, index, array) =>
     index < 5 ? (
       <UserAvatarIcon key={index} avatarStyleType={AVATAR_STYLE.TASK} iconImage={item.icon_image} />
@@ -126,20 +127,20 @@ export const TaskCard: FC<Props> = ({
 
 const StyledLi = styled.li`
   position: relative;
-  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
   user-select: none;
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
 `
 const StyledContainer = styled.div`
   height: auto;
-  padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
+  padding: ${calculateMinSizeBasedOnFigma(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.LINEN};
   white-space: normal;
 `
 const StyledInnerWrap = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaWidth(8)} ${calculateMinSizeBasedOnFigmaWidth(6)};
+  padding: ${calculateMinSizeBasedOnFigma(8)} ${calculateMinSizeBasedOnFigma(6)};
   border: 2px solid ${({ theme }) => theme.COLORS.CARARRA};
   border-radius: 4px;
 `
@@ -150,20 +151,20 @@ const StyledTitle = styled.h3`
   overflow: hidden;
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
-  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(8)};
 `
 const StyledWeaponImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(37)};
+  width: ${calculateMinSizeBasedOnFigma(37)};
 `
 const StyledDeadlineImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(19)};
+  width: ${calculateMinSizeBasedOnFigma(19)};
 `
 const StyledClockImage = styled.img`
   aspect-ratio: 1 / 1;
-  width: ${calculateMinSizeBasedOnFigmaWidth(10)};
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(0.5)};
+  width: ${calculateMinSizeBasedOnFigma(10)};
+  margin-top: ${calculateMinSizeBasedOnFigma(0.5)};
 `
 const StyledDate = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_10};
@@ -180,8 +181,8 @@ const StyledChatCount = styled.p`
 const StyledWeaponImageContainer = styled.div`
   display: grid;
   place-items: center;
-  width: ${calculateMinSizeBasedOnFigmaWidth(42)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(42)};
+  width: ${calculateMinSizeBasedOnFigma(42)};
+  height: ${calculateMinSizeBasedOnFigma(42)};
   background-color: ${({ theme }) => theme.COLORS.WHITE};
   border-radius: 4px;
   box-shadow: inset 1px -1px 5px rgba(0, 0, 0, 0.25);
@@ -193,26 +194,26 @@ const StyledFlexContainer = styled.div`
 `
 const StyledAvatarContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(2)};
+  gap: ${calculateMinSizeBasedOnFigma(2)};
 `
 const StyledCommentContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  gap: ${calculateMinSizeBasedOnFigma(4)};
   align-items: center;
 `
 const StyledFootContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  gap: ${calculateMinSizeBasedOnFigma(4)};
   align-items: center;
-  padding-top: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding-top: ${calculateMinSizeBasedOnFigma(8)};
 `
 const StyledDateContainer = styled.div<{ listIndex: number; listLength: number }>`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  gap: ${calculateMinSizeBasedOnFigma(4)};
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(4)};
+  padding: 0 ${calculateMinSizeBasedOnFigma(4)};
   ${({ listIndex, listLength }) =>
     listIndex === 0
       ? css`

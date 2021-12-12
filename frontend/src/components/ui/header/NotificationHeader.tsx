@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 import {
   calculateMinSizeBasedOnFigmaHeight,
@@ -6,7 +6,6 @@ import {
 } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   handlers:
     | boolean
     | {
@@ -17,7 +16,12 @@ type Props = {
   isNotification: boolean
 }
 
-export const NotificationHeader: FC<Props> = ({ className, handlers, onClick, isNotification }) => {
+export const NotificationHeader: FCX<Props> = ({
+  className,
+  handlers,
+  onClick,
+  isNotification,
+}) => {
   return (
     <StyledNotificationHeaderContainer className={className} {...handlers} onClick={onClick}>
       <img src="/svg/bell.svg" alt="通知アイコン" />

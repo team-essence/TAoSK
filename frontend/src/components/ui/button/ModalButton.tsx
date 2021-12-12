@@ -1,17 +1,16 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 
 type Props = {
-  className?: string
   onClick?: () => void
   disabled?: boolean
   text: string
 }
 
-export const ModalButton: FC<Props> = ({ className, onClick, text, disabled = false }) => {
+export const ModalButton: FCX<Props> = ({ className, onClick, text, disabled = false }) => {
   return (
     <StyledButton className={className} onClick={onClick} disabled={disabled}>
       <StyledText>{text}</StyledText>

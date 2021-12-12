@@ -1,11 +1,10 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { yrsa } from 'styles/fontFamily/fontFamily'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import status from 'utils/status/status'
 
 type Props = {
-  className?: string
   technology: number
   solution: number
   achievement: number
@@ -16,7 +15,7 @@ type Props = {
 
 type StatusType = 'technology' | 'solution' | 'achievement' | 'motivation' | 'design' | 'plan'
 
-export const ProjectMyStatuses: FC<Props> = ({
+export const ProjectMyStatuses: FCX<Props> = ({
   className,
   technology,
   solution,

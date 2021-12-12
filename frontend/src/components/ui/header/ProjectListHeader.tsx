@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FCX, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -12,7 +12,6 @@ import { UserMenuHeader } from 'components/ui/header/UserMenuHeader'
 import { NotificationHeader } from 'components/ui/header/NotificationHeader'
 
 type Props = {
-  className?: string
   iconImage: string
   name: string
   uid: string
@@ -20,7 +19,7 @@ type Props = {
   notifications: Notifications
 }
 
-export const ProjectListHeader: FC<Props> = ({
+export const ProjectListHeader: FCX<Props> = ({
   className,
   iconImage,
   name,
@@ -28,6 +27,7 @@ export const ProjectListHeader: FC<Props> = ({
   totalExp,
   notifications,
 }) => {
+  const navigate = useNavigate()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const [isNotificationHover, notificationEventHoverHandlers] = useHover()
   const [isClickNotification, setIsClickNotification] = useState(false)
@@ -72,7 +72,7 @@ export const ProjectListHeader: FC<Props> = ({
   return (
     <>
       <StyledHeaderWrapper className={className}>
-        <StyledLogoWrapper>
+        <StyledLogoWrapper onClick={() => navigate('/')}>
           <StyledLogo src="/svg/logo-transparent-background.svg" alt="ロゴ" />
         </StyledLogoWrapper>
 
@@ -135,6 +135,7 @@ const StyledLogoWrapper = styled.div`
 
 const StyledLogo = styled.img`
   height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+  cursor: pointer;
 `
 
 const StyledPopupContainer = styled.div``

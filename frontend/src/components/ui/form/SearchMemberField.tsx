@@ -1,4 +1,4 @@
-import React, { FC, useEffect, Dispatch, SetStateAction } from 'react'
+import React, { FCX, useEffect, Dispatch, SetStateAction } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { occupationList } from 'consts/occupationList'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -11,12 +11,11 @@ import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserDatas } from 'types/userDatas'
 
 type Props = {
-  className?: string
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
   userDatas: UserDatas
 }
 
-export const SearchMemberField: FC<Props> = ({ className, setUserDatas, userDatas }) => {
+export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDatas }) => {
   const {
     onChange,
     onFocus,

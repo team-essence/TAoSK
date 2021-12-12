@@ -1,4 +1,4 @@
-import React, { FC, useState, SetStateAction, Dispatch } from 'react'
+import React, { FCX, useState, SetStateAction, Dispatch } from 'react'
 import { Link } from 'react-router-dom'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { useTrySignOut } from 'hooks/useTrySignOut'
@@ -7,7 +7,6 @@ import Exp from 'utils/exp/exp'
 import styled from 'styled-components'
 
 type Props = {
-  className?: string
   isHover: boolean
   isClick: boolean
   closeClick: () => void
@@ -18,7 +17,7 @@ type Props = {
   setShouldShowModal: Dispatch<SetStateAction<boolean>>
 }
 
-export const UserMenuPopup: FC<Props> = ({
+export const UserMenuPopup: FCX<Props> = ({
   className,
   isHover,
   isClick,

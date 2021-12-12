@@ -1,10 +1,10 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { SimpleRoundedButton } from 'components/ui/button/SimpleRoundedButton'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useNavigate } from 'react-router-dom'
 
-export const AuthHeader: FC = () => {
+export const AuthHeader: FCX = () => {
   const navigate = useNavigate()
 
   return (

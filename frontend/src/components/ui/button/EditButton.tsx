@@ -1,13 +1,12 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
-  className?: string
   onClick: () => void
 }
 
-export const EditButton: FC<Props> = ({ className, onClick }) => {
+export const EditButton: FCX<Props> = ({ className, onClick }) => {
   return (
     <StyledEditButton className={className} onClick={onClick}>
       編集

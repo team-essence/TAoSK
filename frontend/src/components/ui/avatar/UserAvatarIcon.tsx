@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { useHover } from 'hooks/useHover'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -10,11 +10,10 @@ type Props = {
   iconImage: string
   name?: string
   occupation?: string
-  className?: string
   onClickDeleteBtn?: () => void
 }
 
-export const UserAvatarIcon: FC<Props> = ({
+export const UserAvatarIcon: FCX<Props> = ({
   avatarStyleType,
   iconImage,
   onClickDeleteBtn,

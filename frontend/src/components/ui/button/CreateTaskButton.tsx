@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -8,7 +8,7 @@ type Props = {
   onClick: () => void
 }
 
-export const CreateTaskButton: FC<Props> = ({ onClick }) => {
+export const CreateTaskButton: FCX<Props> = ({ onClick }) => {
   return <StyledContainer onClick={onClick}>+ タスクを追加</StyledContainer>
 }
 

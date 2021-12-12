@@ -1,11 +1,10 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import date from 'utils/date/date'
 
 type Props = {
-  className?: string
   isEnd: boolean
   activeStatue: ACTIVE_STATUS
   projectTitle: string
@@ -25,7 +24,7 @@ export const ACTIVE_STATUS = {
 } as const
 type ACTIVE_STATUS = typeof ACTIVE_STATUS[keyof typeof ACTIVE_STATUS]
 
-export const ProjectListItem: FC<Props> = ({
+export const ProjectListItem: FCX<Props> = ({
   className,
   isEnd,
   activeStatue,

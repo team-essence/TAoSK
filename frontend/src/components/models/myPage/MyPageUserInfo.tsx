@@ -1,12 +1,11 @@
+import React, { FCX } from 'react'
 import { occupationList } from 'consts/occupationList'
-import React, { FC } from 'react'
 import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import exp from 'utils/exp/exp'
 
 type Props = {
-  className?: string
   iconImage: string
   name: string
   uid: string
@@ -17,7 +16,7 @@ type Props = {
   mp: number
 }
 
-export const MyPageUserInfo: FC<Props> = ({
+export const MyPageUserInfo: FCX<Props> = ({
   className,
   iconImage,
   name,

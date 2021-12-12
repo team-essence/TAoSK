@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { PopoverProps } from 'types/popover'
 import { theme } from 'styles/theme'
 import { BasicPopover } from 'components/ui/modal/BasicPopover'
@@ -9,12 +9,11 @@ import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Props = {
-  className?: string
   handleEdit: (e?: any) => void //FIXME Colmun.tsxでeが必要だけど、他ではいらない場合の型の指定が不明
   handleRemove: () => void
 } & PopoverProps
 
-export const SmallPopover: FC<Props> = ({
+export const SmallPopover: FCX<Props> = ({
   anchorEl,
   vertical,
   horizontal,

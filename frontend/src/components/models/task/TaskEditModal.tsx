@@ -1,4 +1,4 @@
-import React, { FC, Dispatch, SetStateAction } from 'react'
+import React, { FCX, Dispatch, SetStateAction } from 'react'
 import styled, {
   css,
   FlattenInterpolation,
@@ -24,10 +24,14 @@ import { Task } from 'types/task'
 type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
-  className?: string
 } & Omit<Task, 'vertical_sort'>
 
-export const TaskEditModal: FC<Props> = ({ shouldShow, setShouldShow, className, ...taskInfo }) => {
+export const TaskEditModal: FCX<Props> = ({
+  shouldShow,
+  setShouldShow,
+  className,
+  ...taskInfo
+}) => {
   return (
     <StyledModal
       shouldShow={shouldShow}

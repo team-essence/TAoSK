@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FCX, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
 import { DROP_TYPE } from 'consts/dropType'
@@ -6,8 +6,8 @@ import { theme } from 'styles/theme'
 import toast from 'utils/toast/toast'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
-  calculateMinSizeBasedOnFigmaWidth,
   calculateVhBasedOnFigma,
+  calculateMinSizeBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
 import {
   useUpdateListNameMutation,
@@ -24,12 +24,11 @@ import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
 type Props = {
-  className?: string
   listIndex: number
   listLength: number
 } & Omit<List, 'sort_id' | 'index'>
 
-export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
+export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
   const controll = useControllTextArea()
   const { anchorEl, openPopover, closePopover } = usePopover()
@@ -145,8 +144,8 @@ export const TaskColumn: FC<Props> = ({ id, list_id, title, tasks, listIndex, li
 
 const StyledColumnContainer = styled.ul`
   position: relative;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
-  min-height: ${calculateMinSizeBasedOnFigmaWidth(200)};
+  width: ${calculateMinSizeBasedOnFigma(270)};
+  min-height: ${calculateMinSizeBasedOnFigma(200)};
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
@@ -164,8 +163,8 @@ const StyledColumnContainer = styled.ul`
 const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>`
   display: flex;
   position: relative;
-  min-height: ${calculateMinSizeBasedOnFigmaWidth(48)};
-  padding: ${calculateMinSizeBasedOnFigmaWidth(1)};
+  min-height: ${calculateMinSizeBasedOnFigma(48)};
+  padding: ${calculateMinSizeBasedOnFigma(1)};
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   ${({ listIndex, listLength }) =>
@@ -183,15 +182,15 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
 `
 const StyledButtonContainer = styled.div`
-  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
 `
 const StyledContainer = styled.div`
-  margin-right: ${calculateMinSizeBasedOnFigmaWidth(16)};
+  margin-right: ${calculateMinSizeBasedOnFigma(16)};
 `
 const StyledTaskListContainer = styled.div`
   max-height: ${calculateVhBasedOnFigma(580)};
-  padding: ${calculateMinSizeBasedOnFigmaWidth(16)} ${calculateMinSizeBasedOnFigmaWidth(8)} 0;
-  margin-bottom: ${calculateMinSizeBasedOnFigmaWidth(4)};
+  padding: ${calculateMinSizeBasedOnFigma(16)} ${calculateMinSizeBasedOnFigma(8)} 0;
+  margin-bottom: ${calculateMinSizeBasedOnFigma(4)};
   overflow-x: hidden;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -211,7 +210,7 @@ const StyledInnerHeadWrap = styled.div`
   flex-grow: 1;
   justify-content: space-between;
   align-items: center;
-  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(14)};
+  padding: 0 ${calculateMinSizeBasedOnFigma(14)};
   border: 2px solid ${({ theme }) => theme.COLORS.STARK_WHITE};
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -229,7 +228,7 @@ const StyledTitleTextArea = styled(TextareaAutosize)`
   border: none;
   border-radius: 2px;
   resize: none;
-  margin: ${calculateMinSizeBasedOnFigmaWidth(4)} 0;
+  margin: ${calculateMinSizeBasedOnFigma(4)} 0;
   :disabled {
     color: ${({ theme }) => theme.COLORS.WHITE};
     background: inherit;
@@ -240,7 +239,7 @@ const StyledTitleTextArea = styled(TextareaAutosize)`
 `
 const StyledSpreadIcon = styled.img`
   display: block;
-  width: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  width: ${calculateMinSizeBasedOnFigma(12)};
   cursor: pointer;
-  min-height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  min-height: ${calculateMinSizeBasedOnFigma(40)};
 `

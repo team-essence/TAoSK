@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import { RatingView } from 'react-simple-star-rating'
 import styled from 'styled-components'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
@@ -11,7 +11,7 @@ type Props = {
   limitDeadline: string
 }
 
-export const ProjectListMonster: FC<Props> = ({ specie, difficulty, limitDeadline }) => {
+export const ProjectListMonster: FCX<Props> = ({ specie, difficulty, limitDeadline }) => {
   return (
     <StyledMonsterContainer>
       <MonsterAvatar />
