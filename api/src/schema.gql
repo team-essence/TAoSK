@@ -135,6 +135,12 @@ type Group {
   deleted_at: DateTime!
 }
 
+type Occupation {
+  id: ID!
+  name: String!
+  users: [User!]!
+}
+
 type User {
   id: ID!
   name: String!
@@ -142,7 +148,6 @@ type User {
   online_flg: Boolean!
   hp: Float!
   mp: Float!
-  occupation_id: Float!
   company: String!
   memo: String!
   technology: Float!
@@ -159,6 +164,7 @@ type User {
   allocations: [Allocation!]!
   gameLogs: [GameLog!]!
   chat: [Chat!]!
+  occupation: Occupation!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
