@@ -177,6 +177,41 @@ mutation UpdateTaskOverview($taskId: Float!, $overview: String!) {
   }
 }
 
+mutation UpdateTaskParameters(
+  $taskId: Float!
+  $design: Float!
+  $plan: Float!
+  $motivation: Float!
+  $solution: Float!
+  $achievement: Float!
+  $technology: Float!
+) {
+  updateTaskParameters(
+    taskId: $taskId
+    design: $design
+    plan: $plan
+    motivation: $motivation
+    solution: $solution
+    achievement: $achievement
+    technology: $technology
+  ) {
+    id
+    design
+    plan
+    motivation
+    solution
+    achievement
+    technology
+  }
+}
+
+mutation UpdateTaskEndDate($taskId: Float!, $end_date: String!) {
+  updateTaskEndDate(taskId: $taskId, end_date: $end_date) {
+    id
+    end_date
+  }
+}
+
 mutation AddTask($newTask: NewTaskInput!, $assignTask: AssignTaskInput!) {
   addTask(newTask: $newTask, assignTask: $assignTask) {
     id
