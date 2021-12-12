@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,9 +13,9 @@ type Props = {
   title: string
 }
 
-export const TaskEditTitleField: FC<Props> = ({ className, title }) => {
+export const TaskEditTitleField: FCX<Props> = ({ className, id, title }) => {
   const { state, setState, newTitle, onClickSaveButton, disabled, register, error } =
-    useTaskTitleEditForm({ initialTitle: title })
+    useTaskTitleEditForm({ id, initialTitle: title })
 
   if (state === 'view') {
     return (

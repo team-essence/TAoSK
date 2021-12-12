@@ -15,12 +15,12 @@
 
   "React FC": {
     "scope": "typescriptreact",
-    "prefix": "fc",
+    "prefix": "fcx",
     "body": [
-      "import React, { FC } from 'react'",
+      "import React, { FCX } from 'react'",
       "import styled, { css } from 'styled-components'\n",
       "type Props = { className?: string }\n",
-      "export const $1: FC<Props> = ({ className }) => {",
+      "export const $1: FCX<Props> = ({ className }) => {",
       "  return (",
       "    <div className={className}>",
       "      $2",
