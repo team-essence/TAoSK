@@ -8,7 +8,7 @@ export class AllocationsResolver {
   constructor(private allocationService: AllocationsService) {}
 
   @Mutation(() => Allocation)
-  public async createAllocation(
+  public async CreateAllocation(
     @Args({ name: 'newAllocation' }) newAllocation: NewAllocationInput,
   ): Promise<Allocation> {
     return await this.allocationService
@@ -19,7 +19,7 @@ export class AllocationsResolver {
   }
 
   @Mutation(() => [Allocation])
-  public async unAssignTask(
+  public async UnAssignTask(
     @Args({ name: 'user_id' }) userId: string,
     @Args({ name: 'task_id' }) taskId: number,
   ): Promise<Allocation[]> {
@@ -31,10 +31,10 @@ export class AllocationsResolver {
   }
 
   @Query(() => [Allocation])
-  public async completedTask(
+  public async CompletedTask(
     @Args('userId') userId: string,
   ): Promise<Allocation[]> {
-    return await this.allocationService.completedTask(userId).catch((err) => {
+    return await this.allocationService.CompletedTask(userId).catch((err) => {
       throw err;
     });
   }

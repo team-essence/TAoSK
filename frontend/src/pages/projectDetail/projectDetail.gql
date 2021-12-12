@@ -214,6 +214,28 @@ mutation UpdateTaskEndDate($taskId: Float!, $end_date: String!) {
   }
 }
 
+mutation CreateAllocation($newAllocation: NewAllocationInput!) {
+  CreateAllocation(newAllocation: $newAllocation) {
+    user {
+      id
+      name
+      icon_image
+      occupation_id
+    }
+  }
+}
+
+mutation UnAssignTask($taskId: Float!, $userId: String!) {
+  UnAssignTask(task_id: $taskId, user_id: $userId) {
+    user {
+      id
+      name
+      icon_image
+      occupation_id
+    }
+  }
+}
+
 mutation AddTask($newTask: NewTaskInput!, $assignTask: AssignTaskInput!) {
   addTask(newTask: $newTask, assignTask: $assignTask) {
     id
