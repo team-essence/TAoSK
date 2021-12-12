@@ -1,26 +1,16 @@
 import React, { FCX, Dispatch, SetStateAction } from 'react'
-import styled, {
-  css,
-  FlattenInterpolation,
-  FlattenSimpleInterpolation,
-  ThemeProps,
-  DefaultTheme,
-} from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
 import { Modal } from 'components/ui/modal/Modal'
-import { TextAreaField } from 'components/ui/form/TextAreaField'
-import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
-import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
-import { ModalButton } from 'components/ui/button/ModalButton'
 import { TaskEditTitleField } from 'components/models/task/TaskEditTitleField'
 import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewField'
+import { TaskEditStatusPointField } from 'components/models/task/TaskEditStatusPointField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
-import { STATUS_TYPE } from 'consts/status'
 import { Task } from 'types/task'
 
 type Props = {
@@ -37,6 +27,12 @@ export const TaskEditModal: FCX<Props> = ({
   overview,
   end_date,
   allocations,
+  technology,
+  solution,
+  achievement,
+  motivation,
+  design,
+  plan,
 }) => {
   const { onChange, register } = useTaskEndDateEditForm({
     id,
@@ -62,18 +58,15 @@ export const TaskEditModal: FCX<Props> = ({
           onChange={onChange}
         />
         <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
-
-        {/* <StyledStatusWrapper className={className}>
-          <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-          {Object.values(STATUS_TYPE).map((status, index) => (
-            <TaskStatusPointField
-              status={status}
-              statusCounts={statusCounts}
-              setStatusCounts={setStatusCounts}
-              key={index}
-            />
-          ))}
-        </StyledStatusWrapper> */}
+        <TaskEditStatusPointField
+          id={id}
+          technology={technology}
+          solution={solution}
+          achievement={achievement}
+          motivation={motivation}
+          design={design}
+          plan={plan}
+        />
       </StyledRightColumn>
     </StyledModal>
   )
@@ -136,19 +129,3 @@ const StyledCalenderField = styled(CalenderField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
 `
 const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
-const StyledStatusWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: ${calculateMinSizeBasedOnFigma(8)};
-`
-const StyledStatusTitle = styled.p`
-  ${({ theme }) => css`
-    color: ${theme.COLORS.TOBACCO_BROWN};
-    font-size: ${theme.FONT_SIZES.SIZE_16};
-    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
-  `}
-`
-const StyledTaskCreateButton = styled(ModalButton)`
-  margin: ${calculateMinSizeBasedOnFigma(31)} auto 0;
-`

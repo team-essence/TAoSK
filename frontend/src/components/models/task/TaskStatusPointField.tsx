@@ -4,6 +4,7 @@ import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { isEqual } from 'utils/isEqual'
 import { useIncrementAndDecrement } from 'hooks/useIncrementAndDecrement'
 import { StatusParam } from 'types/status'
 import { INITIAL_STATUS_COUNTS } from 'consts/status'
@@ -13,8 +14,6 @@ type Props = {
   statusCounts: Record<StatusParam, number>
   setStatusCounts: Dispatch<SetStateAction<Record<StatusParam, number>>>
 }
-
-const isEqual = <T,>(a: T, b: T) => JSON.stringify(a) === JSON.stringify(b)
 
 export const TaskStatusPointField: FCX<Props> = ({
   className,
