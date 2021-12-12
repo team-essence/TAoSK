@@ -103,11 +103,11 @@ const StyledProjectGameLogTextContainer = styled.div`
     width: 10px;
   }
   &::-webkit-scrollbar-track {
-    background-color: #d4b99f;
+    background-color: ${({ theme }) => theme.COLORS.AKAROA};
     border-radius: 100px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #c9ae95;
+    background-color: ${({ theme }) => theme.COLORS.RODEO_DUST};
     border-radius: 100px;
   }
 `

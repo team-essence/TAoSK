@@ -25,5 +25,5 @@ const StyledContainer = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
-  z-index: 8000;
+  z-index: ${({ theme }) => theme.Z_INDEX.LOADING};
 `
