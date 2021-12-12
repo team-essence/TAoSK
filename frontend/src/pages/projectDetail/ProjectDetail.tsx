@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useLayoutEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -24,8 +24,8 @@ import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { Loading } from 'components/ui/loading/Loading'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
+import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
 
@@ -358,7 +358,7 @@ export const ProjectDetail: FC = () => {
         updateTasks: {
           tasks: joinUpdateTasks,
           project_id: String(id),
-          user_id: currentUser!.uid,
+          user_id: currentUser?.uid ?? '',
         },
       },
     })
@@ -382,16 +382,15 @@ export const ProjectDetail: FC = () => {
           name: 'リスト名',
           project_id: String(id),
           task_list: 1,
-          user_id: currentUser!.uid,
+          user_id: currentUser?.uid ?? '',
         },
       },
     })
   }
 
-  if (!projectData.data) return <Loading />
-
   return (
     <>
+      <LazyLoading />
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}
@@ -422,8 +421,8 @@ export const ProjectDetail: FC = () => {
           <ProjectRight
             onClick={handleCreateList}
             monsterHPRemaining={monsterHPRemaining}
-            monsterHp={projectData.data.getProjectById.hp}
-            monsterName={projectData.data.getProjectById.monster.name}
+            monsterHp={projectData.data?.getProjectById.hp ?? 100}
+            monsterName={projectData.data?.getProjectById.monster.name ?? ''}
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
