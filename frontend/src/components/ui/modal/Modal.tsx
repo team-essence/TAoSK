@@ -14,13 +14,7 @@ type Props = {
   children: ReactNode
 }
 
-export const Modal: FC<Props> = ({
-  title = 'タスク作成',
-  shouldShow,
-  onClickCloseBtn,
-  className,
-  children,
-}) => {
+export const Modal: FC<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   if (!shouldShow) return <></>
   return (
     <>
@@ -28,7 +22,9 @@ export const Modal: FC<Props> = ({
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
-        <StyledNamePlate>{title}</StyledNamePlate>
+
+        {!!title && <StyledNamePlate>{title}</StyledNamePlate>}
+
         {children}
         <StyledBackgroundDragonSymbol />
       </StyledWrapper>
