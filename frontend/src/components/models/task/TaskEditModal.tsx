@@ -53,40 +53,45 @@ export const TaskEditModal: FCX<Props> = ({
       shouldShow={shouldShow}
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
-      <StyledLeftColumn>
-        <StyledTaskEditTitleField id={id} title={title} />
-        <StyledTaskEditOverviewField id={id} overview={overview} />
-      </StyledLeftColumn>
-      <StyledBorder />
-      <StyledRightColumn>
-        <StyledCalenderField
-          label="期限"
-          registration={register('date')}
-          required={false}
-          onChange={onChange}
-        />
-        <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
-        <StyledTaskEditStatusPointField
-          id={id}
-          technology={technology}
-          solution={solution}
-          achievement={achievement}
-          motivation={motivation}
-          design={design}
-          plan={plan}
-        />
-        <StyledDeleteButtonWrapper>
-          <StyledDeleteButton text="タスクを削除" onClick={() => setShouldShowConfirmPopup(true)} />
-          <StyledConfirmPopup
-            title="カードを削除しますか?"
-            description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
-            buttonText="削除"
-            shouldShow={shouldShowConfirmPopup}
-            onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
-            onClickConfirmBtn={onClickDeleteButton}
+      <StyledTaskEditTitleField id={id} title={title} />
+      <StyledContentsWrapper>
+        <StyledLeftColumn>
+          <StyledTaskEditOverviewField id={id} overview={overview} />
+        </StyledLeftColumn>
+        <StyledBorder />
+        <StyledRightColumn>
+          <StyledCalenderField
+            label="期限"
+            registration={register('date')}
+            required={false}
+            onChange={onChange}
           />
-        </StyledDeleteButtonWrapper>
-      </StyledRightColumn>
+          <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+          <StyledTaskEditStatusPointField
+            id={id}
+            technology={technology}
+            solution={solution}
+            achievement={achievement}
+            motivation={motivation}
+            design={design}
+            plan={plan}
+          />
+          <StyledDeleteButtonWrapper>
+            <StyledDeleteButton
+              text="タスクを削除"
+              onClick={() => setShouldShowConfirmPopup(true)}
+            />
+            <StyledConfirmPopup
+              title="カードを削除しますか?"
+              description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
+              buttonText="削除"
+              shouldShow={shouldShowConfirmPopup}
+              onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
+              onClickConfirmBtn={onClickDeleteButton}
+            />
+          </StyledDeleteButtonWrapper>
+        </StyledRightColumn>
+      </StyledContentsWrapper>
     </StyledModal>
   )
 }
@@ -95,12 +100,17 @@ const padding = `${calculateMinSizeBasedOnFigma(34)} ${calculateMinSizeBasedOnFi
 ${calculateMinSizeBasedOnFigma(34)}` // ts-styled-pluginエラーを避けるため
 const StyledModal = styled(Modal)`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   box-sizing: border-box;
   width: ${calculateMinSizeBasedOnFigma(871)};
   height: ${calculateMinSizeBasedOnFigma(704)};
   padding: ${padding};
   white-space: pre-line;
+`
+const StyledContentsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  height: ${calculateMinSizeBasedOnFigma(518)};
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -109,6 +119,7 @@ const StyledBorder = styled.div`
 `
 const StyledLeftColumn = styled.div`
   width: ${calculateMinSizeBasedOnFigma(509)};
+  height: 100%;
 `
 const StyledRightColumn = styled.div`
   display: flex;
@@ -138,6 +149,7 @@ const fieldStyle = css`
 `
 const StyledTaskEditTitleField = styled(TaskEditTitleField)`
   ${fieldStyle}
+  width: ${calculateMinSizeBasedOnFigma(509)};
   margin-bottom: ${calculateMinSizeBasedOnFigma(27)};
 `
 const StyledTaskEditOverviewField = styled(TaskEditOverviewField)`
