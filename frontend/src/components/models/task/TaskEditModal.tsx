@@ -133,6 +133,7 @@ const StyledLeftColumn = styled.div`
   height: 100%;
   overflow-x: visible;
   overflow-y: hidden;
+  will-change: transform;
 `
 const StyledRightColumn = styled.div`
   display: flex;
@@ -141,6 +142,7 @@ const StyledRightColumn = styled.div`
   height: 100%;
   overflow-x: visible;
   overflow-y: hidden;
+  will-change: transform;
 `
 const fieldStyle = css`
   label {
@@ -211,6 +213,7 @@ const StyledScrollableOverlay = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  will-change: transform;
   background-color: transparent;
 `
 const StyledScrollableDummy = styled.div<{ height: number }>`

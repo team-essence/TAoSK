@@ -39,13 +39,13 @@ export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn =
 
   useEffect(() => {
     const scrollModal = () => {
-      if (!scrollableRef.current) return
+      if (!scrollableRef.current || !leftColumnRef.current || !rightColumnRef.current) return
       const scrollTop = scrollableRef.current.scrollTop
-      leftColumnRef.current?.scrollTo({ top: scrollTop })
-      rightColumnRef.current?.scrollTo({ top: scrollTop })
+      leftColumnRef.current.scrollTop = scrollTop
+      rightColumnRef.current.scrollTop = scrollTop
     }
 
-    scrollableRef.current?.addEventListener('scroll', scrollModal)
+    scrollableRef.current?.addEventListener('scroll', scrollModal, { passive: true })
 
     return () => scrollableRef.current?.removeEventListener('scroll', scrollModal)
   }, [scrollableRef.current])
