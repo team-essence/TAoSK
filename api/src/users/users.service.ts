@@ -51,8 +51,10 @@ export class UsersService {
         'groups.project',
         'groups.project.groups',
         'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
         'groups.project.monster',
         'groups.project.monster.specie',
+        'occupation',
       ],
     });
     if (!user) throw new NotFoundException();
@@ -119,9 +121,12 @@ export class UsersService {
     conditionSearchUser: SearchUserInput;
   }): Promise<User[]> {
     const sameCompanyUsers = this.usersRepository.find({
-      id: Not(In(conditionSearchUser.ids)),
-      company: conditionSearchUser.company,
-      name: Like(`%${conditionSearchUser.name}%`),
+      where: {
+        id: Not(In(conditionSearchUser.ids)),
+        company: conditionSearchUser.company,
+        name: Like(`%${conditionSearchUser.name}%`),
+      },
+      relations: ['occupation'],
     });
     if (!sameCompanyUsers) throw new NotFoundException();
 

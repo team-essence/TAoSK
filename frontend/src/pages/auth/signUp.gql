@@ -35,7 +35,6 @@ mutation AddUser(
     online_flg
     hp
     mp
-    occupation_id
     company
     memo
     technology
@@ -45,5 +44,10 @@ mutation AddUser(
     plan
     design
     exp
+
+    occupation {
+      id
+      name
+    }
   }
 }

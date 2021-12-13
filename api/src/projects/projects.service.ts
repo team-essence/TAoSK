@@ -139,6 +139,7 @@ export class ProjectsService {
       .leftJoinAndSelect('allocations.user', 'allocationsUser')
       .leftJoinAndSelect('project.groups', 'groups')
       .leftJoinAndSelect('groups.user', 'groupsUser')
+      .leftJoinAndSelect('groupsUser.occupation', 'occupation')
       .leftJoinAndSelect('groupsUser.interests', 'interests')
       .leftJoinAndSelect('groupsUser.certifications', 'certifications')
       .where('project.id=:id', { id })
