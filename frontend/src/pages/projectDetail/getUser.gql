@@ -4,7 +4,6 @@ query GetCurrentUser($id: String!) {
     name
     icon_image
     company
-    occupation_id
     hp
     mp
     technology
@@ -14,6 +13,11 @@ query GetCurrentUser($id: String!) {
     plan
     design
     exp
+
+    occupation {
+      id
+      name
+    }
 
     invitations {
       id

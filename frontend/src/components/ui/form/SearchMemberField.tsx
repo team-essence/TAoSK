@@ -70,7 +70,7 @@ export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDat
                 <StyledProfile>
                   <StyledName>{data.name}</StyledName>
                   {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
-                  <StyledOccupation>{occupationList[data.occupation_id - 1]}</StyledOccupation>
+                  <StyledOccupation>{data.occupation.name}</StyledOccupation>
                 </StyledProfile>
               </StyledListItem>
             ))}
@@ -95,7 +95,7 @@ export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDat
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       iconImage={data.icon_image}
                       name={data.name}
-                      occupation={occupationList[data.occupation_id]}
+                      occupation={data.occupation.name}
                       onClickDeleteBtn={() => onClickDeleteBtn(index)}
                     />
                   </div>

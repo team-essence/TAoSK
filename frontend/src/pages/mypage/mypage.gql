@@ -6,7 +6,6 @@ query GetUser($id: String!) {
     online_flg
     hp
     mp
-    occupation_id
     company
     memo
     technology
@@ -16,6 +15,11 @@ query GetUser($id: String!) {
     plan
     design
     exp
+
+    occupation {
+      id
+      name
+    }
 
     interests {
       id

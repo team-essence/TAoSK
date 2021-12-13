@@ -13,8 +13,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Chat } from 'src/chats/chat';
+import { Occupation } from 'src/occupations/occupation';
 
 @Entity('users')
 @ObjectType()
@@ -49,9 +52,9 @@ export class User {
   @Field()
   mp: number;
 
-  @Column({ type: 'int' })
-  @Field()
-  occupation_id: number;
+  // @Column({ type: 'int' })
+  // @Field()
+  // occupation_id: number;
 
   @Column({
     type: 'varchar',
@@ -122,6 +125,11 @@ export class User {
   @OneToMany(() => Chat, (chat) => chat.user)
   @Field(() => [Chat])
   chat: Chat[];
+
+  @ManyToOne(() => Occupation, (occupation) => occupation.users)
+  @Field(() => Occupation, { defaultValue: '' })
+  @JoinColumn({ name: 'occupation_id' })
+  occupation: Occupation;
 
   @CreateDateColumn()
   @Field()

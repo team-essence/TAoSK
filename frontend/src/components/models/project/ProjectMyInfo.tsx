@@ -8,7 +8,7 @@ import { ProjectMyStatuses } from './ProjectMyStatuses'
 
 type Props = {
   iconImage: string
-  occupationId: number
+  occupation: string
   name: string
   totalExp: number
   hp: number
@@ -24,7 +24,7 @@ type Props = {
 export const ProjectMyInfo: FCX<Props> = ({
   className,
   iconImage,
-  occupationId,
+  occupation,
   name,
   totalExp,
   hp,
@@ -44,7 +44,7 @@ export const ProjectMyInfo: FCX<Props> = ({
         </StyledUserIconImgContainer>
 
         <StyledUserOccupationContainer>
-          <p>{occupationList[occupationId]}</p>
+          <p>{occupation}</p>
           <img src="/svg/user-name_background.svg" alt="ユーザ名の背景画像" />
         </StyledUserOccupationContainer>
 

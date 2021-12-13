@@ -13,7 +13,6 @@ type Props = Omit<GetUserQuery['user'], 'company' | 'memo' | 'invitations'>
 
 export const EmployeeInformation: FCX<Props> = ({
   id,
-  occupation_id,
   name,
   icon_image,
   hp,
@@ -28,12 +27,13 @@ export const EmployeeInformation: FCX<Props> = ({
   design,
   interests,
   certifications,
+  occupation,
 }) => {
   const { anchorEl, openPopover, closePopover } = usePopover()
   const level = Exp.toLevel(exp) !== 0 ? Exp.toLevel(exp) : 1
   const popoverItem = {
     id,
-    occupation_id,
+    occupation,
     name,
     hp,
     mp,

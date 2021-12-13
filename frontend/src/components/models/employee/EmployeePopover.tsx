@@ -22,7 +22,6 @@ type Props = {
 
 export const EmployeePopover: FCX<Props> = ({
   id,
-  occupation_id,
   name,
   hp,
   mp,
@@ -40,6 +39,7 @@ export const EmployeePopover: FCX<Props> = ({
   design,
   interests,
   certifications,
+  occupation,
 }) => {
   const params: Params[] = [
     { param: 'technology', value: technology },
@@ -66,7 +66,7 @@ export const EmployeePopover: FCX<Props> = ({
             <div>
               <StyledFlexWrapper>
                 <Level size="normal" level={level} />
-                <Occupation size="normal" occupation={occupationList[occupation_id - 1]} />
+                <Occupation size="normal" occupation={occupation.name} />
               </StyledFlexWrapper>
               <StyledStatusWrap>
                 <StyledStatusBarContainer>

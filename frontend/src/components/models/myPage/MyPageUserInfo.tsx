@@ -11,7 +11,7 @@ type Props = {
   uid: string
   company: string
   totalExp: number
-  occupationId: number
+  occupation: string
   hp: number
   mp: number
 }
@@ -23,7 +23,7 @@ export const MyPageUserInfo: FCX<Props> = ({
   uid,
   company,
   totalExp,
-  occupationId,
+  occupation,
   hp,
   mp,
 }) => {
@@ -52,7 +52,7 @@ export const MyPageUserInfo: FCX<Props> = ({
           </StyledCompanyContainer>
 
           <StyledOccupationContainer>
-            <p>{occupationList[occupationId]}</p>
+            <p>{occupation}</p>
           </StyledOccupationContainer>
 
           <StyledParameterContainer>

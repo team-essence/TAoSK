@@ -32,7 +32,11 @@ type Props = {
           id: string
           name: string
           icon_image: string
-          occupation_id: number
+          occupation: {
+            __typename?: 'Occupation' | undefined
+            id: string
+            name: string
+          }
         }
       }[]
       monster: {
@@ -122,7 +126,7 @@ export const ProjectListProjectInfo: FCX<Props> = ({
                   avatarStyleType={AVATAR_STYLE.LIST}
                   iconImage={data.icon_image}
                   name={data.name}
-                  occupation={occupationList[data.occupation_id]}
+                  occupation={data.occupation.name}
                 />
               </div>
             )

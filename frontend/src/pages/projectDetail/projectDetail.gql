@@ -24,13 +24,19 @@ query GetProject($id: String!) {
         solution
         plan
         design
-        occupation_id
         online_flg
+
         interests {
           id
           context
         }
+
         certifications {
+          id
+          name
+        }
+
+        occupation {
           id
           name
         }
