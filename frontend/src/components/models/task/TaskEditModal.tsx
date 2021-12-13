@@ -48,8 +48,14 @@ export const TaskEditModal: FCX<Props> = ({
     id,
     setShouldShowEditModal: setShouldShow,
   })
-  const { leftColumnRef, rightColumnRef, scrollableRef, scrollHeight } =
-    useModalInterlockingScroll()
+  const {
+    leftColumnRef,
+    rightColumnRef,
+    leftColumnInnerRef,
+    rightColumnInnerRef,
+    scrollableRef,
+    scrollHeight,
+  } = useModalInterlockingScroll()
 
   return (
     <>
@@ -60,40 +66,46 @@ export const TaskEditModal: FCX<Props> = ({
         <StyledTaskEditTitleField id={id} title={title} />
         <StyledContentsWrapper>
           <StyledLeftColumn ref={leftColumnRef}>
-            <StyledTaskEditOverviewField id={id} overview={overview} />
+            <StyledLeftColumnInnerContents ref={leftColumnInnerRef}>
+              <StyledTaskEditOverviewField id={id} overview={overview} />
+            </StyledLeftColumnInnerContents>
           </StyledLeftColumn>
+
           <StyledBorder />
+
           <StyledRightColumn ref={rightColumnRef}>
-            <StyledCalenderField
-              label="期限"
-              registration={register('date')}
-              required={false}
-              onChange={onChange}
-            />
-            <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
-            <StyledTaskEditStatusPointField
-              id={id}
-              technology={technology}
-              solution={solution}
-              achievement={achievement}
-              motivation={motivation}
-              design={design}
-              plan={plan}
-            />
-            <StyledDeleteButtonWrapper>
-              <StyledDeleteButton
-                text="タスクを削除"
-                onClick={() => setShouldShowConfirmPopup(true)}
+            <StyledRightColumnInnerContents ref={rightColumnInnerRef}>
+              <StyledCalenderField
+                label="期限"
+                registration={register('date')}
+                required={false}
+                onChange={onChange}
               />
-              <StyledConfirmPopup
-                title="カードを削除しますか?"
-                description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
-                buttonText="削除"
-                shouldShow={shouldShowConfirmPopup}
-                onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
-                onClickConfirmBtn={onClickDeleteButton}
+              <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+              <StyledTaskEditStatusPointField
+                id={id}
+                technology={technology}
+                solution={solution}
+                achievement={achievement}
+                motivation={motivation}
+                design={design}
+                plan={plan}
               />
-            </StyledDeleteButtonWrapper>
+              <StyledDeleteButtonWrapper>
+                <StyledDeleteButton
+                  text="タスクを削除"
+                  onClick={() => setShouldShowConfirmPopup(true)}
+                />
+                <StyledConfirmPopup
+                  title="カードを削除しますか?"
+                  description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
+                  buttonText="削除"
+                  shouldShow={shouldShowConfirmPopup}
+                  onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
+                  onClickConfirmBtn={onClickDeleteButton}
+                />
+              </StyledDeleteButtonWrapper>
+            </StyledRightColumnInnerContents>
           </StyledRightColumn>
         </StyledContentsWrapper>
       </StyledModal>
@@ -136,13 +148,16 @@ const StyledLeftColumn = styled.div`
   will-change: transform;
 `
 const StyledRightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
   width: ${calculateMinSizeBasedOnFigma(270)};
   height: 100%;
   overflow-x: visible;
   overflow-y: hidden;
   will-change: transform;
+`
+const StyledLeftColumnInnerContents = styled.div``
+const StyledRightColumnInnerContents = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 const fieldStyle = css`
   label {

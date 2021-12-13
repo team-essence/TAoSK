@@ -1,36 +1,46 @@
-import { useEffect, useState, useMemo, useRef, RefObject, Dispatch, SetStateAction } from 'react'
+import { useEffect, useState, useMemo, useRef, RefObject } from 'react'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
 import { useResizeObserver } from 'hooks/useResizeObserver'
 
 type UseModalInterlockingScrollReturn = {
   leftColumnRef: RefObject<HTMLDivElement>
   rightColumnRef: RefObject<HTMLDivElement>
+  leftColumnInnerRef: RefObject<HTMLDivElement>
+  rightColumnInnerRef: RefObject<HTMLDivElement>
   scrollableRef: RefObject<HTMLDivElement>
   scrollHeight: number
 }
 
 export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn => {
   const { innerHeight } = useWatchInnerAspect()
-  const [leftScrollableLength, setLeftScrollableLength] = useState<number>(0)
-  const [rightScrollableLength, setRightScrollableLength] = useState<number>(0)
-  const calculateScrollableLength = (
-    element: Element,
-    setLength: Dispatch<SetStateAction<number>>,
-  ) => {
-    const height = element.getBoundingClientRect().height
-    const scrollHeight = element.scrollHeight
-    setLength(scrollHeight - height)
-  }
+  const scrollableRef = useRef<HTMLDivElement>(null)
+  const [leftColumnHeight, setLeftColumnHeight] = useState<number>(0)
+  const [rightColumnHeight, setRightColumnHeight] = useState<number>(0)
+  const [leftColumnInnerHeight, setLeftColumnInnerHeight] = useState<number>(0)
+  const [rightColumnInnerHeight, setRightColumnInnerHeight] = useState<number>(0)
+
   const { ref: leftColumnRef } = useResizeObserver<HTMLDivElement>(elem =>
-    calculateScrollableLength(elem, setLeftScrollableLength),
+    setLeftColumnHeight(elem.clientHeight),
   )
   const { ref: rightColumnRef } = useResizeObserver<HTMLDivElement>(elem =>
-    calculateScrollableLength(elem, setRightScrollableLength),
+    setRightColumnHeight(elem.clientHeight),
   )
-
-  const scrollableRef = useRef<HTMLDivElement>(null)
-
-  const scrollHeight = useMemo(() => {
+  // ResizeObserverではscrollHeightの変更を検知できないのでinnerRefを作成し内部のスクロール領域を監視
+  const { ref: leftColumnInnerRef } = useResizeObserver<HTMLDivElement>(elem =>
+    setLeftColumnInnerHeight(elem.clientHeight),
+  )
+  const { ref: rightColumnInnerRef } = useResizeObserver<HTMLDivElement>(elem =>
+    setRightColumnInnerHeight(elem.clientHeight),
+  )
+  const leftScrollableLength = useMemo<number>(
+    () => leftColumnInnerHeight - leftColumnHeight,
+    [leftColumnInnerHeight, leftColumnHeight],
+  )
+  const rightScrollableLength = useMemo<number>(
+    () => rightColumnInnerHeight - rightColumnHeight,
+    [rightColumnInnerHeight, rightColumnHeight],
+  )
+  const scrollHeight = useMemo<number>(() => {
     if (leftScrollableLength <= 0 && rightScrollableLength <= 0) return 0
     const scrollableLength = Math.max(leftScrollableLength, rightScrollableLength)
 
@@ -50,5 +60,12 @@ export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn =
     return () => scrollableRef.current?.removeEventListener('scroll', scrollModal)
   }, [scrollableRef.current])
 
-  return { leftColumnRef, rightColumnRef, scrollableRef, scrollHeight }
+  return {
+    leftColumnRef,
+    rightColumnRef,
+    leftColumnInnerRef,
+    rightColumnInnerRef,
+    scrollableRef,
+    scrollHeight,
+  }
 }
