@@ -5,6 +5,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import exp from 'utils/exp/exp'
 import { ProjectMyBars } from './ProjectMyBars'
 import { ProjectMyStatuses } from './ProjectMyStatuses'
+import { Occupation } from 'types/task'
 
 type Props = {
   iconImage: string

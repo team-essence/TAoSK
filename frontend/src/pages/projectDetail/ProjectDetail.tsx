@@ -64,7 +64,7 @@ export const ProjectDetail: FC = () => {
               id: allocation.user.id,
               name: allocation.user.name,
               icon_image: allocation.user.icon_image,
-              occupation_id: allocation.user.occupation_id,
+              occupation: allocation.user.occupation,
             }
           })
 
@@ -148,7 +148,7 @@ export const ProjectDetail: FC = () => {
             id: allocation.user.id,
             name: allocation.user.name,
             icon_image: allocation.user.icon_image,
-            occupation_id: allocation.user.occupation_id,
+            occupation: allocation.user.occupation,
           }
         })
 

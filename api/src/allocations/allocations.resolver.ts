@@ -34,7 +34,7 @@ export class AllocationsResolver {
   public async completedTask(
     @Args('userId') userId: string,
   ): Promise<Allocation[]> {
-    return await this.allocationService.CompletedTask(userId).catch((err) => {
+    return await this.allocationService.completedTask(userId).catch((err) => {
       throw err;
     });
   }

@@ -72,7 +72,7 @@ export class AllocationsService {
     return allocations;
   }
 
-  CompletedTask(userId: string): Promise<Allocation[]> {
+  completedTask(userId: string): Promise<Allocation[]> {
     const allocations = this.allocationRepository.find({
       where: {
         user: {

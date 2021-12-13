@@ -75,7 +75,10 @@ query GetProject($id: String!) {
             id
             name
             icon_image
-            occupation_id
+            occupation {
+              id
+              name
+            }
           }
         }
       }
@@ -159,7 +162,10 @@ query GetListsByProjectId($projectId: String!) {
           id
           name
           icon_image
-          occupation_id
+          occupation {
+            id
+            name
+          }
         }
       }
     }
@@ -226,7 +232,10 @@ mutation CreateAllocation($newAllocation: NewAllocationInput!) {
       id
       name
       icon_image
-      occupation_id
+      occupation {
+        id
+        name
+      }
     }
   }
 }
@@ -237,7 +246,10 @@ mutation UnAssignTask($taskId: Float!, $userId: String!) {
       id
       name
       icon_image
-      occupation_id
+      occupation {
+        id
+        name
+      }
     }
   }
 }
@@ -287,7 +299,10 @@ mutation CreateList($newList: NewListInput!) {
           id
           name
           icon_image
-          occupation_id
+          occupation {
+            id
+            name
+          }
         }
       }
     }
@@ -309,17 +324,17 @@ mutation RemoveList($id: Float!) {
   removeList(removeList: { id: $id })
 }
 
-query GetChats($taskId: Float!) {
-  getChats(taskId: $taskId) {
-    chats {
-      id
-      comment
-      user
-      created_at
-      updated_at
-    }
-  }
-}
+# query GetChats($taskId: Float!) {
+#   getChats(taskId: $taskId) {
+#     chats {
+#       id
+#       comment
+#       user
+#       created_at
+#       updated_at
+#     }
+#   }
+# }
 
 mutation AddChat($taskId: Number!, $userId: String!, $comment: String!) {
   addChat(userId: $userId, taskId: $taskId, comment: $comment) {
@@ -331,7 +346,7 @@ mutation AddChat($taskId: Number!, $userId: String!, $comment: String!) {
   }
 }
 
-mutation UpdateChat($taskId: Number!, chatId: Number!, $comment: String!){
+mutation UpdateChat($taskId: Number!, chatId: Number!, $comment: String!) {
   updateChat(taskId: $taskId, comment: $comment, chatId: $chatID){
     id
     comment

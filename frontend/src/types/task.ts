@@ -1,25 +1,16 @@
-export type Allocation = {
-  id: string
-  name: string
-  icon_image: string
-  occupation_id: number
-}
+import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 
-export type Task = {
-  id: string
-  title: string
-  overview: string
-  technology: number
-  achievement: number
-  solution: number
-  motivation: number
-  plan: number
-  design: number
-  vertical_sort: number
-  end_date: string
-  chatCount: number
+export type Allocation =
+  GetProjectQuery['getProjectById']['lists'][number]['tasks'][number]['allocations'][number]['user']
+
+export type Task = Omit<
+  GetProjectQuery['getProjectById']['lists'][number]['tasks'][number],
+  'allocations' | 'completed_flg'
+> & {
   allocations: Allocation[]
 }
+
+export type Occupation = Allocation['occupation']
 
 export type SearchTask = {
   title: string
