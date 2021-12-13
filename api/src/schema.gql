@@ -135,6 +135,12 @@ type Group {
   deleted_at: DateTime!
 }
 
+type Occupation {
+  id: ID!
+  name: String!
+  users: [User!]!
+}
+
 type User {
   id: ID!
   name: String!
@@ -142,7 +148,6 @@ type User {
   online_flg: Boolean!
   hp: Float!
   mp: Float!
-  occupation_id: Float!
   company: String!
   memo: String!
   technology: Float!
@@ -159,6 +164,7 @@ type User {
   allocations: [Allocation!]!
   gameLogs: [GameLog!]!
   chat: [Chat!]!
+  occupation: Occupation!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime!
@@ -178,6 +184,7 @@ type Query {
   allInterests: [Interest!]!
   interestsByUserIds(user_ids: [String!]!): [Interest!]!
   getCompany(uid: String!): Company!
+  getOccupations: [Occupation!]!
   getProjectById(id: String!): Project!
   invitation(projectId: String!, userId: String!): Invitation!
   invitations(userId: String!): [Invitation!]!
@@ -201,6 +208,7 @@ type Mutation {
   addCertification(newCertification: NewCertificationInput!): Certification!
   addInterest(newInterest: NewInterestInput!): Interest!
   addCompany(newCompany: NewCompanyInput!): Company!
+  creteOccupation(name: String!): Occupation!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
   completedProject(endProject: EndProjectInput!): Boolean!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!

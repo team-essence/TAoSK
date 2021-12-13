@@ -1,0 +1,16 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://develop:password@localhost:10000/taosk_db"
+}
+
+model Occupations {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+}

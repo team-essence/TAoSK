@@ -9,6 +9,7 @@ import { Group } from 'src/groups/group';
 import { Invitation } from 'src/invitations/invitation';
 import { GameLog } from 'src/game-logs/game-log';
 import { Project } from 'src/projects/project';
+import { Occupation } from 'src/occupations/occupation';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -18,6 +19,7 @@ import { Project } from 'src/projects/project';
     TypeOrmModule.forFeature([Invitation]),
     TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([GameLog]),
+    TypeOrmModule.forFeature([Occupation]),
   ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],
