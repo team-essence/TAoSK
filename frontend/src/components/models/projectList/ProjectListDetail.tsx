@@ -38,6 +38,7 @@ export const ProjectListDetail: FCX<Props> = ({
             今すぐ新しいプロジェクトを始めますか
           </p>
 
+          {/* TODO: モーダルを開く関数を受け渡す */}
           <ComplicateButton
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="プロジェクト作成"
