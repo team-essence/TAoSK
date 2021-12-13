@@ -45,7 +45,7 @@ export const useTrySignUp: UseTrySignUp = ({
         name,
         icon_image: url,
         company,
-        occupation_id: occupationList.indexOf(occupation) + 1,
+        occupation_id: Number(occupation),
         context: interests,
         certificationName: certifications,
       },

@@ -59,7 +59,7 @@ export const MyPage: FC = () => {
             uid={userQuery.data?.user.id ?? ''}
             company={userQuery.data?.user.company ?? ''}
             totalExp={userQuery.data?.user.exp ?? 0}
-            occupationId={userQuery.data?.user.occupation_id ?? 1}
+            occupation={userQuery.data?.user.occupation.name ?? ''}
             hp={userQuery.data?.user.hp ?? 100}
             mp={userQuery.data?.user.mp ?? 100}
           />
