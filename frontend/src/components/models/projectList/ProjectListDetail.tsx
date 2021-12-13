@@ -14,7 +14,12 @@ type Props = {
   selectProject: number
 }
 
-export const ProjectListDetail: FCX<Props> = ({ isJoiningProject, userQuery, selectProject }) => {
+export const ProjectListDetail: FCX<Props> = ({
+  className,
+  isJoiningProject,
+  userQuery,
+  selectProject,
+}) => {
   const navigate = useNavigate()
 
   const handleTransitionToProject = (id?: string) => {
@@ -23,7 +28,7 @@ export const ProjectListDetail: FCX<Props> = ({ isJoiningProject, userQuery, sel
 
   if (!isJoiningProject)
     return (
-      <StyledNoProjectListDetailContainer>
+      <StyledNoProjectListDetailContainer className={className}>
         <StyledEggsImg src="/eggs.png" alt="卵たち" />
 
         <StyledNoProjectContainer>
@@ -43,7 +48,7 @@ export const ProjectListDetail: FCX<Props> = ({ isJoiningProject, userQuery, sel
     )
 
   return (
-    <StyledProjectListDetailContainer>
+    <StyledProjectListDetailContainer className={className}>
       <StyledProjectDetail>
         <StyledProjectTitleContainer>
           <StyledProjectTitle>
