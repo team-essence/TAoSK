@@ -43,7 +43,11 @@ query Users($id: String!) {
             id
             name
             icon_image
-            occupation_id
+
+            occupation {
+              id
+              name
+            }
           }
         }
 
@@ -69,7 +73,11 @@ mutation SearchSameCompanyUsers($selectUserIds: [String!]!, $name: String!, $com
     id
     name
     icon_image
-    occupation_id
+
+    occupation {
+      id
+      name
+    }
   }
 }
 

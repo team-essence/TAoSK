@@ -44,7 +44,7 @@ export const ManyUserAvatar: FCX<Props> = ({
                 avatarStyleType={avatarStyleType}
                 iconImage={userData.icon_image}
                 name={userData.name}
-                occupation={occupationList[userData.occupation_id]}
+                occupation={userData.occupation.name}
                 onClickDeleteBtn={() => onClickDeleteBtn && onClickDeleteBtn(index)}
               />
             </div>

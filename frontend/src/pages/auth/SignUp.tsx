@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
 import { SIGN_UP_CAMERA } from 'consts/defaultImages'
@@ -20,11 +20,14 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
+import { useOccupationLazyQuery } from './document.gen'
+import logger from 'utils/debugger/logger'
 
 export const SignUp: FC = () => {
   const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useSignUpForm()
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
+  const [occupationOptions, setOccupationOptions] = useState<Record<'value' | 'item', string>[]>([])
   const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
     SIGN_UP_CAMERA,
     300,
@@ -34,11 +37,23 @@ export const SignUp: FC = () => {
   const { fileData } = useBlobToFile(blobData)
   const trySignUp = useTrySignUp({ ...getValues(), certifications, interests, fileData })
 
-  const occupationOptions: Record<'value' | 'item', string>[] = occupationList.map(v => {
-    return { value: v, item: v }
+  const [getOccupations] = useOccupationLazyQuery({
+    onCompleted(data) {
+      const occupations = data.getOccupations.map(v => {
+        return { value: String(v.id), item: v.name }
+      })
+      occupations.unshift({ value: '', item: '選択' })
+
+      setOccupationOptions(() => [...occupations])
+      logger.debug('職業テーブル所得', occupations)
+    },
   })
 
-  occupationOptions.unshift({ value: '', item: '選択' })
+  useEffect(() => {
+    getOccupations({
+      variables: {},
+    })
+  }, [])
 
   return (
     <>

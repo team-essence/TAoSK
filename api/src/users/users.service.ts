@@ -15,6 +15,7 @@ import { SearchUserInput } from './dto/searchUser.input';
 import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
 import { Project } from 'src/projects/project';
 import { GameLog } from 'src/game-logs/game-log';
+import { Occupation } from 'src/occupations/occupation';
 
 @Injectable()
 export class UsersService {
@@ -29,6 +30,8 @@ export class UsersService {
     private projectRepository: Repository<Project>,
     @InjectRepository(GameLog)
     private gameLogRepository: Repository<GameLog>,
+    @InjectRepository(Occupation)
+    private occupationRepository: Repository<Occupation>,
   ) {}
 
   getAllUsers(): Promise<User[]> {
@@ -51,8 +54,10 @@ export class UsersService {
         'groups.project',
         'groups.project.groups',
         'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
         'groups.project.monster',
         'groups.project.monster.specie',
+        'occupation',
       ],
     });
     if (!user) throw new NotFoundException();
@@ -81,7 +86,33 @@ export class UsersService {
     newInterest: NewInterestClientInput;
     newCertification: NewCertificationClientInput;
   }): Promise<User> {
-    const user = this.usersRepository.create(newUser);
+    console.log(newUser);
+
+    const occupation = await this.occupationRepository.findOne(
+      newUser.occupation_id,
+    );
+    console.log(occupation.name);
+
+    if (!occupation) throw new NotFoundException();
+
+    const user = this.usersRepository.create({
+      id: newUser.id,
+      name: newUser.name,
+      icon_image: newUser.icon_image,
+      online_flg: newUser.online_flg,
+      hp: newUser.hp,
+      mp: newUser.mp,
+      company: newUser.company,
+      memo: newUser.memo,
+      occupation,
+      technology: newUser.technology,
+      achievement: newUser.achievement,
+      motivation: newUser.motivation,
+      solution: newUser.solution,
+      plan: newUser.plan,
+      design: newUser.design,
+      exp: newUser.exp,
+    });
     await this.usersRepository.save(user).catch((err) => {
       new InternalServerErrorException();
     });
@@ -119,9 +150,12 @@ export class UsersService {
     conditionSearchUser: SearchUserInput;
   }): Promise<User[]> {
     const sameCompanyUsers = this.usersRepository.find({
-      id: Not(In(conditionSearchUser.ids)),
-      company: conditionSearchUser.company,
-      name: Like(`%${conditionSearchUser.name}%`),
+      where: {
+        id: Not(In(conditionSearchUser.ids)),
+        company: conditionSearchUser.company,
+        name: Like(`%${conditionSearchUser.name}%`),
+      },
+      relations: ['occupation'],
     });
     if (!sameCompanyUsers) throw new NotFoundException();
 

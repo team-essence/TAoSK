@@ -410,7 +410,7 @@ export const ProjectDetail: FC = () => {
             <ProjectMyInfo
               {...currentUserData.data.user}
               iconImage={currentUserData.data.user.icon_image}
-              occupationId={currentUserData.data.user.occupation_id}
+              occupation={currentUserData.data.user.occupation.name}
               totalExp={currentUserData.data.user.exp}
             />
           )}

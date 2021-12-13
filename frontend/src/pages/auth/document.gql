@@ -3,3 +3,10 @@ query GetUserById($id: String!) {
     name
   }
 }
+
+query Occupation {
+  getOccupations {
+    id
+    name
+  }
+}
