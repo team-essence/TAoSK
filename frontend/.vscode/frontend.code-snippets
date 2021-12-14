@@ -43,9 +43,9 @@
     "prefix": "usehook",
     "body": [
       "import { $1 } from 'react'\n",
-      "type Use${TM_FILENAME_BASE}Return = {\n",
+      "type ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Return = {\n",
       "}\n",
-      "export const use${TM_FILENAME_BASE} = (): Use${TM_FILENAME_BASE}Return => {",
+      "export const ${TM_FILENAME_BASE} = (): ${TM_FILENAME_BASE/(.*)/${1:/capitalize}/}Return => {",
       "  $2",
       "  return",
       "}"

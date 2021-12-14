@@ -7,7 +7,7 @@ import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskEditTitleField } from 'components/models/task/TaskEditTitleField'
 import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewField'
 import { TaskEditStatusPointField } from 'components/models/task/TaskEditStatusPointField'
-import { TaskCommentInputField } from 'components/models/task/TaskCommentInputField'
+import { TaskCommentArea } from 'components/models/task/TaskCommentArea'
 import { ConfirmPopup } from 'components/ui/popup/ConfirmPopup'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -69,7 +69,7 @@ export const TaskEditModal: FCX<Props> = ({
           <StyledLeftColumn ref={leftColumnRef}>
             <StyledLeftColumnInnerContents ref={leftColumnInnerRef}>
               <StyledTaskEditOverviewField id={id} overview={overview} />
-              <StyledTaskCommentInputField id={id} />
+              <StyledTaskCommentArea id={id} />
             </StyledLeftColumnInnerContents>
           </StyledLeftColumn>
 
@@ -190,7 +190,7 @@ const StyledTaskEditOverviewField = styled(TaskEditOverviewField)`
   ${fieldStyle}
   margin-bottom: ${calculateMinSizeBasedOnFigma(17)};
 `
-const StyledTaskCommentInputField = styled(TaskCommentInputField)`
+const StyledTaskCommentArea = styled(TaskCommentArea)`
   ${fieldStyle}
   margin-bottom: ${calculateMinSizeBasedOnFigma(30)};
 `
