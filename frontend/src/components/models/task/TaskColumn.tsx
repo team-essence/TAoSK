@@ -150,7 +150,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
 const StyledColumnContainer = styled.ul`
   position: relative;
   width: ${calculateMinSizeBasedOnFigma(270)};
-  min-height: ${calculateMinSizeBasedOnFigma(200)};
+  min-height: ${calculateMinSizeBasedOnFigma(206)};
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
@@ -169,7 +169,7 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
   display: flex;
   position: relative;
   min-height: ${calculateMinSizeBasedOnFigma(48)};
-  padding: ${calculateMinSizeBasedOnFigma(1)};
+  padding: ${calculateMinSizeBasedOnFigma(1.2)};
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   ${({ listIndex, listLength, theme }) =>
