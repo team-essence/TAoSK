@@ -25,10 +25,11 @@ export const useTrySignIn: UseTrySignIn = ({ email, password }) => {
         // TODO: 追加される可能性あり
         switch (err.code) {
           case FIREBASE_ERROR_TYPE.AUTH_WRONG_PASSWORD:
-            toast.error('パスワードが間違っている可能性があります')
+            toast.error('メールアドレスまたはパスワードが間違っている可能性があります')
             break
+
           case FIREBASE_ERROR_TYPE.AUTH_USER_NOT_FOUND:
-            toast.error('メールアドレスが間違っている可能性があります')
+            toast.error('メールアドレスまたはパスワードが間違っている可能性があります')
             break
 
           default:
