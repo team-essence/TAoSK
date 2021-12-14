@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, MouseEvent } from 'react'
 
 type UseControllTextAreaReturn = {
   isDisabled: boolean
   textAreaRef: React.RefObject<HTMLTextAreaElement>
-  enableTextArea: (e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => void
+  enableTextArea: (e: MouseEvent<HTMLElement>) => void
   disableTextArea: () => void
   makeAllTextSelected: () => void
 }
@@ -23,9 +23,7 @@ export const useControllTextArea = (): UseControllTextAreaReturn => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
-  const enableTextArea = (
-    e: React.MouseEvent<HTMLHeadingElement | HTMLDivElement | HTMLButtonElement, MouseEvent>,
-  ) => {
+  const enableTextArea = (e: MouseEvent<HTMLElement>) => {
     setIsDisabled(false)
     document.addEventListener('click', disableTextArea)
     e.stopPropagation()

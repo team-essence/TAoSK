@@ -36,7 +36,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
   const [removeList] = useRemoveListMutation()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
-  const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+  const handleEnableTextArea = (e?: React.MouseEvent<HTMLElement>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
     controll.enableTextArea(e)
   }
@@ -109,7 +109,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                           vertical="bottom"
                           horizontal="left"
                           handleClose={closePopover}
-                          handleEdit={controll.enableTextArea}
+                          handleEdit={e => !!e && controll.enableTextArea(e)}
                           handleRemove={() => handleRemoveList(Number(id))}
                         />
                       </>

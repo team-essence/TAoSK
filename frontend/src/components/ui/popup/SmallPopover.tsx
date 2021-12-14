@@ -1,4 +1,4 @@
-import React, { FCX } from 'react'
+import React, { FCX, MouseEvent } from 'react'
 import { PopoverProps } from 'types/popover'
 import { theme } from 'styles/theme'
 import { BasicPopover } from 'components/ui/popup/BasicPopover'
@@ -9,7 +9,7 @@ import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Props = {
-  handleEdit: (e?: any) => void //FIXME Colmun.tsxでeが必要だけど、他ではいらない場合の型の指定が不明
+  handleEdit: (e?: MouseEvent<HTMLDivElement>) => void
   handleRemove: () => void
 } & PopoverProps
 
