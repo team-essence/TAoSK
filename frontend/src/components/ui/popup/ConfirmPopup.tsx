@@ -1,7 +1,8 @@
-import React, { FCX, MouseEvent } from 'react'
+import React, { FCX, MouseEvent, ComponentProps } from 'react'
 import styled, { css } from 'styled-components'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { BasicPopover } from 'components/ui/popup/BasicPopover'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
@@ -11,28 +12,24 @@ type Props = {
   title: string
   description: string
   buttonText: string
-  shouldShow: boolean
-  onClickCloseBtn: (e?: MouseEvent) => void
   onClickConfirmBtn: (e?: MouseEvent) => void
-}
+} & Omit<ComponentProps<typeof BasicPopover>, 'children'>
 
 export const ConfirmPopup: FCX<Props> = ({
   className,
   title,
   description,
   buttonText,
-  shouldShow,
-  onClickCloseBtn,
+  handleClose,
   onClickConfirmBtn,
+  ...popoverProps
 }) => {
-  if (!shouldShow) return <></>
-
   return (
-    <>
-      <StyledWrapper className={className}>
+    <BasicPopover handleClose={handleClose} {...popoverProps}>
+      <StyleContainer className={className}>
         <StyledTitleWrapper>
           <p>{title}</p>
-          <StyledCloseButton onClick={onClickCloseBtn}>
+          <StyledCloseButton onClick={handleClose}>
             <StyledCrossIcon color={theme.COLORS.SILVER} strokeWidth={3} />
           </StyledCloseButton>
         </StyledTitleWrapper>
@@ -40,15 +37,16 @@ export const ConfirmPopup: FCX<Props> = ({
           <StyledDescription>{description}</StyledDescription>
           <StyledConfirmButton text={buttonText} onClick={onClickConfirmBtn} />
         </StyledDescriptionWrapper>
-      </StyledWrapper>
-      <StyledOverlay onClick={onClickCloseBtn} />
-    </>
+      </StyleContainer>
+    </BasicPopover>
   )
 }
 
-const StyledWrapper = styled.div`
+const StyleContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: ${calculateMinSizeBasedOnFigma(318)};
+  height: ${calculateMinSizeBasedOnFigma(188)};
   align-items: center;
   border-radius: ${calculateMinSizeBasedOnFigma(4)};
   ${({ theme }) =>
@@ -111,13 +109,4 @@ const StyledCloseButton = styled.button`
 const StyledCrossIcon = styled(CrossIcon)`
   width: 100%;
   height: 100%;
-`
-const StyledOverlay = styled.div`
-  z-index: ${({ theme }) => theme.Z_INDEX.OVERLAY};
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
 `

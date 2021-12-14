@@ -16,6 +16,7 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
+import { usePopover } from 'hooks/usePopover'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 
@@ -45,7 +46,7 @@ export const TaskEditModal: FCX<Props> = ({
     initialEndDate: end_date,
   })
   const { userDatas, setUserDatas } = useTaskUserSelectForm({ id, initialUserDatas: allocations })
-  const { onClickDeleteButton, shouldShowConfirmPopup, setShouldShowConfirmPopup } = useDeleteTask({
+  const { onClickDeleteButton, anchorEl, openPopover, closePopover } = useDeleteTask({
     id,
     setShouldShowEditModal: setShouldShow,
   })
@@ -94,16 +95,15 @@ export const TaskEditModal: FCX<Props> = ({
                 plan={plan}
               />
               <StyledDeleteButtonWrapper>
-                <StyledDeleteButton
-                  text="タスクを削除"
-                  onClick={() => setShouldShowConfirmPopup(true)}
-                />
+                <StyledDeleteButton text="タスクを削除" onClick={openPopover} />
                 <StyledConfirmPopup
+                  anchorEl={anchorEl}
+                  vertical="top"
+                  horizontal="right"
                   title="カードを削除しますか?"
                   description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
                   buttonText="削除"
-                  shouldShow={shouldShowConfirmPopup}
-                  onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
+                  handleClose={closePopover}
                   onClickConfirmBtn={onClickDeleteButton}
                 />
               </StyledDeleteButtonWrapper>
@@ -220,9 +220,6 @@ const StyledDeleteButton = styled(CoarseButton)`
     `}
 `
 const StyledConfirmPopup = styled(ConfirmPopup)`
-  position: absolute;
-  bottom: 100%;
-  left: 10%;
   width: ${calculateMinSizeBasedOnFigma(318)};
   height: ${calculateMinSizeBasedOnFigma(188)};
 `
