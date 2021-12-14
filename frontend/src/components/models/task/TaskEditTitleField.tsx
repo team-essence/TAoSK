@@ -7,7 +7,6 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskTitleEditForm } from 'hooks/useTaskTitleEditForm'
 
 type Props = {
-  className?: string
   id: string
   title: string
 }

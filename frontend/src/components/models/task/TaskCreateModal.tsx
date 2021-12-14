@@ -22,7 +22,6 @@ import { STATUS_TYPE } from 'consts/status'
 type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
-  className?: string
   verticalSort: number
   list_id: string
 }
