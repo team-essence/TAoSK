@@ -17,7 +17,7 @@ type UseTaskAddCommentReturn = {
  */
 export const useTaskAddComment = (id: string): UseTaskAddCommentReturn => {
   const { currentUserData } = useGetCurrentUserData()
-  const { register, handleSubmit, value, disabled } = useTaskCommentForm()
+  const { register, handleSubmit, setValue, value, disabled } = useTaskCommentForm()
   const myData = useMemo(() => currentUserData.data?.user, [currentUserData.data?.user])
 
   const [addChat] = useAddChatMutation({
@@ -38,6 +38,7 @@ export const useTaskAddComment = (id: string): UseTaskAddCommentReturn => {
         comment: value,
       },
     })
+    setValue('comment', '', { shouldValidate: true })
   }, [myData, value])
 
   return { myData, register, disabled, onClickSendButton: handleSubmit(onClickSendButton) }
