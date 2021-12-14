@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
-import { useTaskAddComment } from 'hooks/useTaskAddCommentForm'
+import { useTaskAddComment } from 'hooks/useTaskAddComment'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
