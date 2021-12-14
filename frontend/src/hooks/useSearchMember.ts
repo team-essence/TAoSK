@@ -38,7 +38,7 @@ export const useSearchMember = (userDatas: UserDatas): UseSearchMemberReturn => 
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
   const [candidateUserDatas, setCandidateUserDatas] = useState<UserDatas>([])
   const [selectedUserDatas, setSelectedUserDatas] = useState<UserDatas>(
-    cachedSelectedUserDatas.length ? cachedSelectedUserDatas : [],
+    cachedSelectedUserDatas.length ? cachedSelectedUserDatas : userDatas,
   )
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)

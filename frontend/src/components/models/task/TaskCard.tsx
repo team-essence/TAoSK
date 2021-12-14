@@ -1,4 +1,4 @@
-import React, { FCX } from 'react'
+import React, { FCX, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
 import { Params } from 'types/status'
@@ -7,6 +7,7 @@ import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
+import { TaskEditModal } from 'components/models/task/TaskEditModal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
@@ -20,21 +21,26 @@ type Props = {
 } & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FCX<Props> = ({
-  id,
-  title,
-  technology,
-  achievement,
-  solution,
-  motivation,
-  design,
-  plan,
+  className,
   taskIndex,
   listIndex,
   listLength,
-  chatCount,
-  allocations,
-  end_date,
+  ...taskInfo
 }) => {
+  const {
+    id,
+    title,
+    technology,
+    achievement,
+    solution,
+    motivation,
+    design,
+    plan,
+    chatCount,
+    allocations,
+    end_date,
+  } = taskInfo
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const params: Params[] = [
     { param: 'technology', value: technology },
     { param: 'achievement', value: achievement },
@@ -57,56 +63,66 @@ export const TaskCard: FCX<Props> = ({
   )
 
   return (
-    <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
-      {(taskProvided, snapshot) => (
-        <StyledLi
-          ref={taskProvided.innerRef}
-          {...taskProvided.draggableProps}
-          {...taskProvided.dragHandleProps}
-          aria-roledescription="Press space bar to lift the task">
-          <StyledContainer>
-            <StyledInnerWrap>
-              <StyledTitle>{title}</StyledTitle>
-              <StyledFlexContainer>
-                <div>
-                  {allocations.length !== 0 && (
-                    <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
-                  )}
-                  <StyledFootContainer>
-                    {end_date && (
-                      <>
-                        <StyledDeadlineImage
-                          src={changeDeadlineImage(end_date, listIndex, listLength)}
-                          alt="deadline"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                        <StyledDateContainer listIndex={listIndex} listLength={listLength}>
-                          <StyledClockImage src="/svg/clock.svg" alt="clock" />
-                          <StyledDate>{date.formatDay(end_date)}</StyledDate>
-                        </StyledDateContainer>
-                      </>
+    <>
+      <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
+        {(taskProvided, snapshot) => (
+          <StyledLi
+            className={className}
+            ref={taskProvided.innerRef}
+            {...taskProvided.draggableProps}
+            {...taskProvided.dragHandleProps}
+            aria-roledescription="Press space bar to lift the task"
+            onClick={() => setShouldShowModal(true)}>
+            <StyledContainer>
+              <StyledInnerWrap>
+                <StyledTitle>{title}</StyledTitle>
+                <StyledFlexContainer>
+                  <div>
+                    {allocations.length !== 0 && (
+                      <StyledAvatarContainer>{assignedUsers}</StyledAvatarContainer>
                     )}
-                    {chatCount !== 0 && (
-                      <StyledCommentContainer>
-                        <StyledFontAwesomeIcon icon={faComment} />
-                        <StyledChatCount>{chatCount}</StyledChatCount>
-                      </StyledCommentContainer>
-                    )}
-                  </StyledFootContainer>
-                </div>
-                <StyledWeaponImageContainer>
-                  <StyledWeaponImage
-                    src={changeWeaponImage(listIndex, listLength, max.param)}
-                    alt="weapon"
-                  />
-                </StyledWeaponImageContainer>
-              </StyledFlexContainer>
-            </StyledInnerWrap>
-          </StyledContainer>
-        </StyledLi>
-      )}
-    </Draggable>
+                    <StyledFootContainer>
+                      {end_date && (
+                        <>
+                          <StyledDeadlineImage
+                            src={changeDeadlineImage(end_date, listIndex, listLength)}
+                            alt="deadline"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          <StyledDateContainer listIndex={listIndex} listLength={listLength}>
+                            <StyledClockImage src="/svg/clock.svg" alt="clock" />
+                            <StyledDate>{date.formatDay(end_date)}</StyledDate>
+                          </StyledDateContainer>
+                        </>
+                      )}
+                      {chatCount !== 0 && (
+                        <StyledCommentContainer>
+                          <StyledFontAwesomeIcon icon={faComment} />
+                          <StyledChatCount>{chatCount}</StyledChatCount>
+                        </StyledCommentContainer>
+                      )}
+                    </StyledFootContainer>
+                  </div>
+                  <StyledWeaponImageContainer>
+                    <StyledWeaponImage
+                      src={changeWeaponImage(listIndex, listLength, max.param)}
+                      alt="weapon"
+                    />
+                  </StyledWeaponImageContainer>
+                </StyledFlexContainer>
+              </StyledInnerWrap>
+            </StyledContainer>
+          </StyledLi>
+        )}
+      </Draggable>
+
+      <TaskEditModal
+        {...taskInfo}
+        shouldShow={shouldShowModal}
+        setShouldShow={setShouldShowModal}
+      />
+    </>
   )
 }
 

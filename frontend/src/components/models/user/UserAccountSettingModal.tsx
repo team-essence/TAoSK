@@ -27,7 +27,6 @@ import styled, {
 type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
-  className?: string
 }
 
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {

@@ -13,13 +13,7 @@ type Props = {
   children: ReactNode
 }
 
-export const Modal: FCX<Props> = ({
-  title = 'タスク作成',
-  shouldShow,
-  onClickCloseBtn,
-  className,
-  children,
-}) => {
+export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   if (!shouldShow) return <></>
   return (
     <>
@@ -27,11 +21,13 @@ export const Modal: FCX<Props> = ({
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
-        <StyledNamePlate>{title}</StyledNamePlate>
+
+        {!!title && <StyledNamePlate>{title}</StyledNamePlate>}
+
         {children}
         <StyledBackgroundDragonSymbol />
       </StyledWrapper>
-      <StyledOverlay shouldShow={shouldShow} onClick={onClickCloseBtn} />
+      <StyledOverlay onClick={onClickCloseBtn} />
     </>
   )
 }
@@ -104,15 +100,14 @@ const StyledCrossIcon = styled(CrossIcon)`
     height: ${calculateMinSizeBasedOnFigma(20)};
   }
 `
-const StyledOverlay = styled.div<{ shouldShow: boolean }>`
+const StyledOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  ${({ theme, shouldShow }) => css`
+  ${({ theme }) => css`
     z-index: ${theme.Z_INDEX.OVERLAY};
-    display: ${shouldShow ? 'block' : 'none'};
     background-color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.65)};
   `}
 `

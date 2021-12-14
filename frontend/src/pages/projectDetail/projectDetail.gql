@@ -75,6 +75,10 @@ query GetProject($id: String!) {
             id
             name
             icon_image
+            occupation {
+              id
+              name
+            }
           }
         }
       }
@@ -158,6 +162,10 @@ query GetListsByProjectId($projectId: String!) {
           id
           name
           icon_image
+          occupation {
+            id
+            name
+          }
         }
       }
     }
@@ -171,10 +179,91 @@ mutation UpdateTaskSort($updateTasks: UpdateTaskSort!) {
   }
 }
 
+mutation UpdateTaskTitle($taskId: Float!, $title: String!) {
+  updateTaskTitle(taskId: $taskId, title: $title) {
+    title
+  }
+}
+
+mutation UpdateTaskOverview($taskId: Float!, $overview: String!) {
+  updateTaskOverview(taskId: $taskId, overview: $overview) {
+    overview
+  }
+}
+
+mutation UpdateTaskParameters(
+  $taskId: Float!
+  $design: Float!
+  $plan: Float!
+  $motivation: Float!
+  $solution: Float!
+  $achievement: Float!
+  $technology: Float!
+) {
+  updateTaskParameters(
+    taskId: $taskId
+    design: $design
+    plan: $plan
+    motivation: $motivation
+    solution: $solution
+    achievement: $achievement
+    technology: $technology
+  ) {
+    id
+    design
+    plan
+    motivation
+    solution
+    achievement
+    technology
+  }
+}
+
+mutation UpdateTaskEndDate($taskId: Float!, $end_date: String!) {
+  updateTaskEndDate(taskId: $taskId, end_date: $end_date) {
+    id
+    end_date
+  }
+}
+
+mutation CreateAllocation($newAllocation: NewAllocationInput!) {
+  createAllocation(newAllocation: $newAllocation) {
+    user {
+      id
+      name
+      icon_image
+      # occupation {
+      #   id
+      #   name
+      # }
+    }
+  }
+}
+
+mutation UnAssignTask($taskId: Float!, $userId: String!) {
+  unAssignTask(task_id: $taskId, user_id: $userId) {
+    user {
+      id
+      name
+      icon_image
+      # occupation {
+      #   id
+      #   name
+      # }
+    }
+  }
+}
+
 mutation AddTask($newTask: NewTaskInput!, $assignTask: AssignTaskInput!) {
   addTask(newTask: $newTask, assignTask: $assignTask) {
     id
     overview
+  }
+}
+
+mutation DeleteTask($taskId: Float!) {
+  deleteTask(taskId: $taskId) {
+    id
   }
 }
 
@@ -210,6 +299,10 @@ mutation CreateList($newList: NewListInput!) {
           id
           name
           icon_image
+          occupation {
+            id
+            name
+          }
         }
       }
     }
@@ -230,3 +323,45 @@ mutation UpdateListName($name: String!, $list_id: String!) {
 mutation RemoveList($id: Float!) {
   removeList(removeList: { id: $id })
 }
+
+# query GetChats($taskId: Float!) {
+#   getChats(taskId: $taskId) {
+#     chats {
+#       id
+#       comment
+#       user
+#       created_at
+#       updated_at
+#     }
+#   }
+# }
+
+# mutation AddChat($taskId: Number!, $userId: String!, $comment: String!) {
+#   addChat(userId: $userId, taskId: $taskId, comment: $comment) {
+#     id
+#     comment
+#     user
+#     created_at
+#     updated_at
+#   }
+# }
+
+# mutation UpdateChat($taskId: Number!, chatId: Number!, $comment: String!) {
+#   updateChat(taskId: $taskId, comment: $comment, chatId: $chatID){
+#     id
+#     comment
+#     user
+#     created_at
+#     updated_at
+#   }
+# }
+
+# mutation DeleteChat($taskId: Number!, chatId: Number!){
+#   deleteChat(taskId: $taskId, chatId: $chatID){
+#     id
+#     comment
+#     user
+#     created_at
+#     deleted_at
+#   }
+# }

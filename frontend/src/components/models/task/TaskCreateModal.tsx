@@ -22,7 +22,6 @@ import { STATUS_TYPE } from 'consts/status'
 type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
-  className?: string
   verticalSort: number
   list_id: string
 }
@@ -154,6 +153,7 @@ const fieldStyle = (
     background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.84)};
     color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
     &::placeholder {
+      font-weight: ${({ theme }) => theme.FONT_WEIGHTS.MEDIUM};
       color: ${({ theme }) => theme.COLORS.SILVER};
     }
   }
