@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
 import { SIGN_UP_CAMERA } from 'consts/defaultImages'
-import { occupationList } from 'consts/occupationList'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
@@ -85,9 +84,9 @@ export const SignUp: FC = () => {
                     value: 50,
                     message: '50文字以内で入力してください',
                   },
-                  pattern: REGEX_TEXT,
-                  validate: value => {
-                    return !!value.trim()
+                  pattern: {
+                    value: REGEX_TEXT,
+                    message: '空白が含まれてます',
                   },
                 })}
                 error={errors['name']}
@@ -101,9 +100,9 @@ export const SignUp: FC = () => {
                     value: 50,
                     message: '50文字以内で入力してください',
                   },
-                  pattern: REGEX_TEXT,
-                  validate: value => {
-                    return !!value.trim()
+                  pattern: {
+                    value: REGEX_TEXT,
+                    message: '空白が含まれてます',
                   },
                 })}
                 error={errors['company']}
