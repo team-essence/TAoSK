@@ -3,7 +3,7 @@ import { StatusParam } from 'types/status'
 import { useUpdateTaskParametersMutation } from 'pages/projectDetail/projectDetail.gen'
 import { INITIAL_STATUS_COUNTS } from 'consts/status'
 import toast from 'utils/toast/toast'
-import { isEqual } from 'utils/isEqual'
+import { checkObjEqual } from 'utils/checkObjEqual'
 
 type StatusCounts = Record<StatusParam, number>
 
@@ -29,17 +29,17 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
   initialStatusCounts,
 }) => {
   const [newStatusCounts, setNewStatusCounts] = useState<StatusCounts>(
-    isEqual(cachedNewStatusCounts, INITIAL_STATUS_COUNTS)
+    checkObjEqual(cachedNewStatusCounts, INITIAL_STATUS_COUNTS)
       ? { ...initialStatusCounts }
       : { ...cachedNewStatusCounts },
   )
   const [statusCounts, setStatusCounts] = useState<StatusCounts>(
-    isEqual(cachedStatusCounts, INITIAL_STATUS_COUNTS)
+    checkObjEqual(cachedStatusCounts, INITIAL_STATUS_COUNTS)
       ? { ...initialStatusCounts }
       : { ...cachedStatusCounts },
   )
   const disabled = useMemo(
-    () => isEqual(statusCounts, newStatusCounts),
+    () => checkObjEqual(statusCounts, newStatusCounts),
     [statusCounts, newStatusCounts],
   )
   const [updateTaskParameterMutation] = useUpdateTaskParametersMutation({

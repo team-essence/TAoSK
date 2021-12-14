@@ -4,7 +4,7 @@ import { theme } from 'styles/theme'
 import styled, { css, FlattenInterpolation, ThemeProps, DefaultTheme } from 'styled-components'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { isEqual } from 'utils/isEqual'
+import { checkObjEqual } from 'utils/checkObjEqual'
 import { useIncrementAndDecrement } from 'hooks/useIncrementAndDecrement'
 import { StatusParam } from 'types/status'
 import { INITIAL_STATUS_COUNTS } from 'consts/status'
@@ -27,7 +27,7 @@ export const TaskStatusPointField: FCX<Props> = ({
 
   useEffect(() => {
     const setCachedStatusCounts = () => {
-      if (!isEqual(statusCounts, INITIAL_STATUS_COUNTS)) {
+      if (!checkObjEqual(statusCounts, INITIAL_STATUS_COUNTS)) {
         // モーダルを開いた時にstatusCountsの値が初期値でなかった時
         setCount(statusCounts[status])
       }
