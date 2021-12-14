@@ -172,19 +172,19 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
   padding: ${calculateMinSizeBasedOnFigma(1)};
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-  ${({ listIndex, listLength }) =>
+  ${({ listIndex, listLength, theme }) =>
     listIndex === 0
       ? css`
-          background-color: ${({ theme }) => theme.COLORS.OLIVE_GREEN};
+          background-color: ${theme.COLORS.OLIVE_GREEN};
         `
       : listIndex < listLength && listIndex !== listLength - 1
       ? css`
-          background-color: ${({ theme }) => theme.COLORS.SHIP_COVE};
+          background-color: ${theme.COLORS.SHIP_COVE};
         `
       : css`
-          background-color: ${({ theme }) => theme.COLORS.BOULDER};
+          background-color: ${theme.COLORS.BOULDER};
         `}
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
+  z-index: ${theme.Z_INDEX.INDEX_1};
 `
 const StyledButtonContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
@@ -204,11 +204,9 @@ const StyledTaskListContainer = styled.div<{ height: number }>`
   }
   &::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.COLORS.SWIRL};
-    /* border-radius: 100px; */
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => theme.COLORS.COTTON_SEED};
-    /* border-radius: 100px; */
   }
 `
 const StyledInnerHeadWrap = styled.div`
