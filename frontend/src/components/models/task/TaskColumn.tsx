@@ -19,7 +19,7 @@ import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControllTextArea'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
-import { SmallPopover } from 'components/ui/modal/SmallPopover'
+import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 

@@ -1,7 +1,7 @@
 import React, { FCX } from 'react'
 import { PopoverProps } from 'types/popover'
 import { theme } from 'styles/theme'
-import { BasicPopover } from 'components/ui/modal/BasicPopover'
+import { BasicPopover } from 'components/ui/popup/BasicPopover'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
