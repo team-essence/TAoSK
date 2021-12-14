@@ -5,6 +5,9 @@ import { collatingImagesInAzure } from 'utils/lib/azure/collatingImagesInAzure'
 import { occupationList } from 'consts/occupationList'
 import { DEFAUT_USER } from 'consts/defaultImages'
 import { useAddUserMutation } from 'pages/auth/signUp.gen'
+import logger from 'utils/debugger/logger'
+import { FIREBASE_ERROR_TYPE } from 'consts/firebaseError'
+import toast from 'utils/toast/toast'
 
 type UseTrySignUp = (
   args: Record<'name' | 'company' | 'occupation' | 'email' | 'password', string> &
@@ -53,14 +56,29 @@ export const useTrySignUp: UseTrySignUp = ({
   }
 
   const trySignUp = () => {
-    firebaseAuth.createUser(email, password).then(async result => {
-      const blobsInContainer: string[] = await uploadFileToBlob(fileData)
-      const url = !fileData ? DEFAUT_USER : await collatingImagesInAzure(fileData, blobsInContainer)
+    firebaseAuth
+      .createUser(email, password)
+      .then(async result => {
+        const blobsInContainer: string[] = await uploadFileToBlob(fileData)
+        const url = !fileData
+          ? DEFAUT_USER
+          : await collatingImagesInAzure(fileData, blobsInContainer)
 
-      await Promise.all([addUser(result.user.uid, url)])
-        .then(() => navigate('/'))
-        .catch(() => 'err')
-    })
+        await Promise.all([addUser(result.user.uid, url)])
+          .then(() => navigate('/'))
+          .catch(() => 'err')
+      })
+      .catch(err => {
+        logger.debug(err)
+        switch (err.code) {
+          case FIREBASE_ERROR_TYPE.AUTH_EMAIL_ALREADY_IN_USE:
+            toast.error('既に使用されているメールアドレスです')
+            break
+
+          default:
+            break
+        }
+      })
   }
 
   return trySignUp
