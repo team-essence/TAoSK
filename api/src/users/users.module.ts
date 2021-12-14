@@ -10,6 +10,7 @@ import { Invitation } from 'src/invitations/invitation';
 import { GameLog } from 'src/game-logs/game-log';
 import { Project } from 'src/projects/project';
 import { Occupation } from 'src/occupations/occupation';
+import { BrainWavesController } from 'src/brain-waves/brain-waves.controller';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -23,5 +24,6 @@ import { Occupation } from 'src/occupations/occupation';
   ],
   providers: [UsersResolver, UsersService],
   exports: [UsersService],
+  controllers: [BrainWavesController],
 })
 export class UsersModule {}
