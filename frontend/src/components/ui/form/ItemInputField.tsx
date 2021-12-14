@@ -80,7 +80,7 @@ const StyledItemsNum = styled.span`
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
   color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
 `
-const StyledInput = styled.input<InputAspectStyles >`
+const StyledInput = styled.input<InputAspectStyles>`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
   padding-left: ${calculateMinSizeBasedOnFigma(8)};
