@@ -76,7 +76,7 @@ const StyledOverview = styled.p`
   display: inline-block;
   width: 100%;
   margin-bottom: ${calculateMinSizeBasedOnFigma(5)};
-  padding: ${calculateMinSizeBasedOnFigma(11)};
+  padding: ${calculateMinSizeBasedOnFigma(7)} ${calculateMinSizeBasedOnFigma(11)};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-all;

@@ -41,7 +41,7 @@ export const useTaskOverviewEditForm: UseTaskOverviewEditForm<FormInputs> = ({
       toast.success('概要を変更しました')
     },
     onError(err) {
-      toast.success('概要の変更に失敗しました')
+      toast.error('概要の変更に失敗しました')
     },
   })
 

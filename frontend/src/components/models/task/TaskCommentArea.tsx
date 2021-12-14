@@ -13,7 +13,7 @@ type Props = {
 }
 
 export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
-  const { chatsData } = useGetChats(id)
+  const { chatsData, judgeIsYourComment } = useGetChats(id)
 
   return (
     <StyledAllWrapper className={className}>
@@ -33,7 +33,12 @@ export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
                   <StyledUserNameSpan>{chat.user.name}</StyledUserNameSpan>
                   さんがコメントしました。&emsp;99分前
                 </StyledCommentInfoP>
-                <StyledFontAwesomeIcon icon={faEllipsisH} />
+
+                {judgeIsYourComment(chat.user.id) && (
+                  <StyledEllipsisButton>
+                    <StyledFontAwesomeIcon icon={faEllipsisH} />
+                  </StyledEllipsisButton>
+                )}
               </StyledCommentInfoRow>
 
               <StyledCommentText>{chat.comment}</StyledCommentText>
@@ -77,6 +82,14 @@ const StyledCommentInfoP = styled.p`
 const StyledUserNameSpan = styled.span`
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
+const StyledEllipsisButton = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: ${calculateMinSizeBasedOnFigma(15)};
+  height: 100%;
+`
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   ${({ theme }) =>
     css`
@@ -88,7 +101,7 @@ const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
 const StyledCommentText = styled.p`
   display: inline-block;
   width: 100%;
-  padding: ${calculateMinSizeBasedOnFigma(11)};
+  padding: ${calculateMinSizeBasedOnFigma(7)} ${calculateMinSizeBasedOnFigma(11)};
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-all;

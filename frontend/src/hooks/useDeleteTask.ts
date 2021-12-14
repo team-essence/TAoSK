@@ -26,7 +26,7 @@ export const useDeleteTask: UseDeleteTask = ({ id, setShouldShowEditModal }) => 
       toast.success('タスクを削除しました')
     },
     onError(err) {
-      toast.success('タスクの削除に失敗しました')
+      toast.error('タスクの削除に失敗しました')
     },
   })
 

@@ -59,7 +59,7 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
       toast.success('パラメーターを変更しました')
     },
     onError(err) {
-      toast.success('パラメーターの変更に失敗しました')
+      toast.error('パラメーターの変更に失敗しました')
     },
   })
 
