@@ -137,6 +137,10 @@ export class ProjectsService {
       .leftJoinAndSelect('tasks.allocations', 'allocations')
       .leftJoinAndSelect('tasks.chats', 'chats')
       .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
       .leftJoinAndSelect('project.groups', 'groups')
       .leftJoinAndSelect('groups.user', 'groupsUser')
       .leftJoinAndSelect('groupsUser.occupation', 'occupation')
