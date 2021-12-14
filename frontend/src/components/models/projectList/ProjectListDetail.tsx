@@ -53,7 +53,7 @@ export const ProjectListDetail: FCX<Props> = ({
       <StyledProjectDetail>
         <StyledProjectTitleContainer>
           <StyledProjectTitle>
-            {userQuery!.user.groups[selectProject].project.name}
+            {userQuery?.user.groups[selectProject].project.name}
           </StyledProjectTitle>
 
           <StyledProjectOptionContainer>
@@ -62,9 +62,9 @@ export const ProjectListDetail: FCX<Props> = ({
         </StyledProjectTitleContainer>
 
         <ProjectListMonster
-          specie={userQuery!.user.groups[selectProject].project.monster.specie.name}
-          difficulty={userQuery!.user.groups[selectProject].project.difficulty}
-          limitDeadline={userQuery!.user.groups[selectProject].project.end_date}
+          specie={userQuery?.user.groups[selectProject].project.monster.specie.name}
+          difficulty={userQuery?.user.groups[selectProject].project.difficulty}
+          limitDeadline={userQuery?.user.groups[selectProject].project.end_date}
         />
 
         <StyledComplicateButtonContainer>
@@ -72,16 +72,16 @@ export const ProjectListDetail: FCX<Props> = ({
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="クエスト開始"
             onClick={() =>
-              handleTransitionToProject(userQuery!.user.groups[selectProject].project.id)
+              handleTransitionToProject(userQuery?.user.groups[selectProject].project.id)
             }
           />
         </StyledComplicateButtonContainer>
 
         <ProjectListProjectInfo
-          story={userQuery!.user.groups[selectProject].project.monster.story}
-          overview={userQuery!.user.groups[selectProject].project.overview}
+          story={userQuery?.user.groups[selectProject].project.monster.story}
+          overview={userQuery?.user.groups[selectProject].project.overview}
           selectProject={selectProject}
-          groupsProject={userQuery!.user.groups}
+          groupsProject={userQuery?.user.groups ?? []}
         />
       </StyledProjectDetail>
     </StyledProjectListDetailContainer>

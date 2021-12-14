@@ -7,51 +7,13 @@ import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserDatas } from 'types/userDatas'
+import { UsersQuery } from 'pages/projectList/projectList.gen'
 
 type Props = {
-  story: string
-  overview: string
+  story?: string
+  overview?: string
   selectProject: number
-  groupsProject: {
-    __typename?: 'Group' | undefined
-    id: string
-    project: {
-      __typename?: 'Project' | undefined
-      id: string
-      name: string
-      overview: string
-      created_at: any
-      end_date: any
-      project_end_flg: boolean
-      difficulty: number
-      groups: {
-        __typename?: 'Group' | undefined
-        id: string
-        user: {
-          __typename?: 'User' | undefined
-          id: string
-          name: string
-          icon_image: string
-          occupation: {
-            __typename?: 'Occupation' | undefined
-            id: string
-            name: string
-          }
-        }
-      }[]
-      monster: {
-        __typename?: 'Monster' | undefined
-        id: string
-        name: string
-        story: string
-        specie: {
-          __typename?: 'Specie' | undefined
-          id: string
-          name: string
-        }
-      }
-    }
-  }[]
+  groupsProject: UsersQuery['user']['groups']
 }
 
 export const ProjectListProjectInfo: FCX<Props> = ({
