@@ -1,17 +1,14 @@
 import { useMemo, useCallback } from 'react'
-import { UseFormRegister } from 'react-hook-form'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useTaskCommentForm } from 'hooks/useTaskCommentForm'
 import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 import { useAddChatMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
 
-type FormInputs = { comment: string }
-
 type UseTaskAddCommentReturn = {
-  register: UseFormRegister<FormInputs>
+  register: ReturnType<typeof useTaskCommentForm>['register']
+  disabled: ReturnType<typeof useTaskCommentForm>['disabled']
   myData: GetCurrentUserQuery['user'] | undefined
-  disabled: boolean
   onClickSendButton: () => void
 }
 
@@ -25,7 +22,6 @@ export const useTaskAddComment = (id: string): UseTaskAddCommentReturn => {
       toast.success('コメントを投稿しました')
     },
     onError(err) {
-      console.log(err)
       toast.error('コメントの投稿に失敗しました')
     },
   })

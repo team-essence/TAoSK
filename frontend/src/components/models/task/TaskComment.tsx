@@ -14,14 +14,18 @@ import type { Chat } from 'types/chat'
 
 type Props = {
   taskId: string
-  chatList: Chat[]
   chatInfo: Chat
   isYour: boolean
 }
 
-export const TaskComment: FCX<Props> = ({ taskId, chatList, chatInfo, isYour }) => {
+export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
   const { anchorEl, openPopover, closePopover } = usePopover()
-  const { state, setState, onClickDeleteButton } = useHandleChat(taskId, chatInfo.id)
+  const { register, state, setState, disabled, onClickDeleteButton, onClickUpdateButton } =
+    useHandleChat({
+      taskId,
+      chatId: chatInfo.id,
+      initialValue: chatInfo.comment,
+    })
 
   return (
     <StyledTextWrapper>
@@ -41,7 +45,23 @@ export const TaskComment: FCX<Props> = ({ taskId, chatList, chatInfo, isYour }) 
       {!isYour || state === 'view' ? (
         <StyledCommentText>{chatInfo.comment}</StyledCommentText>
       ) : (
-        <></>
+        <StyledInputFormField>
+          <StyledFlexTextarea
+            {...register('comment', {
+              required: '未入力です',
+              maxLength: { value: 255, message: '255文字以内で入力してください' },
+              pattern: { value: /.*\S+.*/, message: '空白のみのコメントは投稿できません' },
+              validate: value => value !== chatInfo.comment,
+            })}
+          />
+
+          <StyledButtonWrapper>
+            <StyledCancelButton onClick={() => setState('view')}>
+              <StyledCancelText>キャンセル</StyledCancelText>
+            </StyledCancelButton>
+            <CoarseRedOxideButton text="保存" onClick={onClickUpdateButton} disabled={disabled} />
+          </StyledButtonWrapper>
+        </StyledInputFormField>
       )}
 
       <SmallPopover
@@ -111,18 +131,51 @@ const StyledCommentText = styled.p`
       color: ${theme.COLORS.TOBACCO_BROWN};
     `}
 `
+const StyledInputFormField = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: ${calculateMinSizeBasedOnFigma(8)};
+`
 const StyledFlexTextarea = styled(FlexTextarea)`
-  width: ${calculateMinSizeBasedOnFigma(465)};
+  width: 100%;
   > div {
-    padding: 0 ${calculateMinSizeBasedOnFigma(8)};
-    height: 100%;
+    min-height: ${calculateMinSizeBasedOnFigma(36)};
   }
   textarea {
-    padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
+    padding: ${calculateMinSizeBasedOnFigma(10)} ${calculateMinSizeBasedOnFigma(8)};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
 `
-const StyledEditButtonWrapper = styled.div`
+const StyledButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: ${calculateMinSizeBasedOnFigma(12)};
+  width: 100%;
+`
+const StyledCancelButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const StyledCancelText = styled.p`
+  position: relative;
+  ${({ theme }) =>
+    css`
+      font-size: ${theme.FONT_SIZES.SIZE_12};
+      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
+      color: ${theme.COLORS.TOBACCO_BROWN};
+    `}
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: ${calculateMinSizeBasedOnFigma(1.5)};
+    left: 0;
+    width: 100%;
+    height: 0.5px;
+    background-color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+  }
 `

@@ -1,21 +1,27 @@
-import { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react'
-import { useForm, UseFormRegister } from 'react-hook-form'
+import { useCallback, useEffect } from 'react'
+import { useTaskCommentForm } from 'hooks/useTaskCommentForm'
 import { useUpdateChatMutation, useDeleteChatMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
-import type { Chat } from 'types/chat'
-
-type FormInputs = { comment: string }
-type FieldType = 'view' | 'edit'
 
 type UseHandleChatReturn = {
-  state: FieldType
-  setState: Dispatch<SetStateAction<FieldType>>
+  register: ReturnType<typeof useTaskCommentForm>['register']
+  disabled: ReturnType<typeof useTaskCommentForm>['disabled']
+  state: ReturnType<typeof useTaskCommentForm>['state']
+  setState: ReturnType<typeof useTaskCommentForm>['setState']
   onClickDeleteButton: () => void
+  onClickUpdateButton: () => void
 }
 
-export const useHandleChat = (taskId: string, chatId: string): UseHandleChatReturn => {
+export const useHandleChat = ({
+  taskId,
+  chatId,
+  initialValue,
+}: Record<'taskId' | 'chatId' | 'initialValue', string>): UseHandleChatReturn => {
+  const { register, handleSubmit, state, setState, value, setValue, disabled } =
+    useTaskCommentForm()
   const [updateChat] = useUpdateChatMutation({
     onCompleted(data) {
+      setState('view')
       toast.success('コメントを更新しました')
     },
     onError(err) {
@@ -30,18 +36,6 @@ export const useHandleChat = (taskId: string, chatId: string): UseHandleChatRetu
       toast.error('コメントの削除に失敗しました')
     },
   })
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-    watch,
-  } = useForm<FormInputs>({ mode: 'onChange' })
-  const value = watch('comment')
-  const hasError = useMemo(() => !!errors.comment, [errors.comment])
-  const disabled = useMemo(() => !value || hasError, [value, hasError])
-
-  const [state, setState] = useState<FieldType>('view')
 
   const onClickDeleteButton = useCallback(() => {
     deleteChat({
@@ -50,7 +44,28 @@ export const useHandleChat = (taskId: string, chatId: string): UseHandleChatRetu
         chatId: Number(chatId),
       },
     })
-  }, [taskId])
+  }, [taskId, chatId])
 
-  return { state, setState, onClickDeleteButton }
+  const onClickUpdateButton = useCallback(() => {
+    updateChat({
+      variables: {
+        taskId: Number(taskId),
+        chatId: Number(chatId),
+        comment: value,
+      },
+    })
+  }, [taskId, chatId, value])
+
+  useEffect(() => {
+    if (state === 'edit') setValue('comment', initialValue, { shouldValidate: true })
+  }, [state])
+
+  return {
+    register,
+    disabled,
+    state,
+    setState,
+    onClickDeleteButton,
+    onClickUpdateButton: handleSubmit(onClickUpdateButton),
+  }
 }

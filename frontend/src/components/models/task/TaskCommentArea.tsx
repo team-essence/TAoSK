@@ -4,7 +4,6 @@ import { TaskCommentInputField } from 'components/models/task/TaskCommentInputFi
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { TaskComment } from 'components/models/task/TaskComment'
 import { useShowChats } from 'hooks/useShowChats'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
@@ -26,12 +25,7 @@ export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
               iconImage={chat.user.icon_image}
               name={chat.user.name}
             />
-            <TaskComment
-              taskId={id}
-              chatList={chatList}
-              chatInfo={chat}
-              isYour={judgeIsYourComment(chat.user.id)}
-            />
+            <TaskComment taskId={id} chatInfo={chat} isYour={judgeIsYourComment(chat.user.id)} />
           </StyledCommentWrapper>
         ))}
     </StyledAllWrapper>
