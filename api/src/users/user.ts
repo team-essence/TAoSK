@@ -126,7 +126,7 @@ export class User {
   @Field(() => [Chat])
   chat: Chat[];
 
-  @ManyToOne(() => Occupation, (occupation) => occupation.id)
+  @ManyToOne(() => Occupation, (occupation) => occupation.users)
   @Field(() => Occupation, { defaultValue: '' })
   @JoinColumn({ name: 'occupation_id' })
   occupation: Occupation;
