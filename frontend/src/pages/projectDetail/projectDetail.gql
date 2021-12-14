@@ -232,10 +232,10 @@ mutation CreateAllocation($newAllocation: NewAllocationInput!) {
       id
       name
       icon_image
-      occupation {
-        id
-        name
-      }
+      # occupation {
+      #   id
+      #   name
+      # }
     }
   }
 }
@@ -246,10 +246,10 @@ mutation UnAssignTask($taskId: Float!, $userId: String!) {
       id
       name
       icon_image
-      occupation {
-        id
-        name
-      }
+      # occupation {
+      #   id
+      #   name
+      # }
     }
   }
 }
