@@ -67,6 +67,7 @@ const StyledFlexTextarea = styled(FlexTextarea)`
   }
   textarea {
     padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
+    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   }
 `
 const StyledSendButtonWrapper = styled.div`

@@ -1,8 +1,10 @@
-import { useState, useCallback, Dispatch, SetStateAction } from 'react'
+import { useState, useCallback, useMemo, Dispatch, SetStateAction } from 'react'
+import { useForm, UseFormRegister } from 'react-hook-form'
 import { useUpdateChatMutation, useDeleteChatMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
 import type { Chat } from 'types/chat'
 
+type FormInputs = { comment: string }
 type FieldType = 'view' | 'edit'
 
 type UseHandleChatReturn = {
@@ -28,6 +30,16 @@ export const useHandleChat = (taskId: string, chatId: string): UseHandleChatRetu
       toast.error('コメントの削除に失敗しました')
     },
   })
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    watch,
+  } = useForm<FormInputs>({ mode: 'onChange' })
+  const value = watch('comment')
+  const hasError = useMemo(() => !!errors.comment, [errors.comment])
+  const disabled = useMemo(() => !value || hasError, [value, hasError])
 
   const [state, setState] = useState<FieldType>('view')
 

@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react'
 import { useForm, UseFormRegister } from 'react-hook-form'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { useTaskCommentForm } from 'hooks/useTaskCommentForm'
 import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 import { useAddChatMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
@@ -16,18 +17,8 @@ type UseTaskAddCommentFormReturn = {
 
 export const useTaskAddCommentForm = (id: string): UseTaskAddCommentFormReturn => {
   const { currentUserData } = useGetCurrentUserData()
+  const { register, handleSubmit, value, disabled } = useTaskCommentForm()
   const myData = useMemo(() => currentUserData.data?.user, [currentUserData.data?.user])
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-    watch,
-  } = useForm<FormInputs>({ mode: 'onChange' })
-  const value = watch('comment')
-  const hasError = useMemo(() => !!errors.comment, [errors.comment])
-  const disabled = useMemo(() => !value || hasError, [value, hasError])
 
   const [addChat] = useAddChatMutation({
     onCompleted(data) {
