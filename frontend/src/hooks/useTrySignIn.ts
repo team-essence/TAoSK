@@ -21,20 +21,7 @@ export const useTrySignIn: UseTrySignIn = ({ email, password }) => {
         if (result.user.uid) navigate('/')
       })
       .catch(err => {
-        logger.table(err.code)
-        // TODO: 追加される可能性あり
-        switch (err.code) {
-          case FIREBASE_ERROR_TYPE.AUTH_WRONG_PASSWORD:
-            toast.error('メールアドレスまたはパスワードが間違っている可能性があります')
-            break
-
-          case FIREBASE_ERROR_TYPE.AUTH_USER_NOT_FOUND:
-            toast.error('メールアドレスまたはパスワードが間違っている可能性があります')
-            break
-
-          default:
-            break
-        }
+        toast.error('メールアドレスまたはパスワードが間違っている可能性があります')
       })
   }
 
