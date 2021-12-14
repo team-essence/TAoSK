@@ -22,6 +22,7 @@ export const useTrySignIn: UseTrySignIn = ({ email, password }) => {
       })
       .catch(err => {
         logger.table(err.code)
+        // TODO: 追加される可能性あり
         switch (err.code) {
           case FIREBASE_ERROR_TYPE.AUTH_WRONG_PASSWORD:
             toast.error('パスワードが間違っている可能性があります')

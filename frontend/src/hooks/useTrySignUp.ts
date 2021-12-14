@@ -70,6 +70,7 @@ export const useTrySignUp: UseTrySignUp = ({
       })
       .catch(err => {
         logger.debug(err)
+        // TODO: 追加される可能性あり
         switch (err.code) {
           case FIREBASE_ERROR_TYPE.AUTH_EMAIL_ALREADY_IN_USE:
             toast.error('既に使用されているメールアドレスです')
