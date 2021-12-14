@@ -38,7 +38,7 @@ export const useTaskTitleEditForm: UseTaskTitleEditForm<FormInputs> = ({ id, ini
       toast.success('タイトルを変更しました')
     },
     onError(err) {
-      toast.success('タイトルの変更に失敗しました')
+      toast.error('タイトルの変更に失敗しました')
     },
   })
 

@@ -6,11 +6,18 @@
     "description": "styled-componentsを使うときのの雛形"
   },
 
-  "styled-components use global theme": {
+  "styled-components use global theme and css": {
     "scope": "css,scss,typescriptreact,typescript",
     "prefix": "calltheme",
     "body": ["\\${({ theme }) =>", "  css`", "    $1", "  `", "}"],
-    "description": "styled-componentでtheme.tsのthemeを使いたい時"
+    "description": "styled-componentでtheme.tsのthemeとcssを呼び出す"
+  },
+
+  "styled-components use global theme": {
+    "scope": "css,scss,typescriptreact,typescript",
+    "prefix": "callthemeonly",
+    "body": ["\\${({ theme }) => theme.$1 }"],
+    "description": "styled-componentでtheme.tsのthemeのみを呼び出す"
   },
 
   "React FC": {
@@ -19,11 +26,11 @@
     "body": [
       "import React, { FCX } from 'react'",
       "import styled, { css } from 'styled-components'\n",
-      "type Props = { $3 }\n",
-      "export const $1: FCX<Props> = ({ className }) => {",
+      "type Props = { $2 }\n",
+      "export const ${TM_FILENAME_BASE}: FCX<Props> = ({ className }) => {",
       "  return (",
       "    <div className={className}>",
-      "      $2",
+      "      $1",
       "    </div>",
       "  )",
       "}\n"
@@ -35,11 +42,11 @@
     "scope": "typescript",
     "prefix": "usehook",
     "body": [
-      "import { $2 } from 'react'\n",
-      "type Use$1Return = {\n",
+      "import { $1 } from 'react'\n",
+      "type Use${TM_FILENAME_BASE}Return = {\n",
       "}\n",
-      "export const use$1 = (): Use$1Return => {",
-      "  $3",
+      "export const use${TM_FILENAME_BASE} = (): Use${TM_FILENAME_BASE}Return => {",
+      "  $2",
       "  return",
       "}"
     ]
