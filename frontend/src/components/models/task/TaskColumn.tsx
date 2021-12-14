@@ -17,6 +17,7 @@ import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControllTextArea'
+import { useWatchElementAspect } from 'hooks/useWatchElementAspect'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
 import { SmallPopover } from 'components/ui/modal/SmallPopover'
@@ -31,10 +32,13 @@ type Props = {
 export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
   const controll = useControllTextArea()
+  const column = useWatchElementAspect<HTMLDivElement>()
+  const columnHeader = useWatchElementAspect<HTMLDivElement>()
   const { anchorEl, openPopover, closePopover } = usePopover()
   const [updateListName] = useUpdateListNameMutation()
   const [removeList] = useRemoveListMutation()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
+  const [aaa, iii] = useState<number>(0)
 
   const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
@@ -58,6 +62,12 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
       .catch(() => toast.error(`${title}の削除に失敗しました`))
   }
 
+  // React.useEffect(() => {
+  //   iii(column.height - columnHeader.height)
+  // }, [column.height, columnHeader.height])
+
+  const TaskArea = column.height - columnHeader.height
+
   return (
     <Draggable
       draggableId={`column-${id}`}
@@ -65,13 +75,16 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
       isDragDisabled={listIndex === 0 || listLength - 1 === listIndex}>
       {provided => (
         <StyledContainer
-          ref={provided.innerRef}
+          ref={(provided.innerRef, column.sizeInspectedEl)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}>
           <Droppable droppableId={String(listIndex)} type={DROP_TYPE.TASK}>
             {listProvided => (
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
-                <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
+                <StyledHeadCotanier
+                  ref={columnHeader.sizeInspectedEl}
+                  listIndex={listIndex}
+                  listLength={listLength}>
                   <StyledInnerHeadWrap>
                     <StyledTitle onClick={e => handleEnableTextArea(e)}>
                       <StyledTitleTextArea
@@ -116,7 +129,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                     )}
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
-                <StyledTaskListContainer>
+                <StyledTaskListContainer height={500}>
                   {listIndex === 0 && (
                     <>
                       <StyledButtonContainer>
@@ -186,23 +199,25 @@ const StyledButtonContainer = styled.div`
 `
 const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigma(16)};
+  background-color: #000;
+  max-height: ${calculateVhBasedOnFigma(610)};
 `
-const StyledTaskListContainer = styled.div`
-  max-height: ${calculateVhBasedOnFigma(580)};
+const StyledTaskListContainer = styled.div<{ height: number }>`
+  max-height: ${({ height }) => `${height}px`};
   padding: ${calculateMinSizeBasedOnFigma(16)} ${calculateMinSizeBasedOnFigma(8)} 0;
   margin-bottom: ${calculateMinSizeBasedOnFigma(4)};
   overflow-x: hidden;
   overflow-y: auto;
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 9px;
   }
   &::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.COLORS.SWIRL};
-    border-radius: 100px;
+    /* border-radius: 100px; */
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => theme.COLORS.COTTON_SEED};
-    border-radius: 100px;
+    /* border-radius: 100px; */
   }
 `
 const StyledInnerHeadWrap = styled.div`
