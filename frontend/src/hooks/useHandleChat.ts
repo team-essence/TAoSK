@@ -12,6 +12,9 @@ type UseHandleChatReturn = {
   onClickUpdateButton: () => void
 }
 
+/**
+ * コメントの更新・削除機能を扱う
+ */
 export const useHandleChat = ({
   taskId,
   chatId,

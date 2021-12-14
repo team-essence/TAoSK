@@ -8,6 +8,9 @@ type UseShowChatsReturn = {
   judgeIsYourComment: (id: string) => boolean
 }
 
+/**
+ * コメントの一覧を取得する
+ */
 export const useShowChats = (id: string): UseShowChatsReturn => {
   const [getChatsLazyQuery, chatsData] = useGetChatsLazyQuery()
   const { currentUserData } = useGetCurrentUserData()

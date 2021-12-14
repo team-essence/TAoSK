@@ -14,6 +14,9 @@ type UseTaskCommentFormReturn = {
   disabled: boolean
 }
 
+/**
+ * react-hook-formを使った、コメントのinputフォームを扱うためのフック
+ */
 export const useTaskCommentForm = (): UseTaskCommentFormReturn => {
   const {
     register,

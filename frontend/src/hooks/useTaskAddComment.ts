@@ -12,6 +12,9 @@ type UseTaskAddCommentReturn = {
   onClickSendButton: () => void
 }
 
+/**
+ * コメントの追加処理を行う
+ */
 export const useTaskAddComment = (id: string): UseTaskAddCommentReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const { register, handleSubmit, value, disabled } = useTaskCommentForm()
