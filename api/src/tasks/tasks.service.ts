@@ -52,6 +52,14 @@ export class TasksService {
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
 
+      const totalDamage =
+        task.technology +
+        task.achievement +
+        task.solution +
+        task.motivation +
+        task.design +
+        task.plan;
+
       if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
         task.completed_flg = updateTask.tasks[index].completed_flg;
 
@@ -59,14 +67,6 @@ export class TasksService {
           updateTask.project_id,
         );
         if (!project) throw new NotFoundException();
-
-        const totalDamage =
-          task.technology +
-          task.achievement +
-          task.solution +
-          task.motivation +
-          task.design +
-          task.plan;
 
         // 経験値付与
         task.allocations.map(async (allocation) => {
@@ -103,6 +103,20 @@ export class TasksService {
         });
         this.gameLogRepository.save(log).catch((err) => {
           throw err;
+        });
+      }
+
+      if (task.completed_flg && !updateTask.tasks[index].completed_flg) {
+        task.completed_flg = updateTask.tasks[index].completed_flg;
+
+        task.allocations.map(async (allocation) => {
+          const user = await this.userRepository.findOne(allocation.user.id);
+          if (!user) throw new NotFoundException();
+
+          user.exp -= totalDamage;
+          await this.userRepository.save(user).catch((err) => {
+            throw err;
+          });
         });
       }
 
