@@ -6,8 +6,8 @@ import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFi
 import date from 'utils/date/date'
 
 type Props = {
-  specie: string
-  difficulty: number
+  specie?: string
+  difficulty?: number
   limitDeadline: string
 }
 
@@ -24,7 +24,7 @@ export const ProjectListMonster: FCX<Props> = ({ specie, difficulty, limitDeadli
         <StyledMonsterStatus>
           <h4>危険度</h4>
           <RatingContainer>
-            <RatingView ratingValue={difficulty}>
+            <RatingView ratingValue={difficulty ?? 0}>
               <img src="/svg/star.svg" alt="スター" />
             </RatingView>
           </RatingContainer>
