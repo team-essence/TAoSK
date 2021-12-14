@@ -1,16 +1,19 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { useGetChatsLazyQuery } from 'pages/projectDetail/projectDetail.gen'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import type { Chat } from 'types/chat'
 import toast from 'utils/toast/toast'
 
-type UseGetChatsReturn = {
-  chatsData: ReturnType<typeof useGetChatsLazyQuery>[1]
+type UseHandleChatsReturn = {
+  chats: Chat[]
   judgeIsYourComment: (id: string) => boolean
 }
 
-export const useGetChats = (id: string): UseGetChatsReturn => {
+export const useHandleChats = (id: string): UseHandleChatsReturn => {
   const [getChatsLazyQuery, chatsData] = useGetChatsLazyQuery()
   const { currentUserData } = useGetCurrentUserData()
+  const [chats, setChats] = useState<Chat[]>([])
+
   const judgeIsYourComment = useCallback(
     (id: string) => {
       return id === currentUserData.data?.user.id
@@ -26,5 +29,9 @@ export const useGetChats = (id: string): UseGetChatsReturn => {
     })
   }, [])
 
-  return { chatsData, judgeIsYourComment }
+  useEffect(() => {
+    setChats(chatsData.data?.getChats ?? [])
+  }, [chatsData.data])
+
+  return { chats, judgeIsYourComment }
 }

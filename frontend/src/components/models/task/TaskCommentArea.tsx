@@ -2,9 +2,11 @@ import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { TaskCommentInputField } from 'components/models/task/TaskCommentInputField'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
+import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
-import { useGetChats } from 'hooks/useGetChats'
+import { useHandleChats } from 'hooks/useGetChats'
+import { usePopover } from 'hooks/usePopover'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
@@ -13,13 +15,14 @@ type Props = {
 }
 
 export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
-  const { chatsData, judgeIsYourComment } = useGetChats(id)
+  const { chats, judgeIsYourComment } = useHandleChats(id)
+  const { anchorEl, openPopover, closePopover } = usePopover()
 
   return (
     <StyledAllWrapper className={className}>
       <TaskCommentInputField id={id} />
-      {!!chatsData?.data &&
-        chatsData.data.getChats.map((chat, index) => (
+      {!!chats.length &&
+        chats.map((chat, index) => (
           <StyledCommentWrapper key={index}>
             {/* TODO: occupationも取得できるようになったら追加する */}
             <UserAvatarIcon
@@ -35,9 +38,19 @@ export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
                 </StyledCommentInfoP>
 
                 {judgeIsYourComment(chat.user.id) && (
-                  <StyledEllipsisButton>
-                    <StyledFontAwesomeIcon icon={faEllipsisH} />
-                  </StyledEllipsisButton>
+                  <>
+                    <StyledEllipsisButton onClick={openPopover}>
+                      <StyledFontAwesomeIcon icon={faEllipsisH} />
+                    </StyledEllipsisButton>
+                    <SmallPopover
+                      anchorEl={anchorEl}
+                      vertical="bottom"
+                      horizontal="left"
+                      handleClose={closePopover}
+                      handleEdit={e => console.log(e)}
+                      handleRemove={() => console.log('remove')}
+                    />
+                  </>
                 )}
               </StyledCommentInfoRow>
 
