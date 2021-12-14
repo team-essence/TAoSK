@@ -46,10 +46,12 @@ export const ItemInputField: FCX<Props> = props => {
           onKeyPress={onKeyPress}
           onChange={onChange}
           placeholder={placeholder}
+          maxLength={17}
           {...inputAspect}
         />
         <StyledCoarseButton text="追加" onClick={onClickAddButton} disabled={isDisabled} />
       </StyledRow>
+
       <StyledItemsWrapper width={inputAspect.width}>
         {items.map((item, index) => (
           <InputItem itemName={item} key={index} onClick={() => onClickDeleteItemButton(item)} />
@@ -85,6 +87,7 @@ const StyledInput = styled.input<InputAspectStyles>`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
+
   &::placeholder {
     color: ${({ theme }) => theme.COLORS.GRAY};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};

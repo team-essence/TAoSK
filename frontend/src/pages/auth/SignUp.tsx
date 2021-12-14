@@ -161,7 +161,7 @@ export const SignUp: FC = () => {
                 error={errors['occupation']}
               />
               <StyledItemInputField
-                label="保有資格"
+                label="保有資格(17文字以内)"
                 items={certifications}
                 setItems={setCertifications}
                 inputAspect={{
@@ -171,7 +171,7 @@ export const SignUp: FC = () => {
                 placeholder="保有資格を入力してください"
               />
               <StyledItemInputField
-                label="興味のあること"
+                label="興味のあること(17文字以内)"
                 items={interests}
                 setItems={setInterests}
                 inputAspect={{
