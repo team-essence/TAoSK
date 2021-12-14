@@ -27,7 +27,6 @@ export const ItemInputField: FCX<Props> = props => {
     onKeyPress,
     onClickAddButton,
     onClickDeleteItemButton,
-    isError,
   } = useTextItems(max.TEXT_LENGTH, max.ITEMS)
 
   useEffect(() => {
@@ -47,12 +46,12 @@ export const ItemInputField: FCX<Props> = props => {
           onKeyPress={onKeyPress}
           onChange={onChange}
           placeholder={placeholder}
-          isError={isError}
+          maxLength={17}
           {...inputAspect}
         />
         <StyledCoarseButton text="追加" onClick={onClickAddButton} disabled={isDisabled} />
       </StyledRow>
-      {isError && <StyledErrorMessage>17文字以内です</StyledErrorMessage>}
+
       <StyledItemsWrapper width={inputAspect.width}>
         {items.map((item, index) => (
           <InputItem itemName={item} key={index} onClick={() => onClickDeleteItemButton(item)} />
@@ -81,19 +80,13 @@ const StyledItemsNum = styled.span`
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
   color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
 `
-const StyledInput = styled.input<InputAspectStyles & { isError: boolean }>`
+const StyledInput = styled.input<InputAspectStyles >`
   width: ${({ width }) => width};
   height: ${({ height }) => height};
   padding-left: ${calculateMinSizeBasedOnFigma(8)};
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
   border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
-
-  ${({ isError }) =>
-    isError &&
-    css`
-      border-color: ${({ theme }) => theme.COLORS.ERROR};
-    `}
 
   &::placeholder {
     color: ${({ theme }) => theme.COLORS.GRAY};
@@ -138,9 +131,4 @@ const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) =
       `
     }
   }}
-`
-
-const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.COLORS.ERROR};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `
