@@ -48,6 +48,7 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
+  const regexSpace = /^[ 　\r\n\t]*$/
 
   useEffect(() => {
     const initializeInputValues = () => {
@@ -67,6 +68,15 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
+    }
+
+    // TODO: no-irregular-whitespaceエラーが発生するため
+    /*eslint no-irregular-whitespace: off*/
+    if (
+      (!!watchAllFields.company && watchAllFields.company.match(regexSpace)) ||
+      (!!watchAllFields.name && watchAllFields.name.match(regexSpace))
+    ) {
+      setIsDisabled(true)
     }
   }, [watchAllFields, errors])
 
