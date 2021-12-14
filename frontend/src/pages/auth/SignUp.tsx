@@ -86,6 +86,9 @@ export const SignUp: FC = () => {
                     message: '50文字以内で入力してください',
                   },
                   pattern: REGEX_TEXT,
+                  validate: value => {
+                    return !!value.trim()
+                  },
                 })}
                 error={errors['name']}
               />
@@ -99,6 +102,9 @@ export const SignUp: FC = () => {
                     message: '50文字以内で入力してください',
                   },
                   pattern: REGEX_TEXT,
+                  validate: value => {
+                    return !!value.trim()
+                  },
                 })}
                 error={errors['company']}
               />

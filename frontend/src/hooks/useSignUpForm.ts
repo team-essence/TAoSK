@@ -1,4 +1,3 @@
-import { REGEX_SPACE } from 'consts/regex'
 import { useState, useRef, useEffect } from 'react'
 import {
   useForm,
@@ -68,13 +67,6 @@ export const useSignUpForm = (): UseSignUpFormReturn<FormInputs> => {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
-    }
-
-    if (
-      (!!watchAllFields.company && watchAllFields.company.match(REGEX_SPACE)) ||
-      (!!watchAllFields.name && watchAllFields.name.match(REGEX_SPACE))
-    ) {
-      setIsDisabled(true)
     }
   }, [watchAllFields, errors])
 

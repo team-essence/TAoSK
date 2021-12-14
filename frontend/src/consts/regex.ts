@@ -4,7 +4,3 @@ export const REGEX_EMAIL =
 export const REGEX_PASSWORD = /^(?=.*?[a-z])(?=.*?\d)[a-z\d]{6,50}$/i
 
 export const REGEX_TEXT = /^.{1,50}$/
-
-// TODO: no-irregular-whitespaceエラーが発生するため
-/*eslint no-irregular-whitespace: off*/
-export const REGEX_SPACE = /^[ 　\r\n\t]*$/
