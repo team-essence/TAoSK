@@ -13,6 +13,9 @@ type UseDeleteTask = (args: {
   setShouldShowEditModal: Dispatch<SetStateAction<boolean>>
 }) => UseDeleteTaskReturn
 
+/**
+ * タスクを削除する
+ */
 export const useDeleteTask: UseDeleteTask = ({ id, setShouldShowEditModal }) => {
   const [shouldShowConfirmPopup, setShouldShowConfirmPopup] = useState<boolean>(false)
 

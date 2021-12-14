@@ -20,6 +20,9 @@ type UseTaskOverviewEditForm<T> = {
   (args: { id: string; initialOverview: string }): UseTaskOverviewEditFormReturn<T>
 }
 
+/**
+ * タスク編集モーダルの概要変更処理を行う
+ */
 export const useTaskOverviewEditForm: UseTaskOverviewEditForm<FormInputs> = ({
   id,
   initialOverview,

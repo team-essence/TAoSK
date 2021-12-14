@@ -11,6 +11,18 @@ type UseModalInterlockingScrollReturn = {
   scrollHeight: number
 }
 
+/**
+ * スクロールバーを画面右端に置き、タスク編集モーダルの連動スクロールを実装するためのフック
+ * @return {Object} {
+ * leftColumnRef,
+ * rightColumnRef,
+ * leftColumnInnerRef,
+ * rightColumnInnerRef,
+ * scrollableRef,
+ * scrollHeight,
+  }
+ * @return returns.scrollHeight - 画面右端にスクロールバーを置くにあたって、画面全体のoverlayに付与するheight
+ */
 export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn => {
   const { innerHeight } = useWatchInnerAspect()
   const scrollableRef = useRef<HTMLDivElement>(null)

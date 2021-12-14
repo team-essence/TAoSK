@@ -21,6 +21,9 @@ type UseTaskStatusPointEditForm = (args: {
 let cachedNewStatusCounts: StatusCounts = { ...INITIAL_STATUS_COUNTS }
 let cachedStatusCounts: StatusCounts = { ...INITIAL_STATUS_COUNTS }
 
+/**
+ * タスク編集モーダルのステータスポイントの変更処理を行う
+ */
 export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
   id,
   initialStatusCounts,

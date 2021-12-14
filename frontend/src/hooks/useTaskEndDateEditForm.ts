@@ -14,6 +14,9 @@ type UseTaskEndDateEditForm<T> = {
   (args: { id: string; initialEndDate: string }): UseTaskEndDateEditFormReturn<T>
 }
 
+/**
+ * タスク編集モーダルの日付変更処理を行う
+ */
 export const useTaskEndDateEditForm: UseTaskEndDateEditForm<FormInputs> = ({
   id,
   initialEndDate,

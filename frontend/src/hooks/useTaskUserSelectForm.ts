@@ -14,6 +14,9 @@ type UseTaskUserSelectForm = {
   (arg: { id: string; initialUserDatas: UserDatas }): UseTaskUserSelectFormReturn
 }
 
+/**
+ * タスク編集モーダルで、ユーザーのアサイン、アンアサイン処理を行うためのフック
+ */
 export const useTaskUserSelectForm: UseTaskUserSelectForm = ({ id, initialUserDatas }) => {
   const [userDatas, setUserDatas] = useState<UserDatas>([...initialUserDatas])
   const preUserDatas = useRef<UserDatas>([...initialUserDatas])
