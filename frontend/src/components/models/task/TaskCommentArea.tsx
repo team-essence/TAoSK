@@ -2,11 +2,8 @@ import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { TaskCommentInputField } from 'components/models/task/TaskCommentInputField'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
-import { SmallPopover } from 'components/ui/popup/SmallPopover'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
-import { useHandleChats } from 'hooks/useHandleChats'
-import { usePopover } from 'hooks/usePopover'
+import { TaskComment } from 'components/models/task/TaskComment'
+import { useShowChats } from 'hooks/useShowChats'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
@@ -15,14 +12,13 @@ type Props = {
 }
 
 export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
-  const { chats, judgeIsYourComment } = useHandleChats(id)
-  const { anchorEl, openPopover, closePopover } = usePopover()
+  const { chatList, judgeIsYourComment } = useShowChats(id)
 
   return (
     <StyledAllWrapper className={className}>
       <TaskCommentInputField id={id} />
-      {!!chats.length &&
-        chats.map((chat, index) => (
+      {!!chatList.length &&
+        chatList.map((chat, index) => (
           <StyledCommentWrapper key={index}>
             {/* TODO: occupationも取得できるようになったら追加する */}
             <UserAvatarIcon
@@ -38,19 +34,7 @@ export const TaskCommentArea: FCX<Props> = ({ className, id }) => {
                 </StyledCommentInfoP>
 
                 {judgeIsYourComment(chat.user.id) && (
-                  <>
-                    <StyledEllipsisButton onClick={openPopover}>
-                      <StyledFontAwesomeIcon icon={faEllipsisH} />
-                    </StyledEllipsisButton>
-                    <SmallPopover
-                      anchorEl={anchorEl}
-                      vertical="bottom"
-                      horizontal="left"
-                      handleClose={closePopover}
-                      handleEdit={e => console.log(e)}
-                      handleRemove={() => console.log('remove')}
-                    />
-                  </>
+                  <TaskComment taskId={id} chatList={chatList} chatInfo={chat} />
                 )}
               </StyledCommentInfoRow>
 
@@ -95,22 +79,7 @@ const StyledCommentInfoP = styled.p`
 const StyledUserNameSpan = styled.span`
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
 `
-const StyledEllipsisButton = styled.button`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: ${calculateMinSizeBasedOnFigma(15)};
-  height: 100%;
-`
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  ${({ theme }) =>
-    css`
-      font-size: ${theme.FONT_SIZES.SIZE_12};
-      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
-      color: ${theme.COLORS.TOBACCO_BROWN};
-    `}
-`
+
 const StyledCommentText = styled.p`
   display: inline-block;
   width: 100%;

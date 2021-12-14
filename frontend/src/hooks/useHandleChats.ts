@@ -1,18 +1,40 @@
 import { useEffect, useCallback, useState } from 'react'
-import { useGetChatsLazyQuery } from 'pages/projectDetail/projectDetail.gen'
+import {
+  useGetChatsLazyQuery,
+  useUpdateChatMutation,
+  useDeleteChatMutation,
+} from 'pages/projectDetail/projectDetail.gen'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import type { Chat } from 'types/chat'
 import toast from 'utils/toast/toast'
 
-type UseHandleChatsReturn = {
-  chats: Chat[]
+type UseShowChatsReturn = {
+  chatList: Chat[]
   judgeIsYourComment: (id: string) => boolean
+  // onClickDeleteButton: (chatId: number | string) => void
 }
 
-export const useHandleChats = (id: string): UseHandleChatsReturn => {
+export const useShowChats = (id: string): UseShowChatsReturn => {
   const [getChatsLazyQuery, chatsData] = useGetChatsLazyQuery()
+  // const [updateChat] = useUpdateChatMutation({
+  //   onCompleted(data) {
+  //     toast.success('コメントを更新しました')
+  //   },
+  //   onError(err) {
+  //     toast.error('コメントの更新に失敗しました')
+  //   },
+  // })
+  // const [deleteChat] = useDeleteChatMutation({
+  //   onCompleted(data) {
+  //     toast.success('コメントを削除しました')
+  //   },
+  //   onError(err) {
+  //     toast.error('コメントの削除に失敗しました')
+  //   },
+  // })
   const { currentUserData } = useGetCurrentUserData()
-  const [chats, setChats] = useState<Chat[]>([])
+  const [chatList, setChatList] = useState<Chat[]>([])
+  // const [state, setState] = useState<FieldType>('view')
 
   const judgeIsYourComment = useCallback(
     (id: string) => {
@@ -20,6 +42,18 @@ export const useHandleChats = (id: string): UseHandleChatsReturn => {
     },
     [currentUserData.data],
   )
+
+  // const onClickDeleteButton = useCallback(
+  //   (chatId: number | string) => {
+  //     deleteChat({
+  //       variables: {
+  //         taskId: Number(id),
+  //         chatId: Number(chatId),
+  //       },
+  //     })
+  //   },
+  //   [id],
+  // )
 
   useEffect(() => {
     getChatsLazyQuery({
@@ -30,8 +64,8 @@ export const useHandleChats = (id: string): UseHandleChatsReturn => {
   }, [])
 
   useEffect(() => {
-    setChats(chatsData.data?.getChats ?? [])
+    setChatList(chatsData.data?.getChats ?? [])
   }, [chatsData.data])
 
-  return { chats, judgeIsYourComment }
+  return { chatList, judgeIsYourComment }
 }
