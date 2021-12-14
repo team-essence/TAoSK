@@ -8,6 +8,7 @@ type UseTextItemsReturn = {
   onKeyPress: KeyboardEventHandler<HTMLInputElement>
   onClickAddButton: () => void
   onClickDeleteItemButton: (item: string) => void
+  isError: boolean
 }
 
 /**
@@ -26,10 +27,12 @@ type UseTextItemsReturn = {
 export const useTextItems = (maxTextLength: number, maxItems: number): UseTextItemsReturn => {
   const [items, setItems] = useState<string[]>([])
   const [value, setValue] = useState<string>('')
+  const [isError, setIsError] = useState<boolean>(false)
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
 
   const getShouldDisable = (value: string) => {
     const isAlreadyExists = !!items.find(v => v === value)
+    setIsError(value.length > maxTextLength)
     const isOver = value.length > maxTextLength || items.length >= maxItems
     return !value.trim() || !!isAlreadyExists || isOver
   }
@@ -70,5 +73,6 @@ export const useTextItems = (maxTextLength: number, maxItems: number): UseTextIt
     onKeyPress,
     onClickAddButton,
     onClickDeleteItemButton,
+    isError,
   }
 }
