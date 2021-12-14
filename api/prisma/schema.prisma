@@ -11,6 +11,21 @@ datasource db {
 }
 
 model Occupations {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Species {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  Monsters Monsters[]
+}
+
+model Monsters {
+  id        Int     @id
+  name      String  @unique
+  type      Int
+  story     String
+  specie    Species @relation(fields: [specie_id], references: [id])
+  specie_id Int
 }
