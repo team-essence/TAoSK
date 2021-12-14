@@ -98,8 +98,14 @@ export const TaskEditModal: FCX<Props> = ({
                 <StyledDeleteButton text="タスクを削除" onClick={openPopover} />
                 <StyledConfirmPopup
                   anchorEl={anchorEl}
-                  vertical="top"
-                  horizontal="right"
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
                   title="カードを削除しますか?"
                   description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
                   buttonText="削除"

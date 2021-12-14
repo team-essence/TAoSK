@@ -67,8 +67,10 @@ export const EmployeeInformation: FCX<Props> = ({
       <EmployeePopover
         anchorEl={anchorEl}
         handleClose={closePopover}
-        vertical="top"
-        horizontal="right"
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
         {...popoverItem}
       />
     </>

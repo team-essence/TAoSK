@@ -106,8 +106,10 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                         />
                         <SmallPopover
                           anchorEl={anchorEl}
-                          vertical="bottom"
-                          horizontal="left"
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          }}
                           handleClose={closePopover}
                           handleEdit={e => !!e && controll.enableTextArea(e)}
                           handleRemove={() => handleRemoveList(Number(id))}

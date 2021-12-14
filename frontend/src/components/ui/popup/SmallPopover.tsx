@@ -15,8 +15,8 @@ type Props = {
 
 export const SmallPopover: FCX<Props> = ({
   anchorEl,
-  vertical,
-  horizontal,
+  anchorOrigin,
+  transformOrigin,
   handleClose,
   handleEdit,
   handleRemove,
@@ -24,8 +24,8 @@ export const SmallPopover: FCX<Props> = ({
   return (
     <BasicPopover
       anchorEl={anchorEl}
-      vertical={vertical}
-      horizontal={horizontal}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
       handleClose={handleClose}>
       <StyledContainer>
         <StyledFlexContainer

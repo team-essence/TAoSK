@@ -66,8 +66,10 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
 
       <SmallPopover
         anchorEl={anchorEl}
-        vertical="bottom"
-        horizontal="left"
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
         handleClose={closePopover}
         handleEdit={() => setState('edit')}
         handleRemove={onClickDeleteButton}

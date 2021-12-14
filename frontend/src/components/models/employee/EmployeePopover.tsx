@@ -28,8 +28,8 @@ export const EmployeePopover: FCX<Props> = ({
   level,
   icon_image,
   anchorEl,
-  vertical,
-  horizontal,
+  anchorOrigin,
+  transformOrigin,
   handleClose,
   technology,
   achievement,
@@ -56,8 +56,8 @@ export const EmployeePopover: FCX<Props> = ({
   return (
     <BasicPopover
       anchorEl={anchorEl}
-      vertical={vertical}
-      horizontal={horizontal}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
       handleClose={handleClose}>
       <StyledContainer>
         <StyledUpperRowContainer>
