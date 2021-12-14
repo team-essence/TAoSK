@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react'
-import { useForm, UseFormRegister } from 'react-hook-form'
+import { UseFormRegister } from 'react-hook-form'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useTaskCommentForm } from 'hooks/useTaskCommentForm'
 import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
@@ -8,14 +8,14 @@ import toast from 'utils/toast/toast'
 
 type FormInputs = { comment: string }
 
-type UseTaskAddCommentFormReturn = {
+type UseTaskAddCommentReturn = {
   register: UseFormRegister<FormInputs>
   myData: GetCurrentUserQuery['user'] | undefined
   disabled: boolean
   onClickSendButton: () => void
 }
 
-export const useTaskAddCommentForm = (id: string): UseTaskAddCommentFormReturn => {
+export const useTaskAddComment = (id: string): UseTaskAddCommentReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const { register, handleSubmit, value, disabled } = useTaskCommentForm()
   const myData = useMemo(() => currentUserData.data?.user, [currentUserData.data?.user])

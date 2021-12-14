@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
-import { useTaskAddCommentForm } from 'hooks/useTaskAddCommentForm'
+import { useTaskAddComment } from 'hooks/useTaskAddCommentForm'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const TaskCommentInputField: FCX<Props> = ({ className, id }) => {
-  const { register, myData, disabled, onClickSendButton } = useTaskAddCommentForm(id)
+  const { register, myData, disabled, onClickSendButton } = useTaskAddComment(id)
 
   if (!myData) return <></>
 
