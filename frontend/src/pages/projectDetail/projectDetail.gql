@@ -393,6 +393,5 @@ mutation DeleteChat($taskId: Float!, $chatId: Float!) {
     }
     created_at
     updated_at
-    deleted_at
   }
 }
