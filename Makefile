@@ -31,6 +31,9 @@ prisma-generate:
 	cd api && yarn prisma:generate
 prisma-seed:
 	cd api && yarn prisma:seed
+prisma:
+	@make prisma-generate
+	@make prisma-seed
 create-model:
 	cd api && nest g mo ${name}
 create-resolver:

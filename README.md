@@ -259,6 +259,7 @@ makefile のコマンドでも作れる
 | make sql                | Enter the SQL container                  |
 | make prisma-generate    | Generating the client                    |
 | make prisma-seed        | Seeding the database                     |
+| make prisma             | Running all prisma                       |
 | make generate-gql       | Graphql code gen generate command        |
 | make create-class       | Generate a new class                     |
 | make create-config      | Generate a CLI configuration file        |
