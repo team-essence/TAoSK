@@ -26,6 +26,7 @@ import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
+import { TaskCompletedEffect } from 'components/models/task/TaskCompletedEffect'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
 
@@ -132,6 +133,7 @@ export const ProjectDetail: FC = () => {
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
+      // ここ
     },
     onError(err) {
       logger.debug(err)
@@ -392,6 +394,7 @@ export const ProjectDetail: FC = () => {
 
   return (
     <>
+      {/* <TaskCompletedEffect /> */}
       <LazyLoading />
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
@@ -402,7 +405,6 @@ export const ProjectDetail: FC = () => {
         notifications={notifications}
         list={list}
       />
-
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
           <ProjectDrawer
@@ -428,7 +430,6 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
-
       <StyledBackground />
     </>
   )
