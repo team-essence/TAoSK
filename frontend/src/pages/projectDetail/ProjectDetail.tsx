@@ -37,6 +37,7 @@ export const ProjectDetail: FC = () => {
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
+  const [monsterTotalHP, setMonsterTotalHP] = useState(0)
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -46,19 +47,20 @@ export const ProjectDetail: FC = () => {
 
       const sortList: List[] = data.getProjectById.lists.map(list => {
         const tasks = list.tasks.map(task => {
+          const totalStatusPoint =
+            task.technology +
+            task.achievement +
+            task.solution +
+            task.motivation +
+            task.plan +
+            task.design
+
           setMonsterHPRemaining(monsterHPRemaining => {
             if (task.completed_flg) return monsterHPRemaining
-
-            return (
-              monsterHPRemaining +
-              task.technology +
-              task.achievement +
-              task.solution +
-              task.motivation +
-              task.plan +
-              task.design
-            )
+            return monsterHPRemaining + totalStatusPoint
           })
+          setMonsterTotalHP(monsterTotalHP => monsterTotalHP + totalStatusPoint)
+
           const allocations = task.allocations.map(allocation => {
             return {
               id: allocation.user.id,
@@ -421,7 +423,7 @@ export const ProjectDetail: FC = () => {
           <ProjectRight
             onClick={handleCreateList}
             monsterHPRemaining={monsterHPRemaining}
-            monsterHp={projectData.data?.getProjectById.hp ?? 100}
+            monsterHp={monsterTotalHP}
             monsterName={projectData.data?.getProjectById.monster.name ?? ''}
           />
         </StyledProjectDetailRightContainer>
