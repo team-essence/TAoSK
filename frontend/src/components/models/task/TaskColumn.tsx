@@ -121,7 +121,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                     )}
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
-                <StyledTaskListContainer height={height}>
+                <StyledTaskListContainer headerHeight={height}>
                   {listIndex === 0 && (
                     <>
                       <StyledButtonContainer>
@@ -189,12 +189,13 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
 const StyledButtonContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
 `
+const maxListHeight = 610
 const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigma(16)};
-  max-height: ${calculateVhBasedOnFigma(610)};
+  max-height: ${calculateVhBasedOnFigma(maxListHeight)};
 `
-const StyledTaskListContainer = styled.div<{ height: number }>`
-  max-height: ${({ height }) => `${calculateVhBasedOnFigma(610 - height)}`};
+const StyledTaskListContainer = styled.div<{ headerHeight: number }>`
+  max-height: ${({ headerHeight }) => `${calculateVhBasedOnFigma(maxListHeight - headerHeight)}`};
   padding: ${calculateMinSizeBasedOnFigma(16)} ${calculateMinSizeBasedOnFigma(8)} 0;
   margin-bottom: ${calculateMinSizeBasedOnFigma(4)};
   overflow-x: hidden;
