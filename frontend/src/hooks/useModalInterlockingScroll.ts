@@ -62,6 +62,7 @@ export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn =
     return innerHeight + scrollableLength
   }, [leftScrollableLength, rightScrollableLength, innerHeight])
 
+  // 連動スクロール本体。overlayがスクロールされたらモーダル内部も連動してスクロールさせる
   useEffect(() => {
     const setWhichWheeled = (e: WheelEvent) => (whichWheeled.current = 'overlay')
     const scrollModal = () => {
@@ -84,17 +85,23 @@ export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn =
     }
   }, [scrollableRef.current])
 
+  // モーダル内部から直接スクロールするのを禁止して、overlayにスクロールを一任することで連動スクロールを実装
   useEffect(() => {
     const fireOverlayScrollFactory = (which: 'left' | 'right') => {
       return (e: WheelEvent) => {
         whichWheeled.current = which
         e.preventDefault()
-        if (scrollableRef.current) scrollableRef.current.scrollTop += e.deltaY * 0.8
+        if (scrollableRef.current) {
+          const SCROLL_PER_DELTA = 0.8
+          scrollableRef.current.scrollTop += e.deltaY * SCROLL_PER_DELTA
+        }
       }
     }
     const fireOverlayScrollAtLeft = fireOverlayScrollFactory('left')
     const fireOverlayScrollAtRight = fireOverlayScrollFactory('right')
     const preventScroll = (e: Event) => {
+      // 常にpreventDefaultしているとスクロールがカクつくので、モーダル内部でのスクロールのみ禁止
+      // イベントは wheel -> scroll の順で発生するので, whichWheeledによる分岐がちゃんと働く
       if (whichWheeled.current !== 'overlay') e.preventDefault()
     }
 
