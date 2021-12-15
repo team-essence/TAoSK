@@ -175,7 +175,8 @@ query GetListsByProjectId($projectId: String!) {
 mutation UpdateTaskSort($updateTasks: UpdateTaskSort!) {
   updateTaskSort(updateTask: $updateTasks) {
     id
-    overview
+    high_status_name
+    is_completed
   }
 }
 

@@ -175,6 +175,12 @@ type Company {
   name: String!
 }
 
+type UpdatedTask {
+  id: ID!
+  high_status_name: String!
+  is_completed: Boolean!
+}
+
 type Query {
   allUsers: [User!]!
   user(id: String!): User!
@@ -217,7 +223,7 @@ type Mutation {
   updateListName(updateList: UpdateListInput!): List!
   removeList(removeList: RemoveListInput): Boolean!
   updateListSort(updateListSort: UpdateListSort!): Boolean!
-  updateTaskSort(updateTask: UpdateTaskSort!): [Task!]!
+  updateTaskSort(updateTask: UpdateTaskSort!): UpdatedTask!
   addTask(assignTask: AssignTaskInput!, newTask: NewTaskInput!): Task!
   updateTaskTitle(taskId: Float!, title: String!): Task!
   updateTaskOverview(taskId: Float!, overview: String!): Task!

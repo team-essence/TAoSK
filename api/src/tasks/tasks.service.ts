@@ -14,7 +14,10 @@ import { User } from 'src/users/user';
 import { Repository } from 'typeorm';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
+import { UpdatedTask } from './models/udatedTask.model';
 import { Task } from './task';
+import { UpdatedTaskType } from './types/updatedTask.type';
+import StatusPointUtil from './utils/StatusPointUtil';
 
 @Injectable()
 export class TasksService {
@@ -35,7 +38,13 @@ export class TasksService {
     private chatRepository: Repository<Chat>,
   ) {}
 
-  async updateTaskSort(updateTask: UpdateTaskSort): Promise<Task[]> {
+  async updateTaskSort(updateTask: UpdateTaskSort): Promise<UpdatedTask> {
+    const returnObjectTask = {
+      id: 0,
+      high_status_name: '',
+      is_completed: false,
+    };
+
     for (let index = 0; index < updateTask.tasks.length; index++) {
       const task = await this.taskRepository.findOne(
         updateTask.tasks[index].id,
@@ -55,15 +64,28 @@ export class TasksService {
       task.vertical_sort = updateTask.tasks[index].vertical_sort;
       task.list = list;
 
-      const totalDamage =
-        task.technology +
-        task.achievement +
-        task.solution +
-        task.motivation +
-        task.design +
-        task.plan;
+      const totalStatus = StatusPointUtil.totalStatus(
+        task.technology,
+        task.achievement,
+        task.solution,
+        task.motivation,
+        task.design,
+        task.plan,
+      );
 
       if (!task.completed_flg && updateTask.tasks[index].completed_flg) {
+        const highStatus = StatusPointUtil.highStatus(
+          task.technology,
+          task.achievement,
+          task.solution,
+          task.motivation,
+          task.design,
+          task.plan,
+        );
+        returnObjectTask.id = task.id;
+        returnObjectTask.is_completed = true;
+        returnObjectTask.high_status_name = highStatus.status_name;
+
         task.completed_flg = updateTask.tasks[index].completed_flg;
 
         const project = await this.projectRepository.findOne(
@@ -76,7 +98,7 @@ export class TasksService {
           const user = await this.userRepository.findOne(allocation.user.id);
 
           const beforeLevel = (user.exp / 100) | 0;
-          const sumExp = user.exp + totalDamage;
+          const sumExp = user.exp + totalStatus;
           const afterLevel = (sumExp / 100) | 0;
 
           if (afterLevel > beforeLevel) {
@@ -100,7 +122,7 @@ export class TasksService {
         const logUser = await this.userRepository.findOne(updateTask.user_id);
         if (!logUser) throw new NotFoundException();
         const log = this.gameLogRepository.create({
-          context: `${totalDamage}のダメージ`,
+          context: `${totalStatus}のダメージ`,
           user: logUser,
           project,
         });
@@ -116,7 +138,7 @@ export class TasksService {
           const user = await this.userRepository.findOne(allocation.user.id);
           if (!user) throw new NotFoundException();
 
-          user.exp -= totalDamage;
+          user.exp -= totalStatus;
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
@@ -128,16 +150,7 @@ export class TasksService {
       });
     }
 
-    const tasks = this.taskRepository.find({
-      relations: ['project'],
-      where: {
-        project: {
-          id: updateTask.project_id,
-        },
-      },
-    });
-    if (!tasks) throw new NotFoundException();
-    return tasks;
+    return returnObjectTask;
   }
 
   async addTask(
