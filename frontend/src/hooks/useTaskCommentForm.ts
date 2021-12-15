@@ -1,8 +1,8 @@
 import { useMemo, useState, Dispatch, SetStateAction } from 'react'
 import { useForm, UseFormRegister, UseFormHandleSubmit, UseFormSetValue } from 'react-hook-form'
+import type { FieldType } from 'types/formField'
 
 type FormInputs = { comment: string }
-type FieldType = 'view' | 'edit'
 
 type UseTaskCommentFormReturn = {
   register: UseFormRegister<FormInputs>

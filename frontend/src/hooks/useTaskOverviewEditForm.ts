@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction } f
 import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useUpdateTaskOverviewMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
+import type { FieldType } from 'types/formField'
 
 type FormInputs = { overview: string }
-type FieldType = 'view' | 'edit'
 
 type UseTaskOverviewEditFormReturn<T> = {
   state: FieldType
