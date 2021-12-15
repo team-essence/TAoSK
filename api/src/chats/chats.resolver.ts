@@ -14,7 +14,7 @@ export class ChatsResolver {
     });
   }
 
-  @Mutation(() => Chat)
+  @Mutation(() => [Chat])
   async addChat(
     @Args({ name: 'comment' }) comment: string,
     @Args({ name: 'taskId' }) taskId: number,
