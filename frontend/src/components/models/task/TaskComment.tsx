@@ -5,6 +5,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
+import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { usePopover } from 'hooks/usePopover'
 import { useHandleChat } from 'hooks/useHandleChat'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -28,56 +29,70 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
     })
 
   return (
-    <StyledTextWrapper>
-      <StyledCommentInfoRow>
-        <StyledCommentInfoP>
-          <StyledUserNameSpan>{chatInfo.user.name}</StyledUserNameSpan>
-          さんがコメントしました。&emsp;99分前
-        </StyledCommentInfoP>
-
-        {isYour && (
-          <StyledEllipsisButton onClick={openPopover}>
-            <StyledFontAwesomeIcon icon={faEllipsisH} />
-          </StyledEllipsisButton>
-        )}
-      </StyledCommentInfoRow>
-
-      {!isYour || state === 'view' ? (
-        <StyledCommentText>{chatInfo.comment}</StyledCommentText>
-      ) : (
-        <StyledInputFormField>
-          <StyledFlexTextarea
-            initialVal={chatInfo.comment}
-            {...register('comment', {
-              required: '未入力です',
-              maxLength: { value: 255, message: '255文字以内で入力してください' },
-              pattern: { value: /.*\S+.*/, message: '空白のみのコメントは投稿できません' },
-              validate: value => value !== chatInfo.comment,
-            })}
-          />
-
-          <StyledButtonWrapper>
-            <StyledCancelButton onClick={() => setState('view')}>
-              <StyledCancelText>キャンセル</StyledCancelText>
-            </StyledCancelButton>
-            <CoarseRedOxideButton text="保存" onClick={onClickUpdateButton} disabled={disabled} />
-          </StyledButtonWrapper>
-        </StyledInputFormField>
-      )}
-
-      <SmallPopover
-        anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        handleClose={closePopover}
-        handleEdit={() => setState('edit')}
-        handleRemove={onClickDeleteButton}
+    <StyledCommentWrapper>
+      {/* TODO: occupationも取得できるようになったら追加する */}
+      <UserAvatarIcon
+        avatarStyleType="modal"
+        iconImage={chatInfo.user.icon_image}
+        name={chatInfo.user.name}
       />
-    </StyledTextWrapper>
+
+      <StyledTextWrapper>
+        <StyledCommentInfoRow>
+          <StyledCommentInfoP>
+            <StyledUserNameSpan>{chatInfo.user.name}</StyledUserNameSpan>
+            さんがコメントしました。&emsp;99分前
+          </StyledCommentInfoP>
+
+          {isYour && (
+            <StyledEllipsisButton onClick={openPopover}>
+              <StyledFontAwesomeIcon icon={faEllipsisH} />
+            </StyledEllipsisButton>
+          )}
+        </StyledCommentInfoRow>
+
+        {!isYour || state === 'view' ? (
+          <StyledCommentText>{chatInfo.comment}</StyledCommentText>
+        ) : (
+          <StyledInputFormField>
+            <StyledFlexTextarea
+              initialVal={chatInfo.comment}
+              {...register('comment', {
+                required: '未入力です',
+                maxLength: { value: 255, message: '255文字以内で入力してください' },
+                pattern: { value: /.*\S+.*/, message: '空白のみのコメントは投稿できません' },
+                validate: value => value !== chatInfo.comment,
+              })}
+            />
+
+            <StyledButtonWrapper>
+              <StyledCancelButton onClick={() => setState('view')}>
+                <StyledCancelText>キャンセル</StyledCancelText>
+              </StyledCancelButton>
+              <CoarseRedOxideButton text="保存" onClick={onClickUpdateButton} disabled={disabled} />
+            </StyledButtonWrapper>
+          </StyledInputFormField>
+        )}
+
+        <SmallPopover
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          handleClose={closePopover}
+          handleEdit={() => setState('edit')}
+          handleRemove={onClickDeleteButton}
+        />
+      </StyledTextWrapper>
+    </StyledCommentWrapper>
   )
 }
+
+const StyledCommentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
 const StyledTextWrapper = styled.div`
   display: flex;

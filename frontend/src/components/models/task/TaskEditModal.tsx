@@ -16,7 +16,6 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
-import { usePopover } from 'hooks/usePopover'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 
