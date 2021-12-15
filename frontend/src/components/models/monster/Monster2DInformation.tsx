@@ -34,6 +34,7 @@ export const Monster2DInformation: FCX<Props> = ({ className, name, hp, hpRemain
 const StyledContainer = styled.div``
 const StyledMonsterStatus = styled.div`
   position: relative;
+  width: ${calculateMinSizeBasedOnFigma(278)};
 `
 const StyledMonsterStatusBackgroundImg = styled.img`
   width: ${calculateMinSizeBasedOnFigma(295)};
