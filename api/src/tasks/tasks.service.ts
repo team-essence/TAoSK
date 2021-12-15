@@ -159,19 +159,6 @@ export class TasksService {
     });
     if (!list) throw new NotFoundException();
 
-    const addMonsterHP =
-      newTask.technology +
-      newTask.achievement +
-      newTask.solution +
-      newTask.motivation +
-      newTask.plan +
-      newTask.design;
-
-    project.hp += addMonsterHP;
-    await this.projectRepository.save(project).catch((err) => {
-      throw err;
-    });
-
     const task = this.taskRepository.create({
       title: newTask.title,
       overview: newTask.overview,
