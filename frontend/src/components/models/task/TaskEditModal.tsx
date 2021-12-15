@@ -151,15 +151,21 @@ const StyledLeftColumn = styled.div`
   width: ${calculateMinSizeBasedOnFigma(509)};
   height: 100%;
   overflow-x: visible;
-  overflow-y: hidden;
+  overflow-y: scroll;
   will-change: transform;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 const StyledRightColumn = styled.div`
   width: ${calculateMinSizeBasedOnFigma(270)};
   height: 100%;
   overflow-x: visible;
-  overflow-y: hidden;
+  overflow-y: scroll;
   will-change: transform;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 const StyledLeftColumnInnerContents = styled.div``
 const StyledRightColumnInnerContents = styled.div`
