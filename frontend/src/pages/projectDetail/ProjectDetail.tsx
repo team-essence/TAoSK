@@ -17,6 +17,7 @@ import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
+import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DROP_TYPE } from 'consts/dropType'
@@ -29,6 +30,8 @@ import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompletedEffect } from 'components/models/task/TaskCompletedEffect'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
+import plan from 'components/models/task/config/anim_plan.json'
+import lottie from 'lottie-web'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -39,6 +42,19 @@ export const ProjectDetail: FC = () => {
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
+  const [aa, ii] = useState(false)
+  // const { inspectedEl, start } = useCompleteAnimation()
+
+  const animation = lottie.loadAnimation({
+    container: document.querySelector('#comp') as HTMLDivElement,
+    animationData: plan,
+    renderer: 'svg',
+    loop: false,
+  })
+  const test = async () => {
+    animation.stop()
+    animation.play()
+  }
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -134,6 +150,13 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       logger.table(data.updateTaskSort)
       // ここ
+      if (data.updateTaskSort.is_completed) {
+        // start(plan).then(() => ii(true))
+        console.log('aaa')
+        ii(true)
+        test
+        // .finally(() => ii(false))
+      }
     },
     onError(err) {
       logger.debug(err)
@@ -394,7 +417,7 @@ export const ProjectDetail: FC = () => {
 
   return (
     <>
-      {/* <TaskCompletedEffect /> */}
+      {aa && <TaskCompletedEffect id="comp" />}
       <LazyLoading />
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}

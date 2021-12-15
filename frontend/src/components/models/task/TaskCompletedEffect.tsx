@@ -4,20 +4,15 @@ import plan from './config/anim_plan.json'
 import lottie from 'lottie-web'
 import styled from 'styled-components'
 
-export const TaskCompletedEffect: FCX = () => {
-  useEffect(() => {
-    lottie.loadAnimation({
-      container: document.querySelector('#now-loading') as HTMLDivElement,
-      animationData: plan,
-      renderer: 'svg',
-      loop: true,
-    })
-  }, [])
+type Props = {
+  id: string
+}
 
+export const TaskCompletedEffect: FCX<Props> = ({ id }) => {
   return (
     <StyledContainer>
       <StyledContainerA>
-        <StyledNowLoading id="now-loading" />
+        <StyledNowLoading id={id} />
       </StyledContainerA>
     </StyledContainer>
   )
