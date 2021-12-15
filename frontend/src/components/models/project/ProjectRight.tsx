@@ -11,6 +11,7 @@ type Props = {
   monsterName: string
   monsterHPRemaining: number
   monsterHp: number
+  isTasks: boolean
 }
 
 export const ProjectRight: FCX<Props> = ({
@@ -19,6 +20,7 @@ export const ProjectRight: FCX<Props> = ({
   monsterName,
   monsterHPRemaining,
   monsterHp,
+  isTasks,
 }) => {
   const [gameLogs] = useGameLog()
 
@@ -26,7 +28,12 @@ export const ProjectRight: FCX<Props> = ({
     <StyledProjectRightContainer className={className}>
       <CreateListButton onClick={onClick} />
       <StyledProjectGameLog gameLogs={gameLogs} />
-      <Monster2DInformation hpRemaining={monsterHPRemaining} name={monsterName} hp={monsterHp} />
+      <Monster2DInformation
+        hpRemaining={monsterHPRemaining}
+        name={monsterName}
+        hp={monsterHp}
+        isTasks={isTasks}
+      />
     </StyledProjectRightContainer>
   )
 }

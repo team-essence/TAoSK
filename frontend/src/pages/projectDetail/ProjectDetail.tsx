@@ -38,6 +38,7 @@ export const ProjectDetail: FC = () => {
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
+  const [isTasks, setIsTasks] = useState(false)
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -85,6 +86,12 @@ export const ProjectDetail: FC = () => {
             chatCount: task.chatCount,
             allocations,
           }
+        })
+
+        logger.debug(tasks.length, 'タスクの数')
+        setIsTasks(isTasks => {
+          if (isTasks) return isTasks
+          return !!tasks.length
         })
 
         return {
@@ -425,6 +432,7 @@ export const ProjectDetail: FC = () => {
             monsterHPRemaining={monsterHPRemaining}
             monsterHp={monsterTotalHP}
             monsterName={projectData.data?.getProjectById.monster.name ?? ''}
+            isTasks={isTasks}
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>

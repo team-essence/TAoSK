@@ -6,9 +6,10 @@ type Props = {
   name: string
   hpRemaining: number
   hp: number
+  isTasks: boolean
 }
 
-export const Monster2DInformation: FCX<Props> = ({ className, name, hp, hpRemaining }) => {
+export const Monster2DInformation: FCX<Props> = ({ className, name, hp, hpRemaining, isTasks }) => {
   return (
     <StyledContainer className={className}>
       <StyledMonsterStatus>
@@ -26,7 +27,11 @@ export const Monster2DInformation: FCX<Props> = ({ className, name, hp, hpRemain
           alt="モンスターステータスの背景画像"
         />
       </StyledMonsterStatus>
-      <StyledProjectMonsterImg src="/monster.png" />
+      {isTasks ? (
+        <StyledProjectMonsterImg src="/monster.png" alt="モンスター画像" />
+      ) : (
+        <StyledMonsterEggImg src="/egg.png" alt="モンスタの卵" />
+      )}
     </StyledContainer>
   )
 }
@@ -38,6 +43,7 @@ const StyledMonsterStatus = styled.div`
 const StyledMonsterStatusBackgroundImg = styled.img`
   width: ${calculateMinSizeBasedOnFigma(295)};
 `
+
 const StyledMonsterHeadImg = styled.img`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigma(17)};
@@ -57,6 +63,11 @@ const StyledProjectMonsterImg = styled.img`
   display: block;
   width: ${calculateMinSizeBasedOnFigma(220)};
 `
+
+const StyledMonsterEggImg = styled(StyledProjectMonsterImg)`
+  width: ${calculateMinSizeBasedOnFigma(260)};
+`
+
 const StyledStatusBarContainer = styled.div`
   position: absolute;
   left: ${calculateMinSizeBasedOnFigma(82)};
