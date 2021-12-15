@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Allocation } from 'src/allocations/allocation';
 import { AssignTaskInput } from 'src/allocations/dto/newAllocation.input';
+import { Chat } from 'src/chats/chat';
 import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
@@ -30,6 +31,8 @@ export class TasksService {
     private allocationRepository: Repository<Allocation>,
     @InjectRepository(GameLog)
     private gameLogRepository: Repository<GameLog>,
+    @InjectRepository(Chat)
+    private chatRepository: Repository<Chat>,
   ) {}
 
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<Task[]> {
@@ -158,19 +161,6 @@ export class TasksService {
       },
     });
     if (!list) throw new NotFoundException();
-
-    const addMonsterHP =
-      newTask.technology +
-      newTask.achievement +
-      newTask.solution +
-      newTask.motivation +
-      newTask.plan +
-      newTask.design;
-
-    project.hp += addMonsterHP;
-    await this.projectRepository.save(project).catch((err) => {
-      throw err;
-    });
 
     const task = this.taskRepository.create({
       title: newTask.title,
@@ -334,6 +324,12 @@ export class TasksService {
   async deleteTask(taskId: number): Promise<Task[]> {
     const task = await this.taskRepository.findOne({
       where: {
+        id: taskId,
+      },
+    });
+
+    await this.chatRepository.delete({
+      task: {
         id: taskId,
       },
     });

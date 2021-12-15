@@ -10,7 +10,7 @@ import React, {
 import styled from 'styled-components'
 
 type Props = {
-  ref: Ref<HTMLTextAreaElement>
+  ref?: Ref<HTMLTextAreaElement>
   initialVal?: string
 } & TextareaHTMLAttributes<HTMLTextAreaElement>
 

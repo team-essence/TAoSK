@@ -324,44 +324,74 @@ mutation RemoveList($id: Float!, $project_id: String!) {
   removeList(removeList: { id: $id, project_id: $project_id })
 }
 
-# query GetChats($taskId: Float!) {
-#   getChats(taskId: $taskId) {
-#     chats {
-#       id
-#       comment
-#       user
-#       created_at
-#       updated_at
-#     }
-#   }
-# }
+query GetChats($taskId: Float!) {
+  getChats(taskId: $taskId) {
+    id
+    comment
+    user {
+      id
+      name
+      icon_image
+      # occupation {
+      #   id
+      #   name
+      # }
+    }
+    created_at
+    updated_at
+  }
+}
 
-# mutation AddChat($taskId: Number!, $userId: String!, $comment: String!) {
-#   addChat(userId: $userId, taskId: $taskId, comment: $comment) {
-#     id
-#     comment
-#     user
-#     created_at
-#     updated_at
-#   }
-# }
+mutation AddChat($taskId: Float!, $userId: String!, $comment: String!) {
+  addChat(userId: $userId, taskId: $taskId, comment: $comment) {
+    id
+    comment
+    user {
+      id
+      name
+      icon_image
+      # occupation {
+      #   id
+      #   name
+      # }
+    }
+    created_at
+    updated_at
+  }
+}
 
-# mutation UpdateChat($taskId: Number!, chatId: Number!, $comment: String!) {
-#   updateChat(taskId: $taskId, comment: $comment, chatId: $chatID){
-#     id
-#     comment
-#     user
-#     created_at
-#     updated_at
-#   }
-# }
+mutation UpdateChat($taskId: Float!, $chatId: Float!, $comment: String!) {
+  updateChat(taskId: $taskId, comment: $comment, chatId: $chatId) {
+    id
+    comment
+    user {
+      id
+      name
+      icon_image
+      # occupation {
+      #   id
+      #   name
+      # }
+    }
+    created_at
+    updated_at
+  }
+}
 
-# mutation DeleteChat($taskId: Number!, chatId: Number!){
-#   deleteChat(taskId: $taskId, chatId: $chatID){
-#     id
-#     comment
-#     user
-#     created_at
-#     deleted_at
-#   }
-# }
+mutation DeleteChat($taskId: Float!, $chatId: Float!) {
+  deleteChat(taskId: $taskId, chatId: $chatId) {
+    id
+    comment
+    user {
+      id
+      name
+      icon_image
+      # occupation {
+      #   id
+      #   name
+      # }
+    }
+    created_at
+    updated_at
+  }
+}

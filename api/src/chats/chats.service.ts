@@ -27,7 +27,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user'],
+      relations: ['user', 'user.occupation'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -38,18 +38,28 @@ export class ChatsService {
     comment: string,
     taskId: number,
     userId: string,
-  ): Promise<Chat> {
+  ): Promise<Chat[]> {
     const task = await this.taskRepository.findOne(taskId);
     const user = await this.userRepository.findOne(userId);
-    const chats = this.chatRepository.create({
+    const chat = this.chatRepository.create({
       comment: comment,
       task,
       user,
     });
 
-    await this.chatRepository.save(chats).catch(() => {
+    await this.chatRepository.save(chat).catch(() => {
       new InternalServerErrorException();
     });
+
+    const chats = this.chatRepository.find({
+      where: {
+        task: {
+          id: taskId,
+        },
+      },
+      relations: ['user', 'user.occupation'],
+    });
+    if (!chats) throw new NotFoundException();
 
     return chats;
   }
@@ -63,7 +73,7 @@ export class ChatsService {
       where: {
         id: chatId,
       },
-      relations: ['user'],
+      relations: ['user', 'user.occupation'],
     });
 
     chat.comment = comment;
@@ -78,7 +88,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user'],
+      relations: ['user', 'user.occupation'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -102,7 +112,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user'],
+      relations: ['user', 'user.occupation'],
     });
     if (!chats) throw new NotFoundException();
 

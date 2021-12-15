@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction } f
 import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useUpdateTaskTitleMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
+import type { FieldType } from 'types/formField'
 
 type FormInputs = { title: string }
-type FieldType = 'view' | 'edit'
 
 type UseTaskTitleEditFormReturn<T> = {
   state: FieldType
@@ -38,7 +38,7 @@ export const useTaskTitleEditForm: UseTaskTitleEditForm<FormInputs> = ({ id, ini
       toast.success('タイトルを変更しました')
     },
     onError(err) {
-      toast.success('タイトルの変更に失敗しました')
+      toast.error('タイトルの変更に失敗しました')
     },
   })
 

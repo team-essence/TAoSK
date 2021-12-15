@@ -4,7 +4,7 @@ export type AnchorEl = HTMLImageElement | HTMLDivElement | HTMLButtonElement | n
 
 export type PopoverProps = {
   anchorEl: AnchorEl
-  vertical: PopoverOrigin['vertical']
-  horizontal: PopoverOrigin['horizontal']
+  anchorOrigin?: PopoverOrigin
+  transformOrigin?: PopoverOrigin
   handleClose: () => void
 }

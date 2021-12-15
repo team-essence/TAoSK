@@ -5,7 +5,7 @@ type BgSrc = '/grain.png' | '/light-grain.png'
 type Props = {
   text: string
   bgSrcs?: Record<'outer' | 'inner', BgSrc>
-  onClick?: (e: MouseEvent) => void
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
 }
 
@@ -29,7 +29,7 @@ export const CoarseButton: FCX<Props> = ({
 
 type ButtonStyle = { bgSrc: string; disabled: boolean }
 
-const centeringFlexStyle = `
+const centeringFlexStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;

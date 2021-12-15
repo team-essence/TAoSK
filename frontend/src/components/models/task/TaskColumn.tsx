@@ -17,9 +17,10 @@ import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControllTextArea'
+import { useWatchElementAspect } from 'hooks/useWatchElementAspect'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
-import { SmallPopover } from 'components/ui/modal/SmallPopover'
+import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 import { useParams } from 'react-router-dom'
@@ -34,12 +35,13 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
   const listTitle = useInput(title)
   const controll = useControllTextArea()
   const { id: projectId } = useParams()
+  const { sizeInspectedEl, height } = useWatchElementAspect<HTMLDivElement>()
   const { anchorEl, openPopover, closePopover } = usePopover()
   const [updateListName] = useUpdateListNameMutation()
   const [removeList] = useRemoveListMutation()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
-  const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+  const handleEnableTextArea = (e?: React.MouseEvent<HTMLElement>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
     controll.enableTextArea(e)
   }
@@ -75,7 +77,10 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
           <Droppable droppableId={String(listIndex)} type={DROP_TYPE.TASK}>
             {listProvided => (
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
-                <StyledHeadCotanier listIndex={listIndex} listLength={listLength}>
+                <StyledHeadCotanier
+                  ref={sizeInspectedEl}
+                  listIndex={listIndex}
+                  listLength={listLength}>
                   <StyledInnerHeadWrap>
                     <StyledTitle onClick={e => handleEnableTextArea(e)}>
                       <StyledTitleTextArea
@@ -110,17 +115,19 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                         />
                         <SmallPopover
                           anchorEl={anchorEl}
-                          vertical="bottom"
-                          horizontal="left"
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          }}
                           handleClose={closePopover}
-                          handleEdit={controll.enableTextArea}
                           handleRemove={() => handleRemoveList(Number(id), String(projectId))}
+                          handleEdit={e => !!e && controll.enableTextArea(e)}
                         />
                       </>
                     )}
                   </StyledInnerHeadWrap>
                 </StyledHeadCotanier>
-                <StyledTaskListContainer>
+                <StyledTaskListContainer headerHeight={height}>
                   {listIndex === 0 && (
                     <>
                       <StyledButtonContainer>
@@ -149,7 +156,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
 const StyledColumnContainer = styled.ul`
   position: relative;
   width: ${calculateMinSizeBasedOnFigma(270)};
-  min-height: ${calculateMinSizeBasedOnFigma(200)};
+  min-height: ${calculateMinSizeBasedOnFigma(206)};
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;
   background-color: ${({ theme }) => theme.COLORS.PEARL_BUSH};
@@ -168,45 +175,45 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
   display: flex;
   position: relative;
   min-height: ${calculateMinSizeBasedOnFigma(48)};
-  padding: ${calculateMinSizeBasedOnFigma(1)};
+  padding: ${calculateMinSizeBasedOnFigma(1.2)};
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-  ${({ listIndex, listLength }) =>
+  ${({ listIndex, listLength, theme }) =>
     listIndex === 0
       ? css`
-          background-color: ${({ theme }) => theme.COLORS.OLIVE_GREEN};
+          background-color: ${theme.COLORS.OLIVE_GREEN};
         `
       : listIndex < listLength && listIndex !== listLength - 1
       ? css`
-          background-color: ${({ theme }) => theme.COLORS.SHIP_COVE};
+          background-color: ${theme.COLORS.SHIP_COVE};
         `
       : css`
-          background-color: ${({ theme }) => theme.COLORS.BOULDER};
+          background-color: ${theme.COLORS.BOULDER};
         `}
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
+  z-index: ${theme.Z_INDEX.INDEX_1};
 `
 const StyledButtonContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
 `
+const maxListHeight = 610
 const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigma(16)};
+  max-height: ${calculateVhBasedOnFigma(maxListHeight)};
 `
-const StyledTaskListContainer = styled.div`
-  max-height: ${calculateVhBasedOnFigma(580)};
+const StyledTaskListContainer = styled.div<{ headerHeight: number }>`
+  max-height: ${({ headerHeight }) => `${calculateVhBasedOnFigma(maxListHeight - headerHeight)}`};
   padding: ${calculateMinSizeBasedOnFigma(16)} ${calculateMinSizeBasedOnFigma(8)} 0;
   margin-bottom: ${calculateMinSizeBasedOnFigma(4)};
   overflow-x: hidden;
   overflow-y: auto;
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 9px;
   }
   &::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.COLORS.SWIRL};
-    border-radius: 100px;
   }
   &::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => theme.COLORS.COTTON_SEED};
-    border-radius: 100px;
   }
 `
 const StyledInnerHeadWrap = styled.div`
