@@ -60,6 +60,7 @@ export class ChatsService {
       relations: ['user', 'user.occupation'],
     });
     if (!chats) throw new NotFoundException();
+
     return chats;
   }
 
