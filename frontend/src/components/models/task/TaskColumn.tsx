@@ -22,6 +22,8 @@ import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
 import { SmallPopover } from 'components/ui/modal/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
+import { useParams } from 'react-router-dom'
+import logger from 'utils/debugger/logger'
 
 type Props = {
   listIndex: number
@@ -31,6 +33,7 @@ type Props = {
 export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
   const controll = useControllTextArea()
+  const { id: projectId } = useParams()
   const { anchorEl, openPopover, closePopover } = usePopover()
   const [updateListName] = useUpdateListNameMutation()
   const [removeList] = useRemoveListMutation()
@@ -52,8 +55,9 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
     }
   }
 
-  const handleRemoveList = (id: number) => {
-    removeList({ variables: { id } })
+  const handleRemoveList = (id: number, projectId: string) => {
+    logger.debug(projectId)
+    removeList({ variables: { id, project_id: projectId } })
       .then(() => toast.success(`${title}を削除しました`))
       .catch(() => toast.error(`${title}の削除に失敗しました`))
   }
@@ -110,7 +114,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                           horizontal="left"
                           handleClose={closePopover}
                           handleEdit={controll.enableTextArea}
-                          handleRemove={() => handleRemoveList(Number(id))}
+                          handleRemove={() => handleRemoveList(Number(id), String(projectId))}
                         />
                       </>
                     )}

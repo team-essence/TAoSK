@@ -320,8 +320,8 @@ mutation UpdateListName($name: String!, $list_id: String!) {
   }
 }
 
-mutation RemoveList($id: Float!) {
-  removeList(removeList: { id: $id })
+mutation RemoveList($id: Float!, $project_id: String!) {
+  removeList(removeList: { id: $id, project_id: $project_id })
 }
 
 # query GetChats($taskId: Float!) {
