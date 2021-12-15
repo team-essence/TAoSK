@@ -312,6 +312,7 @@ input UpdateListInput {
 
 input RemoveListInput {
   id: Float!
+  project_id: String!
 }
 
 input UpdateListSort {
