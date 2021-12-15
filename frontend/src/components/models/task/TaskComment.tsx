@@ -47,6 +47,7 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
       ) : (
         <StyledInputFormField>
           <StyledFlexTextarea
+            initialVal={chatInfo.comment}
             {...register('comment', {
               required: '未入力です',
               maxLength: { value: 255, message: '255文字以内で入力してください' },
