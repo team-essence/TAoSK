@@ -26,6 +26,7 @@ type UseModalInterlockingScrollReturn = {
 export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn => {
   const { innerHeight } = useWatchInnerAspect()
   const scrollableRef = useRef<HTMLDivElement>(null)
+  const preScrollTop = useRef<number>(0)
   const [leftColumnHeight, setLeftColumnHeight] = useState<number>(0)
   const [rightColumnHeight, setRightColumnHeight] = useState<number>(0)
   const [leftColumnInnerHeight, setLeftColumnInnerHeight] = useState<number>(0)
@@ -63,8 +64,12 @@ export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn =
     const scrollModal = () => {
       if (!scrollableRef.current || !leftColumnRef.current || !rightColumnRef.current) return
       const scrollTop = scrollableRef.current.scrollTop
-      leftColumnRef.current.scrollTop = scrollTop
-      rightColumnRef.current.scrollTop = scrollTop
+      const scrollDiff = scrollTop - preScrollTop.current
+
+      leftColumnRef.current.scrollTop += scrollDiff
+      rightColumnRef.current.scrollTop += scrollDiff
+
+      preScrollTop.current = scrollTop
     }
 
     scrollableRef.current?.addEventListener('scroll', scrollModal, { passive: true })
