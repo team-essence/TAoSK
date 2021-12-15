@@ -16,6 +16,7 @@ import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput
 import { Project } from 'src/projects/project';
 import { GameLog } from 'src/game-logs/game-log';
 import { Occupation } from 'src/occupations/occupation';
+import { updateUserStatus } from './dto/updateUserStatus.input';
 
 @Injectable()
 export class UsersService {
@@ -230,6 +231,20 @@ export class UsersService {
     if (!user) throw new NotFoundException();
 
     user.memo = memo;
+    await this.usersRepository.save(user).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return user;
+  }
+
+  async updateHpAndMp(status: updateUserStatus) {
+    const user = await this.usersRepository.findOne(status.id);
+
+    if (!user) throw new NotFoundException();
+
+    user.hp = parseInt(status.hp);
+    user.mp = parseInt(status.mp);
     await this.usersRepository.save(user).catch((err) => {
       new InternalServerErrorException();
     });
