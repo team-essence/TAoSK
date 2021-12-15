@@ -1,12 +1,11 @@
-import { useState, useCallback, Dispatch, SetStateAction } from 'react'
+import { useCallback, Dispatch, SetStateAction } from 'react'
 import { useDeleteTaskMutation } from 'pages/projectDetail/projectDetail.gen'
+import { usePopover } from 'hooks/usePopover'
 import toast from 'utils/toast/toast'
 
 type UseDeleteTaskReturn = {
   onClickDeleteButton: () => void
-  shouldShowConfirmPopup: boolean
-  setShouldShowConfirmPopup: Dispatch<SetStateAction<boolean>>
-}
+} & ReturnType<typeof usePopover>
 
 type UseDeleteTask = (args: {
   id: string
@@ -17,7 +16,7 @@ type UseDeleteTask = (args: {
  * タスクを削除する
  */
 export const useDeleteTask: UseDeleteTask = ({ id, setShouldShowEditModal }) => {
-  const [shouldShowConfirmPopup, setShouldShowConfirmPopup] = useState<boolean>(false)
+  const { anchorEl, openPopover, closePopover } = usePopover()
 
   // TODO: 成功していてもなぜか削除できていない。修正する
   const [deleteTaskMutation] = useDeleteTaskMutation({
@@ -26,7 +25,7 @@ export const useDeleteTask: UseDeleteTask = ({ id, setShouldShowEditModal }) => 
       toast.success('タスクを削除しました')
     },
     onError(err) {
-      toast.success('タスクの削除に失敗しました')
+      toast.error('タスクの削除に失敗しました')
     },
   })
 
@@ -34,8 +33,8 @@ export const useDeleteTask: UseDeleteTask = ({ id, setShouldShowEditModal }) => 
     deleteTaskMutation({
       variables: { taskId: Number(id) },
     })
-    setShouldShowConfirmPopup(false)
+    closePopover()
   }, [])
 
-  return { onClickDeleteButton, shouldShowConfirmPopup, setShouldShowConfirmPopup }
+  return { onClickDeleteButton, anchorEl, openPopover, closePopover }
 }

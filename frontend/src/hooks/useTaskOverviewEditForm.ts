@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction } f
 import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useUpdateTaskOverviewMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
+import type { FieldType } from 'types/formField'
 
 type FormInputs = { overview: string }
-type FieldType = 'view' | 'edit'
 
 type UseTaskOverviewEditFormReturn<T> = {
   state: FieldType
@@ -41,7 +41,7 @@ export const useTaskOverviewEditForm: UseTaskOverviewEditForm<FormInputs> = ({
       toast.success('概要を変更しました')
     },
     onError(err) {
-      toast.success('概要の変更に失敗しました')
+      toast.error('概要の変更に失敗しました')
     },
   })
 

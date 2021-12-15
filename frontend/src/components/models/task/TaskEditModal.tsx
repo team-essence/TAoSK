@@ -7,6 +7,7 @@ import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskEditTitleField } from 'components/models/task/TaskEditTitleField'
 import { TaskEditOverviewField } from 'components/models/task/TaskEditOverviewField'
 import { TaskEditStatusPointField } from 'components/models/task/TaskEditStatusPointField'
+import { TaskCommentArea } from 'components/models/task/TaskCommentArea'
 import { ConfirmPopup } from 'components/ui/popup/ConfirmPopup'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -15,6 +16,7 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
+import { usePopover } from 'hooks/usePopover'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 
@@ -44,7 +46,7 @@ export const TaskEditModal: FCX<Props> = ({
     initialEndDate: end_date,
   })
   const { userDatas, setUserDatas } = useTaskUserSelectForm({ id, initialUserDatas: allocations })
-  const { onClickDeleteButton, shouldShowConfirmPopup, setShouldShowConfirmPopup } = useDeleteTask({
+  const { onClickDeleteButton, anchorEl, openPopover, closePopover } = useDeleteTask({
     id,
     setShouldShowEditModal: setShouldShow,
   })
@@ -68,6 +70,7 @@ export const TaskEditModal: FCX<Props> = ({
           <StyledLeftColumn ref={leftColumnRef}>
             <StyledLeftColumnInnerContents ref={leftColumnInnerRef}>
               <StyledTaskEditOverviewField id={id} overview={overview} />
+              <StyledTaskCommentArea id={id} />
             </StyledLeftColumnInnerContents>
           </StyledLeftColumn>
 
@@ -92,16 +95,21 @@ export const TaskEditModal: FCX<Props> = ({
                 plan={plan}
               />
               <StyledDeleteButtonWrapper>
-                <StyledDeleteButton
-                  text="タスクを削除"
-                  onClick={() => setShouldShowConfirmPopup(true)}
-                />
+                <StyledDeleteButton text="タスクを削除" onClick={openPopover} />
                 <StyledConfirmPopup
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
                   title="カードを削除しますか?"
                   description="カードを削除するとカードを再び開くことができなくなります。この操作を元に戻すことはできません。"
                   buttonText="削除"
-                  shouldShow={shouldShowConfirmPopup}
-                  onClickCloseBtn={() => setShouldShowConfirmPopup(false)}
+                  handleClose={closePopover}
                   onClickConfirmBtn={onClickDeleteButton}
                 />
               </StyledDeleteButtonWrapper>
@@ -186,6 +194,10 @@ const StyledTaskEditTitleField = styled(TaskEditTitleField)`
 `
 const StyledTaskEditOverviewField = styled(TaskEditOverviewField)`
   ${fieldStyle}
+  margin-bottom: ${calculateMinSizeBasedOnFigma(17)};
+`
+const StyledTaskCommentArea = styled(TaskCommentArea)`
+  ${fieldStyle}
   margin-bottom: ${calculateMinSizeBasedOnFigma(30)};
 `
 const StyledCalenderField = styled(CalenderField)`
@@ -214,9 +226,6 @@ const StyledDeleteButton = styled(CoarseButton)`
     `}
 `
 const StyledConfirmPopup = styled(ConfirmPopup)`
-  position: absolute;
-  bottom: 100%;
-  left: 10%;
   width: ${calculateMinSizeBasedOnFigma(318)};
   height: ${calculateMinSizeBasedOnFigma(188)};
 `

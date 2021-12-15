@@ -29,7 +29,7 @@ export const useTaskEndDateEditForm: UseTaskEndDateEditForm<FormInputs> = ({
       toast.success('日付を変更しました')
     },
     onError(err) {
-      toast.success('日付の変更に失敗しました')
+      toast.error('日付の変更に失敗しました')
     },
   })
 

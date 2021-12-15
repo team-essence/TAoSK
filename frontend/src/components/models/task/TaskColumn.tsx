@@ -19,7 +19,7 @@ import { usePopover } from 'hooks/usePopover'
 import { useControllTextArea } from 'hooks/useControllTextArea'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
-import { SmallPopover } from 'components/ui/modal/SmallPopover'
+import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import TextareaAutosize from '@mui/material/TextareaAutosize'
 import styled, { css } from 'styled-components'
 
@@ -36,7 +36,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
   const [removeList] = useRemoveListMutation()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
-  const handleEnableTextArea = (e?: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+  const handleEnableTextArea = (e?: React.MouseEvent<HTMLElement>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
     controll.enableTextArea(e)
   }
@@ -106,10 +106,12 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                         />
                         <SmallPopover
                           anchorEl={anchorEl}
-                          vertical="bottom"
-                          horizontal="left"
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                          }}
                           handleClose={closePopover}
-                          handleEdit={controll.enableTextArea}
+                          handleEdit={e => !!e && controll.enableTextArea(e)}
                           handleRemove={() => handleRemoveList(Number(id))}
                         />
                       </>

@@ -1,7 +1,7 @@
-import React, { FCX } from 'react'
+import React, { FCX, MouseEvent } from 'react'
 import { PopoverProps } from 'types/popover'
 import { theme } from 'styles/theme'
-import { BasicPopover } from 'components/ui/modal/BasicPopover'
+import { BasicPopover } from 'components/ui/popup/BasicPopover'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,14 +9,14 @@ import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 type Props = {
-  handleEdit: (e?: any) => void //FIXME Colmun.tsxでeが必要だけど、他ではいらない場合の型の指定が不明
+  handleEdit: (e?: MouseEvent<HTMLDivElement>) => void
   handleRemove: () => void
 } & PopoverProps
 
 export const SmallPopover: FCX<Props> = ({
   anchorEl,
-  vertical,
-  horizontal,
+  anchorOrigin,
+  transformOrigin,
   handleClose,
   handleEdit,
   handleRemove,
@@ -24,8 +24,8 @@ export const SmallPopover: FCX<Props> = ({
   return (
     <BasicPopover
       anchorEl={anchorEl}
-      vertical={vertical}
-      horizontal={horizontal}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
       handleClose={handleClose}>
       <StyledContainer>
         <StyledFlexContainer

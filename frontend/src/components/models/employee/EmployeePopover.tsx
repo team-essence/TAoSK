@@ -6,7 +6,7 @@ import { Params } from 'types/status'
 import { theme } from 'styles/theme'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { BasicPopover } from 'components/ui/modal/BasicPopover'
+import { BasicPopover } from 'components/ui/popup/BasicPopover'
 import { EmployeeStatus } from 'components/models/employee/EmployeeStatus'
 import { Avatar } from 'components/ui/item/Avatar'
 import { Level } from 'components/ui/item/Level'
@@ -28,8 +28,8 @@ export const EmployeePopover: FCX<Props> = ({
   level,
   icon_image,
   anchorEl,
-  vertical,
-  horizontal,
+  anchorOrigin,
+  transformOrigin,
   handleClose,
   technology,
   achievement,
@@ -56,8 +56,8 @@ export const EmployeePopover: FCX<Props> = ({
   return (
     <BasicPopover
       anchorEl={anchorEl}
-      vertical={vertical}
-      horizontal={horizontal}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
       handleClose={handleClose}>
       <StyledContainer>
         <StyledUpperRowContainer>
