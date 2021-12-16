@@ -1,24 +1,14 @@
-import React, { FCX, useEffect, useRef } from 'react'
+import React, { FCX } from 'react'
+import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import technology from 'components/models/task/animation/config/anim_technology.json'
-import lottie from 'lottie-web'
 import styled from 'styled-components'
 
 export const TaskSwordAnimetion: FCX = () => {
-  const element = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    lottie.loadAnimation({
-      container: element.current as HTMLDivElement,
-      renderer: 'svg',
-      loop: false,
-      animationData: technology,
-    })
-    return () => lottie.stop()
-  }, [])
+  const { anchorEl } = useCompleteAnimation<HTMLDivElement>(technology)
 
   return (
     <StyledContainer>
-      <StyledPlan ref={element} />
+      <StyledPlan ref={anchorEl} />
     </StyledContainer>
   )
 }

@@ -31,6 +31,7 @@ import { TaskSwordAnimetion } from 'components/models/task/animation/TaskSwordAn
 import { TaskHammerAnimetion } from 'components/models/task/animation/TaskHammerAnimetion'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
+import plan from 'components/models/task/animation/config/anim_motivation.json'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -41,8 +42,9 @@ export const ProjectDetail: FC = () => {
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
-  const [aa, ii] = useState({ technology: false, plan: false })
   const inputUserName = useInput('')
+  const [aa, ii] = useState({ technology: false, plan: false })
+  const [test, setTest] = useState<any>()
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
@@ -137,6 +139,7 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       logger.table(data.updateTaskSort)
       if (data.updateTaskSort.is_completed) {
+        setTest(plan)
         ii({ ...aa, plan: true })
       }
     },
@@ -399,8 +402,8 @@ export const ProjectDetail: FC = () => {
 
   return (
     <>
-      {aa.technology && <TaskSwordAnimetion />}
-      {aa.plan && <TaskHammerAnimetion />}
+      {/* {aa.technology && <TaskSwordAnimetion />} */}
+      {aa.plan && <TaskHammerAnimetion json={test} />}
       <LazyLoading />
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}

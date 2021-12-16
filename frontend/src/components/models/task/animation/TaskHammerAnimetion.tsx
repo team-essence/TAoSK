@@ -1,24 +1,17 @@
-import React, { FCX, useEffect, useRef } from 'react'
-import Plan from 'components/models/task/animation/config/anim_plan.json'
-import lottie from 'lottie-web'
+import React, { FCX } from 'react'
+import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
+// import plan from 'components/models/task/animation/config/anim_plan.json'
 import styled from 'styled-components'
 
-export const TaskHammerAnimetion: FCX = () => {
-  const element = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    lottie.loadAnimation({
-      container: element.current as HTMLDivElement,
-      renderer: 'svg',
-      loop: false,
-      animationData: Plan,
-    })
-    return () => lottie.stop()
-  }, [])
+type Props = {
+  json: any
+}
+export const TaskHammerAnimetion: FCX<Props> = ({ json }) => {
+  const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
 
   return (
     <StyledContainer>
-      <StyledPlan ref={element} />
+      <StyledPlan ref={anchorEl} />
     </StyledContainer>
   )
 }
