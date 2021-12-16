@@ -1,7 +1,6 @@
 import React, { FCX } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { TaskCommentInputField } from 'components/models/task/TaskCommentInputField'
-import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { TaskComment } from 'components/models/task/TaskComment'
 import { useShowChats } from 'hooks/useShowChats'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'

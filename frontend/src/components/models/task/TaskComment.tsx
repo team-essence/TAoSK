@@ -30,11 +30,11 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
 
   return (
     <StyledCommentWrapper>
-      {/* TODO: occupationも取得できるようになったら追加する */}
       <UserAvatarIcon
         avatarStyleType="modal"
         iconImage={chatInfo.user.icon_image}
         name={chatInfo.user.name}
+        occupation={chatInfo.user.occupation.name}
       />
 
       <StyledTextWrapper>

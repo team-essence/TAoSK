@@ -332,10 +332,10 @@ query GetChats($taskId: Float!) {
       id
       name
       icon_image
-      # occupation {
-      #   id
-      #   name
-      # }
+      occupation {
+        id
+        name
+      }
     }
     created_at
     updated_at
@@ -350,10 +350,10 @@ mutation AddChat($taskId: Float!, $userId: String!, $comment: String!) {
       id
       name
       icon_image
-      # occupation {
-      #   id
-      #   name
-      # }
+      occupation {
+        id
+        name
+      }
     }
     created_at
     updated_at
@@ -368,10 +368,10 @@ mutation UpdateChat($taskId: Float!, $chatId: Float!, $comment: String!) {
       id
       name
       icon_image
-      # occupation {
-      #   id
-      #   name
-      # }
+      occupation {
+        id
+        name
+      }
     }
     created_at
     updated_at
@@ -386,10 +386,10 @@ mutation DeleteChat($taskId: Float!, $chatId: Float!) {
       id
       name
       icon_image
-      # occupation {
-      #   id
-      #   name
-      # }
+      occupation {
+        id
+        name
+      }
     }
     created_at
     updated_at
