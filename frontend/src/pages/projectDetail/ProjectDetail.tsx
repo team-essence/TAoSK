@@ -29,7 +29,7 @@ import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
-import { TaskCompleteAnimetion } from 'components/models/task/animation/TaskCompleteAnimetion'
+import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { Notifications } from 'types/notification'
 
 export const ProjectDetail: FC = () => {
@@ -402,12 +402,7 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <LazyLoading />
-      {/* {isComplete && (
-        <StyledContainer>
-          <StyledAnimation ref={anchorEl} />
-        </StyledContainer>
-      )} */}
-      {isComplete && <TaskCompleteAnimetion ref={anchorEl} />}
+      {isComplete && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}
