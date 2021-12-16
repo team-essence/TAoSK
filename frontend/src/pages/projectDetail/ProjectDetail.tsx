@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useLayoutEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -17,7 +17,6 @@ import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
-import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DROP_TYPE } from 'consts/dropType'
@@ -27,11 +26,11 @@ import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
-import { TaskCompletedEffect } from 'components/models/task/TaskCompletedEffect'
+// import { TaskCompletedEffect } from 'components/models/task/TaskCompletedEffect'
+import { TaskSwordAnimetion } from 'components/models/task/animation/TaskSwordAnimetion'
+import { TaskHammerAnimetion } from 'components/models/task/animation/TaskHammerAnimetion'
 import { Notifications } from 'types/notification'
 import { usePresence } from 'hooks/usePresence'
-import plan from 'components/models/task/config/anim_plan.json'
-import lottie from 'lottie-web'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -42,19 +41,7 @@ export const ProjectDetail: FC = () => {
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
-  const [aa, ii] = useState(false)
-  // const { inspectedEl, start } = useCompleteAnimation()
-
-  const animation = lottie.loadAnimation({
-    container: document.querySelector('#comp') as HTMLDivElement,
-    animationData: plan,
-    renderer: 'svg',
-    loop: false,
-  })
-  const test = async () => {
-    animation.stop()
-    animation.play()
-  }
+  const [aa, ii] = useState({ technology: false, plan: false })
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -149,13 +136,8 @@ export const ProjectDetail: FC = () => {
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
-      // ここ
       if (data.updateTaskSort.is_completed) {
-        // start(plan).then(() => ii(true))
-        console.log('aaa')
-        ii(true)
-        test
-        // .finally(() => ii(false))
+        ii({ ...aa, plan: true })
       }
     },
     onError(err) {
@@ -417,7 +399,8 @@ export const ProjectDetail: FC = () => {
 
   return (
     <>
-      {aa && <TaskCompletedEffect id="comp" />}
+      {aa.technology && <TaskSwordAnimetion />}
+      {aa.plan && <TaskHammerAnimetion />}
       <LazyLoading />
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
