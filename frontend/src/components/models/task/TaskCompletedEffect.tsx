@@ -11,22 +11,22 @@ type Props = {
 export const TaskCompletedEffect: FCX<Props> = ({ id }) => {
   return (
     <StyledContainer>
-      <StyledContainerA>
-        <StyledNowLoading id={id} />
-      </StyledContainerA>
+      {/* <StyledContainerA> */}
+      <StyledNowLoading id={id} />
+      {/* </StyledContainerA> */}
     </StyledContainer>
   )
 }
 
 const StyledContainer = styled.div`
-  position: absolute;
+  position: fixed;
+  /* display: grid;
+  place-items: center; */
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
-  /* width: 100vw;
-  height: 100vh; */
-  z-index: 20000;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
 `
 const StyledContainerA = styled.div`
   display: grid;
