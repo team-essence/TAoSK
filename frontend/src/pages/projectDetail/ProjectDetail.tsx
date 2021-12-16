@@ -17,9 +17,9 @@ import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { usePresence } from 'hooks/usePresence'
+import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { List } from 'types/list'
 import { Task } from 'types/task'
-import { JsonType } from 'types/completeAnimation'
 import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
@@ -29,20 +29,19 @@ import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimetion } from 'components/models/task/animation/TaskCompleteAnimetion'
 import { Notifications } from 'types/notification'
-import plan from 'components/models/task/animation/config/anim_plan.json'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
   usePresence()
   const { id } = useParams()
   const { currentUser } = useAuthContext()
+  const { json, setWeapon } = useSetWeaponJson()
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
+  const [isComplete, setIsComplete] = useState<boolean>(false)
   const inputUserName = useInput('')
-  const [aa, ii] = useState({ technology: false, plan: false })
-  const [test, setTest] = useState<JsonType>()
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
@@ -137,8 +136,8 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       logger.table(data.updateTaskSort)
       if (data.updateTaskSort.is_completed) {
-        setTest(plan)
-        ii({ ...aa, plan: true })
+        setWeapon('plan')
+        setIsComplete(true)
       }
     },
     onError(err) {
@@ -401,7 +400,7 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <LazyLoading />
-      {aa.plan && <TaskCompleteAnimetion json={test ?? plan} />}
+      {isComplete && <TaskCompleteAnimetion json={json} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}

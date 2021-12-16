@@ -18,6 +18,7 @@ export const useCompleteAnimation = <T extends HTMLElement>(
       loop: false,
       animationData: json,
     })
+
     return () => lottie.stop()
   }, [json])
 

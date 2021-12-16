@@ -6,6 +6,7 @@ import styled from 'styled-components'
 type Props = {
   json: JsonType
 }
+
 export const TaskCompleteAnimetion: FCX<Props> = ({ json }) => {
   const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
 
