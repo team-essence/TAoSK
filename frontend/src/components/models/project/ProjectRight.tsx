@@ -1,7 +1,10 @@
 import React, { FCX } from 'react'
 import { useGameLog } from 'hooks/useGameLog'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
+import {
+  calculateMinSizeBasedOnFigmaHeight,
+  calculateMinSizeBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
 import { CreateListButton } from 'components/ui/button/CreateListButton'
 import { LogContainer } from 'components/models/log/LogContainer'
 import { Monster2DInformation } from 'components/models/monster/Monster2DInformation'
@@ -28,7 +31,8 @@ export const ProjectRight: FCX<Props> = ({
     <StyledProjectRightContainer className={className}>
       <CreateListButton onClick={onClick} />
       <StyledProjectGameLog gameLogs={gameLogs} />
-      <Monster2DInformation
+
+      <StyledMonster2DInformation
         hpRemaining={monsterHPRemaining}
         name={monsterName}
         hp={monsterHp}
@@ -42,9 +46,15 @@ const StyledProjectRightContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `
 
 const StyledProjectGameLog = styled(LogContainer)`
   margin-top: ${calculateMinSizeBasedOnFigmaHeight(16)};
-  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(24)};
+`
+
+const StyledMonster2DInformation = styled(Monster2DInformation)`
+  position: fixed;
+  bottom: ${calculateMinSizeBasedOnFigma(20)};
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_6};
 `
