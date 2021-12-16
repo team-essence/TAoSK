@@ -1,6 +1,5 @@
 import React, { FCX, useEffect, Dispatch, SetStateAction } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { occupationList } from 'consts/occupationList'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
@@ -9,13 +8,20 @@ import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserDatas } from 'types/userDatas'
+import type { TaskModalType } from 'types/taskModal'
 
 type Props = {
   setUserDatas: Dispatch<SetStateAction<UserDatas>>
   userDatas: UserDatas
+  taskModalType: TaskModalType
 }
 
-export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDatas }) => {
+export const SearchMemberField: FCX<Props> = ({
+  className,
+  setUserDatas,
+  userDatas,
+  taskModalType,
+}) => {
   const {
     onChange,
     onFocus,
@@ -25,7 +31,7 @@ export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDat
     selectedUserDatas,
     setSelectedUserDatas,
     value,
-  } = useSearchMember(userDatas)
+  } = useSearchMember(userDatas, taskModalType)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserDatas.length,
   )

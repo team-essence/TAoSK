@@ -78,7 +78,11 @@ export const TaskCreateModal: FCX<Props> = ({
           <StyledBorder />
           <StyledRightColumn>
             <StyledCalenderField label="期限" registration={register('date')} required={false} />
-            <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+            <StyledSearchMemberField
+              setUserDatas={setUserDatas}
+              userDatas={userDatas}
+              taskModalType="create"
+            />
 
             <StyledStatusWrapper className={className}>
               <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>

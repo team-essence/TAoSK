@@ -83,7 +83,11 @@ export const TaskEditModal: FCX<Props> = ({
                 required={false}
                 onChange={onChange}
               />
-              <StyledSearchMemberField setUserDatas={setUserDatas} userDatas={userDatas} />
+              <StyledSearchMemberField
+                setUserDatas={setUserDatas}
+                userDatas={userDatas}
+                taskModalType="edit"
+              />
               <StyledTaskEditStatusPointField
                 id={id}
                 technology={technology}
