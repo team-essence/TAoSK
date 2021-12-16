@@ -20,6 +20,7 @@ import { usePresence } from 'hooks/usePresence'
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { JsonType } from 'types/completeAnimation'
+import { StatusParam } from 'types/status'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DROP_TYPE } from 'consts/dropType'
@@ -138,7 +139,7 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       logger.table(data.updateTaskSort)
       if (data.updateTaskSort.is_completed) {
-        setWeapon('plan') // 一旦固定
+        setWeapon(data.updateTaskSort.high_status_name as StatusParam)
         setIsCompleted(true)
       }
     },
