@@ -17,7 +17,6 @@ type UseSearchMemberReturn = {
 }
 
 let cachedSelectedUserDatas: UserDatas = []
-let cachedValue = ''
 
 /**
  * メンバーを検索するために必要な処理の一群
@@ -37,7 +36,7 @@ export const useSearchMember = (
   type: TaskModalType,
 ): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
-  const [value, setValue] = useState<string>(cachedValue || '')
+  const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
   const [candidateUserDatas, setCandidateUserDatas] = useState<UserDatas>([])
@@ -54,7 +53,6 @@ export const useSearchMember = (
     if (!userDatas.length && JSON.stringify(userDatas) !== JSON.stringify(selectedUserDatas)) {
       setSelectedUserDatas(userDatas)
       setValue('')
-      cachedValue = ''
       cachedSelectedUserDatas = []
     }
 
@@ -62,12 +60,6 @@ export const useSearchMember = (
       if (type === 'create') cachedSelectedUserDatas = selectedUserDatas
     }
   }, [userDatas])
-
-  useEffect(() => {
-    return () => {
-      cachedValue = value
-    }
-  }, [value])
 
   useEffect(() => {
     if (!debouncedInputText) {
@@ -93,6 +85,8 @@ export const useSearchMember = (
     if (JSON.stringify(candidateUserDatas) === JSON.stringify(newUserDatas)) return
     setCandidateUserDatas(newUserDatas)
   }, [searchResult.data])
+
+  useEffect(() => () => setValue(''), [])
 
   return {
     onChange,
