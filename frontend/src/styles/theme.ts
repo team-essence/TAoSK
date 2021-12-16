@@ -21,6 +21,7 @@ export const theme = {
     POPOVER: 99,
     MODAL: 100,
     LOADING: 999,
+    EFFECT: 1000,
   },
   FONT_SIZES: {
     SIZE_10: calculateMinSizeBasedOnFigma('10px'),

@@ -19,7 +19,7 @@ const StyledContainer = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
+  z-index: ${({ theme }) => theme.Z_INDEX.EFFECT};
 `
 const StyledAnimation = styled.div`
   width: 100%;
