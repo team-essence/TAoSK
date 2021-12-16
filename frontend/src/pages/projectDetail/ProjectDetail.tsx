@@ -486,16 +486,3 @@ const StyledBackground = styled.div`
   background-size: 100% 100%;
   background-repeat: no-repeat;
 `
-const StyledContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
-`
-const StyledAnimation = styled.div`
-  width: 100%;
-  height: 100%;
-`
