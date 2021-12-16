@@ -5,7 +5,7 @@ export type Allocation =
 
 export type Task = Omit<
   GetProjectQuery['getProjectById']['lists'][number]['tasks'][number],
-  'allocations' | 'completed_flg'
+  'allocations'
 > & {
   allocations: Allocation[]
 }

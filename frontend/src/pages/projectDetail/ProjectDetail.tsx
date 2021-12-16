@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useLayoutEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -7,7 +7,6 @@ import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useGetProjectLazyQuery,
-  useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
   useCreateListMutation,
@@ -84,6 +83,7 @@ export const ProjectDetail: FC = () => {
             vertical_sort: task.vertical_sort,
             end_date: task.end_date,
             chatCount: task.chatCount,
+            completed_flg: task.completed_flg,
             allocations,
           }
         })
@@ -174,6 +174,7 @@ export const ProjectDetail: FC = () => {
           vertical_sort: task.vertical_sort,
           end_date: task.end_date,
           chatCount: task.chatCount,
+          completed_flg: task.completed_flg,
           allocations,
         }
       })
