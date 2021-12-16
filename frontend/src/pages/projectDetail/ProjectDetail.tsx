@@ -398,7 +398,7 @@ export const ProjectDetail: FC = () => {
       },
     })
   }
-  // const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
+  const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
   return (
     <>
       <LazyLoading />
@@ -407,7 +407,7 @@ export const ProjectDetail: FC = () => {
           <StyledAnimation ref={anchorEl} />
         </StyledContainer>
       )} */}
-      {isComplete && <TaskCompleteAnimetion json={json} />}
+      {isComplete && <TaskCompleteAnimetion ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}
@@ -494,10 +494,12 @@ const StyledContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2000;
 `
 const StyledAnimation = styled.div`
   width: 100%;
+  height: 100%;
 `

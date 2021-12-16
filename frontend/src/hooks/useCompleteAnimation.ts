@@ -16,8 +16,9 @@ export const useCompleteAnimation = <T extends HTMLElement>(
   // const [isComplete, setIsComplete] = useState<boolean>(false)
 
   useEffect(() => {
+    if (!json || !anchorEl.current) return
     lottie.loadAnimation({
-      container: anchorEl.current as T,
+      container: anchorEl.current,
       renderer: 'svg',
       loop: false,
       animationData: JSON.parse(JSON.stringify(json)),
@@ -31,7 +32,7 @@ export const useCompleteAnimation = <T extends HTMLElement>(
       lottie.stop()
       // animation.removeEventListener('complete')
     }
-  }, [json])
+  }, [json, anchorEl.current])
 
   return {
     anchorEl,
