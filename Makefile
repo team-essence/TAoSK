@@ -14,6 +14,10 @@ generate-gql:
 	cd frontend && yarn generate-gql
 up:
 	docker compose up
+api-up:
+	docker compose up api-server db-server
+front-up:
+	cd frontend && yarn start
 down:
 	docker compose down
 restart:
