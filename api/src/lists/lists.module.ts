@@ -8,6 +8,7 @@ import { ListsResolver } from './lists.resolver';
 import { Project } from 'src/projects/project';
 import { User } from 'src/users/user';
 import { GameLog } from 'src/game-logs/game-log';
+import { Allocation } from 'src/allocations/allocation';
 @Module({
   imports: [
     TypeOrmModule.forFeature([List]),
@@ -16,6 +17,7 @@ import { GameLog } from 'src/game-logs/game-log';
     TypeOrmModule.forFeature([Project]),
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([GameLog]),
+    TypeOrmModule.forFeature([Allocation]),
   ],
   providers: [ListsService, ListsResolver],
 })

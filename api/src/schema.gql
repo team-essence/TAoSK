@@ -226,7 +226,7 @@ type Mutation {
   deleteTask(taskId: Float!): [Task!]!
   createAllocation(newAllocation: NewAllocationInput!): Allocation!
   unAssignTask(task_id: Float!, user_id: String!): [Allocation!]!
-  addChat(userId: String!, taskId: Float!, comment: String!): Chat!
+  addChat(userId: String!, taskId: Float!, comment: String!): [Chat!]!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
   createGameLog(newLog: NewLogInput!): GameLog!
@@ -312,6 +312,7 @@ input UpdateListInput {
 
 input RemoveListInput {
   id: Float!
+  project_id: String!
 }
 
 input UpdateListSort {

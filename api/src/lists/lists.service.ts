@@ -15,6 +15,7 @@ import { RemoveListInput } from './dto/removeList.input';
 import { Task } from 'src/tasks/task';
 import { User } from 'src/users/user';
 import { GameLog } from 'src/game-logs/game-log';
+import { Allocation } from 'src/allocations/allocation';
 
 @Injectable()
 export class ListsService {
@@ -31,6 +32,8 @@ export class ListsService {
     private userRepository: Repository<User>,
     @InjectRepository(GameLog)
     private gameLogRepository: Repository<GameLog>,
+    @InjectRepository(Allocation)
+    private allocationRepository: Repository<Allocation>,
   ) {}
 
   async create(newList: NewListInput): Promise<List> {
@@ -139,14 +142,65 @@ export class ListsService {
         });
       }
       if (tasks) {
-        await this.taskRepository.remove(tasks).catch((err) => {
-          new InternalServerErrorException();
-        });
+        for (const task of tasks) {
+          const allocations = await this.allocationRepository.find({
+            task: {
+              id: task.id,
+            },
+          });
+
+          for (const allocation of allocations) {
+            await this.allocationRepository.remove(allocation).catch((err) => {
+              new InternalServerErrorException();
+            });
+          }
+
+          await this.taskRepository.remove(task).catch((err) => {
+            new InternalServerErrorException();
+          });
+        }
       }
 
       await this.listRepository.remove(list).catch((err) => {
         new InternalServerErrorException();
       });
+
+      const lists = await this.listRepository.find({
+        project: {
+          id: removeList.project_id,
+        },
+      });
+
+      const beforeListSorts: {
+        task_list: number;
+        list_sort: ListSort;
+      }[] = [];
+
+      for (const list of lists) {
+        const listSort = await this.listSortRepository.findOne({
+          where: {
+            list: {
+              id: list.id,
+            },
+          },
+        });
+        const init = {
+          task_list: listSort.task_list,
+          list_sort: listSort,
+        };
+        beforeListSorts.push(init);
+        beforeListSorts.sort((a, b) => a.task_list - b.task_list);
+      }
+
+      for (const [index, beforeListSort] of beforeListSorts.entries()) {
+        beforeListSort.list_sort.task_list = index;
+
+        await this.listSortRepository
+          .save(beforeListSort.list_sort)
+          .catch((err) => {
+            new InternalServerErrorException();
+          });
+      }
 
       return true;
     } catch (error) {

@@ -1,12 +1,12 @@
 import React, { FCX, useEffect, Dispatch } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { InputItem } from 'components/ui/form/InputItem'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useTextItems } from 'hooks/useTextItems'
 import { theme } from 'styles/theme'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { max } from 'consts/certificationsAndInterests'
+import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
 type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
@@ -54,7 +54,12 @@ export const ItemInputField: FCX<Props> = props => {
 
       <StyledItemsWrapper width={inputAspect.width}>
         {items.map((item, index) => (
-          <InputItem itemName={item} key={index} onClick={() => onClickDeleteItemButton(item)} />
+          <Tag
+            name={item}
+            tagType={TAG_TYPE.SMALL}
+            key={index}
+            onClick={() => onClickDeleteItemButton(item)}
+          />
         ))}
       </StyledItemsWrapper>
     </StyledWrapper>

@@ -16,7 +16,6 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
-import { usePopover } from 'hooks/usePopover'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 
@@ -152,15 +151,21 @@ const StyledLeftColumn = styled.div`
   width: ${calculateMinSizeBasedOnFigma(509)};
   height: 100%;
   overflow-x: visible;
-  overflow-y: hidden;
+  overflow-y: scroll;
   will-change: transform;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 const StyledRightColumn = styled.div`
   width: ${calculateMinSizeBasedOnFigma(270)};
   height: 100%;
   overflow-x: visible;
-  overflow-y: hidden;
+  overflow-y: scroll;
   will-change: transform;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 const StyledLeftColumnInnerContents = styled.div``
 const StyledRightColumnInnerContents = styled.div`
