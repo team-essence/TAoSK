@@ -1,8 +1,7 @@
 import React, { FCX } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { occupationList } from 'consts/occupationList'
 import styled, { css } from 'styled-components'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
@@ -12,19 +11,19 @@ type Props = {
   avatarStyleType: AVATAR_STYLE
   onClickDeleteBtn?: (index: number) => void
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-  userDatas: UserDatas
+  userData: UserData
   userCount: number
 }
 
 export const ManyUserAvatar: FCX<Props> = ({
   avatarStyleType,
   onClickDeleteBtn,
-  userDatas,
+  userData,
   userCount,
   onClick,
   className,
 }) => {
-  const { maxBoxes, containerRef, avatarRef } = useCalculateOverUsers(userDatas.length)
+  const { maxBoxes, containerRef, avatarRef } = useCalculateOverUsers(userData.length)
 
   return (
     <StyledManyUserAvatarContainer
@@ -33,18 +32,18 @@ export const ManyUserAvatar: FCX<Props> = ({
       className={className}
       avatarStyleType={avatarStyleType}
       maxBoxes={maxBoxes}>
-      {userDatas.map((userData, index) => {
+      {userData.map((userDatum, index) => {
         const boxCount = index + 1
-        if (boxCount <= userDatas.length - userCount) return
+        if (boxCount <= userData.length - userCount) return
 
         return (
           <StyledManyUserAvatar key={index}>
             <div ref={avatarRef}>
               <UserAvatarIcon
                 avatarStyleType={avatarStyleType}
-                iconImage={userData.icon_image}
-                name={userData.name}
-                occupation={userData.occupation.name}
+                iconImage={userDatum.icon_image}
+                name={userDatum.name}
+                occupation={userDatum.occupation.name}
                 onClickDeleteBtn={() => onClickDeleteBtn && onClickDeleteBtn(index)}
               />
             </div>

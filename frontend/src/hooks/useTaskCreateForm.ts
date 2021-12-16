@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
 import { useParams } from 'react-router-dom'
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
 import toast from 'utils/toast/toast'
 import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
@@ -20,8 +20,8 @@ type UseTaskCreateFormReturn<T> = {
   errors: FieldErrors
   statusCounts: StatusCounts
   setStatusCounts: Dispatch<SetStateAction<StatusCounts>>
-  userDatas: UserDatas
-  setUserDatas: Dispatch<SetStateAction<UserDatas>>
+  userData: UserData
+  setUserData: Dispatch<SetStateAction<UserData>>
 }
 
 type UseTaskCreateForm<T> = (args: {
@@ -60,13 +60,13 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
   const [statusCounts, setStatusCounts] = useState<StatusCounts>({ ...INITIAL_STATUS_COUNTS })
-  const [userDatas, setUserDatas] = useState<UserDatas>([])
+  const [userData, setUserData] = useState<UserData>([])
   const [addTask] = useAddTaskMutation({
     onCompleted(data) {
       setValue('title', '', { shouldValidate: true })
       setValue('overview', '', { shouldValidate: true })
       setValue('date', '')
-      setUserDatas([])
+      setUserData([])
       setStatusCounts({ ...INITIAL_STATUS_COUNTS })
 
       closeModal()
@@ -99,7 +99,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
 
     const { title, overview, date } = getValues()
     const { technology, achievement, solution, motivation, design, plan } = statusCounts
-    const users = userDatas.map(data => {
+    const users = userData.map(data => {
       return { user_id: data.id }
     })
     addTask({
@@ -125,7 +125,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
         },
       },
     })
-  }, [statusCounts, userDatas])
+  }, [statusCounts, userData])
 
   return {
     register,
@@ -133,8 +133,8 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
     errors,
     statusCounts,
     setStatusCounts,
-    userDatas,
-    setUserDatas,
+    userData,
+    setUserData,
     handleAddTask: handleSubmit(handleAddTask),
   }
 }

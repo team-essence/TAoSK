@@ -40,8 +40,8 @@ export const TaskCreateModal: FCX<Props> = ({
     errors,
     statusCounts,
     setStatusCounts,
-    userDatas,
-    setUserDatas,
+    userData,
+    setUserData,
   } = useTaskCreateForm({
     verticalSort,
     list_id,
@@ -79,8 +79,8 @@ export const TaskCreateModal: FCX<Props> = ({
           <StyledRightColumn>
             <StyledCalenderField label="期限" registration={register('date')} required={false} />
             <StyledSearchMemberField
-              setUserDatas={setUserDatas}
-              userDatas={userDatas}
+              setUserData={setUserData}
+              userData={userData}
               taskModalType="create"
             />
 

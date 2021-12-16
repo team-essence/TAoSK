@@ -3,20 +3,20 @@ import styled, { css } from 'styled-components'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { ManyUserAvatar } from './ManyUserAvatar'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
   userCount: number
   avatarStyleType: AVATAR_STYLE
-  userDatas?: UserDatas
+  userData?: UserData
   onClickDeleteBtn?: (index: number) => void
 }
 
 export const UserCount: FCX<Props> = ({
   userCount,
   avatarStyleType,
-  userDatas = [],
+  userData = [],
   className,
   onClickDeleteBtn,
 }) => {
@@ -39,7 +39,7 @@ export const UserCount: FCX<Props> = ({
     event.stopPropagation()
   }
 
-  if (avatarStyleType === AVATAR_STYLE.LIST && userDatas.length) {
+  if (avatarStyleType === AVATAR_STYLE.LIST && userData.length) {
     return (
       <>
         <StyledUserCountContainer className={className}>
@@ -49,7 +49,7 @@ export const UserCount: FCX<Props> = ({
         </StyledUserCountContainer>
         {isPopup && (
           <ManyUserAvatar
-            userDatas={userDatas}
+            userData={userData}
             userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}
@@ -57,7 +57,7 @@ export const UserCount: FCX<Props> = ({
         )}
       </>
     )
-  } else if (avatarStyleType === AVATAR_STYLE.MODAL && userDatas.length) {
+  } else if (avatarStyleType === AVATAR_STYLE.MODAL && userData.length) {
     return (
       <>
         <StyledUserCountContainer className={className}>
@@ -67,7 +67,7 @@ export const UserCount: FCX<Props> = ({
         </StyledUserCountContainer>
         {isPopup && (
           <ManyUserAvatar
-            userDatas={userDatas}
+            userData={userData}
             userCount={userCount}
             avatarStyleType={avatarStyleType}
             onClick={event => event.stopPropagation()}

@@ -2,21 +2,21 @@ import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'reac
 import { useDebounce } from 'hooks/useDebounce'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
 import type { TaskModalType } from 'types/taskModal'
 
 type UseSearchMemberReturn = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   onFocus: () => void
   onBlur: () => void
-  selectedUserDatas: UserDatas
-  setSelectedUserDatas: Dispatch<SetStateAction<UserDatas>>
-  candidateUserDatas: UserDatas
+  selectedUserData: UserData
+  setSelectedUserData: Dispatch<SetStateAction<UserData>>
+  candidateUserData: UserData
   shouldShowResult: boolean
   value: string
 }
 
-let cachedSelectedUserDatas: UserDatas = []
+let cachedSelectedUserData: UserData = []
 
 /**
  * メンバーを検索するために必要な処理の一群
@@ -24,24 +24,21 @@ let cachedSelectedUserDatas: UserDatas = []
  * @return {ReturnType<typeof useInput>['onChange']} returns.onChange - 検索欄を入力した時にテキストを参照し続けるため使う
  * @return {() => void} returns.onFocus - 検索結果を表示する
  * @return {() => void} returns.onBlur - 検索結果を非表示にする
- * @return {UserDatas} returns.selectedUserDatas - 検索結果から選択したユーザーデータの配列
- * @return {Dispatch<SetStateAction<UserDatas>>} returns.setSelectedUserDatas
- * @return {UserDatas} returns.candidateUserDatas - 検索結果のユーザーデータの配列
+ * @return {UserData} returns.selectedUserData - 検索結果から選択したユーザーデータの配列
+ * @return {Dispatch<SetStateAction<UserData>>} returns.setSelectedUserData
+ * @return {UserData} returns.candidateUserData - 検索結果のユーザーデータの配列
  * @return {boolean} returns.shouldShowResult - 検索結果を表示するか
  * @return {string} returns.value - 検索欄に入力するinputタグのvalue
  * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
-export const useSearchMember = (
-  userDatas: UserDatas,
-  type: TaskModalType,
-): UseSearchMemberReturn => {
+export const useSearchMember = (userData: UserData, type: TaskModalType): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
-  const [candidateUserDatas, setCandidateUserDatas] = useState<UserDatas>([])
-  const [selectedUserDatas, setSelectedUserDatas] = useState<UserDatas>(
-    type === 'create' && cachedSelectedUserDatas.length ? cachedSelectedUserDatas : userDatas,
+  const [candidateUserData, setCandidateUserData] = useState<UserData>([])
+  const [selectedUserData, setSelectedUserData] = useState<UserData>(
+    type === 'create' && cachedSelectedUserData.length ? cachedSelectedUserData : userData,
   )
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
@@ -50,40 +47,40 @@ export const useSearchMember = (
 
   useEffect(() => {
     // タスク作成後に選択済のユーザーを初期化する
-    if (!userDatas.length && JSON.stringify(userDatas) !== JSON.stringify(selectedUserDatas)) {
-      setSelectedUserDatas(userDatas)
+    if (!userData.length && JSON.stringify(userData) !== JSON.stringify(selectedUserData)) {
+      setSelectedUserData(userData)
       setValue('')
-      cachedSelectedUserDatas = []
+      cachedSelectedUserData = []
     }
 
     return () => {
-      if (type === 'create') cachedSelectedUserDatas = selectedUserDatas
+      if (type === 'create') cachedSelectedUserData = selectedUserData
     }
-  }, [userDatas])
+  }, [userData])
 
   useEffect(() => {
     if (!debouncedInputText) {
-      setCandidateUserDatas([])
+      setCandidateUserData([])
       return
     }
     searchSameCompanyUsers({
       variables: {
-        selectUserIds: selectedUserDatas.map(data => data.id),
+        selectUserIds: selectedUserData.map(data => data.id),
         name: debouncedInputText,
         company: currentUserData.data?.user.company ? currentUserData.data.user.company : '',
       },
     })
-  }, [debouncedInputText, selectedUserDatas])
+  }, [debouncedInputText, selectedUserData])
 
   useEffect(() => {
-    const newUserDatas = searchResult.data?.searchSameCompanyUsers
-    if (!newUserDatas?.length) {
-      setCandidateUserDatas([])
+    const newUserData = searchResult.data?.searchSameCompanyUsers
+    if (!newUserData?.length) {
+      setCandidateUserData([])
       return
     }
 
-    if (JSON.stringify(candidateUserDatas) === JSON.stringify(newUserDatas)) return
-    setCandidateUserDatas(newUserDatas)
+    if (JSON.stringify(candidateUserData) === JSON.stringify(newUserData)) return
+    setCandidateUserData(newUserData)
   }, [searchResult.data])
 
   useEffect(() => () => setValue(''), [])
@@ -92,9 +89,9 @@ export const useSearchMember = (
     onChange,
     onFocus,
     onBlur,
-    selectedUserDatas,
-    setSelectedUserDatas,
-    candidateUserDatas,
+    selectedUserData,
+    setSelectedUserData,
+    candidateUserData,
     shouldShowResult,
     value,
   }

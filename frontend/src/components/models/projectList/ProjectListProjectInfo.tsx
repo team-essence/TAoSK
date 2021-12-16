@@ -1,12 +1,11 @@
 import React, { FCX, useMemo } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { occupationList } from 'consts/occupationList'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
 import { UsersQuery } from 'pages/projectList/projectList.gen'
 
 type Props = {
@@ -31,18 +30,18 @@ export const ProjectListProjectInfo: FCX<Props> = ({
       </StyledProjectInfoTitleContainer>
     )
   }
-  const userDatas: UserDatas = useMemo(
+  const userData: UserData = useMemo(
     () => groupsProject[selectProject].project.groups.map(group => group.user),
     [groupsProject, selectProject],
   )
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
-    userDatas.length,
+    userData.length,
   )
 
   // TODO: ユーザーが多い時の挙動を確かめるテスト用。本番では消す
-  // const testUserDatas: UserDatas = [...Array(10)].map(() => userDatas[0])
+  // const testUserData: UserData = [...Array(10)].map(() => userData[0])
   // const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
-  //   testUserDatas.length,
+  //   testUserData.length,
   // )
 
   return (
@@ -54,7 +53,7 @@ export const ProjectListProjectInfo: FCX<Props> = ({
       {projectInfoTitle('パーティーメンバー')}
       <StyledPartyContainer ref={containerRef}>
         {/* TODO: userが多い時のテスト用, 本番では消す */}
-        {/* {testUserDatas.map((data, index) => {
+        {/* {testUserData.map((data, index) => {
           const boxCount = index + 1
           if (boxCount < maxBoxes) {
             return (
@@ -73,13 +72,13 @@ export const ProjectListProjectInfo: FCX<Props> = ({
                 <UserCount
                   avatarStyleType={AVATAR_STYLE.LIST}
                   userCount={overUsersCount}
-                  userDatas={testUserDatas}
+                  userData={testUserData}
                 />
               </div>
             )
           }
         })} */}
-        {userDatas.map((data, index) => {
+        {userData.map((data, index) => {
           const boxCount = index + 1
           if (boxCount < maxBoxes) {
             return (
@@ -98,7 +97,7 @@ export const ProjectListProjectInfo: FCX<Props> = ({
                 <UserCount
                   avatarStyleType={AVATAR_STYLE.LIST}
                   userCount={overUsersCount}
-                  userDatas={userDatas}
+                  userData={userData}
                 />
               </div>
             )
