@@ -1,7 +1,6 @@
-import { useState, useEffect, useMemo, useCallback, Dispatch, SetStateAction } from 'react'
+import { useState, useMemo, useCallback, Dispatch, SetStateAction } from 'react'
 import { StatusParam } from 'types/status'
 import { useUpdateTaskParametersMutation } from 'pages/projectDetail/projectDetail.gen'
-import { INITIAL_STATUS_COUNTS } from 'consts/status'
 import toast from 'utils/toast/toast'
 import { checkObjEqual } from 'utils/checkObjEqual'
 
@@ -18,9 +17,6 @@ type UseTaskStatusPointEditForm = (args: {
   initialStatusCounts: StatusCounts
 }) => UseTaskStatusPointEditFormReturn
 
-let cachedNewStatusCounts: StatusCounts = { ...INITIAL_STATUS_COUNTS }
-let cachedStatusCounts: StatusCounts = { ...INITIAL_STATUS_COUNTS }
-
 /**
  * タスク編集モーダルのステータスポイントの変更処理を行う
  */
@@ -28,16 +24,8 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
   id,
   initialStatusCounts,
 }) => {
-  const [newStatusCounts, setNewStatusCounts] = useState<StatusCounts>(
-    checkObjEqual(cachedNewStatusCounts, INITIAL_STATUS_COUNTS)
-      ? { ...initialStatusCounts }
-      : { ...cachedNewStatusCounts },
-  )
-  const [statusCounts, setStatusCounts] = useState<StatusCounts>(
-    checkObjEqual(cachedStatusCounts, INITIAL_STATUS_COUNTS)
-      ? { ...initialStatusCounts }
-      : { ...cachedStatusCounts },
-  )
+  const [newStatusCounts, setNewStatusCounts] = useState<StatusCounts>(initialStatusCounts)
+  const [statusCounts, setStatusCounts] = useState<StatusCounts>(initialStatusCounts)
   const disabled = useMemo(
     () => checkObjEqual(statusCounts, newStatusCounts),
     [statusCounts, newStatusCounts],
@@ -55,7 +43,6 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
         plan,
       }
       setNewStatusCounts({ ...newValue })
-      cachedNewStatusCounts = { ...newValue }
       toast.success('パラメーターを変更しました')
     },
     onError(err) {
@@ -70,12 +57,6 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
         ...statusCounts,
       },
     })
-  }, [statusCounts])
-
-  useEffect(() => {
-    return () => {
-      cachedStatusCounts = { ...statusCounts }
-    }
   }, [statusCounts])
 
   return {

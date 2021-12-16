@@ -1,6 +1,5 @@
 import React, { FCX, useEffect, Dispatch, SetStateAction } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import { occupationList } from 'consts/occupationList'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
@@ -8,39 +7,46 @@ import { useSearchMember } from 'hooks/useSearchMember'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
+import type { TaskModalType } from 'types/taskModal'
 
 type Props = {
-  setUserDatas: Dispatch<SetStateAction<UserDatas>>
-  userDatas: UserDatas
+  setUserData: Dispatch<SetStateAction<UserData>>
+  userData: UserData
+  taskModalType: TaskModalType
 }
 
-export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDatas }) => {
+export const SearchMemberField: FCX<Props> = ({
+  className,
+  setUserData,
+  userData,
+  taskModalType,
+}) => {
   const {
     onChange,
     onFocus,
     onBlur,
     shouldShowResult,
-    candidateUserDatas,
-    selectedUserDatas,
-    setSelectedUserDatas,
+    candidateUserData,
+    selectedUserData,
+    setSelectedUserData,
     value,
-  } = useSearchMember(userDatas)
+  } = useSearchMember(userData, taskModalType)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
-    selectedUserDatas.length,
+    selectedUserData.length,
   )
 
-  useEffect(() => setUserDatas([...selectedUserDatas]), [selectedUserDatas])
+  useEffect(() => setUserData([...selectedUserData]), [selectedUserData])
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
-  // const testAdd = (data: UserDatas[number]) => {
-  //   const testDatas: UserDatas = [...Array(20)].map(() => data)
-  //   setSelectedUserDatas([...selectedUserDatas, ...testDatas])
+  // const testAdd = (data: UserData[number]) => {
+  //   const testDatas: UserData = [...Array(20)].map(() => data)
+  //   setSelectedUserData([...selectedUserData, ...testDatas])
   // }
 
   const onClickDeleteBtn = (index: number) => {
-    selectedUserDatas.splice(index, 1)
-    setSelectedUserDatas([...selectedUserDatas.slice()])
+    selectedUserData.splice(index, 1)
+    setSelectedUserData([...selectedUserData.slice()])
   }
 
   return (
@@ -56,15 +62,15 @@ export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDat
           onBlur={onBlur}
         />
 
-        {!!shouldShowResult && !!candidateUserDatas.length && (
+        {!!shouldShowResult && !!candidateUserData.length && (
           <StyledSearchResultWrapper>
-            {candidateUserDatas.map((data, index) => (
+            {candidateUserData.map((data, index) => (
               <StyledListItem
                 key={index}
                 indexAt={
-                  index === 0 ? 'first' : index === candidateUserDatas.length - 1 ? 'last' : 'other'
+                  index === 0 ? 'first' : index === candidateUserData.length - 1 ? 'last' : 'other'
                 }
-                onMouseDown={() => setSelectedUserDatas([...selectedUserDatas, data])}>
+                onMouseDown={() => setSelectedUserData([...selectedUserData, data])}>
                 {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
                 <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
                 <StyledProfile>
@@ -78,14 +84,14 @@ export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDat
         )}
       </StyledInputWrapper>
 
-      {!!selectedUserDatas.length && (
+      {!!selectedUserData.length && (
         <StyledSelectedMembersWrapper>
           <StyledBorder />
           <StyledSelectedMembersTitle>
-            {selectedUserDatas.length}人のメンバー
+            {selectedUserData.length}人のメンバー
           </StyledSelectedMembersTitle>
           <StyledMembersContainer ref={containerRef}>
-            {selectedUserDatas.map((data, index) => {
+            {selectedUserData.map((data, index) => {
               const boxCount = index + 1
               if (boxCount < maxBoxes) {
                 return (
@@ -106,7 +112,7 @@ export const SearchMemberField: FCX<Props> = ({ className, setUserDatas, userDat
                     <UserCount
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       userCount={overUsersCount}
-                      userDatas={selectedUserDatas}
+                      userData={selectedUserData}
                       onClickDeleteBtn={onClickDeleteBtn}
                     />
                   </div>

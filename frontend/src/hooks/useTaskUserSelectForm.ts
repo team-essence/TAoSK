@@ -1,30 +1,30 @@
 import { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react'
-import type { UserDatas } from 'types/userDatas'
+import type { UserData } from 'types/userData'
 import {
   useUnAssignTaskMutation,
   useCreateAllocationMutation,
 } from 'pages/projectDetail/projectDetail.gen'
 
 type UseTaskUserSelectFormReturn = {
-  userDatas: UserDatas
-  setUserDatas: Dispatch<SetStateAction<UserDatas>>
+  userData: UserData
+  setUserData: Dispatch<SetStateAction<UserData>>
 }
 
 type UseTaskUserSelectForm = {
-  (arg: { id: string; initialUserDatas: UserDatas }): UseTaskUserSelectFormReturn
+  (arg: { id: string; initialUserData: UserData }): UseTaskUserSelectFormReturn
 }
 
 /**
  * タスク編集モーダルで、ユーザーのアサイン、アンアサイン処理を行うためのフック
  */
-export const useTaskUserSelectForm: UseTaskUserSelectForm = ({ id, initialUserDatas }) => {
-  const [userDatas, setUserDatas] = useState<UserDatas>([...initialUserDatas])
-  const preUserDatas = useRef<UserDatas>([...initialUserDatas])
+export const useTaskUserSelectForm: UseTaskUserSelectForm = ({ id, initialUserData }) => {
+  const [userData, setUserData] = useState<UserData>([...initialUserData])
+  const preUserData = useRef<UserData>([...initialUserData])
   const [unAssignTaskMutation] = useUnAssignTaskMutation()
   const [createAllocationMutation] = useCreateAllocationMutation()
 
   useEffect(() => {
-    const { type, diff } = getDiffUserDatas(userDatas, preUserDatas.current)
+    const { type, diff } = getDiffUserData(userData, preUserData.current)
     if (!diff) return
 
     if (type === 'added') {
@@ -45,18 +45,18 @@ export const useTaskUserSelectForm: UseTaskUserSelectForm = ({ id, initialUserDa
       })
     }
 
-    preUserDatas.current = [...userDatas]
-  }, [userDatas])
+    preUserData.current = [...userData]
+  }, [userData])
 
-  return { userDatas, setUserDatas }
+  return { userData, setUserData }
 }
 
 type DiffType = 'added' | 'removed' | 'nothing'
-type GetDiffUserDatasReturn = {
+type GetDiffUserDataReturn = {
   type: DiffType
-  diff?: UserDatas[number]
+  diff?: UserData[number]
 }
-const getDiffUserDatas = (newDatas: UserDatas, preDatas: UserDatas): GetDiffUserDatasReturn => {
+const getDiffUserData = (newDatas: UserData, preDatas: UserData): GetDiffUserDataReturn => {
   const jsonNewDatasArray = newDatas.map(v => JSON.stringify(v))
   const jsonPreDatasArray = preDatas.map(v => JSON.stringify(v))
   const type: DiffType = (() => {
