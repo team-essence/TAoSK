@@ -38,11 +38,11 @@ export const ProjectDetail: FC = () => {
   const { id } = useParams()
   const { currentUser } = useAuthContext()
   const { json, setWeapon } = useSetWeaponJson()
+  const { anchorEl, isCompleted, setIsCompleted } = useCompleteAnimation<HTMLDivElement>(json)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
-  const [isComplete, setIsComplete] = useState<boolean>(false)
   const inputUserName = useInput('')
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -139,7 +139,7 @@ export const ProjectDetail: FC = () => {
       logger.table(data.updateTaskSort)
       if (data.updateTaskSort.is_completed) {
         setWeapon('plan') // 一旦固定
-        setIsComplete(true)
+        setIsCompleted(true)
       }
     },
     onError(err) {
@@ -398,11 +398,11 @@ export const ProjectDetail: FC = () => {
       },
     })
   }
-  const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
+
   return (
     <>
       <LazyLoading />
-      {isComplete && <TaskCompleteAnimation ref={anchorEl} />}
+      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}

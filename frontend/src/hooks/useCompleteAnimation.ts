@@ -4,15 +4,15 @@ import lottie from 'lottie-web'
 
 type UseCompleteAnimationReturn<T extends HTMLElement> = {
   anchorEl: RefObject<T>
-  isComplete: boolean
-  setIsComplete: Dispatch<SetStateAction<boolean>>
+  isCompleted: boolean
+  setIsCompleted: Dispatch<SetStateAction<boolean>>
 }
 
 export const useCompleteAnimation = <T extends HTMLElement>(
   json: JsonType,
 ): UseCompleteAnimationReturn<T> => {
   const anchorEl = useRef<T>(null)
-  const [isComplete, setIsComplete] = useState<boolean>(false)
+  const [isCompleted, setIsCompleted] = useState<boolean>(false)
 
   useEffect(() => {
     if (!json || !anchorEl.current) return
@@ -25,7 +25,7 @@ export const useCompleteAnimation = <T extends HTMLElement>(
     })
 
     animation.addEventListener('complete', () => {
-      setIsComplete(true)
+      setIsCompleted(false)
     })
 
     return () => {
@@ -36,7 +36,7 @@ export const useCompleteAnimation = <T extends HTMLElement>(
 
   return {
     anchorEl,
-    isComplete,
-    setIsComplete,
+    isCompleted,
+    setIsCompleted,
   }
 }
