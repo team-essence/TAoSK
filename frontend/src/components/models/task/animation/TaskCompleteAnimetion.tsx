@@ -6,13 +6,12 @@ import styled from 'styled-components'
 type Props = {
   json: JsonType
 }
-
 export const TaskCompleteAnimetion: FCX<Props> = ({ json }) => {
   const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
 
   return (
     <StyledContainer>
-      <StyledPlan ref={anchorEl} />
+      <StyledAnimation ref={anchorEl} />
     </StyledContainer>
   )
 }
@@ -25,6 +24,6 @@ const StyledContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2000;
 `
-const StyledPlan = styled.div`
+const StyledAnimation = styled.div`
   width: 100%;
 `

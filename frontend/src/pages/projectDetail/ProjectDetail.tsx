@@ -18,6 +18,8 @@ import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { usePresence } from 'hooks/usePresence'
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
+import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
+import { JsonType } from 'types/completeAnimation'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DROP_TYPE } from 'consts/dropType'
@@ -136,7 +138,7 @@ export const ProjectDetail: FC = () => {
     onCompleted(data) {
       logger.table(data.updateTaskSort)
       if (data.updateTaskSort.is_completed) {
-        setWeapon('plan')
+        setWeapon('plan') // 一旦固定
         setIsComplete(true)
       }
     },
@@ -396,10 +398,15 @@ export const ProjectDetail: FC = () => {
       },
     })
   }
-
+  // const { anchorEl } = useCompleteAnimation<HTMLDivElement>(json)
   return (
     <>
       <LazyLoading />
+      {/* {isComplete && (
+        <StyledContainer>
+          <StyledAnimation ref={anchorEl} />
+        </StyledContainer>
+      )} */}
       {isComplete && <TaskCompleteAnimetion json={json} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
@@ -482,4 +489,15 @@ const StyledBackground = styled.div`
   background-position: cover;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+`
+const StyledContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+`
+const StyledAnimation = styled.div`
+  width: 100%;
 `
