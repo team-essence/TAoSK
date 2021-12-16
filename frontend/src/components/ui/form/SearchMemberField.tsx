@@ -9,11 +9,13 @@ import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserData } from 'types/userData'
 import type { TaskModalType } from 'types/taskModal'
+import type { Task } from 'types/task'
 
 type Props = {
   setUserData: Dispatch<SetStateAction<UserData>>
   userData: UserData
   taskModalType: TaskModalType
+  completed_flag?: Task['completed_flg']
 }
 
 export const SearchMemberField: FCX<Props> = ({
@@ -21,6 +23,7 @@ export const SearchMemberField: FCX<Props> = ({
   setUserData,
   userData,
   taskModalType,
+  completed_flag = false,
 }) => {
   const {
     onChange,
@@ -57,6 +60,7 @@ export const SearchMemberField: FCX<Props> = ({
           type="text"
           placeholder="パーティメンバーを検索"
           value={value}
+          disabled={completed_flag}
           onChange={onChange}
           onFocus={onFocus}
           onBlur={onBlur}
@@ -96,13 +100,12 @@ export const SearchMemberField: FCX<Props> = ({
               if (boxCount < maxBoxes) {
                 return (
                   <div key={index} ref={avatarRef}>
-                    {/* TODO: queryでoccupation_idから職業が取れるようになったらそっちを使うようにする */}
                     <UserAvatarIcon
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       iconImage={data.icon_image}
                       name={data.name}
                       occupation={data.occupation.name}
-                      onClickDeleteBtn={() => onClickDeleteBtn(index)}
+                      onClickDeleteBtn={completed_flag ? undefined : () => onClickDeleteBtn(index)}
                     />
                   </div>
                 )
@@ -113,7 +116,7 @@ export const SearchMemberField: FCX<Props> = ({
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       userCount={overUsersCount}
                       userData={selectedUserData}
-                      onClickDeleteBtn={onClickDeleteBtn}
+                      onClickDeleteBtn={completed_flag ? undefined : onClickDeleteBtn}
                     />
                   </div>
                 )
@@ -150,17 +153,24 @@ const StyledInputWrapper = styled.div`
     background-size: 100% 100%;
   }
 `
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ disabled: boolean }>`
   width: 100%;
   height: ${calculateMinSizeBasedOnFigma(40)};
   padding-left: ${calculateMinSizeBasedOnFigma(8)};
   padding-right: ${calculateMinSizeBasedOnFigma(8)};
-  border: solid 1px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 4px;
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  &::placeholder {
-    color: ${({ theme }) => theme.COLORS.SILVER};
-  }
+  ${({ theme, disabled }) =>
+    css`
+      ${disabled &&
+      css`
+        cursor: not-allowed;
+      `}
+      border: solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+      font-size: ${theme.FONT_SIZES.SIZE_14};
+      &::placeholder {
+        color: ${theme.COLORS.SILVER};
+      }
+    `}
 `
 const StyledSearchResultWrapper = styled.ul`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_3};

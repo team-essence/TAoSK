@@ -39,6 +39,7 @@ export const TaskEditModal: FCX<Props> = ({
   motivation,
   design,
   plan,
+  completed_flg,
 }) => {
   const { onChange, register } = useTaskEndDateEditForm({
     id,
@@ -87,6 +88,7 @@ export const TaskEditModal: FCX<Props> = ({
                 setUserData={setUserData}
                 userData={userData}
                 taskModalType="edit"
+                completed_flag={completed_flg}
               />
               <StyledTaskEditStatusPointField
                 id={id}

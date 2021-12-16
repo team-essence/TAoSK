@@ -291,6 +291,7 @@ mutation CreateList($newList: NewListInput!) {
       vertical_sort
       end_date
       chatCount
+      completed_flg
 
       allocations {
         id

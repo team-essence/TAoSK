@@ -58,6 +58,7 @@ export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
                           chatCount={task.chatCount}
                           end_date={task.end_date}
                           overview={task.overview}
+                          completed_flg={task.completed_flg}
                         />
                       </div>
                     ))}
