@@ -22,7 +22,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
       <StyledViewWrapper className={className}>
         <StyledH3>概要</StyledH3>
         <StyledClickableArea onClick={() => setState('edit')}>
-          <StyledOverview>{newOverview}</StyledOverview>
+          <StyledOverview>{newOverview || '詳しい説明を追加してください'}</StyledOverview>
           <StyledAnnotation>
             クリックで編集
             <FontAwesomeIcon icon={faPencilAlt} />

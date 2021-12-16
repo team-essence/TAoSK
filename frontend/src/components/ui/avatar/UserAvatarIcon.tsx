@@ -1,6 +1,7 @@
 import React, { FCX } from 'react'
-import styled, { css } from 'styled-components'
-import { useHover } from 'hooks/useHover'
+import styled, { css, FlattenSimpleInterpolation } from 'styled-components'
+import { HoverTriggerPopover } from 'components/ui/popup/HoverTriggerPopover'
+import { usePopover } from 'hooks/usePopover'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
@@ -21,15 +22,26 @@ export const UserAvatarIcon: FCX<Props> = ({
   occupation,
   className,
 }) => {
-  const [hovered, eventHoverHandlers] = useHover()
+  const { anchorEl, openPopover, closePopover } = usePopover()
 
   if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
-      <StyledUserAvatarIconListContainer {...eventHoverHandlers} className={className}>
+      <StyledUserAvatarIconListContainer onMouseEnter={openPopover} className={className}>
         <StyledUserAvatarListIcon iconImage={iconImage} />
 
-        {hovered && (
-          <StyledPopupUserInfoContainer bottom={66}>
+        <HoverTriggerPopover
+          anchorEl={anchorEl}
+          handleClose={closePopover}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}>
+          <StyledDummyListIcon onMouseLeave={closePopover} />
+          <StyledPopupUserInfoContainer>
             <StyledPopupUserIconContainer>
               <img src={iconImage} />
             </StyledPopupUserIconContainer>
@@ -39,7 +51,7 @@ export const UserAvatarIcon: FCX<Props> = ({
               <StyledPopupUserOccupation>{occupation}</StyledPopupUserOccupation>
             </StyledPopupUserContainer>
           </StyledPopupUserInfoContainer>
-        )}
+        </HoverTriggerPopover>
       </StyledUserAvatarIconListContainer>
     )
   else if (avatarStyleType === AVATAR_STYLE.TASK)
@@ -50,7 +62,7 @@ export const UserAvatarIcon: FCX<Props> = ({
     )
   else
     return (
-      <StyledUserAvatarIconModalContainer {...eventHoverHandlers} className={className}>
+      <StyledUserAvatarIconModalContainer onMouseEnter={openPopover} className={className}>
         {onClickDeleteBtn && (
           <StyledUserCloseButton onClick={onClickDeleteBtn}>
             <img src="/svg/avatar-icon_close.svg" alt="バツボタン" />
@@ -58,8 +70,19 @@ export const UserAvatarIcon: FCX<Props> = ({
         )}
         <StyledUserAvatarModalIcon iconImage={iconImage} />
 
-        {hovered && (
-          <StyledPopupUserInfoContainer bottom={66}>
+        <HoverTriggerPopover
+          anchorEl={anchorEl}
+          handleClose={closePopover}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}>
+          <StyledDummyModalIcon onMouseLeave={closePopover} />
+          <StyledPopupUserInfoContainer>
             <StyledPopupUserIconContainer>
               <img src={iconImage} />
             </StyledPopupUserIconContainer>
@@ -69,28 +92,48 @@ export const UserAvatarIcon: FCX<Props> = ({
               <StyledPopupUserOccupation>{occupation}</StyledPopupUserOccupation>
             </StyledPopupUserContainer>
           </StyledPopupUserInfoContainer>
-        )}
+        </HoverTriggerPopover>
       </StyledUserAvatarIconModalContainer>
     )
 }
 
-const StyledUserAvatarIconListContainer = styled.div`
-  position: relative;
+const listContainerAspectCss = css`
   width: ${calculateMinSizeBasedOnFigma(50)};
   height: ${calculateMinSizeBasedOnFigma(50)};
 `
-
-const StyledUserAvatarIconTaskContainer = styled.div`
-  position: relative;
+const taskContainerAspectCss = css`
   width: ${calculateMinSizeBasedOnFigma(24)};
   height: ${calculateMinSizeBasedOnFigma(24)};
 `
-
-const StyledUserAvatarIconModalContainer = styled.div`
-  position: relative;
+const modalContainerAspectCss = css`
   width: ${calculateMinSizeBasedOnFigma(40)};
   height: ${calculateMinSizeBasedOnFigma(40)};
 `
+const getStyleIconContainer = (css: FlattenSimpleInterpolation) => styled.div`
+  position: relative;
+  ${css}
+`
+const getStyleDummyIcon = (css: FlattenSimpleInterpolation) => styled.div`
+  position: relative;
+  bottom: 100%;
+  left: 0;
+  ${css}
+`
+const StyledUserAvatarIconListContainer = getStyleIconContainer(listContainerAspectCss)
+const StyledUserAvatarIconTaskContainer = getStyleIconContainer(taskContainerAspectCss)
+const StyledUserAvatarIconModalContainer = getStyleIconContainer(modalContainerAspectCss)
+const StyledDummyListIcon = getStyleDummyIcon(css`
+  /* バツボタンが押せなくならないようにmargin-topを付与 */
+  margin-top: ${calculateMinSizeBasedOnFigma(10)};
+  width: ${calculateMinSizeBasedOnFigma(50)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+`)
+const StyledDummyModalIcon = getStyleDummyIcon(css`
+  /* バツボタンが押せなくならないようにmargin-topを付与 */
+  margin-top: ${calculateMinSizeBasedOnFigma(10)};
+  width: ${calculateMinSizeBasedOnFigma(40)};
+  height: ${calculateMinSizeBasedOnFigma(30)};
+`)
 
 const StyledUserCloseButton = styled.button`
   position: absolute;
@@ -135,11 +178,7 @@ const StyledUserAvatarModalIcon = styled.div<{ iconImage: string }>`
   ${userAvatarIconCss}
 `
 
-const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
-  z-index: ${({ theme }) => theme.Z_INDEX.POPOVER};
-  position: absolute;
-  bottom: ${({ bottom }) => calculateMinSizeBasedOnFigma(-bottom)};
-  left: -20%;
+const StyledPopupUserInfoContainer = styled.div`
   width: ${calculateMinSizeBasedOnFigma(240)};
   height: ${calculateMinSizeBasedOnFigma(60)};
   box-shadow: 0 0 0 1px ${({ theme }) => theme.COLORS.MINE_SHAFT};
