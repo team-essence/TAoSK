@@ -7,7 +7,6 @@ import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useGetProjectLazyQuery,
-  useUpdateOnlineFlagMutation,
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
   useCreateListMutation,
@@ -17,8 +16,10 @@ import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
+import { usePresence } from 'hooks/usePresence'
 import { List } from 'types/list'
 import { Task } from 'types/task'
+import { JsonType } from 'types/completeAnimation'
 import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
@@ -26,12 +27,9 @@ import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
-// import { TaskCompletedEffect } from 'components/models/task/TaskCompletedEffect'
-import { TaskSwordAnimetion } from 'components/models/task/animation/TaskSwordAnimetion'
-import { TaskHammerAnimetion } from 'components/models/task/animation/TaskHammerAnimetion'
+import { TaskCompleteAnimetion } from 'components/models/task/animation/TaskCompleteAnimetion'
 import { Notifications } from 'types/notification'
-import { usePresence } from 'hooks/usePresence'
-import plan from 'components/models/task/animation/config/anim_motivation.json'
+import plan from 'components/models/task/animation/config/anim_plan.json'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -44,7 +42,7 @@ export const ProjectDetail: FC = () => {
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
   const inputUserName = useInput('')
   const [aa, ii] = useState({ technology: false, plan: false })
-  const [test, setTest] = useState<any>()
+  const [test, setTest] = useState<JsonType>()
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
@@ -402,9 +400,8 @@ export const ProjectDetail: FC = () => {
 
   return (
     <>
-      {/* {aa.technology && <TaskSwordAnimetion />} */}
-      {aa.plan && <TaskHammerAnimetion json={test} />}
       <LazyLoading />
+      {aa.plan && <TaskCompleteAnimetion json={test ?? plan} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}
