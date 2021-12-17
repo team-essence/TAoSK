@@ -1,4 +1,4 @@
-import { DEFAUT_USER } from 'consts/defaultImages'
+import { DEFAULT_USER } from 'consts/defaultImages'
 
 /**
  * 画像を正規表現でマッチさせる
@@ -15,5 +15,5 @@ export const collatingImagesInAzure = async (
   const regexp = new RegExp(search, 'g')
   const url = blobsInContainer.find(i => i.match(regexp))
 
-  return url ? url : DEFAUT_USER
+  return url ? url : DEFAULT_USER
 }

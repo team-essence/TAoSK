@@ -41,6 +41,7 @@ frontend/
 | consts       | 変更が無い値                          |
 | providers    | provider の設定                       |
 | routes       | ルーティングの設定                    |
+| types        | 共通で使う型                          |
 | utils        | 通常関数                              |
 | env          | env 系の設定                          |
 | styles       | 初期スタイル設定                      |

@@ -1,5 +1,5 @@
 import React, { FCX } from 'react'
-import { DEFAUT_USER } from 'consts/defaultImages'
+import { DEFAULT_USER } from 'consts/defaultImages'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import styled, { css } from 'styled-components'
 
@@ -15,7 +15,7 @@ export const Avatar: FCX<Props> = ({ className, image, size }) => {
     <StyledAvatar
       className={className}
       size={size}
-      src={image ? image : DEFAUT_USER}
+      src={image ? image : DEFAULT_USER}
       alt="avatar"
     />
   )

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { DEFAUT_USER } from 'consts/defaultImages'
+import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
@@ -42,7 +42,7 @@ export const ProjectList: FC = () => {
     <>
       <LazyLoading />
       <ProjectListHeader
-        iconImage={userData.data?.user.icon_image ?? DEFAUT_USER}
+        iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
         name={userData.data?.user.name ?? ''}
         uid={userData.data?.user.id ?? ''}
         totalExp={userData.data?.user.exp ?? 0}
