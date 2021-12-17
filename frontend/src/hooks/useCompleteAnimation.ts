@@ -8,6 +8,14 @@ type UseCompleteAnimationReturn<T extends HTMLElement> = {
   setIsCompleted: Dispatch<SetStateAction<boolean>>
 }
 
+/**
+ * タスク完了時にアニメーションのJSONを受け取ってDOMに設定する
+ * @param { JsonType } json
+ * @returns { RefObject<T> } anchorEl アニメーションを再生するDOMのrefと繋げる
+ * @returns { boolean } isCompleted タスクが完了したか
+ * @returns { Dispatch<SetStateAction<boolean>> } setIsCompleted タスクの完了を制御
+ */
+
 export const useCompleteAnimation = <T extends HTMLElement>(
   json: JsonType,
 ): UseCompleteAnimationReturn<T> => {
@@ -34,9 +42,5 @@ export const useCompleteAnimation = <T extends HTMLElement>(
     }
   }, [json, anchorEl.current])
 
-  return {
-    anchorEl,
-    isCompleted,
-    setIsCompleted,
-  }
+  return { anchorEl, isCompleted, setIsCompleted }
 }
