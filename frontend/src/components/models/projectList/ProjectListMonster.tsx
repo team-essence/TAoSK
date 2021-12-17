@@ -1,8 +1,13 @@
 import React, { FCX } from 'react'
-import { RatingView } from 'react-simple-star-rating'
+import Rating from '@mui/material/Rating'
 import styled from 'styled-components'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
+import { ShinyStarIcon } from 'components/ui/icon/ShinyStarIcon'
+import { EmptyShinyStarIcon } from 'components/ui/icon/EmptyShinyStarIcon'
+import {
+  calculateMinSizeBasedOnFigmaHeight,
+  calculateMinSizeBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
 import date from 'utils/date/date'
 
 type Props = {
@@ -23,11 +28,14 @@ export const ProjectListMonster: FCX<Props> = ({ specie, difficulty, limitDeadli
         </StyledMonsterStatus>
         <StyledMonsterStatus>
           <h4>危険度</h4>
-          <RatingContainer>
-            <RatingView ratingValue={difficulty ?? 0}>
-              <img src="/svg/star.svg" alt="スター" />
-            </RatingView>
-          </RatingContainer>
+
+          <StyledRating
+            max={10}
+            value={difficulty ?? 1}
+            icon={<StyledShinyStarIcon />}
+            emptyIcon={<StyledEmptyShinyStarIcon />}
+            readOnly
+          />
         </StyledMonsterStatus>
         <StyledMonsterStatus>
           <h4>制限期日</h4>
@@ -61,11 +69,14 @@ const StyledMonsterStatus = styled.div`
     border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   }
 `
-
-const RatingContainer = styled.div`
-  span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+const StyledRating = styled(Rating)`
+  width: ${calculateMinSizeBasedOnFigma(251)};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
+const StyledShinyStarIcon = styled(ShinyStarIcon)`
+  width: ${calculateMinSizeBasedOnFigma(20)};
+  height: ${calculateMinSizeBasedOnFigma(20)};
+`
+const StyledEmptyShinyStarIcon = StyledShinyStarIcon.withComponent(EmptyShinyStarIcon)
