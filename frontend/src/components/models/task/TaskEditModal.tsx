@@ -159,7 +159,7 @@ const StyledLeftColumn = styled.div`
   overflow-x: visible;
   overflow-y: scroll;
   will-change: transform;
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 `
@@ -169,7 +169,7 @@ const StyledRightColumn = styled.div`
   overflow-x: visible;
   overflow-y: scroll;
   will-change: transform;
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
 `
@@ -250,6 +250,24 @@ const StyledScrollableOverlay = styled.div`
   overflow-y: scroll;
   will-change: transform;
   background-color: transparent;
+
+  ${({ theme }) =>
+    css`
+      &::-webkit-scrollbar {
+        width: 12px;
+        background-color: #f5f5f5;
+      }
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px ${convertIntoRGBA(theme.COLORS.BLACK, 0.3)};
+        border-radius: 10px;
+        background-color: #f5f5f5;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px ${convertIntoRGBA(theme.COLORS.BLACK, 0.3)};
+        background-color: ${theme.COLORS.MINE_SHAFT};
+      }
+    `}
 `
 const StyledScrollableDummy = styled.div<{ height: number }>`
   width: 100%;
