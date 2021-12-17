@@ -64,7 +64,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
       .catch(() => toast.error(`${title}の削除に失敗しました`))
   }
 
-  if (!projectId) return null
+  if (!projectId) return <></>
 
   return (
     <Draggable
