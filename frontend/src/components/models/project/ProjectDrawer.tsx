@@ -84,10 +84,10 @@ const StyledMainWrap = styled.div<{ isOpen: boolean }>`
   ${({ isOpen }) =>
     isOpen
       ? css`
-          width: ${calculateVwBasedOnFigma(920)};
+          width: ${calculateVwBasedOnFigma(946)};
         `
       : css`
-          width: ${calculateVwBasedOnFigma(1160)};
+          width: ${calculateVwBasedOnFigma(1156)};
         `}
 `
 const StyledDrawer = {

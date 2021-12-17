@@ -155,7 +155,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
 
 const StyledColumnContainer = styled.ul`
   position: relative;
-  width: ${calculateMinSizeBasedOnFigma(270)};
+  width: ${calculateMinSizeBasedOnFigma(280)};
   min-height: ${calculateMinSizeBasedOnFigma(206)};
   border: 1px solid ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
   border-radius: 3px;

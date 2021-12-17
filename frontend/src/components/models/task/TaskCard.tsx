@@ -193,6 +193,7 @@ const StyledFlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
 `
 const StyledAvatarContainer = styled.div`
   display: flex;
@@ -200,7 +201,7 @@ const StyledAvatarContainer = styled.div`
 `
 const StyledCommentContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigma(4)};
+  gap: ${calculateMinSizeBasedOnFigma(2)};
   align-items: center;
 `
 const StyledFootContainer = styled.div`
