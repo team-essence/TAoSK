@@ -90,7 +90,7 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
     const initializeInputValues = () => {
       setValue('title', '', { shouldValidate: true })
       setValue('overview', '', { shouldValidate: true })
-      setValue('date', '')
+      setValue('date', '', { shouldValidate: true })
     }
     const hasError = Object.keys(errors).length
     if (!isComponentMounted.current) {

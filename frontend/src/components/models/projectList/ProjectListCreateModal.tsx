@@ -72,6 +72,7 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
               registration={register('date', {
                 required: '期限を選択してください',
               })}
+              required={true}
             />
 
             <StyledDifficultyWrapper>
@@ -94,6 +95,12 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
             />
           </StyledRightColumn>
         </StyledInputsWrapper>
+
+        <StyledProjectCreateButton
+          text="作成"
+          onClick={handleCreateProject}
+          disabled={isDisabled}
+        />
       </StyledFormWrapper>
     </StyledModal>
   )
@@ -202,3 +209,6 @@ const StyledStarIcon = styled(StarIcon)`
   height: ${calculateMinSizeBasedOnFigma(22)};
 `
 const StyledEmptyStarIcon = StyledStarIcon.withComponent(EmptyStarIcon)
+const StyledProjectCreateButton = styled(ModalButton)`
+  margin: 0 auto;
+`
