@@ -193,6 +193,7 @@ const StyledFlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
 `
 const StyledAvatarContainer = styled.div`
   display: flex;
