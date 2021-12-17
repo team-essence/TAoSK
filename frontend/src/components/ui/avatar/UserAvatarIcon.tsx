@@ -33,7 +33,7 @@ export const UserAvatarIcon: FCX<Props> = ({
           anchorEl={anchorEl}
           handleClose={closePopover}
           anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'top',
             horizontal: 'left',
           }}
           transformOrigin={{
