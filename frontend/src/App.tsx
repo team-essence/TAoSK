@@ -4,6 +4,8 @@ import { AppRoutes } from 'routes/AppRoutes'
 import { AppProvider } from 'providers/AppProvider'
 import { GlobalStyle } from 'styles/globalStyle'
 import { ToastContainer } from 'react-toastify'
+import { isMobile } from 'react-device-detect'
+import { MobileScreen } from 'pages/mobile/MobileScreen'
 import { ContentWrapper } from 'components/ui/wrapper/ContentWrapper'
 
 const App: FC = () => {
@@ -11,11 +13,15 @@ const App: FC = () => {
     <AppProvider>
       <GlobalStyle />
       <ToastContainer />
-      <BrowserRouter>
-        <ContentWrapper>
-          <AppRoutes />
-        </ContentWrapper>
-      </BrowserRouter>
+      {isMobile ? (
+        <MobileScreen />
+      ) : (
+        <BrowserRouter>
+          <ContentWrapper>
+            <AppRoutes />
+          </ContentWrapper>
+        </BrowserRouter>
+      )}
     </AppProvider>
   )
 }
