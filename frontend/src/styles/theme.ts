@@ -158,11 +158,6 @@ export const theme = {
         CENTER: '#D4C25C',
         END: '#B2A139',
       },
-
-      DIFFICULTY_STAR: {
-        top: '#FFE800',
-        bottom: '#FFB800',
-      },
     },
 
     FONT: {
