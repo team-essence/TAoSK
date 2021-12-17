@@ -200,7 +200,7 @@ const StyledAvatarContainer = styled.div`
 `
 const StyledCommentContainer = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigma(4)};
+  gap: ${calculateMinSizeBasedOnFigma(2)};
   align-items: center;
 `
 const StyledFootContainer = styled.div`
