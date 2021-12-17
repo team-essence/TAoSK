@@ -8,22 +8,23 @@ import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserData } from 'types/userData'
-import type { TaskModalType } from 'types/taskModal'
 import type { Task } from 'types/task'
 
 type Props = {
   setUserData: Dispatch<SetStateAction<UserData>>
   userData: UserData
-  taskModalType: TaskModalType
+  shouldCache: boolean
   completed_flag?: Task['completed_flg']
+  isFixedFirstUser?: boolean
 }
 
 export const SearchMemberField: FCX<Props> = ({
   className,
   setUserData,
   userData,
-  taskModalType,
+  shouldCache,
   completed_flag = false,
+  isFixedFirstUser = false,
 }) => {
   const {
     onChange,
@@ -34,7 +35,7 @@ export const SearchMemberField: FCX<Props> = ({
     selectedUserData,
     setSelectedUserData,
     value,
-  } = useSearchMember(userData, taskModalType)
+  } = useSearchMember(userData, shouldCache)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserData.length,
   )
@@ -97,7 +98,10 @@ export const SearchMemberField: FCX<Props> = ({
           <StyledMembersContainer ref={containerRef}>
             {selectedUserData.map((data, index) => {
               const boxCount = index + 1
+
               if (boxCount < maxBoxes) {
+                const shouldHideDeleteBtn = completed_flag || (index === 0 && isFixedFirstUser)
+
                 return (
                   <div key={index} ref={avatarRef}>
                     <UserAvatarIcon
@@ -105,7 +109,9 @@ export const SearchMemberField: FCX<Props> = ({
                       iconImage={data.icon_image}
                       name={data.name}
                       occupation={data.occupation.name}
-                      onClickDeleteBtn={completed_flag ? undefined : () => onClickDeleteBtn(index)}
+                      onClickDeleteBtn={
+                        shouldHideDeleteBtn ? undefined : () => onClickDeleteBtn(index)
+                      }
                     />
                   </div>
                 )

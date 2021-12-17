@@ -3,7 +3,6 @@ import { useDebounce } from 'hooks/useDebounce'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import type { UserData } from 'types/userData'
-import type { TaskModalType } from 'types/taskModal'
 
 type UseSearchMemberReturn = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -31,14 +30,17 @@ let cachedSelectedUserData: UserData = []
  * @return {string} returns.value - 検索欄に入力するinputタグのvalue
  * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
-export const useSearchMember = (userData: UserData, type: TaskModalType): UseSearchMemberReturn => {
+export const useSearchMember = (
+  userData: UserData,
+  shouldCache: boolean,
+): UseSearchMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
   const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
   const [candidateUserData, setCandidateUserData] = useState<UserData>([])
   const [selectedUserData, setSelectedUserData] = useState<UserData>(
-    type === 'create' && cachedSelectedUserData.length ? cachedSelectedUserData : userData,
+    shouldCache && cachedSelectedUserData.length ? cachedSelectedUserData : userData,
   )
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
@@ -54,7 +56,7 @@ export const useSearchMember = (userData: UserData, type: TaskModalType): UseSea
     }
 
     return () => {
-      if (type === 'create') cachedSelectedUserData = selectedUserData
+      if (shouldCache) cachedSelectedUserData = selectedUserData
     }
   }, [userData])
 

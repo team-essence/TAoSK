@@ -1,17 +1,17 @@
 import { useState, useRef, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
 import { useParams } from 'react-router-dom'
 import { useForm, UseFormRegister, FieldErrors } from 'react-hook-form'
-import type { UserData } from 'types/userData'
 import toast from 'utils/toast/toast'
-import { useAddTaskMutation } from 'pages/projectDetail/projectDetail.gen'
+import { useAddTaskMutation, AddTaskMutationVariables } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
+import type { UserData } from 'types/userData'
 import { StatusParam } from 'types/status'
 import { INITIAL_STATUS_COUNTS } from 'consts/status'
 
 type StatusCounts = Record<StatusParam, number>
-
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
+type UserIds = AddTaskMutationVariables['assignTask']['users']
 
 type UseTaskCreateFormReturn<T> = {
   handleAddTask: () => void
@@ -31,7 +31,7 @@ type UseTaskCreateForm<T> = (args: {
 }) => UseTaskCreateFormReturn<T>
 
 /**
- * タスク追加処理の初期設定を行う
+ * タスク追加に関する処理
  * @returns {boolean} isDisabled - 登録ボタンをdisabledにするか
  * @returns {Object} {
  *  register,
@@ -70,38 +70,20 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
       setStatusCounts({ ...INITIAL_STATUS_COUNTS })
 
       closeModal()
-      toast.success('タスクを作成しました')
+      toast.success('タスクを追加しました')
     },
     onError(err) {
-      toast.error('タスクの作成失敗しました')
+      toast.error('タスクの追加に失敗しました')
     },
   })
-
-  useEffect(() => {
-    const initializeInputValues = () => {
-      setValue('title', '', { shouldValidate: true })
-      setValue('overview', '', { shouldValidate: true })
-      setValue('date', '')
-    }
-    const hasError = Object.keys(errors).length
-    if (!isComponentMounted.current) {
-      initializeInputValues()
-      isComponentMounted.current = true
-    } else if (hasError) {
-      setIsDisabled(true)
-    } else {
-      setIsDisabled(false)
-    }
-  }, [watchAllFields, errors])
 
   const handleAddTask = useCallback(() => {
     if (!currentUser) return
 
     const { title, overview, date } = getValues()
     const { technology, achievement, solution, motivation, design, plan } = statusCounts
-    const users = userData.map(data => {
-      return { user_id: data.id }
-    })
+    const users: UserIds = userData.map(data => ({ user_id: data.id }))
+
     addTask({
       variables: {
         newTask: {
@@ -125,7 +107,24 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
         },
       },
     })
-  }, [statusCounts, userData])
+  }, [statusCounts, userData, currentUser])
+
+  useEffect(() => {
+    const initializeInputValues = () => {
+      setValue('title', '', { shouldValidate: true })
+      setValue('overview', '', { shouldValidate: true })
+      setValue('date', '')
+    }
+    const hasError = Object.keys(errors).length
+    if (!isComponentMounted.current) {
+      initializeInputValues()
+      isComponentMounted.current = true
+    } else if (hasError) {
+      setIsDisabled(true)
+    } else {
+      setIsDisabled(false)
+    }
+  }, [watchAllFields, errors])
 
   return {
     register,

@@ -10,46 +10,35 @@ import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
-import { SearchMemberField } from 'components/ui/form/SearchMemberField'
-import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
-import { ModalButton } from 'components/ui/button/ModalButton'
+import Rating from '@mui/material/Rating'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
+import { ModalButton } from 'components/ui/button/ModalButton'
+import { StarIcon } from 'components/ui/icon/StarIcon'
+import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
+import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
-import { STATUS_TYPE } from 'consts/status'
 
 type Props = {
   shouldShow: boolean
   closeModal: () => void
-  verticalSort: number
-  list_id: string
 }
 
-export const TaskCreateModal: FCX<Props> = ({
-  shouldShow,
-  closeModal,
-  className,
-  verticalSort,
-  list_id,
-}) => {
+export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, className }) => {
   const {
-    handleAddTask,
-    isDisabled,
     register,
+    isDisabled,
     errors,
-    statusCounts,
-    setStatusCounts,
     userData,
     setUserData,
-  } = useTaskCreateForm({
-    verticalSort,
-    list_id,
-    closeModal,
-  })
+    difficulty,
+    handleDifficulty,
+    handleCreateProject,
+  } = useProjectCreateForm({ closeModal })
 
   return (
     <StyledModal
-      title="タスク作成"
+      title="プロジェクト作成"
       shouldShow={shouldShow}
       onClickCloseBtn={closeModal}
       className={className}>
@@ -67,48 +56,63 @@ export const TaskCreateModal: FCX<Props> = ({
             />
             <StyledOverviewField
               label="概要"
-              placeholder="タスク概要を入力してください"
+              placeholder="プロジェクト概要を入力してください"
               registration={register('overview', {
-                maxLength: { value: 1024, message: '1024文字以内で入力してください' },
+                maxLength: { value: 255, message: '255文字以内で入力してください' },
               })}
               required={false}
             />
           </StyledLeftColumn>
+
           <StyledBorder />
+
           <StyledRightColumn>
-            <StyledCalenderField label="期限" registration={register('date')} required={false} />
-            <StyledSearchMemberField
+            <StyledCalenderField
+              label="期限"
+              registration={register('date', {
+                required: '期限を選択してください',
+              })}
+              required={true}
+            />
+
+            <StyledDifficultyWrapper>
+              <StyledDifficultyTitle>難易度</StyledDifficultyTitle>
+              <StyledDifficultyRate
+                defaultValue={1}
+                value={difficulty}
+                onChange={handleDifficulty}
+                max={10}
+                icon={<StyledStarIcon />}
+                emptyIcon={<StyledEmptyStarIcon />}
+              />
+            </StyledDifficultyWrapper>
+
+            <SearchMemberField
               setUserData={setUserData}
               userData={userData}
               shouldCache={true}
+              isFixedFirstUser={true}
             />
-
-            <StyledStatusWrapper className={className}>
-              <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-              {Object.values(STATUS_TYPE).map((status, index) => (
-                <TaskStatusPointField
-                  status={status}
-                  statusCounts={statusCounts}
-                  setStatusCounts={setStatusCounts}
-                  key={index}
-                />
-              ))}
-            </StyledStatusWrapper>
           </StyledRightColumn>
         </StyledInputsWrapper>
-        <StyledTaskCreateButton text="作成" onClick={handleAddTask} disabled={isDisabled} />
+
+        <StyledProjectCreateButton
+          text="作成"
+          onClick={handleCreateProject}
+          disabled={isDisabled}
+        />
       </StyledFormWrapper>
     </StyledModal>
   )
 }
 
 const padding = `${calculateMinSizeBasedOnFigma(46)} ${calculateMinSizeBasedOnFigma(26)}
-${calculateMinSizeBasedOnFigma(24)}` // ts-styled-pluginエラーを避けるため
+${calculateMinSizeBasedOnFigma(17)}` // ts-styled-pluginエラーを避けるため
 
 const StyledModal = styled(Modal)`
   box-sizing: border-box;
   width: ${calculateMinSizeBasedOnFigma(790)};
-  height: ${calculateMinSizeBasedOnFigma(709)};
+  height: ${calculateMinSizeBasedOnFigma(453)};
   padding: ${padding};
 `
 const StyledFormWrapper = styled.div`
@@ -123,7 +127,7 @@ const StyledInputsWrapper = styled.div`
   justify-content: space-between;
   flex-grow: 1;
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigma(541)};
+  height: ${calculateMinSizeBasedOnFigma(316)};
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -178,22 +182,33 @@ const StyledOverviewField = styled(TextAreaField)`
   `)}
 `
 const StyledCalenderField = styled(CalenderField)`
-  margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(17)};
 `
-const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
-const StyledStatusWrapper = styled.div`
+const StyledDifficultyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: ${calculateMinSizeBasedOnFigma(8)};
+  margin-bottom: ${calculateMinSizeBasedOnFigma(16)};
+  height: ${calculateMinSizeBasedOnFigma(51)};
 `
-const StyledStatusTitle = styled.p`
+const StyledDifficultyTitle = styled.p`
   ${({ theme }) => css`
     color: ${theme.COLORS.TOBACCO_BROWN};
-    font-size: ${theme.FONT_SIZES.SIZE_16};
+    font-size: ${theme.FONT_SIZES.SIZE_14};
     font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
   `}
 `
-const StyledTaskCreateButton = styled(ModalButton)`
-  margin: ${calculateMinSizeBasedOnFigma(31)} auto 0;
+const StyledDifficultyRate = styled(Rating)`
+  width: ${calculateMinSizeBasedOnFigma(251)};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const StyledStarIcon = styled(StarIcon)`
+  width: ${calculateMinSizeBasedOnFigma(22)};
+  height: ${calculateMinSizeBasedOnFigma(22)};
+`
+const StyledEmptyStarIcon = StyledStarIcon.withComponent(EmptyStarIcon)
+const StyledProjectCreateButton = styled(ModalButton)`
+  margin: 0 auto;
 `

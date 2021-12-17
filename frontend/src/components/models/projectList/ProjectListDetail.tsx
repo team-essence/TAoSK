@@ -2,16 +2,16 @@ import React, { FCX } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { ProjectListMonster } from './ProjectListMonster'
-import { ProjectListProjectInfo } from './ProjectListProjectInfo'
+import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
+import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
 import { UsersQuery } from 'pages/projectList/projectList.gen'
-import logger from 'utils/debugger/logger'
 
 type Props = {
   isJoiningProject: boolean
   userQuery: UsersQuery | undefined
   selectProject: number
+  openModal: () => void
 }
 
 export const ProjectListDetail: FCX<Props> = ({
@@ -19,12 +19,11 @@ export const ProjectListDetail: FCX<Props> = ({
   isJoiningProject,
   userQuery,
   selectProject,
+  openModal,
 }) => {
   const navigate = useNavigate()
 
-  const handleTransitionToProject = (id?: string) => {
-    navigate(`/projects/${id}`)
-  }
+  const handleTransitionToProject = (id?: string) => navigate(`/projects/${id}`)
 
   if (!isJoiningProject)
     return (
@@ -37,12 +36,10 @@ export const ProjectListDetail: FCX<Props> = ({
             <br />
             今すぐ新しいプロジェクトを始めますか
           </p>
-
-          {/* TODO: モーダルを開く関数を受け渡す */}
           <ComplicateButton
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="プロジェクト作成"
-            onClick={() => logger.debug('開ゴマ')}
+            onClick={openModal}
           />
         </StyledNoProjectContainer>
       </StyledNoProjectListDetailContainer>

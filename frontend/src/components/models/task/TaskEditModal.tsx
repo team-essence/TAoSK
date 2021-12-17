@@ -87,7 +87,7 @@ export const TaskEditModal: FCX<Props> = ({
               <StyledSearchMemberField
                 setUserData={setUserData}
                 userData={userData}
-                taskModalType="edit"
+                shouldCache={false}
                 completed_flag={completed_flg}
               />
               <StyledTaskEditStatusPointField
