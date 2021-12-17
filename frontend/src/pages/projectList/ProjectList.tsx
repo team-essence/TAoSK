@@ -4,6 +4,7 @@ import { DEFAUT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
+import { ProjectListCreateModal } from 'components/models/projectList/ProjectListCreateModal'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
@@ -30,6 +31,7 @@ export const ProjectList: FC = () => {
   })
   const [selectProject, setSelectProject] = useState(0)
   const [notifications, setNotifications] = useState<Notifications>([])
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   useEffect(() => {
     if (!currentUser) return
@@ -56,7 +58,7 @@ export const ProjectList: FC = () => {
               <ComplicateButton
                 buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
                 text="プロジェクト作成"
-                onClick={() => logger.debug('hoge')}
+                onClick={() => setShouldShowModal(true)}
               />
             </StyledCreateProjectButton>
 
@@ -84,10 +86,16 @@ export const ProjectList: FC = () => {
           isJoiningProject={!!userData.data?.user.groups.length}
           userQuery={userData.data}
           selectProject={selectProject}
+          openModal={() => setShouldShowModal(true)}
         />
 
         <StyledProjectListBackground />
       </StyledProjectListPageContainer>
+
+      <ProjectListCreateModal
+        shouldShow={shouldShowModal}
+        closeModal={() => setShouldShowModal(false)}
+      />
     </>
   )
 }

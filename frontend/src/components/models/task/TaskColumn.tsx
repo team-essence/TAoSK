@@ -135,7 +135,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                       </StyledButtonContainer>
                       <TaskCreateModal
                         shouldShow={shouldShowModal}
-                        setShouldShow={setShouldShowModal}
+                        closeModal={() => setShouldShowModal(false)}
                         verticalSort={tasks.length}
                         list_id={list_id}
                       />

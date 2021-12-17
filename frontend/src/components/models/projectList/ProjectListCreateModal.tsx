@@ -10,46 +10,24 @@ import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
-import { SearchMemberField } from 'components/ui/form/SearchMemberField'
-import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
-import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
+import { ModalButton } from 'components/ui/button/ModalButton'
+import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
-import { STATUS_TYPE } from 'consts/status'
 
 type Props = {
   shouldShow: boolean
   closeModal: () => void
-  verticalSort: number
-  list_id: string
 }
 
-export const TaskCreateModal: FCX<Props> = ({
-  shouldShow,
-  closeModal,
-  className,
-  verticalSort,
-  list_id,
-}) => {
-  const {
-    handleAddTask,
-    isDisabled,
-    register,
-    errors,
-    statusCounts,
-    setStatusCounts,
-    userData,
-    setUserData,
-  } = useTaskCreateForm({
-    verticalSort,
-    list_id,
-    closeModal,
-  })
+export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, className }) => {
+  const { register, isDisabled, errors, userData, setUserData, handleCreateProject } =
+    useProjectCreateForm({ closeModal })
 
   return (
     <StyledModal
-      title="タスク作成"
+      title="プロジェクト作成"
       shouldShow={shouldShow}
       onClickCloseBtn={closeModal}
       className={className}>
@@ -67,48 +45,37 @@ export const TaskCreateModal: FCX<Props> = ({
             />
             <StyledOverviewField
               label="概要"
-              placeholder="タスク概要を入力してください"
+              placeholder="プロジェクト概要を入力してください"
               registration={register('overview', {
-                maxLength: { value: 1024, message: '1024文字以内で入力してください' },
+                maxLength: { value: 255, message: '255文字以内で入力してください' },
               })}
               required={false}
             />
           </StyledLeftColumn>
-          <StyledBorder />
-          <StyledRightColumn>
-            <StyledCalenderField label="期限" registration={register('date')} required={false} />
-            <StyledSearchMemberField
-              setUserData={setUserData}
-              userData={userData}
-              taskModalType="create"
-            />
 
-            <StyledStatusWrapper className={className}>
-              <StyledStatusTitle>獲得ステータスポイント</StyledStatusTitle>
-              {Object.values(STATUS_TYPE).map((status, index) => (
-                <TaskStatusPointField
-                  status={status}
-                  statusCounts={statusCounts}
-                  setStatusCounts={setStatusCounts}
-                  key={index}
-                />
-              ))}
-            </StyledStatusWrapper>
+          <StyledBorder />
+
+          <StyledRightColumn>
+            <StyledCalenderField
+              label="期限"
+              registration={register('date', {
+                required: '期限を選択してください',
+              })}
+            />
           </StyledRightColumn>
         </StyledInputsWrapper>
-        <StyledTaskCreateButton text="作成" onClick={handleAddTask} disabled={isDisabled} />
       </StyledFormWrapper>
     </StyledModal>
   )
 }
 
 const padding = `${calculateMinSizeBasedOnFigma(46)} ${calculateMinSizeBasedOnFigma(26)}
-${calculateMinSizeBasedOnFigma(24)}` // ts-styled-pluginエラーを避けるため
+${calculateMinSizeBasedOnFigma(17)}` // ts-styled-pluginエラーを避けるため
 
 const StyledModal = styled(Modal)`
   box-sizing: border-box;
   width: ${calculateMinSizeBasedOnFigma(790)};
-  height: ${calculateMinSizeBasedOnFigma(709)};
+  height: ${calculateMinSizeBasedOnFigma(453)};
   padding: ${padding};
 `
 const StyledFormWrapper = styled.div`
@@ -123,7 +90,7 @@ const StyledInputsWrapper = styled.div`
   justify-content: space-between;
   flex-grow: 1;
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigma(541)};
+  height: ${calculateMinSizeBasedOnFigma(316)};
 `
 const StyledBorder = styled.div`
   width: 1px;
@@ -178,22 +145,5 @@ const StyledOverviewField = styled(TextAreaField)`
   `)}
 `
 const StyledCalenderField = styled(CalenderField)`
-  margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
-`
-const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
-const StyledStatusWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: ${calculateMinSizeBasedOnFigma(8)};
-`
-const StyledStatusTitle = styled.p`
-  ${({ theme }) => css`
-    color: ${theme.COLORS.TOBACCO_BROWN};
-    font-size: ${theme.FONT_SIZES.SIZE_16};
-    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
-  `}
-`
-const StyledTaskCreateButton = styled(ModalButton)`
-  margin: ${calculateMinSizeBasedOnFigma(31)} auto 0;
+  margin-bottom: ${calculateMinSizeBasedOnFigma(17)};
 `
