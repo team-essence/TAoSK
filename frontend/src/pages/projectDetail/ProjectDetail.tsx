@@ -22,6 +22,7 @@ import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { StatusParam } from 'types/status'
 import { List } from 'types/list'
 import { Task } from 'types/task'
+import { DEFAULT_USER } from 'consts/defaultImages'
 import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
@@ -404,11 +405,11 @@ export const ProjectDetail: FC = () => {
       <LazyLoading />
       {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
-        iconImage={String(currentUserData.data?.user.icon_image)}
-        name={String(currentUserData.data?.user.name)}
-        uid={String(currentUserData.data?.user.id)}
-        totalExp={Number(currentUserData.data?.user.exp)}
-        company={String(currentUserData.data?.user.company)}
+        iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
+        name={currentUserData.data?.user.name ?? ''}
+        uid={currentUserData.data?.user.id ?? ''}
+        totalExp={currentUserData.data?.user.exp ?? 0}
+        company={currentUserData.data?.user.company ?? ''}
         notifications={notifications}
         list={list}
       />

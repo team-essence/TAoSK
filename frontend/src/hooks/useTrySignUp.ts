@@ -3,7 +3,7 @@ import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { uploadFileToBlob } from 'utils/lib/azure/azureStorageBlob'
 import { collatingImagesInAzure } from 'utils/lib/azure/collatingImagesInAzure'
 import { occupationList } from 'consts/occupationList'
-import { DEFAUT_USER } from 'consts/defaultImages'
+import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAddUserMutation } from 'pages/auth/signUp.gen'
 import logger from 'utils/debugger/logger'
 import { FIREBASE_ERROR_TYPE } from 'consts/firebaseError'
@@ -61,7 +61,7 @@ export const useTrySignUp: UseTrySignUp = ({
       .then(async result => {
         const blobsInContainer: string[] = await uploadFileToBlob(fileData)
         const url = !fileData
-          ? DEFAUT_USER
+          ? DEFAULT_USER
           : await collatingImagesInAzure(fileData, blobsInContainer)
 
         await Promise.all([addUser(result.user.uid, url)])

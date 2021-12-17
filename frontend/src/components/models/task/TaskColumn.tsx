@@ -64,6 +64,8 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
       .catch(() => toast.error(`${title}の削除に失敗しました`))
   }
 
+  if (!projectId) return null
+
   return (
     <Draggable
       draggableId={`column-${id}`}
@@ -120,7 +122,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                             horizontal: 'left',
                           }}
                           handleClose={closePopover}
-                          handleRemove={() => handleRemoveList(Number(id), String(projectId))}
+                          handleRemove={() => handleRemoveList(Number(id), projectId)}
                           handleEdit={e => !!e && controll.enableTextArea(e)}
                         />
                       </>

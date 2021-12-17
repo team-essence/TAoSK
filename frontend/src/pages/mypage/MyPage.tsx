@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { DEFAUT_USER } from 'consts/defaultImages'
+import { DEFAULT_USER } from 'consts/defaultImages'
 import { Notifications } from 'types/notification'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useGetUserLazyQuery } from './mypage.gen'
@@ -44,7 +44,7 @@ export const MyPage: FC = () => {
     <>
       <LazyLoading />
       <ProjectListHeader
-        iconImage={userQuery.data?.user.icon_image ?? DEFAUT_USER}
+        iconImage={userQuery.data?.user.icon_image ?? DEFAULT_USER}
         name={userQuery.data?.user.name ?? ''}
         uid={userQuery.data?.user.id ?? ''}
         totalExp={userQuery.data?.user.exp ?? 0}
@@ -54,7 +54,7 @@ export const MyPage: FC = () => {
       <StyledMyPageContainer>
         <StyledMyPageGridContainer>
           <MyPageUserInfo
-            iconImage={userQuery.data?.user.icon_image ?? DEFAUT_USER}
+            iconImage={userQuery.data?.user.icon_image ?? DEFAULT_USER}
             name={userQuery.data?.user.name ?? ''}
             uid={userQuery.data?.user.id ?? ''}
             company={userQuery.data?.user.company ?? ''}
