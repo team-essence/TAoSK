@@ -8,8 +8,8 @@ export const Loading: FCX = () => {
   useEffect(() => {
     lottie.loadAnimation({
       container: document.querySelector('#now-loading') as HTMLDivElement,
-      animationData: nowLoading,
       renderer: 'svg',
+      animationData: JSON.parse(JSON.stringify(nowLoading)),
     })
   }, [])
 

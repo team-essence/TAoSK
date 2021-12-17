@@ -77,7 +77,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
           <Droppable droppableId={String(listIndex)} type={DROP_TYPE.TASK}>
             {listProvided => (
               <StyledColumnContainer ref={listProvided.innerRef} {...listProvided.droppableProps}>
-                <StyledHeadCotanier
+                <StyledHeadContainer
                   ref={sizeInspectedEl}
                   listIndex={listIndex}
                   listLength={listLength}>
@@ -126,7 +126,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                       </>
                     )}
                   </StyledInnerHeadWrap>
-                </StyledHeadCotanier>
+                </StyledHeadContainer>
                 <StyledTaskListContainer headerHeight={height}>
                   {listIndex === 0 && (
                     <>
@@ -171,7 +171,7 @@ const StyledColumnContainer = styled.ul`
     left: 0px;
   }
 `
-const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>`
+const StyledHeadContainer = styled.div<{ listIndex: number; listLength: number }>`
   display: flex;
   position: relative;
   min-height: ${calculateMinSizeBasedOnFigma(48)};
@@ -195,7 +195,7 @@ const StyledHeadCotanier = styled.div<{ listIndex: number; listLength: number }>
 const StyledButtonContainer = styled.div`
   padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
 `
-const maxListHeight = 610
+const maxListHeight = 628
 const StyledContainer = styled.div`
   margin-right: ${calculateMinSizeBasedOnFigma(16)};
   max-height: ${calculateVhBasedOnFigma(maxListHeight)};

@@ -2,6 +2,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AssignTaskInput } from 'src/allocations/dto/newAllocation.input';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
+import { UpdatedTask } from './models/udatedTask.model';
 import { Task } from './task';
 import { TasksService } from './tasks.service';
 
@@ -9,7 +10,7 @@ import { TasksService } from './tasks.service';
 export class TasksResolver {
   constructor(private taskService: TasksService) {}
 
-  @Mutation(() => [Task])
+  @Mutation(() => UpdatedTask)
   public async updateTaskSort(
     @Args({ name: 'updateTask' }) updateTask: UpdateTaskSort,
   ) {

@@ -42,12 +42,12 @@ export const TaskCard: FCX<Props> = ({
   } = taskInfo
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
   const params: Params[] = [
-    { param: 'technology', value: technology },
-    { param: 'achievement', value: achievement },
-    { param: 'solution', value: solution },
-    { param: 'motivation', value: motivation },
-    { param: 'design', value: design },
     { param: 'plan', value: plan },
+    { param: 'design', value: design },
+    { param: 'motivation', value: motivation },
+    { param: 'solution', value: solution },
+    { param: 'achievement', value: achievement },
+    { param: 'technology', value: technology },
   ]
 
   const max = params.reduce((prev, current) => (prev.value > current.value ? prev : current))

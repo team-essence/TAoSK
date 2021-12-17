@@ -16,6 +16,10 @@ import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
+import { usePresence } from 'hooks/usePresence'
+import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
+import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
+import { StatusParam } from 'types/status'
 import { List } from 'types/list'
 import { Task } from 'types/task'
 import { DROP_TYPE } from 'consts/dropType'
@@ -25,14 +29,16 @@ import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
+import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { Notifications } from 'types/notification'
-import { usePresence } from 'hooks/usePresence'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
   usePresence()
   const { id } = useParams()
   const { currentUser } = useAuthContext()
+  const { json, setWeapon } = useSetWeaponJson()
+  const { anchorEl, isCompleted, setIsCompleted } = useCompleteAnimation<HTMLDivElement>(json)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
@@ -139,6 +145,10 @@ export const ProjectDetail: FC = () => {
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
+      if (data.updateTaskSort.is_completed) {
+        setWeapon(data.updateTaskSort.high_status_name as StatusParam)
+        setIsCompleted(true)
+      }
     },
     onError(err) {
       logger.debug(err)
@@ -401,6 +411,7 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <LazyLoading />
+      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={String(currentUserData.data?.user.icon_image)}
         name={String(currentUserData.data?.user.name)}
@@ -410,7 +421,6 @@ export const ProjectDetail: FC = () => {
         notifications={notifications}
         list={list}
       />
-
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
           <ProjectDrawer
@@ -437,7 +447,6 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
-
       <StyledBackground />
     </>
   )

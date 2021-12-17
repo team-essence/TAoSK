@@ -32,12 +32,12 @@ export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
       </Drawer>
       <StyledMaterialUiMain open={currentValue}>
         <StyledMainWrap isOpen={currentValue}>
-          <Tesxt>
+          <SignBoardContainer>
             <EmployeeSignBoard
               isOpen={currentValue}
               handleClick={() => setCurrentValue(!currentValue)}
             />
-          </Tesxt>
+          </SignBoardContainer>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
@@ -58,11 +58,11 @@ const StyledContainer = styled.div`
   display: flex;
 `
 const StyledColumnContainer = styled(StyledContainer)`
-  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(24)};
+  padding-bottom: ${calculateMinSizeBasedOnFigmaWidth(32)};
   overflow-x: auto;
   overflow-y: hidden;
   &::-webkit-scrollbar {
-    height: 8px;
+    height: 6px;
   }
   &::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.2);
@@ -73,23 +73,22 @@ const StyledColumnContainer = styled(StyledContainer)`
     border-radius: 10px;
   }
 `
-const Tesxt = styled.div`
+const SignBoardContainer = styled.div`
   position: relative;
   top: ${calculateMinSizeBasedOnFigmaWidth(8)};
 `
 const StyledMainWrap = styled.div<{ isOpen: boolean }>`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(16)};
-  // TODO スクロールバーを表示するためにwidthを指定するとモニターとPCで幅が合わない
-  // ビジュアル的にはそもそもスクロールバーがない方がきれいに見える
-  /* ${({ isOpen }) =>
+  // TODO: リスト全体のwidthを指定するとモニターとPCで幅が合わない
+  ${({ isOpen }) =>
     isOpen
       ? css`
-          width: ${calculateVwBasedOnFigma(960)};
+          width: ${calculateVwBasedOnFigma(920)};
         `
       : css`
           width: ${calculateVwBasedOnFigma(1160)};
-        `} */
+        `}
 `
 const StyledDrawer = {
   width: calculateMinSizeBasedOnFigmaWidth(210),
