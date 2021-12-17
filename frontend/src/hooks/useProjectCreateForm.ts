@@ -4,8 +4,9 @@ import {
   useCreateProjectMutation,
   CreateProjectMutationVariables,
 } from 'pages/projectList/projectList.gen'
-import { useAuthContext } from 'providers/AuthProvider'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import toast from 'utils/toast/toast'
+import type { RatingProps } from '@mui/material/Rating'
 import type { UserData } from 'types/userData'
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
@@ -18,6 +19,8 @@ type UseProjectCreateFormReturn<T> = {
   isDisabled: boolean
   errors: FieldErrors
   userData: UserData
+  difficulty: number
+  handleDifficulty: NonNullable<RatingProps['onChange']>
   setUserData: Dispatch<SetStateAction<UserData>>
 }
 
@@ -35,11 +38,12 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
     setValue,
     watch,
   } = useForm<FormInputs>({ mode: 'onChange' })
-  const { currentUser } = useAuthContext()
+  const { currentUserData } = useGetCurrentUserData()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
   const [userData, setUserData] = useState<UserData>([])
+  const [difficulty, setDifficulty] = useState<number>(1)
   const [createProject] = useCreateProjectMutation({
     onCompleted(data) {
       closeModal()
@@ -50,21 +54,37 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
     },
   })
 
+  const handleDifficulty: NonNullable<RatingProps['onChange']> = (_, value) => {
+    if (!value) return
+    if (difficulty < 1 || difficulty > 10) {
+      setDifficulty(1)
+    } else {
+      setDifficulty(value)
+    }
+  }
+
   const handleCreateProject = useCallback(() => {
-    if (!currentUser) return
-    const userIds: UserIds = [currentUser.uid, ...userData.map(data => data.id)]
+    const userIds: UserIds = userData.map(data => data.id)
     const { title, overview, date } = getValues()
+    const newDifficulty = difficulty < 1 || difficulty > 10 ? 1 : difficulty
 
     createProject({
       variables: {
         name: title,
         overview,
-        difficulty: 1, // TODO: あとで変更する
+        difficulty: newDifficulty,
         end_date: date,
         ids: userIds,
       },
     })
-  }, [userData, currentUser])
+  }, [userData, difficulty])
+
+  useEffect(() => {
+    if (!currentUserData.data) return
+    if (!userData.length) {
+      setUserData([currentUserData.data.user])
+    }
+  }, [currentUserData.data])
 
   useEffect(() => {
     const initializeInputValues = () => {
@@ -89,6 +109,8 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
     errors,
     userData,
     setUserData,
+    difficulty,
+    handleDifficulty,
     handleCreateProject: handleSubmit(handleCreateProject),
   }
 }

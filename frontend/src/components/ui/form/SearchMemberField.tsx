@@ -15,6 +15,7 @@ type Props = {
   userData: UserData
   shouldCache: boolean
   completed_flag?: Task['completed_flg']
+  isFixedFirstUser?: boolean
 }
 
 export const SearchMemberField: FCX<Props> = ({
@@ -23,6 +24,7 @@ export const SearchMemberField: FCX<Props> = ({
   userData,
   shouldCache,
   completed_flag = false,
+  isFixedFirstUser = false,
 }) => {
   const {
     onChange,
@@ -96,7 +98,10 @@ export const SearchMemberField: FCX<Props> = ({
           <StyledMembersContainer ref={containerRef}>
             {selectedUserData.map((data, index) => {
               const boxCount = index + 1
+
               if (boxCount < maxBoxes) {
+                const shouldHideDeleteBtn = completed_flag || (index === 0 && isFixedFirstUser)
+
                 return (
                   <div key={index} ref={avatarRef}>
                     <UserAvatarIcon
@@ -104,7 +109,9 @@ export const SearchMemberField: FCX<Props> = ({
                       iconImage={data.icon_image}
                       name={data.name}
                       occupation={data.occupation.name}
-                      onClickDeleteBtn={completed_flag ? undefined : () => onClickDeleteBtn(index)}
+                      onClickDeleteBtn={
+                        shouldHideDeleteBtn ? undefined : () => onClickDeleteBtn(index)
+                      }
                     />
                   </div>
                 )

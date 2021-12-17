@@ -10,9 +10,12 @@ import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
+import Rating from '@mui/material/Rating'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { ModalButton } from 'components/ui/button/ModalButton'
+import { StarIcon } from 'components/ui/icon/StarIcon'
+import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
 import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
@@ -22,8 +25,16 @@ type Props = {
 }
 
 export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, className }) => {
-  const { register, isDisabled, errors, userData, setUserData, handleCreateProject } =
-    useProjectCreateForm({ closeModal })
+  const {
+    register,
+    isDisabled,
+    errors,
+    userData,
+    setUserData,
+    difficulty,
+    handleDifficulty,
+    handleCreateProject,
+  } = useProjectCreateForm({ closeModal })
 
   return (
     <StyledModal
@@ -61,6 +72,25 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
               registration={register('date', {
                 required: '期限を選択してください',
               })}
+            />
+
+            <StyledDifficultyWrapper>
+              <StyledDifficultyTitle>難易度</StyledDifficultyTitle>
+              <StyledDifficultyRate
+                defaultValue={1}
+                value={difficulty}
+                onChange={handleDifficulty}
+                max={10}
+                icon={<StyledStarIcon />}
+                emptyIcon={<StyledEmptyStarIcon />}
+              />
+            </StyledDifficultyWrapper>
+
+            <SearchMemberField
+              setUserData={setUserData}
+              userData={userData}
+              shouldCache={true}
+              isFixedFirstUser={true}
             />
           </StyledRightColumn>
         </StyledInputsWrapper>
@@ -147,3 +177,28 @@ const StyledOverviewField = styled(TextAreaField)`
 const StyledCalenderField = styled(CalenderField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(17)};
 `
+const StyledDifficultyWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: ${calculateMinSizeBasedOnFigma(16)};
+  height: ${calculateMinSizeBasedOnFigma(51)};
+`
+const StyledDifficultyTitle = styled.p`
+  ${({ theme }) => css`
+    color: ${theme.COLORS.TOBACCO_BROWN};
+    font-size: ${theme.FONT_SIZES.SIZE_14};
+    font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+  `}
+`
+const StyledDifficultyRate = styled(Rating)`
+  width: ${calculateMinSizeBasedOnFigma(251)};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+const StyledStarIcon = styled(StarIcon)`
+  width: ${calculateMinSizeBasedOnFigma(22)};
+  height: ${calculateMinSizeBasedOnFigma(22)};
+`
+const StyledEmptyStarIcon = StyledStarIcon.withComponent(EmptyStarIcon)
