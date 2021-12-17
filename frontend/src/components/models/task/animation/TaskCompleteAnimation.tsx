@@ -1,14 +1,19 @@
-import React, { forwardRef, ForwardRefExoticComponent, RefAttributes } from 'react'
+import React, { FCX, forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 
-export const TaskCompleteAnimation: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>> =
-  forwardRef<HTMLDivElement>((_, ref) => {
+type Props = {
+  ref: Ref<HTMLDivElement>
+}
+
+export const TaskCompleteAnimation: FCX<Props> = forwardRef<HTMLDivElement, Omit<Props, 'ref'>>(
+  (_, ref) => {
     return (
       <StyledContainer>
         <StyledAnimation ref={ref} />
       </StyledContainer>
     )
-  })
+  },
+)
 
 TaskCompleteAnimation.displayName = 'TaskCompleteAnimation'
 
