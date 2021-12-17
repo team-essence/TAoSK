@@ -11,6 +11,8 @@ export const Loading: FCX = () => {
       renderer: 'svg',
       animationData: JSON.parse(JSON.stringify(nowLoading)),
     })
+
+    return () => lottie.stop()
   }, [])
 
   return (
