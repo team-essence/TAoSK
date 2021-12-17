@@ -11,7 +11,6 @@ import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/Compli
 import { ACTIVE_STATUS, ProjectListItem } from 'components/models/projectList/ProjectListItem'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { Notifications } from 'types/notification'
-import logger from 'utils/debugger/logger'
 import styled from 'styled-components'
 import { ProjectListDetail } from 'components/models/projectList/ProjectListDetail'
 

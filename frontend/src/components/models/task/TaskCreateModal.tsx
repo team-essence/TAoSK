@@ -80,7 +80,7 @@ export const TaskCreateModal: FCX<Props> = ({
             <StyledSearchMemberField
               setUserData={setUserData}
               userData={userData}
-              taskModalType="create"
+              shouldCache={true}
             />
 
             <StyledStatusWrapper className={className}>

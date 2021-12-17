@@ -1,4 +1,4 @@
-import React, { FCX, useState } from 'react'
+import React, { FCX } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'

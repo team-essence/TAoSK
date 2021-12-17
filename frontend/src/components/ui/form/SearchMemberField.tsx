@@ -8,13 +8,12 @@ import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserData } from 'types/userData'
-import type { TaskModalType } from 'types/taskModal'
 import type { Task } from 'types/task'
 
 type Props = {
   setUserData: Dispatch<SetStateAction<UserData>>
   userData: UserData
-  taskModalType: TaskModalType
+  shouldCache: boolean
   completed_flag?: Task['completed_flg']
 }
 
@@ -22,7 +21,7 @@ export const SearchMemberField: FCX<Props> = ({
   className,
   setUserData,
   userData,
-  taskModalType,
+  shouldCache,
   completed_flag = false,
 }) => {
   const {
@@ -34,7 +33,7 @@ export const SearchMemberField: FCX<Props> = ({
     selectedUserData,
     setSelectedUserData,
     value,
-  } = useSearchMember(userData, taskModalType)
+  } = useSearchMember(userData, shouldCache)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserData.length,
   )
