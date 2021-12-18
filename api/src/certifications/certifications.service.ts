@@ -92,6 +92,7 @@ export class CertificationsService {
           id: user_id,
         },
       },
+      relations: ['user'],
     });
 
     return updatedCertifications;
