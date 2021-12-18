@@ -36,4 +36,14 @@ export class InterestsResolver {
       throw err;
     });
   }
+
+  @Mutation(() => [Interest])
+  public async updateInterests(
+    @Args('user_id') user_id: string,
+    @Args({ name: 'contexts', type: () => [String] }) contexts: [string],
+  ): Promise<Interest[]> {
+    return this.interestsService.update(user_id, contexts).catch((err) => {
+      throw err;
+    });
+  }
 }
