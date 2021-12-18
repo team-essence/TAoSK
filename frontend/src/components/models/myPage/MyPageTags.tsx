@@ -2,7 +2,7 @@ import React, { FCX, useMemo } from 'react'
 import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { EditButton } from 'components/ui/button/EditButton'
 import styled from 'styled-components'
-import { useUpdateInterestsAndCertificates } from 'hooks/useUpdateInterestsAndCertificates'
+import { useUpdateInterestsAndCertifications } from 'hooks/useUpdateInterestsAndCertifications'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
@@ -25,8 +25,8 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
     () => certifications.map(v => v.name),
     [certifications],
   )
-  const { certificatesModalProps, interestsModalProps } = useUpdateInterestsAndCertificates({
-    initialCertificates: certificationNames,
+  const { certificationsModalProps, interestsModalProps } = useUpdateInterestsAndCertifications({
+    initialCertifications: certificationNames,
     initialInterests: interestContexts,
   })
 
@@ -35,8 +35,8 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
       <StyledMyPageTagsScroll>
         <StyledMyPageTagTitle>
           <h4>保有資格</h4>
-          <StyledEditButton onClick={() => certificatesModalProps.setShouldShow(true)} />
-          <MyPageEditTagsModal title="保有資格" {...certificatesModalProps} />
+          <StyledEditButton onClick={() => certificationsModalProps.setShouldShow(true)} />
+          <MyPageEditTagsModal title="保有資格" {...certificationsModalProps} />
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>

@@ -8,8 +8,8 @@ import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useMyPageEditTagModal } from 'hooks/useMyPageEditTagModal'
 import toast from 'utils/toast/toast'
 
-type UseUpdateInterestsAndCertificatesArg = {
-  initialCertificates: string[]
+type UseUpdateInterestsAndCertificationsArg = {
+  initialCertifications: string[]
   initialInterests: string[]
 }
 
@@ -18,28 +18,28 @@ type EditModalProps = Pick<
   'items' | 'setItems' | 'disabled' | 'shouldShow' | 'setShouldShow' | 'onClickSaveButton'
 >
 
-type UseUpdateInterestsAndCertificatesReturn = {
-  certificatesModalProps: EditModalProps
+type UseUpdateInterestsAndCertificationsReturn = {
+  certificationsModalProps: EditModalProps
   interestsModalProps: EditModalProps
 }
 
-type UseUpdateInterestsAndCertificates = (
-  arg: UseUpdateInterestsAndCertificatesArg,
-) => UseUpdateInterestsAndCertificatesReturn
+type UseUpdateInterestsAndCertifications = (
+  arg: UseUpdateInterestsAndCertificationsArg,
+) => UseUpdateInterestsAndCertificationsReturn
 
 /**
  * 資格・興味の更新処理
  */
-export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificates = ({
-  initialCertificates,
+export const useUpdateInterestsAndCertifications: UseUpdateInterestsAndCertifications = ({
+  initialCertifications,
   initialInterests,
 }) => {
   const { currentUserData } = useGetCurrentUserData()
-  const certificatesTagInfo = useMyPageEditTagModal(initialCertificates)
+  const certificationsTagInfo = useMyPageEditTagModal(initialCertifications)
   const interestsTagInfo = useMyPageEditTagModal(initialInterests)
-  const [updateCertificates] = useUpdateCertificationsMutation({
+  const [updateCertifications] = useUpdateCertificationsMutation({
     onCompleted(data) {
-      certificatesTagInfo.setShouldShow(false)
+      certificationsTagInfo.setShouldShow(false)
       toast.success('保有資格を更新しました')
     },
     onError(err) {
@@ -57,15 +57,15 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
     },
   })
 
-  const onClickSaveCertificatesButton = useCallback(() => {
+  const onClickSaveCertificationsButton = useCallback(() => {
     if (!currentUserData.data?.user.id) return
-    updateCertificates({
+    updateCertifications({
       variables: {
-        names: certificatesTagInfo.items,
+        names: certificationsTagInfo.items,
         user_id: currentUserData.data.user.id,
       },
     })
-  }, [currentUserData.data?.user.id, certificatesTagInfo.items])
+  }, [currentUserData.data?.user.id, certificationsTagInfo.items])
 
   const onClickSaveInterestsButton = useCallback(() => {
     if (!currentUserData.data?.user.id) return
@@ -78,9 +78,9 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
   }, [currentUserData.data?.user.id, interestsTagInfo.items])
 
   return {
-    certificatesModalProps: {
-      onClickSaveButton: onClickSaveCertificatesButton,
-      ...certificatesTagInfo,
+    certificationsModalProps: {
+      onClickSaveButton: onClickSaveCertificationsButton,
+      ...certificationsTagInfo,
     },
     interestsModalProps: {
       onClickSaveButton: onClickSaveInterestsButton,
