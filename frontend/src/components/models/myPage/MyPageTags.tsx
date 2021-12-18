@@ -28,16 +28,7 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
     () => certifications.map(v => v.name),
     [certifications],
   )
-  const {
-    modalCertificates,
-    setModalCertificates,
-    modalInterests,
-    setModalInterests,
-    onClickSaveCertificatesButton,
-    onClickSaveInterestsButton,
-    disabledCertificatesInput,
-    disabledInterestsInput,
-  } = useUpdateInterestsAndCertificates({
+  const { certificatesModalProps, interestsModalProps } = useUpdateInterestsAndCertificates({
     initialCertificates: certificationNames,
     initialInterests: interestContexts,
   })
@@ -52,10 +43,7 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
             title="保有資格"
             shouldShow={shouldShowCertificatesEditModal}
             closeModal={() => setShouldShowCertificatesEditModal(false)}
-            items={modalCertificates}
-            setItems={setModalCertificates}
-            onClickSaveButton={onClickSaveCertificatesButton}
-            disabled={disabledCertificatesInput}
+            {...certificatesModalProps}
           />
         </StyledMyPageTagTitle>
 
@@ -72,10 +60,7 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
             title="興味のあること"
             shouldShow={shouldShowInterestsEditModal}
             closeModal={() => setShouldShowInterestsEditModal(false)}
-            items={modalInterests}
-            setItems={setModalInterests}
-            onClickSaveButton={onClickSaveInterestsButton}
-            disabled={disabledInterestsInput}
+            {...interestsModalProps}
           />
         </StyledMyPageTagTitle>
 

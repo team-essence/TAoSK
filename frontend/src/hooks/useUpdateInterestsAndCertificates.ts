@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction, useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, ComponentProps } from 'react'
 // import { useUpdateCertificationMutation, useUpdateInterestsMutation } from 'pages/mypage/mypage.gen'
 // import { NewCertificationInput, NewInterestInput } from 'types/graphql.gen'
+import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import toast from 'utils/toast/toast'
 import { max } from 'consts/certificationsAndInterests'
@@ -10,15 +11,14 @@ type UseUpdateInterestsAndCertificatesArg = {
   initialInterests: string[]
 }
 
+type EditModalProps = Omit<
+  ComponentProps<typeof MyPageEditTagsModal>,
+  'children' | 'title' | 'closeModal' | 'shouldShow'
+>
+
 type UseUpdateInterestsAndCertificatesReturn = {
-  modalCertificates: string[]
-  setModalCertificates: Dispatch<SetStateAction<string[]>>
-  modalInterests: string[]
-  setModalInterests: Dispatch<SetStateAction<string[]>>
-  onClickSaveCertificatesButton: () => void
-  onClickSaveInterestsButton: () => void
-  disabledCertificatesInput: boolean
-  disabledInterestsInput: boolean
+  certificatesModalProps: EditModalProps
+  interestsModalProps: EditModalProps
 }
 
 type UseUpdateInterestsAndCertificates = (
@@ -74,14 +74,28 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
     console.log(modalInterests)
   }, [modalInterests])
 
+  const certificatesModalProps: EditModalProps = useMemo(
+    () => ({
+      items: modalCertificates,
+      setItems: setModalCertificates,
+      disabled: disabledCertificatesInput,
+      onClickSaveButton: onClickSaveCertificatesButton,
+    }),
+    [modalCertificates, onClickSaveCertificatesButton, disabledCertificatesInput],
+  )
+
+  const interestsModalProps: EditModalProps = useMemo(
+    () => ({
+      items: modalInterests,
+      setItems: setModalInterests,
+      disabled: disabledInterestsInput,
+      onClickSaveButton: onClickSaveInterestsButton,
+    }),
+    [modalInterests, onClickSaveInterestsButton, disabledInterestsInput],
+  )
+
   return {
-    modalCertificates,
-    setModalCertificates,
-    modalInterests,
-    setModalInterests,
-    onClickSaveCertificatesButton,
-    onClickSaveInterestsButton,
-    disabledCertificatesInput,
-    disabledInterestsInput,
+    certificatesModalProps,
+    interestsModalProps,
   }
 }
