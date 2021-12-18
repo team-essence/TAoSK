@@ -13,9 +13,7 @@ import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateMinSizeBasedOnFigmaHeight,
 } from 'utils/calculateSizeBasedOnFigma'
-import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
-import { useAuthContext } from 'providers/AuthProvider'
 import styled, {
   css,
   FlattenInterpolation,
@@ -30,25 +28,19 @@ type Props = {
 }
 
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
-  const { currentUser } = useAuthContext()
-  const { register, handleSubmit, getValues, setValue, isDisabled, errors, trigger } =
-    useAccountSettingForm()
-  const { name, email } = getValues()
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+    isDisabled,
+    errors,
+    trigger,
+    currentName,
+    currentEmail,
+    handleChangePassword,
+  } = useAccountSettingForm()
   // const isName = REGEX_TEXT.test(name)
-
-  const handleChangeEmail = async () => {
-    await firebaseAuth
-      .changeEmail(email)
-      .then(() => toast.success('送信完了しました'))
-      .catch(() => toast.error('送信に失敗しました'))
-  }
-
-  const handleChangePassword = async () => {
-    await firebaseAuth
-      .changePassword(currentUser?.email as string)
-      .then(() => toast.success('送信完了しました'))
-      .catch(() => toast.error('送信に失敗しました'))
-  }
 
   return (
     <StyledModal
@@ -72,11 +64,13 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             <StyledButtonWrapper>
               {/* TODO キャンセルしたときdisabledまで消える りょうがに聞く   */}
               {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
-              <CancelButton onClick={() => setValue('name', '', { shouldValidate: true })} />
+              <CancelButton
+                onClick={() => setValue('name', currentName, { shouldValidate: true })}
+              />
               <CoarseRedOxideButton text="保存" onClick={() => console.log('aa')} />
             </StyledButtonWrapper>
             <StyledH5>メールアドレス</StyledH5>
-            <StyledText>{`メールアドレスは${currentUser?.email}です。`}</StyledText>
+            <StyledText>{`メールアドレスは${currentEmail}です。`}</StyledText>
             <StyledInputField
               label="新しいメールアドレス"
               placeholder="メールアドレスを入力してください"
@@ -94,7 +88,9 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
               error={errors['email']}
             />
             <StyledButtonWrapper>
-              <CancelButton onClick={() => setValue('email', '', { shouldValidate: true })} />
+              <CancelButton
+                onClick={() => setValue('email', currentEmail, { shouldValidate: true })}
+              />
               <CoarseRedOxideButton text="保存" onClick={() => console.log('aa')} />
             </StyledButtonWrapper>
             <StyledH5>パスワード再設定</StyledH5>

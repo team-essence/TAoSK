@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import {
   useForm,
   UseFormRegister,
@@ -8,13 +8,11 @@ import {
   UseFormTrigger,
   UseFormSetValue,
 } from 'react-hook-form'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
+import toast from 'utils/toast/toast'
 
 type FormInputs = Record<'name' | 'email', string>
-
-type UseAccountSettingFormArg = {
-  initialName: string
-  initialUserIcon: string
-}
 
 type UseAccountSettingFormReturn<T> = {
   register: UseFormRegister<T>
@@ -24,9 +22,10 @@ type UseAccountSettingFormReturn<T> = {
   isDisabled: boolean
   errors: FieldErrors
   trigger: UseFormTrigger<T>
+  currentName: string
+  currentEmail: string
+  handleChangePassword: () => void
 }
-
-type UseAccountSettingForm<T> = (arg: UseAccountSettingFormArg) => UseAccountSettingFormReturn<T>
 
 /**
  * react-hook-formを使った登録処理の初期設定を行う
@@ -39,10 +38,8 @@ type UseAccountSettingForm<T> = (arg: UseAccountSettingFormArg) => UseAccountSet
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useAccountSettingForm: UseAccountSettingForm<FormInputs> = ({
-  initialName,
-  initialUserIcon,
-}) => {
+export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs> => {
+  const { currentUserData, firebaseCurrentUser } = useGetCurrentUserData()
   const {
     register,
     handleSubmit,
@@ -54,9 +51,37 @@ export const useAccountSettingForm: UseAccountSettingForm<FormInputs> = ({
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
+  const currentName = useMemo(
+    () => currentUserData.data?.user.name ?? '',
+    [currentUserData.data?.user.name],
+  )
+  const currentEmail = useMemo(() => firebaseCurrentUser?.email ?? '', [firebaseCurrentUser?.email])
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
+  const shouldInitialize = useRef<boolean>(true)
   const watchAllFields = watch()
+
+  const handleChangeEmail = useCallback(async () => {
+    await firebaseAuth
+      .changeEmail(watchAllFields.email)
+      .then(() => toast.success('送信完了しました'))
+      .catch(() => toast.error('送信に失敗しました'))
+  }, [watchAllFields.email])
+
+  const handleChangePassword = useCallback(async () => {
+    await firebaseAuth
+      .changePassword(watchAllFields.name)
+      .then(() => toast.success('送信完了しました'))
+      .catch(() => toast.error('送信に失敗しました'))
+  }, [watchAllFields.name])
+
+  useEffect(() => {
+    if (shouldInitialize.current && currentName && currentEmail) {
+      setValue('name', currentName, { shouldValidate: true })
+      setValue('email', currentEmail, { shouldValidate: true })
+      shouldInitialize.current = false
+    }
+  }, [currentName, currentEmail])
 
   useEffect(() => {
     const initializeInputValues = () => {
@@ -83,5 +108,8 @@ export const useAccountSettingForm: UseAccountSettingForm<FormInputs> = ({
     errors,
     trigger,
     setValue,
+    currentName,
+    currentEmail,
+    handleChangePassword,
   }
 }
