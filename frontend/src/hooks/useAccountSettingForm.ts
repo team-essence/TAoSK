@@ -11,6 +11,11 @@ import {
 
 type FormInputs = Record<'name' | 'email', string>
 
+type UseAccountSettingFormArg = {
+  initialName: string
+  initialUserIcon: string
+}
+
 type UseAccountSettingFormReturn<T> = {
   register: UseFormRegister<T>
   handleSubmit: UseFormHandleSubmit<T>
@@ -20,6 +25,9 @@ type UseAccountSettingFormReturn<T> = {
   errors: FieldErrors
   trigger: UseFormTrigger<T>
 }
+
+type UseAccountSettingForm<T> = (arg: UseAccountSettingFormArg) => UseAccountSettingFormReturn<T>
+
 /**
  * react-hook-formを使った登録処理の初期設定を行う
  * @returns {boolean} isDisabled - 登録ボタンをdisabledにするか
@@ -31,7 +39,10 @@ type UseAccountSettingFormReturn<T> = {
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs> => {
+export const useAccountSettingForm: UseAccountSettingForm<FormInputs> = ({
+  initialName,
+  initialUserIcon,
+}) => {
   const {
     register,
     handleSubmit,
