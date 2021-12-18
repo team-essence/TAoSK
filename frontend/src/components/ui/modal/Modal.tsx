@@ -1,22 +1,22 @@
-import React, { FCX, MouseEvent, ReactNode } from 'react'
+import React, { FCX, ReactNode } from 'react'
+import MuiModal from '@mui/material/Modal'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { theme } from 'styles/theme'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 type Props = {
   title?: string
   shouldShow: boolean
-  onClickCloseBtn: (e?: MouseEvent) => void
+  onClickCloseBtn: () => void
   children: ReactNode
 }
 
 export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
-  if (!shouldShow) return <></>
   return (
-    <>
+    <MuiModal open={shouldShow} onBackdropClick={() => onClickCloseBtn()}>
       <StyledWrapper className={className}>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
@@ -27,14 +27,13 @@ export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, classNam
         {children}
         <StyledBackgroundDragonSymbol />
       </StyledWrapper>
-      <StyledOverlay onClick={onClickCloseBtn} />
-    </>
+    </MuiModal>
   )
 }
 
 const StyledWrapper = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
@@ -99,15 +98,4 @@ const StyledCrossIcon = styled(CrossIcon)`
     width: ${calculateMinSizeBasedOnFigma(20)};
     height: ${calculateMinSizeBasedOnFigma(20)};
   }
-`
-const StyledOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  ${({ theme }) => css`
-    z-index: ${theme.Z_INDEX.OVERLAY};
-    background-color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.65)};
-  `}
 `
