@@ -17,8 +17,6 @@ type UseAccountSettingFormReturn<T> = {
   isDisabled: boolean
   errors: FieldErrors
   trigger: UseFormTrigger<T>
-  resetNameEntry: () => void
-  resetEmailEntry: () => void
 }
 /**
  * react-hook-formを使った登録処理の初期設定を行う
@@ -40,21 +38,12 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
     setValue,
     watch,
     trigger,
-    reset,
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
-
-  const resetNameEntry = () => {
-    reset({ name: '' })
-  }
-
-  const resetEmailEntry = () => {
-    reset({ email: '' })
-  }
 
   useEffect(() => {
     const initializeInputValues = () => {
@@ -80,7 +69,5 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
     isDisabled,
     errors,
     trigger,
-    resetNameEntry,
-    resetEmailEntry,
   }
 }

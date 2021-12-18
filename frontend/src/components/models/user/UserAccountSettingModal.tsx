@@ -31,16 +31,7 @@ type Props = {
 
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
   const { currentUser } = useAuthContext()
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    isDisabled,
-    errors,
-    trigger,
-    resetEmailEntry,
-    resetNameEntry,
-  } = useAccountSettingForm()
+  const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useAccountSettingForm()
   const { name, email } = getValues()
   // const isName = REGEX_TEXT.test(name)
 
@@ -224,7 +215,6 @@ const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled = fa
     }
   }}
 `
-
 const StyledCansellButton = styled.button`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
   text-decoration-line: underline;

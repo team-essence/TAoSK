@@ -2,6 +2,7 @@ import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
+import { CancelButton } from 'components/ui/button/CancelButton'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -44,9 +45,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
         <StyledBottomRow>
           <StyledErrorMessage>{!!error?.message && error.message}</StyledErrorMessage>
           <StyledButtonWrapper>
-            <StyledCancelButton onClick={() => setState('view')}>
-              <StyledCancelText>キャンセル</StyledCancelText>
-            </StyledCancelButton>
+            <CancelButton onClick={() => setState('view')} />
             <CoarseRedOxideButton text="追加" onClick={onClickSaveButton} disabled={disabled} />
           </StyledButtonWrapper>
         </StyledBottomRow>
@@ -149,28 +148,4 @@ const StyledButtonWrapper = styled.div`
   align-items: center;
   gap: ${calculateMinSizeBasedOnFigma(12)};
   width: 100%;
-`
-const StyledCancelButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-const StyledCancelText = styled.p`
-  position: relative;
-  ${({ theme }) =>
-    css`
-      font-size: ${theme.FONT_SIZES.SIZE_12};
-      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
-      color: ${theme.COLORS.TOBACCO_BROWN};
-    `}
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: ${calculateMinSizeBasedOnFigma(1.5)};
-    left: 0;
-    width: 100%;
-    height: 0.5px;
-    background-color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  }
 `
