@@ -12,6 +12,9 @@ const getShouldDisabled = (initialItems: string[], items: string[]) =>
   items.length > max.ITEMS ||
   !!items.find(v => v.length > max.TEXT_LENGTH)
 
+/**
+ * マイページの資格・興味編集モーダルで使う情報を設定する
+ */
 export const useMyPageEditTagModal = (initialItems: string[]): UseMyPageEditTagModalReturn => {
   const [items, setItems] = useState<string[]>(initialItems)
   const [shouldShow, setShouldShow] = useState<boolean>(false)

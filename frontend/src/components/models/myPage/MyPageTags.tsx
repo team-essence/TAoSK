@@ -1,4 +1,4 @@
-import React, { FCX, useMemo, useState } from 'react'
+import React, { FCX, useMemo } from 'react'
 import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { EditButton } from 'components/ui/button/EditButton'
 import styled from 'styled-components'
