@@ -17,7 +17,7 @@ type UseTaskCreateFormReturn<T> = {
   handleAddTask: () => void
   register: UseFormRegister<T>
   isDisabled: boolean
-  errors: FieldErrors
+  errors: FieldErrors<T>
   statusCounts: StatusCounts
   setStatusCounts: Dispatch<SetStateAction<StatusCounts>>
   userData: UserData

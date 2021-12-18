@@ -1,30 +1,20 @@
 import { useRef, useEffect, useMemo, useCallback } from 'react'
-import {
-  useForm,
-  UseFormRegister,
-  UseFormHandleSubmit,
-  UseFormGetValues,
-  FieldErrors,
-  UseFormTrigger,
-  UseFormSetValue,
-} from 'react-hook-form'
+import { useForm, UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import toast from 'utils/toast/toast'
 
 type FormInputs = Record<'name' | 'email', string>
 
-type UseAccountSettingFormReturn<T> = {
-  register: UseFormRegister<T>
-  handleSubmit: UseFormHandleSubmit<T>
+type UseAccountSettingFormReturn = {
+  register: UseFormRegister<FormInputs>
   setValue: UseFormSetValue<FormInputs>
-  getValues: UseFormGetValues<T>
-  errors: FieldErrors
-  trigger: UseFormTrigger<T>
+  errors: FieldErrors<FormInputs>
   currentName: string
   currentEmail: string
   disabledName: boolean
   disabledEmail: boolean
+  handleChangeEmail: () => void
   handleChangePassword: () => void
 }
 
@@ -39,16 +29,13 @@ type UseAccountSettingFormReturn<T> = {
  *  trigger
  *  } - react-hook-fromの公式ページを参照
  */
-export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs> => {
+export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
   const { currentUserData, firebaseCurrentUser } = useGetCurrentUserData()
   const {
     register,
-    handleSubmit,
-    getValues,
     formState: { errors },
     setValue,
     watch,
-    trigger,
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
@@ -69,18 +56,20 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
   )
 
   const handleChangeEmail = useCallback(async () => {
+    if (errors.email) return
     await firebaseAuth
       .changeEmail(email)
       .then(() => toast.success('送信完了しました'))
       .catch(() => toast.error('送信に失敗しました'))
-  }, [email])
+  }, [email, errors.email])
 
   const handleChangePassword = useCallback(async () => {
+    if (errors.name) return
     await firebaseAuth
       .changePassword(name)
       .then(() => toast.success('送信完了しました'))
       .catch(() => toast.error('送信に失敗しました'))
-  }, [name])
+  }, [name, errors.name])
 
   useEffect(() => {
     if (shouldInitialize.current && currentName && currentEmail) {
@@ -92,15 +81,13 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
 
   return {
     register,
-    handleSubmit,
-    getValues,
     errors,
-    trigger,
     setValue,
     currentName,
     currentEmail,
     disabledName,
     disabledEmail,
+    handleChangeEmail,
     handleChangePassword,
   }
 }

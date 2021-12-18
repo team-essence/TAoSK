@@ -1,26 +1,16 @@
-import React, { FCX, useState, Dispatch, SetStateAction } from 'react'
-import { theme } from 'styles/theme'
+import React, { FCX, Dispatch, SetStateAction } from 'react'
 import { REGEX_EMAIL, REGEX_TEXT } from 'consts/regex'
 import { Modal } from 'components/ui/modal/Modal'
-import { InputField } from 'components/ui/form/InputField'
-import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { CancelButton } from 'components/ui/button/CancelButton'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import toast from 'utils/toast/toast'
 import {
   calculateMinSizeBasedOnFigma,
   calculateMinSizeBasedOnFigmaWidth,
   calculateMinSizeBasedOnFigmaHeight,
 } from 'utils/calculateSizeBasedOnFigma'
 import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
-import styled, {
-  css,
-  FlattenInterpolation,
-  FlattenSimpleInterpolation,
-  ThemeProps,
-  DefaultTheme,
-} from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type Props = {
   shouldShow: boolean
@@ -36,9 +26,9 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
     currentEmail,
     disabledName,
     disabledEmail,
+    handleChangeEmail,
     handleChangePassword,
   } = useAccountSettingForm()
-  // const isName = REGEX_TEXT.test(name)
 
   return (
     <StyledModal
@@ -46,37 +36,48 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
       shouldShow={shouldShow}
       onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
-      <StyledFormWrapper>
-        <StyledInputsWrapper>
-          <StyledLeftColumn>
-            <StyledInputField
-              label="新しい冒険者名"
-              required={true}
+      <StyledInputsWrapper>
+        <StyledLeftColumn>
+          <StyledInputWrapper>
+            <StyledH5>冒険者名</StyledH5>
+            <StyledInput
               placeholder="お名前を入力してください"
-              registration={register('name', {
+              {...register('name', {
                 required: '名前は必須です',
                 maxLength: { value: 50, message: '50文字以内で入力してください' },
+                pattern: {
+                  value: REGEX_TEXT,
+                  message: '空白が含まれてます',
+                },
               })}
-              error={errors['name']}
+              hasError={!!errors.name?.message}
             />
-            <StyledButtonWrapper>
-              {/* TODO キャンセルしたときdisabledまで消える りょうがに聞く   */}
-              {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
-              <CancelButton
-                onClick={() => setValue('name', currentName, { shouldValidate: true })}
-              />
-              <CoarseRedOxideButton
-                text="保存"
-                onClick={() => console.log('aa')}
-                disabled={disabledName}
-              />
-            </StyledButtonWrapper>
+            <StyledInputBottomRowWrapper>
+              <StyledErrorMessage>
+                {!!errors.name?.message && errors.name.message}
+              </StyledErrorMessage>
+              <StyledButtonWrapper>
+                <CancelButton
+                  onClick={() => setValue('name', currentName, { shouldValidate: true })}
+                />
+                <CoarseRedOxideButton
+                  text="保存"
+                  onClick={() => console.log('aa')}
+                  disabled={disabledName}
+                />
+              </StyledButtonWrapper>
+            </StyledInputBottomRowWrapper>
+          </StyledInputWrapper>
+
+          <StyledTextWrapper>
             <StyledH5>メールアドレス</StyledH5>
             <StyledText>{`メールアドレスは${currentEmail}です。`}</StyledText>
-            <StyledInputField
-              label="新しいメールアドレス"
+          </StyledTextWrapper>
+          <StyledInputWrapper>
+            <StyledH5>新しいメールアドレス</StyledH5>
+            <StyledInput
               placeholder="メールアドレスを入力してください"
-              registration={register('email', {
+              {...register('email', {
                 required: '未入力です',
                 maxLength: {
                   value: 50,
@@ -87,45 +88,52 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                   message: '不正なメールアドレスです',
                 },
               })}
-              error={errors['email']}
+              hasError={!!errors.email?.message}
             />
-            <StyledButtonWrapper>
-              <CancelButton
-                onClick={() => setValue('email', currentEmail, { shouldValidate: true })}
-              />
-              <CoarseRedOxideButton
-                text="保存"
-                onClick={() => console.log('aa')}
-                disabled={disabledEmail}
-              />
-            </StyledButtonWrapper>
+            <StyledInputBottomRowWrapper>
+              <StyledErrorMessage>
+                {!!errors.email?.message && errors.email.message}
+              </StyledErrorMessage>
+              <StyledButtonWrapper>
+                <CancelButton
+                  onClick={() => setValue('email', currentEmail, { shouldValidate: true })}
+                />
+                <CoarseRedOxideButton
+                  text="保存"
+                  onClick={() => console.log('aa')}
+                  disabled={disabledEmail}
+                />
+              </StyledButtonWrapper>
+            </StyledInputBottomRowWrapper>
+          </StyledInputWrapper>
+
+          <StyledTextWrapper>
             <StyledH5>パスワード再設定</StyledH5>
             <StyledText>
               「送信」を押すと現在登録さているメールアドレスへパスワード変更のメールが送信されます。
             </StyledText>
-            <StyledSendButtonWrap>
-              <CoarseRedOxideButton text="送信" onClick={handleChangePassword} />
-            </StyledSendButtonWrap>
-          </StyledLeftColumn>
-          <StyledBorder />
-          <StyledRightColumn>aaaaa</StyledRightColumn>
-        </StyledInputsWrapper>
-      </StyledFormWrapper>
+          </StyledTextWrapper>
+          <StyledSendButtonWrapper>
+            <StyledSendChangePasswordEmailButton
+              text="メールを送信する"
+              onClick={handleChangePassword}
+            />
+          </StyledSendButtonWrapper>
+        </StyledLeftColumn>
+        <StyledBorder />
+        <StyledRightColumn>aaaaa</StyledRightColumn>
+      </StyledInputsWrapper>
     </StyledModal>
   )
 }
 
+const padding = `${calculateMinSizeBasedOnFigmaHeight(48)} ${calculateMinSizeBasedOnFigmaWidth(
+  32,
+)} ${calculateMinSizeBasedOnFigma(33)} ${calculateMinSizeBasedOnFigmaWidth(27)}` // ts-styled-pluginエラーを避けるため
 const StyledModal = styled(Modal)`
   width: ${calculateMinSizeBasedOnFigmaWidth(790)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(709)};
-  padding: ${calculateMinSizeBasedOnFigmaHeight(46)} ${calculateMinSizeBasedOnFigmaWidth(26)};
-`
-const StyledFormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
+  height: ${calculateMinSizeBasedOnFigmaHeight(539)};
+  padding: ${padding};
 `
 const StyledInputsWrapper = styled.div`
   display: flex;
@@ -139,85 +147,66 @@ const StyledBorder = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
 `
 const StyledLeftColumn = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaWidth(434)};
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: ${calculateMinSizeBasedOnFigmaWidth(509)};
 `
 const StyledRightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${calculateMinSizeBasedOnFigmaWidth(270)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(190)};
   height: 100%;
 `
-const fieldStyle = (
-  inputCss: FlattenSimpleInterpolation,
-): FlattenInterpolation<ThemeProps<DefaultTheme>> => css`
-  label {
-    ${({ theme }) => css`
-      color: ${theme.COLORS.TOBACCO_BROWN};
-      font-size: ${theme.FONT_SIZES.SIZE_16};
-      font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
-    `}
-  }
-  input,
-  textarea {
-    ${inputCss}
-    border: solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
-    border-radius: 4px;
-    background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.84)};
-    color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-    &::placeholder {
-      color: ${({ theme }) => theme.COLORS.SILVER};
-    }
-  }
+const StyledInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${calculateMinSizeBasedOnFigma(8)};
+  width: 100%;
+  min-height: 0;
 `
-const StyledInputField = styled(InputField)`
-  ${fieldStyle(css`
-    width: 100%;
-    height: ${calculateMinSizeBasedOnFigmaWidth(40)};
-    margin: 0;
-  `)}
+const StyledInput = styled.input<{ hasError: boolean }>`
+  width: 100%;
+  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  border-radius: 4px;
+  ${({ theme, hasError }) =>
+    css`
+      border: solid 1px ${convertIntoRGBA(theme.COLORS.MONDO, 0.6)};
+      background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.84)};
+      border-color: ${hasError ? theme.COLORS.ERROR : 'none'};
+      color: ${theme.COLORS.TOBACCO_BROWN};
+      &::placeholder {
+        color: ${theme.COLORS.SILVER};
+      }
+    `}
+`
+const StyledInputBottomRowWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+const StyledErrorMessage = styled.p`
+  ${({ theme }) =>
+    css`
+      color: ${theme.COLORS.ERROR};
+      font-size: ${theme.FONT_SIZES.SIZE_14};
+    `}
 `
 const StyledButtonWrapper = styled.div`
   display: flex;
   gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
-  width: 100%;
   justify-content: flex-end;
-  position: relative;
-  bottom: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
-const StyledSendButtonWrap = styled.div`
+const StyledSendButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
 `
-type Disabled = { disabled?: boolean }
-const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled = false }) => ({
-  disabled,
-}))<Disabled>`
-  width: ${calculateMinSizeBasedOnFigma(64)};
-  height: ${calculateMinSizeBasedOnFigma(32)};
-  ${({ disabled, theme }) => {
-    if (disabled) {
-      return css`
-        color: ${theme.COLORS.SILVER};
-        > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
-          > div > div {
-            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
-          }
-        }
-      `
-    } else {
-      return css`
-        color: ${theme.COLORS.BRANDY};
-        > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
-          > div > div {
-            background-color: ${convertIntoRGBA(theme.COLORS.RED_OXIDE, 0.45)};
-          }
-        }
-      `
-    }
-  }}
+const StyledTextWrapper = styled.p`
+  display: flex;
+  flex-direction: column;
+  gap: ${calculateMinSizeBasedOnFigmaWidth(10)};
 `
 const StyledH5 = styled.h5`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
@@ -226,4 +215,7 @@ const StyledH5 = styled.h5`
 const StyledText = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
+`
+const StyledSendChangePasswordEmailButton = styled(CoarseRedOxideButton)`
+  width: ${calculateMinSizeBasedOnFigma(144)};
 `
