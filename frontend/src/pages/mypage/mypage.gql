@@ -49,3 +49,10 @@ mutation UpdateCertifications($names: [String!]!, $user_id: String!) {
     name
   }
 }
+
+mutation UpdateInterests($contexts: [String!]!, $user_id: String!) {
+  updateInterests(contexts: $contexts, user_id: $user_id) {
+    id
+    context
+  }
+}

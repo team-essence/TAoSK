@@ -1,6 +1,8 @@
 import { useCallback, ComponentProps } from 'react'
-import { useUpdateCertificationsMutation } from 'pages/mypage/mypage.gen'
-// import { NewCertificationInput, NewInterestInput } from 'types/graphql.gen'
+import {
+  useUpdateCertificationsMutation,
+  useUpdateInterestsMutation,
+} from 'pages/mypage/mypage.gen'
 import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useMyPageEditTagModal } from 'hooks/useMyPageEditTagModal'
@@ -41,18 +43,19 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
       toast.success('保有資格を更新しました')
     },
     onError(err) {
+      interestsTagInfo.setShouldShow(false)
       toast.error('保有資格の変更に失敗しました')
     },
   })
-  // TODO: mutationが追加されたら実装する
-  // const [updateInterests] = useUpdateInterestsMutation({
-  //   onCompleted(data) {
-  //     toast.success('興味のあることを更新しました')
-  //   },
-  //   onError(err) {
-  //     toast.error('興味のあることの変更に失敗しました')
-  //   },
-  // })
+  const [updateInterests] = useUpdateInterestsMutation({
+    onCompleted(data) {
+      interestsTagInfo.setShouldShow(false)
+      toast.success('興味のあることを更新しました')
+    },
+    onError(err) {
+      toast.error('興味のあることの変更に失敗しました')
+    },
+  })
 
   const onClickSaveCertificatesButton = useCallback(() => {
     if (!currentUserData.data?.user.id) return
@@ -65,8 +68,14 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
   }, [currentUserData.data?.user.id, certificatesTagInfo.items])
 
   const onClickSaveInterestsButton = useCallback(() => {
-    console.log(interestsTagInfo.items)
-  }, [interestsTagInfo.items])
+    if (!currentUserData.data?.user.id) return
+    updateInterests({
+      variables: {
+        contexts: interestsTagInfo.items,
+        user_id: currentUserData.data.user.id,
+      },
+    })
+  }, [currentUserData.data?.user.id, interestsTagInfo.items])
 
   return {
     certificatesModalProps: {
