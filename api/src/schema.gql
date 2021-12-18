@@ -214,6 +214,7 @@ type Mutation {
   addCertification(newCertification: NewCertificationInput!): Certification!
   updateCertifications(names: [String!]!, user_id: String!): [Certification!]!
   addInterest(newInterest: NewInterestInput!): Interest!
+  updateInterests(contexts: [String!]!, user_id: String!): [Interest!]!
   addCompany(newCompany: NewCompanyInput!): Company!
   creteOccupation(name: String!): Occupation!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
