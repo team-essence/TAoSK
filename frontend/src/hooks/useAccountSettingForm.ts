@@ -6,6 +6,7 @@ import {
   UseFormGetValues,
   FieldErrors,
   UseFormTrigger,
+  UseFormSetValue,
 } from 'react-hook-form'
 
 type FormInputs = Record<'name' | 'email', string>
@@ -13,6 +14,7 @@ type FormInputs = Record<'name' | 'email', string>
 type UseAccountSettingFormReturn<T> = {
   register: UseFormRegister<T>
   handleSubmit: UseFormHandleSubmit<T>
+  setValue: UseFormSetValue<FormInputs>
   getValues: UseFormGetValues<T>
   isDisabled: boolean
   errors: FieldErrors
@@ -69,5 +71,6 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
     isDisabled,
     errors,
     trigger,
+    setValue,
   }
 }

@@ -2,11 +2,11 @@ import React, { FCX, useState, Dispatch, SetStateAction } from 'react'
 import { theme } from 'styles/theme'
 import { REGEX_EMAIL, REGEX_TEXT } from 'consts/regex'
 import { Modal } from 'components/ui/modal/Modal'
-import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { CancelButton } from 'components/ui/button/CancelButton'
+import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { strokeTextShadow } from 'utils/strokeTextShadow'
 import toast from 'utils/toast/toast'
 import {
   calculateMinSizeBasedOnFigma,
@@ -31,7 +31,8 @@ type Props = {
 
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
   const { currentUser } = useAuthContext()
-  const { register, handleSubmit, getValues, isDisabled, errors, trigger } = useAccountSettingForm()
+  const { register, handleSubmit, getValues, setValue, isDisabled, errors, trigger } =
+    useAccountSettingForm()
   const { name, email } = getValues()
   // const isName = REGEX_TEXT.test(name)
 
@@ -71,7 +72,8 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             <StyledButtonWrapper>
               {/* TODO キャンセルしたときdisabledまで消える りょうがに聞く   */}
               {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
-              <StyledCoarseButton text="保存" onClick={() => console.log('aa')} />
+              <CancelButton onClick={() => setValue('name', '', { shouldValidate: true })} />
+              <CoarseRedOxideButton text="保存" onClick={() => console.log('aa')} />
             </StyledButtonWrapper>
             <StyledH5>メールアドレス</StyledH5>
             <StyledText>{`メールアドレスは${currentUser?.email}です。`}</StyledText>
@@ -92,15 +94,15 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
               error={errors['email']}
             />
             <StyledButtonWrapper>
-              {/* <StyledCansellButton onClick={resetNameEntry}>キャンセル</StyledCansellButton> */}
-              <CoarseButton text="送信" onClick={handleChangeEmail} />
+              <CancelButton onClick={() => setValue('email', '', { shouldValidate: true })} />
+              <CoarseRedOxideButton text="保存" onClick={() => console.log('aa')} />
             </StyledButtonWrapper>
             <StyledH5>パスワード再設定</StyledH5>
             <StyledText>
               「送信」を押すと現在登録さているメールアドレスへパスワード変更のメールが送信されます。
             </StyledText>
             <StyledSendButtonWrap>
-              <StyledCoarseButton text="送信" onClick={handleChangePassword} disabled={false} />
+              <CoarseRedOxideButton text="送信" onClick={handleChangePassword} />
             </StyledSendButtonWrap>
           </StyledLeftColumn>
           <StyledBorder />
@@ -214,13 +216,6 @@ const StyledCoarseButton = styled(CoarseButton).attrs<Disabled>(({ disabled = fa
       `
     }
   }}
-`
-const StyledCansellButton = styled.button`
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
-  text-decoration-line: underline;
-  &:hover {
-    opacity: 0.7;
-  }
 `
 const StyledH5 = styled.h5`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};

@@ -19,6 +19,10 @@ const StyledCancelButton = styled.button`
 `
 const StyledCancelText = styled.p`
   position: relative;
+  &:hover {
+    opacity: 0.7;
+  }
+
   ${({ theme }) =>
     css`
       font-size: ${theme.FONT_SIZES.SIZE_12};
