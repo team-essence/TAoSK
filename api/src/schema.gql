@@ -212,6 +212,7 @@ type Mutation {
   updateOnlineFlag(isOnline: Boolean!, project_id: String!, id: String!): User!
   updateMemo(memo: String!, id: String!): User!
   addCertification(newCertification: NewCertificationInput!): Certification!
+  updateCertifications(names: [String!]!, user_id: String!): [Certification!]!
   addInterest(newInterest: NewInterestInput!): Interest!
   addCompany(newCompany: NewCompanyInput!): Company!
   creteOccupation(name: String!): Occupation!

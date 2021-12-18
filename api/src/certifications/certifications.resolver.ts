@@ -28,4 +28,14 @@ export class CertificationsResolver {
       throw err;
     });
   }
+
+  @Mutation(() => [Certification])
+  public async updateCertifications(
+    @Args('user_id') user_id: string,
+    @Args({ name: 'names', type: () => [String] }) names: [string],
+  ): Promise<Certification[]> {
+    return this.certificationService.update(user_id, names).catch((err) => {
+      throw err;
+    });
+  }
 }
