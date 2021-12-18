@@ -1,19 +1,19 @@
-import { useState, useCallback, useMemo, ComponentProps } from 'react'
+import { useCallback, ComponentProps } from 'react'
 // import { useUpdateCertificationMutation, useUpdateInterestsMutation } from 'pages/mypage/mypage.gen'
 // import { NewCertificationInput, NewInterestInput } from 'types/graphql.gen'
 import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { useMyPageEditTagModal } from 'hooks/useMyPageEditTagModal'
 import toast from 'utils/toast/toast'
-import { max } from 'consts/certificationsAndInterests'
 
 type UseUpdateInterestsAndCertificatesArg = {
   initialCertificates: string[]
   initialInterests: string[]
 }
 
-type EditModalProps = Omit<
+type EditModalProps = Pick<
   ComponentProps<typeof MyPageEditTagsModal>,
-  'children' | 'title' | 'closeModal' | 'shouldShow'
+  'items' | 'setItems' | 'disabled' | 'onClickSaveButton'
 >
 
 type UseUpdateInterestsAndCertificatesReturn = {
@@ -25,11 +25,6 @@ type UseUpdateInterestsAndCertificates = (
   arg: UseUpdateInterestsAndCertificatesArg,
 ) => UseUpdateInterestsAndCertificatesReturn
 
-const getShouldDisabled = (initialItems: string[], items: string[]) =>
-  JSON.stringify(initialItems.sort()) === JSON.stringify(items.sort()) ||
-  items.length > max.ITEMS ||
-  !!items.find(v => v.length > max.TEXT_LENGTH)
-
 /**
  * 資格・興味の更新処理
  */
@@ -38,16 +33,8 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
   initialCertificates,
 }) => {
   const { currentUserData } = useGetCurrentUserData()
-  const [modalCertificates, setModalCertificates] = useState<string[]>(initialCertificates)
-  const [modalInterests, setModalInterests] = useState<string[]>(initialInterests)
-  const disabledCertificatesInput = useMemo(
-    () => getShouldDisabled(initialCertificates, modalCertificates),
-    [initialCertificates, modalCertificates],
-  )
-  const disabledInterestsInput = useMemo(
-    () => getShouldDisabled(initialInterests, modalInterests),
-    [initialInterests, modalInterests],
-  )
+  const certificatesTagInfo = useMyPageEditTagModal(initialCertificates)
+  const interestsTagInfo = useMyPageEditTagModal(initialInterests)
   // TODO: mutationが追加されたら実装する
   // const [updateCertificates] = useUpdateCertificationMutation({
   //   onCompleted(data) {
@@ -67,35 +54,21 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
   // })
 
   const onClickSaveCertificatesButton = useCallback(() => {
-    console.log(modalCertificates)
-  }, [modalCertificates])
+    console.log(certificatesTagInfo.items)
+  }, [certificatesTagInfo.items])
 
   const onClickSaveInterestsButton = useCallback(() => {
-    console.log(modalInterests)
-  }, [modalInterests])
-
-  const certificatesModalProps: EditModalProps = useMemo(
-    () => ({
-      items: modalCertificates,
-      setItems: setModalCertificates,
-      disabled: disabledCertificatesInput,
-      onClickSaveButton: onClickSaveCertificatesButton,
-    }),
-    [modalCertificates, onClickSaveCertificatesButton, disabledCertificatesInput],
-  )
-
-  const interestsModalProps: EditModalProps = useMemo(
-    () => ({
-      items: modalInterests,
-      setItems: setModalInterests,
-      disabled: disabledInterestsInput,
-      onClickSaveButton: onClickSaveInterestsButton,
-    }),
-    [modalInterests, onClickSaveInterestsButton, disabledInterestsInput],
-  )
+    console.log(interestsTagInfo.items)
+  }, [interestsTagInfo.items])
 
   return {
-    certificatesModalProps,
-    interestsModalProps,
+    certificatesModalProps: {
+      onClickSaveButton: onClickSaveCertificatesButton,
+      ...certificatesTagInfo,
+    },
+    interestsModalProps: {
+      onClickSaveButton: onClickSaveInterestsButton,
+      ...interestsTagInfo,
+    },
   }
 }
