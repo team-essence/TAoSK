@@ -13,9 +13,16 @@ type Props = {
   placeholder?: string
   items: string[]
   setItems: Dispatch<React.SetStateAction<string[]>>
+  tagType?: TAG_TYPE
 }
 
-export const ItemInputField: FCX<Props> = ({ className, label, placeholder, setItems }) => {
+export const ItemInputField: FCX<Props> = ({
+  className,
+  label,
+  placeholder,
+  setItems,
+  tagType = TAG_TYPE.SMALL,
+}) => {
   const {
     value,
     items,
@@ -54,7 +61,7 @@ export const ItemInputField: FCX<Props> = ({ className, label, placeholder, setI
         {items.map((item, index) => (
           <Tag
             name={item}
-            tagType={TAG_TYPE.SMALL}
+            tagType={tagType}
             key={index}
             onClick={() => onClickDeleteItemButton(item)}
           />
