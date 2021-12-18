@@ -13,7 +13,7 @@ type UseUpdateInterestsAndCertificatesArg = {
 
 type EditModalProps = Pick<
   ComponentProps<typeof MyPageEditTagsModal>,
-  'items' | 'setItems' | 'disabled' | 'onClickSaveButton'
+  'items' | 'setItems' | 'disabled' | 'shouldShow' | 'setShouldShow' | 'onClickSaveButton'
 >
 
 type UseUpdateInterestsAndCertificatesReturn = {
@@ -37,6 +37,7 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
   const interestsTagInfo = useMyPageEditTagModal(initialInterests)
   const [updateCertificates] = useUpdateCertificationsMutation({
     onCompleted(data) {
+      certificatesTagInfo.setShouldShow(false)
       toast.success('保有資格を更新しました')
     },
     onError(err) {

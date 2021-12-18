@@ -10,7 +10,7 @@ import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 type Props = {
   title: string
   shouldShow: boolean
-  closeModal: () => void
+  setShouldShow: Dispatch<SetStateAction<boolean>>
   items: string[]
   setItems: Dispatch<SetStateAction<string[]>>
   onClickSaveButton: () => void
@@ -20,7 +20,7 @@ type Props = {
 export const MyPageEditTagsModal: FCX<Props> = ({
   title,
   shouldShow,
-  closeModal,
+  setShouldShow,
   items,
   setItems,
   onClickSaveButton,
@@ -31,7 +31,7 @@ export const MyPageEditTagsModal: FCX<Props> = ({
     <StyledModal
       title={title}
       shouldShow={shouldShow}
-      onClickCloseBtn={closeModal}
+      onClickCloseBtn={() => setShouldShow(false)}
       className={className}>
       <StyledItemInputField
         label={title}

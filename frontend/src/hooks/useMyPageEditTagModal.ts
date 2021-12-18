@@ -4,7 +4,7 @@ import { max } from 'consts/certificationsAndInterests'
 
 type UseMyPageEditTagModalReturn = Pick<
   ComponentProps<typeof MyPageEditTagsModal>,
-  'items' | 'setItems' | 'disabled'
+  'items' | 'setItems' | 'disabled' | 'shouldShow' | 'setShouldShow'
 >
 
 const getShouldDisabled = (initialItems: string[], items: string[]) =>
@@ -14,6 +14,7 @@ const getShouldDisabled = (initialItems: string[], items: string[]) =>
 
 export const useMyPageEditTagModal = (initialItems: string[]): UseMyPageEditTagModalReturn => {
   const [items, setItems] = useState<string[]>(initialItems)
+  const [shouldShow, setShouldShow] = useState<boolean>(false)
   const disabled = useMemo(() => getShouldDisabled(initialItems, items), [initialItems, items])
   const shouldInitializeRef = useRef<boolean>(true)
 
@@ -24,5 +25,5 @@ export const useMyPageEditTagModal = (initialItems: string[]): UseMyPageEditTagM
     }
   }, [initialItems])
 
-  return { items, setItems, disabled }
+  return { items, setItems, disabled, shouldShow, setShouldShow }
 }

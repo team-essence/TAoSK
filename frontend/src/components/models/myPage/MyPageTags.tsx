@@ -20,9 +20,6 @@ type Props = {
 }
 
 export const MyPageTags: FCX<Props> = ({ className, interests, certifications }) => {
-  const [shouldShowCertificatesEditModal, setShouldShowCertificatesEditModal] =
-    useState<boolean>(false)
-  const [shouldShowInterestsEditModal, setShouldShowInterestsEditModal] = useState<boolean>(false)
   const interestContexts: string[] = useMemo(() => interests.map(v => v.context), [interests])
   const certificationNames: string[] = useMemo(
     () => certifications.map(v => v.name),
@@ -38,13 +35,8 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
       <StyledMyPageTagsScroll>
         <StyledMyPageTagTitle>
           <h4>保有資格</h4>
-          <StyledEditButton onClick={() => setShouldShowCertificatesEditModal(true)} />
-          <MyPageEditTagsModal
-            title="保有資格"
-            shouldShow={shouldShowCertificatesEditModal}
-            closeModal={() => setShouldShowCertificatesEditModal(false)}
-            {...certificatesModalProps}
-          />
+          <StyledEditButton onClick={() => certificatesModalProps.setShouldShow(true)} />
+          <MyPageEditTagsModal title="保有資格" {...certificatesModalProps} />
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
@@ -55,13 +47,8 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
 
         <StyledMyPageTagTitle>
           <h4>興味のあること</h4>
-          <StyledEditButton onClick={() => setShouldShowInterestsEditModal(true)} />
-          <MyPageEditTagsModal
-            title="興味のあること"
-            shouldShow={shouldShowInterestsEditModal}
-            closeModal={() => setShouldShowInterestsEditModal(false)}
-            {...interestsModalProps}
-          />
+          <StyledEditButton onClick={() => interestsModalProps.setShouldShow(true)} />
+          <MyPageEditTagsModal title="興味のあること" {...interestsModalProps} />
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
