@@ -48,8 +48,8 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
-          {interestContexts.map((interest, index) => (
-            <Tag name={interest} key={index} tagType={TAG_TYPE.NORMAL} />
+          {certificationNames.map((certification, index) => (
+            <Tag name={certification} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
 
@@ -65,8 +65,8 @@ export const MyPageTags: FCX<Props> = ({ className, interests, certifications })
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
-          {certificationNames.map((certification, index) => (
-            <Tag name={certification} key={index} tagType={TAG_TYPE.NORMAL} />
+          {interestContexts.map((interest, index) => (
+            <Tag name={interest} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
       </StyledMyPageTagsScroll>
