@@ -20,7 +20,8 @@ export const ItemInputField: FCX<Props> = ({
   className,
   label,
   placeholder,
-  setItems,
+  items: parentItems,
+  setItems: setParentItems,
   tagType = TAG_TYPE.SMALL,
 }) => {
   const {
@@ -31,12 +32,10 @@ export const ItemInputField: FCX<Props> = ({
     onKeyPress,
     onClickAddButton,
     onClickDeleteItemButton,
-  } = useTextItems(max.TEXT_LENGTH, max.ITEMS)
+  } = useTextItems(parentItems, max.TEXT_LENGTH, max.ITEMS)
   const { sizeInspectedEl, width } = useWatchElementAspect<HTMLInputElement>()
 
-  useEffect(() => {
-    setItems(items.slice())
-  }, [setItems, items])
+  useEffect(() => setParentItems([...items]), [items])
 
   return (
     <StyledWrapper className={className}>

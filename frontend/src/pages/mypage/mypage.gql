@@ -42,3 +42,10 @@ query GetUser($id: String!) {
     }
   }
 }
+
+mutation UpdateCertifications($names: [String!]!, $user_id: String!) {
+  updateCertifications(names: $names, user_id: $user_id) {
+    id
+    name
+  }
+}

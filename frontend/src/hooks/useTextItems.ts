@@ -12,6 +12,7 @@ type UseTextItemsReturn = {
 
 /**
  * inputタグに文字列を入力してエンターを押すとアイテムが増える仕組みを実装するフック
+ * @param {string[]} initialItems - 表示するアイテムの初期値
  * @param {number} maxTextLength - 最大文字数
  * @param {number} maxItems - 最大アイテム数
  * @returns returns
@@ -23,8 +24,12 @@ type UseTextItemsReturn = {
  * @returns returns.onClickAddButton
  * @returns returns.onClickDeleteItemButton
  */
-export const useTextItems = (maxTextLength: number, maxItems: number): UseTextItemsReturn => {
-  const [items, setItems] = useState<string[]>([])
+export const useTextItems = (
+  initialItems: string[],
+  maxTextLength: number,
+  maxItems: number,
+): UseTextItemsReturn => {
+  const [items, setItems] = useState<string[]>(initialItems)
   const [value, setValue] = useState<string>('')
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
 

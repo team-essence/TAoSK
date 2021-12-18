@@ -1,5 +1,5 @@
 import { useCallback, ComponentProps } from 'react'
-// import { useUpdateCertificationMutation, useUpdateInterestsMutation } from 'pages/mypage/mypage.gen'
+import { useUpdateCertificationsMutation } from 'pages/mypage/mypage.gen'
 // import { NewCertificationInput, NewInterestInput } from 'types/graphql.gen'
 import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
@@ -29,21 +29,21 @@ type UseUpdateInterestsAndCertificates = (
  * 資格・興味の更新処理
  */
 export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificates = ({
-  initialInterests,
   initialCertificates,
+  initialInterests,
 }) => {
   const { currentUserData } = useGetCurrentUserData()
   const certificatesTagInfo = useMyPageEditTagModal(initialCertificates)
   const interestsTagInfo = useMyPageEditTagModal(initialInterests)
+  const [updateCertificates] = useUpdateCertificationsMutation({
+    onCompleted(data) {
+      toast.success('保有資格を更新しました')
+    },
+    onError(err) {
+      toast.error('保有資格の変更に失敗しました')
+    },
+  })
   // TODO: mutationが追加されたら実装する
-  // const [updateCertificates] = useUpdateCertificationMutation({
-  //   onCompleted(data) {
-  //     toast.success('保有資格を更新しました')
-  //   },
-  //   onError(err) {
-  //     toast.error('保有資格の変更に失敗しました')
-  //   },
-  // })
   // const [updateInterests] = useUpdateInterestsMutation({
   //   onCompleted(data) {
   //     toast.success('興味のあることを更新しました')
@@ -54,8 +54,14 @@ export const useUpdateInterestsAndCertificates: UseUpdateInterestsAndCertificate
   // })
 
   const onClickSaveCertificatesButton = useCallback(() => {
-    console.log(certificatesTagInfo.items)
-  }, [certificatesTagInfo.items])
+    if (!currentUserData.data?.user.id) return
+    updateCertificates({
+      variables: {
+        names: certificatesTagInfo.items,
+        user_id: currentUserData.data.user.id,
+      },
+    })
+  }, [currentUserData.data?.user.id, certificatesTagInfo.items])
 
   const onClickSaveInterestsButton = useCallback(() => {
     console.log(interestsTagInfo.items)
