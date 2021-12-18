@@ -30,14 +30,12 @@ type Props = {
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
   const {
     register,
-    handleSubmit,
-    getValues,
     setValue,
-    isDisabled,
     errors,
-    trigger,
     currentName,
     currentEmail,
+    disabledName,
+    disabledEmail,
     handleChangePassword,
   } = useAccountSettingForm()
   // const isName = REGEX_TEXT.test(name)
@@ -67,7 +65,11 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
               <CancelButton
                 onClick={() => setValue('name', currentName, { shouldValidate: true })}
               />
-              <CoarseRedOxideButton text="保存" onClick={() => console.log('aa')} />
+              <CoarseRedOxideButton
+                text="保存"
+                onClick={() => console.log('aa')}
+                disabled={disabledName}
+              />
             </StyledButtonWrapper>
             <StyledH5>メールアドレス</StyledH5>
             <StyledText>{`メールアドレスは${currentEmail}です。`}</StyledText>
@@ -91,7 +93,11 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
               <CancelButton
                 onClick={() => setValue('email', currentEmail, { shouldValidate: true })}
               />
-              <CoarseRedOxideButton text="保存" onClick={() => console.log('aa')} />
+              <CoarseRedOxideButton
+                text="保存"
+                onClick={() => console.log('aa')}
+                disabled={disabledEmail}
+              />
             </StyledButtonWrapper>
             <StyledH5>パスワード再設定</StyledH5>
             <StyledText>

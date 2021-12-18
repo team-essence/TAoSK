@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
+import { useRef, useEffect, useMemo, useCallback } from 'react'
 import {
   useForm,
   UseFormRegister,
@@ -19,11 +19,12 @@ type UseAccountSettingFormReturn<T> = {
   handleSubmit: UseFormHandleSubmit<T>
   setValue: UseFormSetValue<FormInputs>
   getValues: UseFormGetValues<T>
-  isDisabled: boolean
   errors: FieldErrors
   trigger: UseFormTrigger<T>
   currentName: string
   currentEmail: string
+  disabledName: boolean
+  disabledEmail: boolean
   handleChangePassword: () => void
 }
 
@@ -51,29 +52,35 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
   } = useForm<FormInputs>({
     mode: 'onChange',
   })
+  const { name, email } = watch()
   const currentName = useMemo(
     () => currentUserData.data?.user.name ?? '',
     [currentUserData.data?.user.name],
   )
   const currentEmail = useMemo(() => firebaseCurrentUser?.email ?? '', [firebaseCurrentUser?.email])
-  const [isDisabled, setIsDisabled] = useState<boolean>(true)
-  const isComponentMounted = useRef<boolean>(false)
   const shouldInitialize = useRef<boolean>(true)
-  const watchAllFields = watch()
+  const disabledName = useMemo(
+    () => !!errors.name || currentName === name,
+    [currentName, errors.name, name],
+  )
+  const disabledEmail = useMemo(
+    () => !!errors.email || currentEmail === email,
+    [currentEmail, errors.email, email],
+  )
 
   const handleChangeEmail = useCallback(async () => {
     await firebaseAuth
-      .changeEmail(watchAllFields.email)
+      .changeEmail(email)
       .then(() => toast.success('送信完了しました'))
       .catch(() => toast.error('送信に失敗しました'))
-  }, [watchAllFields.email])
+  }, [email])
 
   const handleChangePassword = useCallback(async () => {
     await firebaseAuth
-      .changePassword(watchAllFields.name)
+      .changePassword(name)
       .then(() => toast.success('送信完了しました'))
       .catch(() => toast.error('送信に失敗しました'))
-  }, [watchAllFields.name])
+  }, [name])
 
   useEffect(() => {
     if (shouldInitialize.current && currentName && currentEmail) {
@@ -83,33 +90,17 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn<FormInputs>
     }
   }, [currentName, currentEmail])
 
-  useEffect(() => {
-    const initializeInputValues = () => {
-      setValue('name', '', { shouldValidate: true })
-      setValue('email', '', { shouldValidate: true })
-    }
-    const hasError = Object.keys(errors).length
-
-    if (!isComponentMounted.current) {
-      initializeInputValues()
-      isComponentMounted.current = true
-    } else if (hasError) {
-      setIsDisabled(true)
-    } else {
-      setIsDisabled(false)
-    }
-  }, [watchAllFields, errors])
-
   return {
     register,
     handleSubmit,
     getValues,
-    isDisabled,
     errors,
     trigger,
     setValue,
     currentName,
     currentEmail,
+    disabledName,
+    disabledEmail,
     handleChangePassword,
   }
 }
