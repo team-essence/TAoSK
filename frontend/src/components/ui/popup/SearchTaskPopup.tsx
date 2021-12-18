@@ -3,7 +3,8 @@ import styled, { css } from 'styled-components'
 import { SearchTask } from 'types/task'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { TaskCardPopup } from './TaskCardPopup'
+import { TaskCardPopup } from 'components/ui/popup/TaskCardPopup'
+import { TaskEditModal } from 'components/models/task/TaskEditModal'
 
 type Props = {
   searchedTasks: SearchTask[]
@@ -12,6 +13,7 @@ type Props = {
 // TODO: モーダルが出来次第、タスクモーダルが開く処理をかく
 export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
   const [isTask, setIsTask] = useState(false)
+  const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
   useEffect(() => {
     setIsTask(false)
@@ -46,6 +48,7 @@ export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
                     {searchedTask.tasks.map((task, index) => (
                       <div key={index}>
                         <TaskCardPopup
+                          openModal={() => setShouldShowModal(true)}
                           title={task.title}
                           technology={task.technology}
                           achievement={task.achievement}
@@ -59,6 +62,12 @@ export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
                           end_date={task.end_date}
                           overview={task.overview}
                           completed_flg={task.completed_flg}
+                        />
+
+                        <TaskEditModal
+                          {...task}
+                          shouldShow={shouldShowModal}
+                          setShouldShow={setShouldShowModal}
                         />
                       </div>
                     ))}

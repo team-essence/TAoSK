@@ -2,22 +2,20 @@ import React, { FCX } from 'react'
 import { Task } from 'types/task'
 import { Params } from 'types/status'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { changeWeaponImage } from 'utils/changeWeaponImage'
 import { changeDeadlineImage } from 'utils/changeDeadlineImage'
-import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
-import { UserCount } from 'components/ui/avatar/UserCount'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
-import { AVATAR_STYLE } from 'consts/avatarStyle'
 import date from 'utils/date/date'
 import styled, { css } from 'styled-components'
 
 type Props = {
   listIndex: number
   listLength: number
+  openModal: () => void
 } & Omit<Task, 'vertical_sort' | 'id' | 'allocations'>
 
 export const TaskCardPopup: FCX<Props> = ({
+  openModal,
   title,
   technology,
   achievement,
@@ -40,7 +38,7 @@ export const TaskCardPopup: FCX<Props> = ({
   ]
 
   return (
-    <StyledContainer>
+    <StyledContainer onClick={openModal}>
       <StyledInnerWrap>
         <StyledTitle>{title}</StyledTitle>
         <StyledFlexContainer>
@@ -73,6 +71,7 @@ export const TaskCardPopup: FCX<Props> = ({
 }
 
 const StyledContainer = styled.div`
+  cursor: pointer;
   height: auto;
   padding: ${calculateMinSizeBasedOnFigmaWidth(2)};
   border: 1px solid ${({ theme }) => theme.COLORS.GRAY};
