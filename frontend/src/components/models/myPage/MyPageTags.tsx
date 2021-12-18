@@ -1,8 +1,9 @@
-import React, { FCX } from 'react'
+import React, { FCX, useMemo, useState } from 'react'
+import { MyPageEditTagsModal } from 'components/models/myPage/MyPageEditTagsModal'
 import { EditButton } from 'components/ui/button/EditButton'
 import styled from 'styled-components'
+import { useUpdateInterestsAndCertificates } from 'hooks/useUpdateInterestsAndCertificates'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import logger from 'utils/debugger/logger'
 import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
 type Props = {
@@ -19,29 +20,68 @@ type Props = {
 }
 
 export const MyPageTags: FCX<Props> = ({ className, interests, certifications }) => {
-  // TODO: モーダルが追加されたらonClickを変更していく
+  const [shouldShowCertificatesEditModal, setShouldShowCertificatesEditModal] =
+    useState<boolean>(false)
+  const [shouldShowInterestsEditModal, setShouldShowInterestsEditModal] = useState<boolean>(false)
+  const interestContexts: string[] = useMemo(() => interests.map(v => v.context), [interests])
+  const certificationNames: string[] = useMemo(
+    () => certifications.map(v => v.name),
+    [certifications],
+  )
+  const {
+    modalCertificates,
+    setModalCertificates,
+    modalInterests,
+    setModalInterests,
+    onClickSaveCertificatesButton,
+    onClickSaveInterestsButton,
+    disabledCertificatesInput,
+    disabledInterestsInput,
+  } = useUpdateInterestsAndCertificates({
+    initialCertificates: certificationNames,
+    initialInterests: interestContexts,
+  })
+
   return (
     <StyledMyPageTagsContainer className={className}>
       <StyledMyPageTagsScroll>
         <StyledMyPageTagTitle>
           <h4>保有資格</h4>
-          <StyledEditButton onClick={() => logger.debug('モーダルが開く')} />
+          <StyledEditButton onClick={() => setShouldShowCertificatesEditModal(true)} />
+          <MyPageEditTagsModal
+            title="保有資格"
+            shouldShow={shouldShowCertificatesEditModal}
+            closeModal={() => setShouldShowCertificatesEditModal(false)}
+            items={modalCertificates}
+            setItems={setModalCertificates}
+            onClickSaveButton={onClickSaveCertificatesButton}
+            disabled={disabledCertificatesInput}
+          />
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
-          {interests.map((interest, index) => (
-            <Tag name={interest.context} key={index} tagType={TAG_TYPE.NORMAL} />
+          {interestContexts.map((interest, index) => (
+            <Tag name={interest} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
 
         <StyledMyPageTagTitle>
           <h4>興味のあること</h4>
-          <StyledEditButton onClick={() => logger.debug('モーダルが開く')} />
+          <StyledEditButton onClick={() => setShouldShowInterestsEditModal(true)} />
+          <MyPageEditTagsModal
+            title="興味のあること"
+            shouldShow={shouldShowInterestsEditModal}
+            closeModal={() => setShouldShowInterestsEditModal(false)}
+            items={modalInterests}
+            setItems={setModalInterests}
+            onClickSaveButton={onClickSaveInterestsButton}
+            disabled={disabledInterestsInput}
+          />
         </StyledMyPageTagTitle>
 
         <StyledMyPageTagWrapper>
-          {certifications.map((certification, index) => (
-            <Tag name={certification.name} key={index} tagType={TAG_TYPE.NORMAL} />
+          {certificationNames.map((certification, index) => (
+            <Tag name={certification} key={index} tagType={TAG_TYPE.NORMAL} />
           ))}
         </StyledMyPageTagWrapper>
       </StyledMyPageTagsScroll>
