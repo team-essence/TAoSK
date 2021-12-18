@@ -42,3 +42,25 @@ query GetUser($id: String!) {
     }
   }
 }
+
+mutation UpdateCertification($newCertification: NewCertificationInput!) {
+  addCertification(newCertification: $newCertification) {
+    id
+    name
+    user {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateInterests($newInterest: NewInterestInput!) {
+  addInterest(newInterest: $newInterest) {
+    id
+    context
+    user {
+      id
+      name
+    }
+  }
+}
