@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react'
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
@@ -20,6 +20,7 @@ type UseAccountSettingFormReturn = {
  */
 export const useChangeEmailForm = (): UseAccountSettingFormReturn => {
   const shouldInitialize = useRef<boolean>(true)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
   const { firebaseCurrentUser } = useGetCurrentUserData()
   const {
     register,
@@ -32,8 +33,8 @@ export const useChangeEmailForm = (): UseAccountSettingFormReturn => {
   const email = watch('email')
   const currentEmail = useMemo(() => firebaseCurrentUser?.email ?? '', [firebaseCurrentUser?.email])
   const disabled = useMemo(
-    () => !!errors.email || currentEmail === email,
-    [currentEmail, errors.email, email],
+    () => !!errors.email || currentEmail === email || isUploading,
+    [currentEmail, errors.email, email, isUploading],
   )
   const initialize = useCallback(
     () => setValue('email', currentEmail, { shouldValidate: true }),
@@ -42,10 +43,13 @@ export const useChangeEmailForm = (): UseAccountSettingFormReturn => {
 
   const handleChangeEmail = useCallback(async () => {
     if (errors.email) return
+    setIsUploading(true)
+    // FIXME: メールアドレスの変更ができない
     await firebaseAuth
       .changeEmail(email)
       .then(() => toast.success('メールアドレスを変更しました'))
       .catch(() => toast.error('メールアドレスの変更に失敗しました'))
+      .finally(() => setIsUploading(false))
   }, [email, errors.email])
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useRef, useMemo, useCallback, useEffect } from 'react'
+import { useState, useRef, useMemo, useCallback, useEffect } from 'react'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useUpdateUserNameMutation } from 'pages/mypage/mypage.gen'
@@ -19,6 +19,7 @@ type UseUpdateUserNameFormReturn = {
  */
 export const useUpdateUserNameForm = (): UseUpdateUserNameFormReturn => {
   const shouldInitialize = useRef<boolean>(true)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
   const { currentUserData } = useGetCurrentUserData()
   const {
     register,
@@ -34,8 +35,8 @@ export const useUpdateUserNameForm = (): UseUpdateUserNameFormReturn => {
     [currentUserData.data?.user.name],
   )
   const disabled = useMemo(
-    () => !!errors.name || currentName === name,
-    [currentName, errors.name, name],
+    () => !!errors.name || currentName === name || isUploading,
+    [currentName, errors.name, name, isUploading],
   )
   const initialize = useCallback(
     () => setValue('name', currentName, { shouldValidate: true }),
@@ -45,14 +46,17 @@ export const useUpdateUserNameForm = (): UseUpdateUserNameFormReturn => {
   const [updateUserNameMutation] = useUpdateUserNameMutation({
     onCompleted(data) {
       toast.success('冒険者名を変更しました')
+      setIsUploading(false)
     },
     onError(err) {
       toast.error('冒険者名の変更に失敗しました')
+      setIsUploading(false)
     },
   })
 
   const handleUpdateUserNameMutation = useCallback(() => {
     if (errors.name || !currentUserData.data?.user.id) return
+    setIsUploading(true)
     updateUserNameMutation({
       variables: {
         name,
