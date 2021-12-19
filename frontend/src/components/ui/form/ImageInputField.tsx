@@ -1,8 +1,9 @@
 import React, { FCX, useRef } from 'react'
+import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { SIGN_UP_CAMERA } from 'consts/defaultImages'
 
 type Props = {
   image: string
@@ -26,11 +27,8 @@ export const ImageInputField: FCX<Props> = ({
       <StyledLabel>
         プロフィール画像
         <StyledImageWrapper>
-          <StyledImage
-            src={image}
-            alt="プロフィール画像"
-            defaultSrc={image === defaultSrc ? true : false}
-          />
+          <StyledImage src={image} alt="プロフィール画像" />
+          {image === defaultSrc && <StyledDefaultImageOverlay />}
         </StyledImageWrapper>
         <StyledDisappearedInput
           ref={inputRef}
@@ -58,6 +56,7 @@ const StyledLabel = styled.label`
   cursor: pointer;
 `
 const StyledImageWrapper = styled.div`
+  position: relative;
   margin: ${calculateMinSizeBasedOnFigma(4)} 0;
   width: ${calculateMinSizeBasedOnFigma(190)};
   height: ${calculateMinSizeBasedOnFigma(190)};
@@ -65,11 +64,37 @@ const StyledImageWrapper = styled.div`
   border-radius: 2px;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
 `
-const StyledImage = styled.img<{ defaultSrc: boolean }>`
+const StyledImage = styled.img`
   aspect-ratio: 1 / 1;
-  object-fit: ${({ defaultSrc }) => (defaultSrc ? 'contain' : 'cover')};
+  object-fit: cover;
   width: 100%;
-  padding: ${({ defaultSrc }) => (defaultSrc ? calculateMinSizeBasedOnFigma(40) : '0px')};
+`
+const StyledDefaultImageOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  ${({ theme }) =>
+    css`
+      background-color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.3)};
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        width: ${calculateMinSizeBasedOnFigma(104.3)};
+        height: ${calculateMinSizeBasedOnFigma(82.87)};
+        background-image: url(${SIGN_UP_CAMERA});
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+      }
+    `}
 `
 const StyledDisappearedInput = styled.input`
   display: none;

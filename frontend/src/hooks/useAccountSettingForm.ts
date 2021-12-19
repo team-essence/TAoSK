@@ -1,5 +1,6 @@
 import { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useForm, UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form'
+import { useUpdateUserNameMutation, useUpdateUserIconImageMutation } from 'pages/mypage/mypage.gen'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import toast from 'utils/toast/toast'
@@ -53,6 +54,42 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     () => !!errors.email || currentEmail === email,
     [currentEmail, errors.email, email],
   )
+  const [updateUserNameMutation] = useUpdateUserNameMutation({
+    onCompleted(data) {
+      toast.success('冒険者名を変更しました')
+    },
+    onError(err) {
+      toast.error('冒険者名の変更に失敗しました')
+    },
+  })
+  const [updateUserIconImageMutation] = useUpdateUserIconImageMutation({
+    onCompleted(data) {
+      toast.success('プロフィール画像を変更しました')
+    },
+    onError(err) {
+      toast.error('プロフィール画像の変更に失敗しました')
+    },
+  })
+
+  const handleUpdateUserNameMutation = useCallback(() => {
+    if (errors.name || !currentUserData.data?.user.id) return
+    updateUserNameMutation({
+      variables: {
+        name,
+        id: currentUserData.data.user.id,
+      },
+    })
+  }, [name, errors.name, currentUserData.data?.user.id])
+
+  const handleUpdateUserIconImageMutation = useCallback(() => {
+    if (errors.name || !currentUserData.data?.user.id) return
+    // updateUserIconImageMutation({
+    //   variables: {
+    //     icon_image,
+    //     id: currentUserData.data.user.id
+    //   }
+    // })
+  }, [name, errors.name, currentUserData.data?.user.id])
 
   const handleChangeEmail = useCallback(async () => {
     if (errors.email) return

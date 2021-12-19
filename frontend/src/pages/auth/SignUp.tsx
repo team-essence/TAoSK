@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
-import { SIGN_UP_CAMERA } from 'consts/defaultImages'
+import { DEFAULT_USER } from 'consts/defaultImages'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
@@ -28,7 +28,7 @@ export const SignUp: FC = () => {
   const [interests, setInterests] = useState<string[]>([])
   const [occupationOptions, setOccupationOptions] = useState<Record<'value' | 'item', string>[]>([])
   const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
-    SIGN_UP_CAMERA,
+    DEFAULT_USER,
     300,
   )
   const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
@@ -64,7 +64,7 @@ export const SignUp: FC = () => {
           <StyledFormWrapper>
             <StyledImageInputField
               image={imageUrl}
-              defaultSrc={SIGN_UP_CAMERA}
+              defaultSrc={DEFAULT_USER}
               initializeUploadImg={initializeUploadImg}
               handleUploadImg={handleUploadImg}
               innerWidth={innerWidth}

@@ -54,6 +54,7 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
   }
 
   const setUrlCreatedFromBlob = (blob: Blob | null) => {
+    if (!blob) return
     const resizedUrl = URL.createObjectURL(blob) // blobをimgのsrc属性で使える形へ変換
     setImageUrl(resizedUrl) // リサイズした画像を表示
   }
