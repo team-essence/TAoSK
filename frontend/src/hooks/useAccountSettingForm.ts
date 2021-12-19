@@ -1,78 +1,44 @@
 import { useRef, useEffect, useMemo, useCallback } from 'react'
-import { useForm, UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form'
-import { useUpdateUserNameMutation } from 'pages/mypage/mypage.gen'
+import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import toast from 'utils/toast/toast'
 
-type FormInputs = Record<'name' | 'email', string>
+type FormInput = { email: string }
 
 type UseAccountSettingFormReturn = {
-  register: UseFormRegister<FormInputs>
-  setValue: UseFormSetValue<FormInputs>
-  errors: FieldErrors<FormInputs>
-  currentName: string
+  register: UseFormRegister<FormInput>
+  error: FieldError | undefined
   currentEmail: string
-  disabledName: boolean
-  disabledEmail: boolean
-  handleUpdateUserNameMutation: () => void
+  disabled: boolean
   handleChangeEmail: () => void
+  initialize: () => void
 }
 
 /**
- * react-hook-formを使った登録処理の初期設定を行う
- * @returns {boolean} isDisabled - 登録ボタンをdisabledにするか
- * @returns {Object} {
- *  register,
- *  handleSubmit,
- *  getValues,
- *  errors,
- *  trigger
- *  } - react-hook-fromの公式ページを参照
+ * react-hook-formを使ったemail変更処理
  */
-export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
-  const { currentUserData, firebaseCurrentUser } = useGetCurrentUserData()
+export const useChangeEmailForm = (): UseAccountSettingFormReturn => {
+  const shouldInitialize = useRef<boolean>(true)
+  const { firebaseCurrentUser } = useGetCurrentUserData()
   const {
     register,
     formState: { errors },
     setValue,
     watch,
-  } = useForm<FormInputs>({
+  } = useForm<FormInput>({
     mode: 'onChange',
   })
-  const { name, email } = watch()
-  const currentName = useMemo(
-    () => currentUserData.data?.user.name ?? '',
-    [currentUserData.data?.user.name],
-  )
+  const email = watch('email')
   const currentEmail = useMemo(() => firebaseCurrentUser?.email ?? '', [firebaseCurrentUser?.email])
-  const shouldInitialize = useRef<boolean>(true)
-  const disabledName = useMemo(
-    () => !!errors.name || currentName === name,
-    [currentName, errors.name, name],
-  )
-  const disabledEmail = useMemo(
+  const disabled = useMemo(
     () => !!errors.email || currentEmail === email,
     [currentEmail, errors.email, email],
   )
-  const [updateUserNameMutation] = useUpdateUserNameMutation({
-    onCompleted(data) {
-      toast.success('冒険者名を変更しました')
-    },
-    onError(err) {
-      toast.error('冒険者名の変更に失敗しました')
-    },
-  })
-
-  const handleUpdateUserNameMutation = useCallback(() => {
-    if (errors.name || !currentUserData.data?.user.id) return
-    updateUserNameMutation({
-      variables: {
-        name,
-        id: currentUserData.data.user.id,
-      },
-    })
-  }, [name, errors.name, currentUserData.data?.user.id])
+  const initialize = useCallback(
+    () => setValue('email', currentEmail, { shouldValidate: true }),
+    [currentEmail],
+  )
 
   const handleChangeEmail = useCallback(async () => {
     if (errors.email) return
@@ -83,22 +49,18 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
   }, [email, errors.email])
 
   useEffect(() => {
-    if (shouldInitialize.current && currentName && currentEmail) {
-      setValue('name', currentName, { shouldValidate: true })
-      setValue('email', currentEmail, { shouldValidate: true })
+    if (shouldInitialize.current && currentEmail) {
+      initialize()
       shouldInitialize.current = false
     }
-  }, [currentName, currentEmail])
+  }, [currentEmail])
 
   return {
     register,
-    errors,
-    setValue,
-    currentName,
+    error: errors.email,
     currentEmail,
-    disabledName,
-    disabledEmail,
-    handleUpdateUserNameMutation,
+    disabled,
     handleChangeEmail,
+    initialize,
   }
 }

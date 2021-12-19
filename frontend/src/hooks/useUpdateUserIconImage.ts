@@ -21,6 +21,9 @@ type UseUpdateUserIconImageReturn = {
   handleUpdateUserIconImageMutation: ImageInputFieldProps['onClickUploadBtn']
 }
 
+/**
+ * ユーザーのプロフィール画像変更処理
+ */
 export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const [updateUserIconImageMutation] = useUpdateUserIconImageMutation({

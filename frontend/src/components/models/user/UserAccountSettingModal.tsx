@@ -7,7 +7,8 @@ import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
+import { useChangeEmailForm } from 'hooks/useAccountSettingForm'
+import { useUpdateUserNameForm } from 'hooks/useUpdateUserNameForm'
 import { useUpdateUserIconImage } from 'hooks/useUpdateUserIconImage'
 
 type Props = {
@@ -16,17 +17,8 @@ type Props = {
 }
 
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
-  const {
-    register,
-    errors,
-    setValue,
-    currentName,
-    currentEmail,
-    disabledName,
-    disabledEmail,
-    handleUpdateUserNameMutation,
-    handleChangeEmail,
-  } = useAccountSettingForm()
+  const { handleChangeEmail, currentEmail, ...emailController } = useChangeEmailForm()
+  const { handleUpdateUserNameMutation, ...nameController } = useUpdateUserNameForm()
   const {
     imageUrl,
     defaultSrc,
@@ -48,7 +40,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             <StyledH5>冒険者名</StyledH5>
             <StyledInput
               placeholder="お名前を入力してください"
-              {...register('name', {
+              {...nameController.register('name', {
                 required: '名前は必須です',
                 maxLength: { value: 50, message: '50文字以内で入力してください' },
                 pattern: {
@@ -56,20 +48,18 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                   message: '空白が含まれてます',
                 },
               })}
-              hasError={!!errors.name?.message}
+              hasError={!!nameController.error}
             />
             <StyledInputBottomRowWrapper>
               <StyledErrorMessage>
-                {!!errors.name?.message && errors.name.message}
+                {!!nameController.error && nameController.error.message}
               </StyledErrorMessage>
               <StyledButtonWrapper>
-                <CancelButton
-                  onClick={() => setValue('name', currentName, { shouldValidate: true })}
-                />
+                <CancelButton onClick={nameController.initialize} />
                 <CoarseRedOxideButton
                   text="保存"
                   onClick={handleUpdateUserNameMutation}
-                  disabled={disabledName}
+                  disabled={nameController.disabled}
                 />
               </StyledButtonWrapper>
             </StyledInputBottomRowWrapper>
@@ -83,7 +73,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             <StyledH5>新しいメールアドレス</StyledH5>
             <StyledInput
               placeholder="メールアドレスを入力してください"
-              {...register('email', {
+              {...emailController.register('email', {
                 required: '未入力です',
                 maxLength: {
                   value: 50,
@@ -94,20 +84,18 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                   message: '不正なメールアドレスです',
                 },
               })}
-              hasError={!!errors.email?.message}
+              hasError={!!emailController.error}
             />
             <StyledInputBottomRowWrapper>
               <StyledErrorMessage>
-                {!!errors.email?.message && errors.email.message}
+                {!!emailController.error && emailController.error.message}
               </StyledErrorMessage>
               <StyledButtonWrapper>
-                <CancelButton
-                  onClick={() => setValue('email', currentEmail, { shouldValidate: true })}
-                />
+                <CancelButton onClick={emailController.initialize} />
                 <CoarseRedOxideButton
                   text="保存"
                   onClick={handleChangeEmail}
-                  disabled={disabledEmail}
+                  disabled={emailController.disabled}
                 />
               </StyledButtonWrapper>
             </StyledInputBottomRowWrapper>
