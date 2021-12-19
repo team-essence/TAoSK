@@ -19,6 +19,7 @@ type Props = {
   initializeUploadImg: () => void
   uploadButtonType: UPLOAD_BUTTON
   onClickUploadBtn?: () => void
+  shouldDisabledUploadBtn?: boolean
 }
 
 export const ImageInputField: FCX<Props> = ({
@@ -29,6 +30,7 @@ export const ImageInputField: FCX<Props> = ({
   initializeUploadImg,
   uploadButtonType,
   onClickUploadBtn,
+  shouldDisabledUploadBtn = false,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const onClick = useCallback(() => {
@@ -55,9 +57,17 @@ export const ImageInputField: FCX<Props> = ({
         />
       </StyledLabel>
       {uploadButtonType === UPLOAD_BUTTON.COARSE_BUTTON ? (
-        <StyledCoarseButton text="画像をアップロード" onClick={onClick} />
+        <StyledCoarseButton
+          text="画像をアップロード"
+          onClick={onClick}
+          disabled={shouldDisabledUploadBtn}
+        />
       ) : (
-        <StyledCoarseRedOxideButton text="画像をアップロード" onClick={onClick} />
+        <StyledCoarseRedOxideButton
+          text="画像をアップロード"
+          onClick={onClick}
+          disabled={shouldDisabledUploadBtn}
+        />
       )}
       <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
     </StyledAllWrapper>
@@ -121,6 +131,7 @@ const StyledDisappearedInput = styled.input`
 `
 const StyledDeleteButton = styled.button`
   margin: ${calculateMinSizeBasedOnFigma(4)} 0;
+  width: ${calculateMinSizeBasedOnFigma(190)};
   color: ${({ theme }) => theme.COLORS.CHOCOLATE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
 `

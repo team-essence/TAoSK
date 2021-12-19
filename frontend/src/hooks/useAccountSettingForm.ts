@@ -27,6 +27,7 @@ type UseAccountSettingFormReturn = {
   defaultSrc: ImageInputFieldProps['defaultSrc']
   handleChangeImg: ImageInputFieldProps['handleChangeImg']
   initializeUploadImg: ImageInputFieldProps['initializeUploadImg']
+  shouldDisabledUploadBtn: ImageInputFieldProps['shouldDisabledUploadBtn']
   handleUpdateUserNameMutation: () => void
   handleChangeEmail: () => void
   handleUpdateUserIconImageMutation: NonNullable<ImageInputFieldProps['onClickUploadBtn']>
@@ -55,6 +56,7 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
   )
   const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
   const { fileData } = useBlobToFile(blobData)
+  const shouldDisabledUploadBtn = useMemo(() => defaultSrc === imageUrl, [defaultSrc, imageUrl])
 
   const {
     register,
@@ -115,8 +117,7 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
   }, [email, errors.email])
 
   const handleUpdateUserIconImageMutation = useCallback(async () => {
-    if (!fileData || !currentUserData.data || imageUrl === currentUserData.data?.user.icon_image)
-      return
+    if (!fileData || !currentUserData.data || shouldDisabledUploadBtn) return
     const blobsInContainer: string[] = await uploadFileToBlob(fileData)
     const url = await collatingImagesInAzure(fileData, blobsInContainer)
     updateUserIconImageMutation({
@@ -125,7 +126,7 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
         id: currentUserData.data.user.id,
       },
     })
-  }, [fileData, imageUrl, currentUserData.data?.user.icon_image])
+  }, [fileData, shouldDisabledUploadBtn])
 
   useEffect(() => {
     if (shouldInitialize.current && currentName && currentEmail) {
@@ -150,5 +151,6 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     handleUpdateUserNameMutation,
     handleChangeEmail,
     handleUpdateUserIconImageMutation,
+    shouldDisabledUploadBtn,
   }
 }

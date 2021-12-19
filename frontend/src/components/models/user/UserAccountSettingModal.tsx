@@ -29,6 +29,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
     disabledEmail,
     imageUrl,
     defaultSrc,
+    shouldDisabledUploadBtn,
     initializeUploadImg,
     handleChangeImg,
     handleUpdateUserNameMutation,
@@ -136,6 +137,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             onClickUploadBtn={handleUpdateUserIconImageMutation}
             initializeUploadImg={initializeUploadImg}
             uploadButtonType={UPLOAD_BUTTON.MODAL_BUTTON}
+            shouldDisabledUploadBtn={shouldDisabledUploadBtn}
           />
         </StyledRightColumn>
       </StyledInputsWrapper>
