@@ -1,4 +1,4 @@
-import React, { FCX, useRef } from 'react'
+import React, { FCX, useRef, useCallback } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
@@ -15,21 +15,29 @@ export type UPLOAD_BUTTON = typeof UPLOAD_BUTTON[keyof typeof UPLOAD_BUTTON]
 type Props = {
   image: string
   defaultSrc: string
-  handleUploadImg: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleChangeImg: (e: React.ChangeEvent<HTMLInputElement>) => void
   initializeUploadImg: () => void
   uploadButtonType: UPLOAD_BUTTON
+  onClickUploadBtn?: () => void
 }
 
 export const ImageInputField: FCX<Props> = ({
   className,
   image,
   defaultSrc,
-  handleUploadImg,
+  handleChangeImg,
   initializeUploadImg,
   uploadButtonType,
+  onClickUploadBtn,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const onClickUploadBtn = () => inputRef.current?.click()
+  const onClick = useCallback(() => {
+    if (onClickUploadBtn) {
+      onClickUploadBtn()
+    } else {
+      inputRef.current?.click()
+    }
+  }, [inputRef.current, onClickUploadBtn])
 
   return (
     <StyledAllWrapper className={className}>
@@ -43,13 +51,13 @@ export const ImageInputField: FCX<Props> = ({
           ref={inputRef}
           type="file"
           accept=".jpg, .jpeg, .png"
-          onChange={handleUploadImg}
+          onChange={handleChangeImg}
         />
       </StyledLabel>
       {uploadButtonType === UPLOAD_BUTTON.COARSE_BUTTON ? (
-        <StyledCoarseButton text="画像をアップロード" onClick={onClickUploadBtn} />
+        <StyledCoarseButton text="画像をアップロード" onClick={onClick} />
       ) : (
-        <StyledCoarseRedOxideButton text="画像をアップロード" onClick={onClickUploadBtn} />
+        <StyledCoarseRedOxideButton text="画像をアップロード" onClick={onClick} />
       )}
       <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
     </StyledAllWrapper>

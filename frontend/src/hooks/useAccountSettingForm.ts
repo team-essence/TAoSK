@@ -25,11 +25,11 @@ type UseAccountSettingFormReturn = {
   disabledEmail: boolean
   imageUrl: ImageInputFieldProps['image']
   defaultSrc: ImageInputFieldProps['defaultSrc']
-  handleUploadImg: ImageInputFieldProps['handleUploadImg']
+  handleChangeImg: ImageInputFieldProps['handleChangeImg']
   initializeUploadImg: ImageInputFieldProps['initializeUploadImg']
   handleUpdateUserNameMutation: () => void
   handleChangeEmail: () => void
-  handleUpdateUserIconImageMutation: () => void
+  handleUpdateUserIconImageMutation: NonNullable<ImageInputFieldProps['onClickUploadBtn']>
 }
 
 /**
@@ -49,12 +49,13 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     () => currentUserData.data?.user.icon_image ?? DEFAULT_USER,
     [currentUserData.data?.user.icon_image],
   )
-  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
+  const { canvasContext, imageUrl, initializeUploadImg, handleChangeImg } = useImageResize(
     defaultSrc,
     RESIZED_IMAGE_ASPECT,
   )
   const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
   const { fileData } = useBlobToFile(blobData)
+
   const {
     register,
     formState: { errors },
@@ -145,7 +146,7 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     imageUrl,
     defaultSrc,
     initializeUploadImg,
-    handleUploadImg,
+    handleChangeImg,
     handleUpdateUserNameMutation,
     handleChangeEmail,
     handleUpdateUserIconImageMutation,

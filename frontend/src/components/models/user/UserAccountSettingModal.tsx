@@ -30,7 +30,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
     imageUrl,
     defaultSrc,
     initializeUploadImg,
-    handleUploadImg,
+    handleChangeImg,
     handleUpdateUserNameMutation,
     handleChangeEmail,
     handleUpdateUserIconImageMutation,
@@ -120,7 +120,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             </StyledText>
           </StyledTextWrapper>
           <StyledSendButtonWrapper>
-            {/* TODO: 未実装。処理が出来次第追加する */}
+            {/* TODO: 未実装。パスワード再設定メール送信処理が出来次第追加する */}
             <StyledSendChangePasswordEmailButton
               text="メールを送信する"
               onClick={() => console.log('hoge')}
@@ -132,7 +132,8 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
           <ImageInputField
             image={imageUrl}
             defaultSrc={defaultSrc}
-            handleUploadImg={handleUploadImg}
+            handleChangeImg={handleChangeImg}
+            onClickUploadBtn={handleUpdateUserIconImageMutation}
             initializeUploadImg={initializeUploadImg}
             uploadButtonType={UPLOAD_BUTTON.MODAL_BUTTON}
           />
@@ -218,7 +219,7 @@ const StyledSendButtonWrapper = styled.div`
   justify-content: flex-end;
   width: 100%;
 `
-const StyledTextWrapper = styled.p`
+const StyledTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${calculateMinSizeBasedOnFigmaWidth(10)};

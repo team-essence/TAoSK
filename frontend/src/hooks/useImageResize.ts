@@ -4,7 +4,7 @@ export type UseImageResizeReturn = {
   canvasContext: CanvasRenderingContext2D | undefined
   imageUrl: string
   initializeUploadImg: () => void
-  handleUploadImg: (e: ChangeEvent<HTMLInputElement>) => void
+  handleChangeImg: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 const calculateWantSize = (
@@ -42,7 +42,7 @@ const drawCanvas = (
  * canvasContext: リサイズした画像をdrawしたcanvasのコンテキスト,
  * imageUrl: リサイズ後のurl,
  * initializeUploadImg: imageUrlを第一引数に設定した初期値に戻す,
- * handleUploadImg: input[type="file"]でファイルが変更された時にリサイズ処理を実行する
+ * handleChangeImg: input[type="file"]でファイルが変更された時にリサイズ処理を実行する
  * }
  */
 export const useImageResize = (initialUrl: string, maxWidth: number): UseImageResizeReturn => {
@@ -57,7 +57,7 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
     setImageUrl(resizedUrl) // リサイズした画像を表示
   }
 
-  const handleUploadImg = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeImg = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.currentTarget.files || e.currentTarget.files.length === 0) return
     const file = e.currentTarget.files[0]
     if (file.type !== 'image/jpeg' && file.type !== 'image/png') return
@@ -86,5 +86,5 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
 
   useEffect(() => setImageUrl(initialUrl), [initialUrl])
 
-  return { canvasContext, imageUrl, initializeUploadImg, handleUploadImg }
+  return { canvasContext, imageUrl, initializeUploadImg, handleChangeImg }
 }

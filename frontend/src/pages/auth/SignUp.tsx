@@ -27,7 +27,7 @@ export const SignUp: FC = () => {
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const [occupationOptions, setOccupationOptions] = useState<Record<'value' | 'item', string>[]>([])
-  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
+  const { canvasContext, imageUrl, initializeUploadImg, handleChangeImg } = useImageResize(
     DEFAULT_USER,
     RESIZED_IMAGE_ASPECT,
   )
@@ -66,7 +66,7 @@ export const SignUp: FC = () => {
               image={imageUrl}
               defaultSrc={DEFAULT_USER}
               initializeUploadImg={initializeUploadImg}
-              handleUploadImg={handleUploadImg}
+              handleChangeImg={handleChangeImg}
               innerWidth={innerWidth}
               uploadButtonType={UPLOAD_BUTTON.COARSE_BUTTON}
             />
