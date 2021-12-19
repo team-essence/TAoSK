@@ -1,19 +1,11 @@
-import { useRef, useEffect, useMemo, useCallback, ComponentProps } from 'react'
-import { RESIZED_IMAGE_ASPECT, DEFAULT_USER } from 'consts/defaultImages'
+import { useRef, useEffect, useMemo, useCallback } from 'react'
 import { useForm, UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form'
-import { useUpdateUserNameMutation, useUpdateUserIconImageMutation } from 'pages/mypage/mypage.gen'
-import { ImageInputField } from 'components/ui/form/ImageInputField'
+import { useUpdateUserNameMutation } from 'pages/mypage/mypage.gen'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
-import { useImageResize } from 'hooks/useImageResize'
-import { useDataUrlToBlob } from 'hooks/useDataUrlToBlob'
-import { useBlobToFile } from 'hooks/useBlobToFile'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
-import { uploadFileToBlob } from 'utils/lib/azure/azureStorageBlob'
-import { collatingImagesInAzure } from 'utils/lib/azure/collatingImagesInAzure'
 import toast from 'utils/toast/toast'
 
 type FormInputs = Record<'name' | 'email', string>
-type ImageInputFieldProps = ComponentProps<typeof ImageInputField>
 
 type UseAccountSettingFormReturn = {
   register: UseFormRegister<FormInputs>
@@ -23,14 +15,8 @@ type UseAccountSettingFormReturn = {
   currentEmail: string
   disabledName: boolean
   disabledEmail: boolean
-  imageUrl: ImageInputFieldProps['image']
-  defaultSrc: ImageInputFieldProps['defaultSrc']
-  handleChangeImg: ImageInputFieldProps['handleChangeImg']
-  initializeUploadImg: ImageInputFieldProps['initializeUploadImg']
-  shouldDisabledUploadBtn: ImageInputFieldProps['shouldDisabledUploadBtn']
   handleUpdateUserNameMutation: () => void
   handleChangeEmail: () => void
-  handleUpdateUserIconImageMutation: NonNullable<ImageInputFieldProps['onClickUploadBtn']>
 }
 
 /**
@@ -46,18 +32,6 @@ type UseAccountSettingFormReturn = {
  */
 export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
   const { currentUserData, firebaseCurrentUser } = useGetCurrentUserData()
-  const defaultSrc = useMemo(
-    () => currentUserData.data?.user.icon_image ?? DEFAULT_USER,
-    [currentUserData.data?.user.icon_image],
-  )
-  const { canvasContext, imageUrl, initializeUploadImg, handleChangeImg } = useImageResize(
-    defaultSrc,
-    RESIZED_IMAGE_ASPECT,
-  )
-  const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
-  const { fileData } = useBlobToFile(blobData)
-  const shouldDisabledUploadBtn = useMemo(() => defaultSrc === imageUrl, [defaultSrc, imageUrl])
-
   const {
     register,
     formState: { errors },
@@ -89,14 +63,6 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
       toast.error('冒険者名の変更に失敗しました')
     },
   })
-  const [updateUserIconImageMutation] = useUpdateUserIconImageMutation({
-    onCompleted(data) {
-      toast.success('プロフィール画像を変更しました')
-    },
-    onError(err) {
-      toast.error('プロフィール画像の変更に失敗しました')
-    },
-  })
 
   const handleUpdateUserNameMutation = useCallback(() => {
     if (errors.name || !currentUserData.data?.user.id) return
@@ -116,18 +82,6 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
       .catch(() => toast.error('メールアドレスの変更に失敗しました'))
   }, [email, errors.email])
 
-  const handleUpdateUserIconImageMutation = useCallback(async () => {
-    if (!fileData || !currentUserData.data || shouldDisabledUploadBtn) return
-    const blobsInContainer: string[] = await uploadFileToBlob(fileData)
-    const url = await collatingImagesInAzure(fileData, blobsInContainer)
-    updateUserIconImageMutation({
-      variables: {
-        icon_image: url,
-        id: currentUserData.data.user.id,
-      },
-    })
-  }, [fileData, shouldDisabledUploadBtn])
-
   useEffect(() => {
     if (shouldInitialize.current && currentName && currentEmail) {
       setValue('name', currentName, { shouldValidate: true })
@@ -144,13 +98,7 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     currentEmail,
     disabledName,
     disabledEmail,
-    imageUrl,
-    defaultSrc,
-    initializeUploadImg,
-    handleChangeImg,
     handleUpdateUserNameMutation,
     handleChangeEmail,
-    handleUpdateUserIconImageMutation,
-    shouldDisabledUploadBtn,
   }
 }

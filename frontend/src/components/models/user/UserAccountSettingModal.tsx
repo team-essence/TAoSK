@@ -8,6 +8,7 @@ import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputFie
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
+import { useUpdateUserIconImage } from 'hooks/useUpdateUserIconImage'
 
 type Props = {
   shouldShow: boolean
@@ -23,15 +24,17 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
     currentEmail,
     disabledName,
     disabledEmail,
-    imageUrl,
-    defaultSrc,
-    shouldDisabledUploadBtn,
-    initializeUploadImg,
-    handleChangeImg,
     handleUpdateUserNameMutation,
     handleChangeEmail,
-    handleUpdateUserIconImageMutation,
   } = useAccountSettingForm()
+  const {
+    imageUrl,
+    defaultSrc,
+    handleChangeImg,
+    initializeUploadImg,
+    shouldDisable,
+    handleUpdateUserIconImageMutation,
+  } = useUpdateUserIconImage()
 
   return (
     <StyledModal
@@ -133,7 +136,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             onClickUploadBtn={handleUpdateUserIconImageMutation}
             initializeUploadImg={initializeUploadImg}
             uploadButtonType={UPLOAD_BUTTON.MODAL_BUTTON}
-            shouldDisabledUploadBtn={shouldDisabledUploadBtn}
+            shouldDisabledUploadBtn={shouldDisable}
           />
         </StyledRightColumn>
       </StyledInputsWrapper>
