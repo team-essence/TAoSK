@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 
 export type UseImageResizeReturn = {
   canvasContext: CanvasRenderingContext2D | undefined
@@ -49,9 +49,7 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
   const [imageUrl, setImageUrl] = useState<string>(initialUrl)
   const [canvasContext, setCanvasContext] = useState<CanvasRenderingContext2D>()
 
-  const initializeUploadImg = () => {
-    setImageUrl(initialUrl)
-  }
+  const initializeUploadImg = () => setImageUrl(initialUrl)
 
   const setUrlCreatedFromBlob = (blob: Blob | null) => {
     if (!blob) return
@@ -85,6 +83,8 @@ export const useImageResize = (initialUrl: string, maxWidth: number): UseImageRe
 
     fileReader.readAsDataURL(file)
   }
+
+  useEffect(() => setImageUrl(initialUrl), [initialUrl])
 
   return { canvasContext, imageUrl, initializeUploadImg, handleUploadImg }
 }

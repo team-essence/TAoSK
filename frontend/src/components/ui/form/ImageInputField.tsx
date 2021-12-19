@@ -1,15 +1,23 @@
 import React, { FCX, useRef } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
+import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { SIGN_UP_CAMERA } from 'consts/defaultImages'
+
+export const UPLOAD_BUTTON = {
+  COARSE_BUTTON: 'CoarseButton',
+  MODAL_BUTTON: 'CoarseRedOxideButton',
+} as const
+export type UPLOAD_BUTTON = typeof UPLOAD_BUTTON[keyof typeof UPLOAD_BUTTON]
 
 type Props = {
   image: string
   defaultSrc: string
   handleUploadImg: (e: React.ChangeEvent<HTMLInputElement>) => void
   initializeUploadImg: () => void
+  uploadButtonType: UPLOAD_BUTTON
 }
 
 export const ImageInputField: FCX<Props> = ({
@@ -18,6 +26,7 @@ export const ImageInputField: FCX<Props> = ({
   defaultSrc,
   handleUploadImg,
   initializeUploadImg,
+  uploadButtonType,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const onClickUploadBtn = () => inputRef.current?.click()
@@ -37,8 +46,11 @@ export const ImageInputField: FCX<Props> = ({
           onChange={handleUploadImg}
         />
       </StyledLabel>
-
-      <StyledCoarseButton text="画像をアップロード" onClick={onClickUploadBtn} />
+      {uploadButtonType === UPLOAD_BUTTON.COARSE_BUTTON ? (
+        <StyledCoarseButton text="画像をアップロード" onClick={onClickUploadBtn} />
+      ) : (
+        <StyledCoarseRedOxideButton text="画像をアップロード" onClick={onClickUploadBtn} />
+      )}
       <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
     </StyledAllWrapper>
   )
@@ -119,4 +131,9 @@ const StyledCoarseButton = styled(CoarseButton)`
       }
     }
   `}
+`
+const StyledCoarseRedOxideButton = styled(CoarseRedOxideButton)`
+  margin: ${calculateMinSizeBasedOnFigma(4)} 0;
+  width: ${calculateMinSizeBasedOnFigma(190)};
+  height: ${calculateMinSizeBasedOnFigma(32)};
 `

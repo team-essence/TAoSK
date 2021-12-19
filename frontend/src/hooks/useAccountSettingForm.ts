@@ -1,11 +1,19 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react'
+import { useRef, useEffect, useMemo, useCallback, ComponentProps } from 'react'
+import { RESIZED_IMAGE_ASPECT, DEFAULT_USER } from 'consts/defaultImages'
 import { useForm, UseFormRegister, FieldErrors, UseFormSetValue } from 'react-hook-form'
 import { useUpdateUserNameMutation, useUpdateUserIconImageMutation } from 'pages/mypage/mypage.gen'
+import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { useImageResize } from 'hooks/useImageResize'
+import { useDataUrlToBlob } from 'hooks/useDataUrlToBlob'
+import { useBlobToFile } from 'hooks/useBlobToFile'
 import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
+import { uploadFileToBlob } from 'utils/lib/azure/azureStorageBlob'
+import { collatingImagesInAzure } from 'utils/lib/azure/collatingImagesInAzure'
 import toast from 'utils/toast/toast'
 
 type FormInputs = Record<'name' | 'email', string>
+type ImageInputFieldProps = ComponentProps<typeof ImageInputField>
 
 type UseAccountSettingFormReturn = {
   register: UseFormRegister<FormInputs>
@@ -15,7 +23,13 @@ type UseAccountSettingFormReturn = {
   currentEmail: string
   disabledName: boolean
   disabledEmail: boolean
+  imageUrl: ImageInputFieldProps['image']
+  defaultSrc: ImageInputFieldProps['defaultSrc']
+  handleUploadImg: ImageInputFieldProps['handleUploadImg']
+  initializeUploadImg: ImageInputFieldProps['initializeUploadImg']
+  handleUpdateUserNameMutation: () => void
   handleChangeEmail: () => void
+  handleUpdateUserIconImageMutation: () => void
 }
 
 /**
@@ -31,6 +45,16 @@ type UseAccountSettingFormReturn = {
  */
 export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
   const { currentUserData, firebaseCurrentUser } = useGetCurrentUserData()
+  const defaultSrc = useMemo(
+    () => currentUserData.data?.user.icon_image ?? DEFAULT_USER,
+    [currentUserData.data?.user.icon_image],
+  )
+  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
+    defaultSrc,
+    RESIZED_IMAGE_ASPECT,
+  )
+  const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
+  const { fileData } = useBlobToFile(blobData)
   const {
     register,
     formState: { errors },
@@ -81,23 +105,26 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     })
   }, [name, errors.name, currentUserData.data?.user.id])
 
-  const handleUpdateUserIconImageMutation = useCallback(() => {
-    if (errors.name || !currentUserData.data?.user.id) return
-    // updateUserIconImageMutation({
-    //   variables: {
-    //     icon_image,
-    //     id: currentUserData.data.user.id
-    //   }
-    // })
-  }, [name, errors.name, currentUserData.data?.user.id])
-
   const handleChangeEmail = useCallback(async () => {
     if (errors.email) return
     await firebaseAuth
       .changeEmail(email)
-      .then(() => toast.success('送信完了しました'))
-      .catch(() => toast.error('送信に失敗しました'))
+      .then(() => toast.success('メールアドレスを変更しました'))
+      .catch(() => toast.error('メールアドレスの変更に失敗しました'))
   }, [email, errors.email])
+
+  const handleUpdateUserIconImageMutation = useCallback(async () => {
+    if (!fileData || !currentUserData.data || imageUrl === currentUserData.data?.user.icon_image)
+      return
+    const blobsInContainer: string[] = await uploadFileToBlob(fileData)
+    const url = await collatingImagesInAzure(fileData, blobsInContainer)
+    updateUserIconImageMutation({
+      variables: {
+        icon_image: url,
+        id: currentUserData.data.user.id,
+      },
+    })
+  }, [fileData, imageUrl, currentUserData.data?.user.icon_image])
 
   useEffect(() => {
     if (shouldInitialize.current && currentName && currentEmail) {
@@ -115,6 +142,12 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     currentEmail,
     disabledName,
     disabledEmail,
+    imageUrl,
+    defaultSrc,
+    initializeUploadImg,
+    handleUploadImg,
+    handleUpdateUserNameMutation,
     handleChangeEmail,
+    handleUpdateUserIconImageMutation,
   }
 }

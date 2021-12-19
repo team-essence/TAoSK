@@ -1,8 +1,10 @@
 import React, { FCX, Dispatch, SetStateAction } from 'react'
+import styled, { css } from 'styled-components'
 import { REGEX_EMAIL, REGEX_TEXT } from 'consts/regex'
 import { Modal } from 'components/ui/modal/Modal'
 import { CancelButton } from 'components/ui/button/CancelButton'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
+import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import {
   calculateMinSizeBasedOnFigma,
@@ -10,7 +12,6 @@ import {
   calculateMinSizeBasedOnFigmaHeight,
 } from 'utils/calculateSizeBasedOnFigma'
 import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
-import styled, { css } from 'styled-components'
 
 type Props = {
   shouldShow: boolean
@@ -20,13 +21,19 @@ type Props = {
 export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow, className }) => {
   const {
     register,
-    setValue,
     errors,
+    setValue,
     currentName,
     currentEmail,
     disabledName,
     disabledEmail,
+    imageUrl,
+    defaultSrc,
+    initializeUploadImg,
+    handleUploadImg,
+    handleUpdateUserNameMutation,
     handleChangeEmail,
+    handleUpdateUserIconImageMutation,
   } = useAccountSettingForm()
 
   return (
@@ -61,7 +68,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                 />
                 <CoarseRedOxideButton
                   text="保存"
-                  onClick={() => console.log('aa')}
+                  onClick={handleUpdateUserNameMutation}
                   disabled={disabledName}
                 />
               </StyledButtonWrapper>
@@ -99,7 +106,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                 />
                 <CoarseRedOxideButton
                   text="保存"
-                  onClick={() => console.log('aa')}
+                  onClick={handleChangeEmail}
                   disabled={disabledEmail}
                 />
               </StyledButtonWrapper>
@@ -121,7 +128,15 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
           </StyledSendButtonWrapper>
         </StyledLeftColumn>
         <StyledBorder />
-        <StyledRightColumn>aaaaa</StyledRightColumn>
+        <StyledRightColumn>
+          <ImageInputField
+            image={imageUrl}
+            defaultSrc={defaultSrc}
+            handleUploadImg={handleUploadImg}
+            initializeUploadImg={initializeUploadImg}
+            uploadButtonType={UPLOAD_BUTTON.MODAL_BUTTON}
+          />
+        </StyledRightColumn>
       </StyledInputsWrapper>
     </StyledModal>
   )
