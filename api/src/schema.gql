@@ -211,6 +211,8 @@ type Mutation {
   searchSameCompanyUsers(conditionSearchUser: SearchUserInput!): [User!]!
   updateOnlineFlag(isOnline: Boolean!, project_id: String!, id: String!): User!
   updateMemo(memo: String!, id: String!): User!
+  updateUserName(name: String!, id: String!): User!
+  updateUserIconImage(icon_image: String!, id: String!): User!
   addCertification(newCertification: NewCertificationInput!): Certification!
   updateCertifications(names: [String!]!, user_id: String!): [Certification!]!
   addInterest(newInterest: NewInterestInput!): Interest!

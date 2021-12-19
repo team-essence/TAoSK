@@ -252,6 +252,32 @@ export class UsersService {
     return user;
   }
 
+  async updateUserName(id: string, name: string) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) throw new NotFoundException();
+
+    user.name = name;
+    await this.usersRepository.save(user).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return user;
+  }
+
+  async updateUserIconImage(id: string, icon_image: string) {
+    const user = await this.usersRepository.findOne(id);
+
+    if (!user) throw new NotFoundException();
+
+    user.icon_image = icon_image;
+    await this.usersRepository.save(user).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return user;
+  }
+
   // async remove(uid: string): Promise<boolean> {
   //   const result = await this.usersRepository.delete(uid);
   //   return result.affected > 0;
