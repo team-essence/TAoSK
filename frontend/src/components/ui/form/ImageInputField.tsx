@@ -20,6 +20,7 @@ type Props = {
   uploadButtonType: UPLOAD_BUTTON
   onClickUploadBtn?: () => void
   shouldDisabledUploadBtn?: boolean
+  shouldDisabledDeleteBtn?: boolean
 }
 
 export const ImageInputField: FCX<Props> = ({
@@ -31,6 +32,7 @@ export const ImageInputField: FCX<Props> = ({
   uploadButtonType,
   onClickUploadBtn,
   shouldDisabledUploadBtn = false,
+  shouldDisabledDeleteBtn = false,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const onClick = useCallback(() => {
@@ -69,7 +71,9 @@ export const ImageInputField: FCX<Props> = ({
           disabled={shouldDisabledUploadBtn}
         />
       )}
-      <StyledDeleteButton onClick={initializeUploadImg}>画像を削除</StyledDeleteButton>
+      <StyledDeleteButton onClick={initializeUploadImg} disabled={shouldDisabledDeleteBtn}>
+        画像を削除
+      </StyledDeleteButton>
     </StyledAllWrapper>
   )
 }
@@ -80,10 +84,13 @@ const StyledAllWrapper = styled.div`
   justify-content: center;
 `
 const StyledLabel = styled.label`
-  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
   cursor: pointer;
+  ${({ theme }) =>
+    css`
+      color: ${theme.COLORS.CHOCOLATE};
+      font-size: ${theme.FONT_SIZES.SIZE_16};
+      font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+    `}
 `
 const StyledImageWrapper = styled.div`
   position: relative;
@@ -129,11 +136,18 @@ const StyledDefaultImageOverlay = styled.div`
 const StyledDisappearedInput = styled.input`
   display: none;
 `
-const StyledDeleteButton = styled.button`
+const StyledDeleteButton = styled.button<{ disabled: boolean }>`
   margin: ${calculateMinSizeBasedOnFigma(4)} 0;
   width: ${calculateMinSizeBasedOnFigma(190)};
-  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
+  ${({ theme, disabled }) =>
+    css`
+      color: ${disabled ? convertIntoRGBA(theme.COLORS.NOBEL, 0.64) : theme.COLORS.CHOCOLATE};
+      font-size: ${theme.FONT_SIZES.SIZE_14};
+      ${disabled &&
+      css`
+        cursor: not-allowed;
+      `}
+    `}
 `
 const StyledCoarseButton = styled(CoarseButton)`
   margin: ${calculateMinSizeBasedOnFigma(4)} 0;

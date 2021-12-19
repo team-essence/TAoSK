@@ -1,4 +1,4 @@
-import { useMemo, useCallback, ComponentProps } from 'react'
+import { useState, useMemo, useCallback, ComponentProps } from 'react'
 import { ImageInputField } from 'components/ui/form/ImageInputField'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { RESIZED_IMAGE_ASPECT, DEFAULT_USER } from 'consts/defaultImages'
@@ -18,6 +18,7 @@ type UseUpdateUserIconImageReturn = {
   handleChangeImg: ImageInputFieldProps['handleChangeImg']
   initializeUploadImg: ImageInputFieldProps['initializeUploadImg']
   shouldDisable: ImageInputFieldProps['shouldDisabledUploadBtn']
+  isUploading: ImageInputFieldProps['shouldDisabledDeleteBtn']
   handleUpdateUserIconImageMutation: ImageInputFieldProps['onClickUploadBtn']
 }
 
@@ -26,12 +27,15 @@ type UseUpdateUserIconImageReturn = {
  */
 export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
   const { currentUserData } = useGetCurrentUserData()
+  const [isUploading, setIsUploading] = useState<boolean>(false)
   const [updateUserIconImageMutation] = useUpdateUserIconImageMutation({
     onCompleted(data) {
       toast.success('プロフィール画像を変更しました')
+      setIsUploading(false)
     },
     onError(err) {
       toast.error('プロフィール画像の変更に失敗しました')
+      setIsUploading(false)
     },
   })
   const defaultSrc = useMemo(
@@ -44,18 +48,26 @@ export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
   )
   const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
   const { fileData } = useBlobToFile(blobData)
-  const shouldDisable = useMemo(() => defaultSrc === imageUrl, [defaultSrc, imageUrl])
+  const shouldDisable = useMemo(
+    () => defaultSrc === imageUrl || isUploading,
+    [defaultSrc, imageUrl, isUploading],
+  )
 
   const handleUpdateUserIconImageMutation = useCallback(async () => {
     if (!fileData || !currentUserData.data || shouldDisable) return
-    const blobsInContainer: string[] = await uploadFileToBlob(fileData)
-    const url = await collatingImagesInAzure(fileData, blobsInContainer)
-    updateUserIconImageMutation({
-      variables: {
-        icon_image: url,
-        id: currentUserData.data.user.id,
-      },
-    })
+    try {
+      setIsUploading(true)
+      const blobsInContainer: string[] = await uploadFileToBlob(fileData)
+      const url = await collatingImagesInAzure(fileData, blobsInContainer)
+      updateUserIconImageMutation({
+        variables: {
+          icon_image: url,
+          id: currentUserData.data.user.id,
+        },
+      })
+    } catch (error) {
+      setIsUploading(false)
+    }
   }, [fileData, shouldDisable])
 
   return {
@@ -64,6 +76,7 @@ export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
     handleChangeImg,
     initializeUploadImg,
     shouldDisable,
+    isUploading,
     handleUpdateUserIconImageMutation,
   }
 }
