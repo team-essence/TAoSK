@@ -7,7 +7,7 @@ import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
-import { useChangeEmailForm } from 'hooks/useAccountSettingForm'
+import { useChangeEmailForm } from 'hooks/useChangeEmailForm'
 import { useUpdateUserNameForm } from 'hooks/useUpdateUserNameForm'
 import { useUpdateUserIconImage } from 'hooks/useUpdateUserIconImage'
 
