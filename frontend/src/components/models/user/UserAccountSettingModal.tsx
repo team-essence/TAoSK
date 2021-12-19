@@ -27,7 +27,6 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
     disabledName,
     disabledEmail,
     handleChangeEmail,
-    handleChangePassword,
   } = useAccountSettingForm()
 
   return (
@@ -114,9 +113,10 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             </StyledText>
           </StyledTextWrapper>
           <StyledSendButtonWrapper>
+            {/* TODO: 未実装。処理が出来次第追加する */}
             <StyledSendChangePasswordEmailButton
               text="メールを送信する"
-              onClick={handleChangePassword}
+              onClick={() => console.log('hoge')}
             />
           </StyledSendButtonWrapper>
         </StyledLeftColumn>

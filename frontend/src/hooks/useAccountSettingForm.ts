@@ -15,7 +15,6 @@ type UseAccountSettingFormReturn = {
   disabledName: boolean
   disabledEmail: boolean
   handleChangeEmail: () => void
-  handleChangePassword: () => void
 }
 
 /**
@@ -63,14 +62,6 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
       .catch(() => toast.error('送信に失敗しました'))
   }, [email, errors.email])
 
-  const handleChangePassword = useCallback(async () => {
-    if (errors.name) return
-    await firebaseAuth
-      .changePassword(name)
-      .then(() => toast.success('送信完了しました'))
-      .catch(() => toast.error('送信に失敗しました'))
-  }, [name, errors.name])
-
   useEffect(() => {
     if (shouldInitialize.current && currentName && currentEmail) {
       setValue('name', currentName, { shouldValidate: true })
@@ -88,6 +79,5 @@ export const useAccountSettingForm = (): UseAccountSettingFormReturn => {
     disabledName,
     disabledEmail,
     handleChangeEmail,
-    handleChangePassword,
   }
 }
