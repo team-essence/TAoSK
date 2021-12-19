@@ -6,11 +6,7 @@ import { CancelButton } from 'components/ui/button/CancelButton'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import {
-  calculateMinSizeBasedOnFigma,
-  calculateMinSizeBasedOnFigmaWidth,
-  calculateMinSizeBasedOnFigmaHeight,
-} from 'utils/calculateSizeBasedOnFigma'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useAccountSettingForm } from 'hooks/useAccountSettingForm'
 
 type Props = {
@@ -145,12 +141,12 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
   )
 }
 
-const padding = `${calculateMinSizeBasedOnFigmaHeight(48)} ${calculateMinSizeBasedOnFigmaWidth(
+const padding = `${calculateMinSizeBasedOnFigma(48)} ${calculateMinSizeBasedOnFigma(
   32,
-)} ${calculateMinSizeBasedOnFigma(33)} ${calculateMinSizeBasedOnFigmaWidth(27)}` // ts-styled-pluginエラーを避けるため
+)} ${calculateMinSizeBasedOnFigma(33)} ${calculateMinSizeBasedOnFigma(27)}` // ts-styled-pluginエラーを避けるため
 const StyledModal = styled(Modal)`
-  width: ${calculateMinSizeBasedOnFigmaWidth(790)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(539)};
+  width: ${calculateMinSizeBasedOnFigma(790)};
+  height: ${calculateMinSizeBasedOnFigma(539)};
   padding: ${padding};
 `
 const StyledInputsWrapper = styled.div`
@@ -168,12 +164,12 @@ const StyledLeftColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: ${calculateMinSizeBasedOnFigmaWidth(509)};
+  width: ${calculateMinSizeBasedOnFigma(509)};
 `
 const StyledRightColumn = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${calculateMinSizeBasedOnFigmaWidth(190)};
+  width: ${calculateMinSizeBasedOnFigma(190)};
   height: 100%;
 `
 const StyledInputWrapper = styled.div`
@@ -185,7 +181,8 @@ const StyledInputWrapper = styled.div`
 `
 const StyledInput = styled.input<{ hasError: boolean }>`
   width: 100%;
-  height: ${calculateMinSizeBasedOnFigmaWidth(40)};
+  height: ${calculateMinSizeBasedOnFigma(40)};
+  padding: 0 ${calculateMinSizeBasedOnFigma(13)};
   border-radius: 4px;
   ${({ theme, hasError }) =>
     css`
@@ -213,7 +210,7 @@ const StyledErrorMessage = styled.p`
 `
 const StyledButtonWrapper = styled.div`
   display: flex;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  gap: ${calculateMinSizeBasedOnFigma(8)};
   justify-content: flex-end;
 `
 const StyledSendButtonWrapper = styled.div`
@@ -224,7 +221,7 @@ const StyledSendButtonWrapper = styled.div`
 const StyledTextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${calculateMinSizeBasedOnFigmaWidth(10)};
+  gap: ${calculateMinSizeBasedOnFigma(10)};
 `
 const StyledH5 = styled.h5`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
