@@ -109,6 +109,28 @@ export class UsersResolver {
     return user;
   }
 
+  @Mutation(() => User)
+  public async updateUserName(
+    @Args({ name: 'id' }) id: string,
+    @Args({ name: 'name' }) name: string,
+  ) {
+    const user = await this.usersService.updateUserName(id, name);
+    if (!user) throw new NotFoundException({ id, name });
+
+    return user;
+  }
+
+  @Mutation(() => User)
+  public async updateUserIconImage(
+    @Args({ name: 'id' }) id: string,
+    @Args({ name: 'icon_image' }) icon_image: string,
+  ) {
+    const user = await this.usersService.updateUserIconImage(id, icon_image);
+    if (!user) throw new NotFoundException({ id, icon_image });
+
+    return user;
+  }
+
   @Subscription((returns) => User, {})
   userAdded() {
     return this.pubSub.asyncIterator('userAdded');
