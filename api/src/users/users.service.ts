@@ -68,7 +68,7 @@ export class UsersService {
 
   getHrAllUsers(company: string): Promise<User[]> {
     const users = this.usersRepository.find({
-      relations: ['interests', 'certifications'],
+      relations: ['interests', 'certifications', 'occupation'],
       where: {
         company: company,
       },
