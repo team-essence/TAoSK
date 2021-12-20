@@ -1,24 +1,29 @@
 import React, { FCX, useEffect, Dispatch } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseButton } from 'components/ui/button/CoarseButton'
-import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 import { useTextItems } from 'hooks/useTextItems'
-import { theme } from 'styles/theme'
+import { useWatchElementAspect } from 'hooks/useWatchElementAspect'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { max } from 'consts/certificationsAndInterests'
-import { Tag, TAG_TYPE } from 'components/ui/tag/Tag'
 
-type InputAspectStyles = Record<'width' | 'height', string>
 type Props = {
   label: string
   placeholder?: string
-  inputAspect: InputAspectStyles
   items: string[]
   setItems: Dispatch<React.SetStateAction<string[]>>
+  tagType?: TAG_TYPE
 }
 
-export const ItemInputField: FCX<Props> = props => {
-  const { className, label, placeholder, inputAspect, setItems } = props
+export const ItemInputField: FCX<Props> = ({
+  className,
+  label,
+  placeholder,
+  items: parentItems,
+  setItems: setParentItems,
+  tagType = TAG_TYPE.SMALL,
+}) => {
   const {
     value,
     items,
@@ -27,11 +32,10 @@ export const ItemInputField: FCX<Props> = props => {
     onKeyPress,
     onClickAddButton,
     onClickDeleteItemButton,
-  } = useTextItems(max.TEXT_LENGTH, max.ITEMS)
+  } = useTextItems(parentItems, max.TEXT_LENGTH, max.ITEMS)
+  const { sizeInspectedEl, width } = useWatchElementAspect<HTMLInputElement>()
 
-  useEffect(() => {
-    setItems(items.slice())
-  }, [setItems, items])
+  useEffect(() => setParentItems([...items]), [items])
 
   return (
     <StyledWrapper className={className}>
@@ -42,21 +46,21 @@ export const ItemInputField: FCX<Props> = props => {
       </StyledItemsNum>
       <StyledRow>
         <StyledInput
+          ref={sizeInspectedEl}
           value={value}
           onKeyPress={onKeyPress}
           onChange={onChange}
           placeholder={placeholder}
           maxLength={17}
-          {...inputAspect}
         />
         <StyledCoarseButton text="追加" onClick={onClickAddButton} disabled={isDisabled} />
       </StyledRow>
 
-      <StyledItemsWrapper width={inputAspect.width}>
+      <StyledItemsWrapper width={width}>
         {items.map((item, index) => (
           <Tag
             name={item}
-            tagType={TAG_TYPE.SMALL}
+            tagType={tagType}
             key={index}
             onClick={() => onClickDeleteItemButton(item)}
           />
@@ -67,9 +71,12 @@ export const ItemInputField: FCX<Props> = props => {
 }
 
 const StyledWrapper = styled.div`
-  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.SEMIBOLD};
+  ${({ theme }) =>
+    css`
+      color: ${theme.COLORS.CHOCOLATE};
+      font-size: ${theme.FONT_SIZES.SIZE_16};
+      font-weight: ${theme.FONT_WEIGHTS.SEMIBOLD};
+    `}
 `
 const StyledRow = styled.div`
   display: flex;
@@ -83,28 +90,29 @@ const StyledItemsNum = styled.span`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_12};
 `
 const StyledMaxItems = styled.span<{ isMax: boolean }>`
-  color: ${({ isMax }) => isMax && theme.COLORS.ERROR};
+  color: ${({ isMax, theme }) => isMax && theme.COLORS.ERROR};
 `
-const StyledInput = styled.input<InputAspectStyles>`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+const StyledInput = styled.input`
   padding-left: ${calculateMinSizeBasedOnFigma(8)};
-  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
-  border: solid 1px ${({ theme }) => theme.COLORS.CHOCOLATE};
   border-radius: 2px;
+  ${({ theme }) =>
+    css`
+      border: solid 1px ${theme.COLORS.CHOCOLATE};
+      background-color: ${convertIntoRGBA(theme.COLORS.WHITE, 0.7)};
 
-  &::placeholder {
-    color: ${({ theme }) => theme.COLORS.GRAY};
-    font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
-  }
+      &::placeholder {
+        color: ${theme.COLORS.GRAY};
+        font-size: ${theme.FONT_SIZES.SIZE_14};
+      }
+    `}
 `
-const StyledItemsWrapper = styled.div<{ width: string }>`
+const StyledItemsWrapper = styled.div<{ width: number }>`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: ${calculateMinSizeBasedOnFigma(12)};
   margin-top: ${calculateMinSizeBasedOnFigma(12)};
-  width: ${({ width }) => width};
+  width: ${({ width }) => width}px;
 `
 
 type Disabled = { disabled: boolean }
