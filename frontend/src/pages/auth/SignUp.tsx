@@ -165,20 +165,12 @@ export const SignUp: FC = () => {
                 label="保有資格(17文字以内)"
                 items={certifications}
                 setItems={setCertifications}
-                inputAspect={{
-                  width: calculateMinSizeBasedOnFigma(400),
-                  height: calculateMinSizeBasedOnFigma(40),
-                }}
                 placeholder="保有資格を入力してください"
               />
               <StyledItemInputField
                 label="興味のあること(17文字以内)"
                 items={interests}
                 setItems={setInterests}
-                inputAspect={{
-                  width: calculateMinSizeBasedOnFigma(400),
-                  height: calculateMinSizeBasedOnFigma(40),
-                }}
                 placeholder="興味のあることを入力してください"
               />
 
@@ -291,6 +283,10 @@ const StyledImageInputField = styled(ImageInputField).attrs<{ innerWidth: number
 `
 const StyledItemInputField = styled(ItemInputField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(24)};
+  & input {
+    width: ${calculateMinSizeBasedOnFigma(400)};
+    height: ${calculateMinSizeBasedOnFigma(40)};
+  }
 `
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
