@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { REGEX_EMAIL, REGEX_PASSWORD, REGEX_TEXT } from 'consts/regex'
-import { SIGN_UP_CAMERA } from 'consts/defaultImages'
+import { DEFAULT_USER, RESIZED_IMAGE_ASPECT } from 'consts/defaultImages'
 import { useTrySignUp } from 'hooks/useTrySignUp'
 import { useSignUpForm } from 'hooks/useSignUpForm'
 import { useWatchInnerAspect } from 'hooks/useWatchInnerAspect'
@@ -9,7 +9,7 @@ import { useImageResize } from 'hooks/useImageResize'
 import { useDataUrlToBlob } from 'hooks/useDataUrlToBlob'
 import { useBlobToFile } from 'hooks/useBlobToFile'
 import { AuthHeader } from 'components/ui/header/AuthHeader'
-import { ImageInputField } from 'components/ui/form/ImageInputField'
+import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { InputField } from 'components/ui/form/InputField'
 import { PasswordField } from 'components/ui/form/PasswordField'
 import { SelectField } from 'components/ui/form/SelectField'
@@ -27,9 +27,9 @@ export const SignUp: FC = () => {
   const [certifications, setCertifications] = useState<string[]>([])
   const [interests, setInterests] = useState<string[]>([])
   const [occupationOptions, setOccupationOptions] = useState<Record<'value' | 'item', string>[]>([])
-  const { canvasContext, imageUrl, initializeUploadImg, handleUploadImg } = useImageResize(
-    SIGN_UP_CAMERA,
-    300,
+  const { canvasContext, imageUrl, initializeUploadImg, handleChangeImg } = useImageResize(
+    DEFAULT_USER,
+    RESIZED_IMAGE_ASPECT,
   )
   const { blobData } = useDataUrlToBlob(canvasContext?.canvas.toDataURL())
   const { innerWidth } = useWatchInnerAspect()
@@ -64,10 +64,11 @@ export const SignUp: FC = () => {
           <StyledFormWrapper>
             <StyledImageInputField
               image={imageUrl}
-              defaultSrc={SIGN_UP_CAMERA}
+              defaultSrc={DEFAULT_USER}
               initializeUploadImg={initializeUploadImg}
-              handleUploadImg={handleUploadImg}
+              handleChangeImg={handleChangeImg}
               innerWidth={innerWidth}
+              uploadButtonType={UPLOAD_BUTTON.COARSE_BUTTON}
             />
             <StyledRightColumn
               margin={

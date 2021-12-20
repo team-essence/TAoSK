@@ -5,6 +5,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
+import { CancelButton } from 'components/ui/button/CancelButton'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { usePopover } from 'hooks/usePopover'
 import { useHandleChat } from 'hooks/useHandleChat'
@@ -66,9 +67,7 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
             />
 
             <StyledButtonWrapper>
-              <StyledCancelButton onClick={() => setState('view')}>
-                <StyledCancelText>キャンセル</StyledCancelText>
-              </StyledCancelButton>
+              <CancelButton onClick={() => setState('view')} />
               <CoarseRedOxideButton text="保存" onClick={onClickUpdateButton} disabled={disabled} />
             </StyledButtonWrapper>
           </StyledInputFormField>
@@ -172,28 +171,4 @@ const StyledButtonWrapper = styled.div`
   align-items: center;
   gap: ${calculateMinSizeBasedOnFigma(12)};
   width: 100%;
-`
-const StyledCancelButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-const StyledCancelText = styled.p`
-  position: relative;
-  ${({ theme }) =>
-    css`
-      font-size: ${theme.FONT_SIZES.SIZE_12};
-      font-weight: ${theme.FONT_WEIGHTS.MEDIUM};
-      color: ${theme.COLORS.TOBACCO_BROWN};
-    `}
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: ${calculateMinSizeBasedOnFigma(1.5)};
-    left: 0;
-    width: 100%;
-    height: 0.5px;
-    background-color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
-  }
 `

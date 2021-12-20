@@ -58,7 +58,8 @@ export const uploadFileToBlob = async (file: File | null): Promise<string[]> => 
     `https://${storageAccountName}.blob.core.windows.net/?${sasToken}`,
   )
 
-  const containerClient: ContainerClient = blobService.getContainerClient(containerName)
+  const containerClient: ContainerClient = await blobService.getContainerClient(containerName)
+
   await containerClient.createIfNotExists({
     access: 'container',
   })

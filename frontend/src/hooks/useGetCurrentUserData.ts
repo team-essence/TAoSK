@@ -5,23 +5,24 @@ import { useAuthContext } from 'providers/AuthProvider'
 type UseGetCurrentUserDataReturn = {
   getCurrentUser: ReturnType<typeof useGetCurrentUserLazyQuery>[0]
   currentUserData: ReturnType<typeof useGetCurrentUserLazyQuery>[1]
+  firebaseCurrentUser: ReturnType<typeof useAuthContext>['currentUser']
 }
 
 /**
  * 現在のユーザーデータを返す
  */
 export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
-  const { currentUser } = useAuthContext()
+  const { currentUser: firebaseCurrentUser } = useAuthContext()
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({})
 
   useEffect(() => {
-    if (!currentUser) return
+    if (!firebaseCurrentUser) return
     getCurrentUser({
       variables: {
-        id: currentUser.uid,
+        id: firebaseCurrentUser.uid,
       },
     })
-  }, [currentUser])
+  }, [firebaseCurrentUser])
 
-  return { getCurrentUser, currentUserData }
+  return { getCurrentUser, currentUserData, firebaseCurrentUser }
 }

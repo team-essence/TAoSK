@@ -43,6 +43,22 @@ query GetUser($id: String!) {
   }
 }
 
+mutation UpdateUserName($name: String!, $id: String!) {
+  updateUserName(name: $name, id: $id) {
+    id
+    name
+    icon_image
+  }
+}
+
+mutation UpdateUserIconImage($icon_image: String!, $id: String!) {
+  updateUserIconImage(icon_image: $icon_image, id: $id) {
+    id
+    name
+    icon_image
+  }
+}
+
 mutation UpdateCertifications($names: [String!]!, $user_id: String!) {
   updateCertifications(names: $names, user_id: $user_id) {
     id
