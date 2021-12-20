@@ -112,26 +112,23 @@ const StyledDefaultImageOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.3)};
 
-  ${({ theme }) =>
-    css`
-      background-color: ${convertIntoRGBA(theme.COLORS.BLACK, 0.3)};
-      &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-        width: ${calculateMinSizeBasedOnFigma(104.3)};
-        height: ${calculateMinSizeBasedOnFigma(82.87)};
-        background-image: url(${SIGN_UP_CAMERA});
-        background-size: contain;
-        background-position: center center;
-        background-repeat: no-repeat;
-      }
-    `}
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: ${calculateMinSizeBasedOnFigma(104.3)};
+    height: ${calculateMinSizeBasedOnFigma(82.87)};
+    background-image: url(${SIGN_UP_CAMERA});
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
 `
 const StyledDisappearedInput = styled.input`
   display: none;

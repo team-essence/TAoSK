@@ -35,11 +35,8 @@ const StyledCancelText = styled.p`
     position: absolute;
     bottom: ${calculateMinSizeBasedOnFigma(1.5)};
     left: 0;
-    ${({ theme }) =>
-      css`
-        width: 100%;
-        height: 0.5px;
-        background-color: ${theme.COLORS.TOBACCO_BROWN};
-      `}
+    width: 100%;
+    height: 0.5px;
+    background-color: ${({ theme }) => theme.COLORS.TOBACCO_BROWN};
   }
 `

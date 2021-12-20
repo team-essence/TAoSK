@@ -58,7 +58,6 @@ export const useTrySignUp: UseTrySignUp = ({
     firebaseAuth
       .createUser(email, password)
       .then(async result => {
-        console.log(fileData)
         const blobsInContainer: string[] = await uploadFileToBlob(fileData)
         const url = !fileData
           ? DEFAULT_USER
