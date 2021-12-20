@@ -113,6 +113,12 @@ export class TasksService {
           }
 
           user.exp = sumExp;
+          user.technology += task.technology;
+          user.achievement += task.achievement;
+          user.solution += task.solution;
+          user.motivation += task.motivation;
+          user.design += task.design;
+          user.plan += task.plan;
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
@@ -139,6 +145,12 @@ export class TasksService {
           if (!user) throw new NotFoundException();
 
           user.exp -= totalStatus;
+          user.technology -= task.technology;
+          user.achievement -= task.achievement;
+          user.solution -= task.solution;
+          user.motivation -= task.motivation;
+          user.design -= task.design;
+          user.plan -= task.plan;
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
