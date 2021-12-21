@@ -6,10 +6,24 @@ type Props = {
 }
 
 export const ContentWrapper: FCX<Props> = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>
+  return (
+    <>
+      <Wrapper>{children}</Wrapper>
+      <StyledBackground />
+    </>
+  )
 }
 
+const StyledBackground = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.TAILED_DISPLAY};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${({ theme }) => theme.COLORS.BLACK};
+`
 const Wrapper = styled.div`
-  max-width: 2560px;
+  max-width: ${({ theme }) => theme.MAX_WIDTH};
   margin: 0 auto;
 `

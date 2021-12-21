@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
+import { ContentWrapper } from 'components/ui/wrapper/ContentWrapper'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { ProjectListCreateModal } from 'components/models/projectList/ProjectListCreateModal'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
@@ -42,66 +43,70 @@ export const ProjectList: FC = () => {
   return (
     <>
       <LazyLoading />
-      <ProjectListHeader
-        iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
-        name={userData.data?.user.name ?? ''}
-        uid={userData.data?.user.id ?? ''}
-        totalExp={userData.data?.user.exp ?? 0}
-        notifications={notifications}
-      />
-
-      <StyledProjectListPageContainer>
-        <StyledProjectListContainer>
-          <StyledProjectListWrapper>
-            <StyledCreateProjectButton>
-              <ComplicateButton
-                buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
-                text="プロジェクト作成"
-                onClick={() => setShouldShowModal(true)}
-              />
-            </StyledCreateProjectButton>
-
-            <StyledProjectListScroll>
-              <StyledProjectList>
-                {userData.data?.user.groups.map((group, index) => (
-                  <StyledProject key={index} onClick={() => setSelectProject(index)}>
-                    <ProjectListItem
-                      activeStatue={
-                        index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
-                      }
-                      isEnd={group.project.project_end_flg}
-                      projectTitle={group.project.name}
-                      startDate={group.project.created_at}
-                      endDate={group.project.end_date}
-                    />
-                  </StyledProject>
-                ))}
-              </StyledProjectList>
-            </StyledProjectListScroll>
-          </StyledProjectListWrapper>
-        </StyledProjectListContainer>
-
-        <ProjectListDetail
-          isJoiningProject={!!userData.data?.user.groups.length}
-          userQuery={userData.data}
-          selectProject={selectProject}
-          openModal={() => setShouldShowModal(true)}
+      <ContentWrapper>
+        <ProjectListHeader
+          iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
+          name={userData.data?.user.name ?? ''}
+          uid={userData.data?.user.id ?? ''}
+          totalExp={userData.data?.user.exp ?? 0}
+          notifications={notifications}
         />
 
-        <StyledProjectListBackground />
-      </StyledProjectListPageContainer>
+        <StyledProjectListPageContainer>
+          <StyledProjectListContainer>
+            <StyledProjectListWrapper>
+              <StyledCreateProjectButton>
+                <ComplicateButton
+                  buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
+                  text="プロジェクト作成"
+                  onClick={() => setShouldShowModal(true)}
+                />
+              </StyledCreateProjectButton>
 
-      <ProjectListCreateModal
-        shouldShow={shouldShowModal}
-        closeModal={() => setShouldShowModal(false)}
-      />
+              <StyledProjectListScroll>
+                <StyledProjectList>
+                  {userData.data?.user.groups.map((group, index) => (
+                    <StyledProject key={index} onClick={() => setSelectProject(index)}>
+                      <ProjectListItem
+                        activeStatue={
+                          index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
+                        }
+                        isEnd={group.project.project_end_flg}
+                        projectTitle={group.project.name}
+                        startDate={group.project.created_at}
+                        endDate={group.project.end_date}
+                      />
+                    </StyledProject>
+                  ))}
+                </StyledProjectList>
+              </StyledProjectListScroll>
+            </StyledProjectListWrapper>
+          </StyledProjectListContainer>
+
+          <ProjectListDetail
+            isJoiningProject={!!userData.data?.user.groups.length}
+            userQuery={userData.data}
+            selectProject={selectProject}
+            openModal={() => setShouldShowModal(true)}
+          />
+
+          <StyledProjectListBackground />
+        </StyledProjectListPageContainer>
+
+        <ProjectListCreateModal
+          shouldShow={shouldShowModal}
+          closeModal={() => setShouldShowModal(false)}
+        />
+      </ContentWrapper>
     </>
   )
 }
 
 const StyledProjectListPageContainer = styled.div`
-  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  position: relative;
   display: flex;
+  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
+  max-width: ${({ theme }) => theme.MAX_WIDTH};
   width: 100%;
   color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
 `
@@ -152,14 +157,14 @@ const StyledProject = styled.li`
 
 const StyledProjectListBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
-  position: fixed;
+  position: absolute;
   top: ${({ theme }) => theme.HEADER_HEIGHT};
   left: 0;
+  max-width: ${({ theme }) => theme.MAX_WIDTH};
   width: 100vw;
   height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
   background: url('/images/project-list-page_background.webp');
   background-attachment: fixed;
-  background-position: cover;
   background-size: 100% 100%;
   background-repeat: no-repeat;
 `

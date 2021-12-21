@@ -3,7 +3,9 @@ import 'styled-components'
 
 export const theme = {
   HEADER_HEIGHT: calculateMinSizeBasedOnFigma('70px'),
+  MAX_WIDTH: '2560px',
   Z_INDEX: {
+    TAILED_DISPLAY: -1000,
     INDEX_MINUS_1: -1,
     INDEX_0: 0,
     INDEX_1: 1,
