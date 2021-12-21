@@ -16,7 +16,7 @@ export const ContentWrapper: FCX<Props> = ({ children }) => {
 
 const StyledBackground = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.TAILED_DISPLAY};
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
@@ -27,5 +27,5 @@ const Wrapper = styled.div`
   overflow: hidden;
   margin: 0 auto;
   max-width: ${({ theme }) => theme.MAX_WIDTH};
-  height: 100vw;
+  height: 100vh;
 `
