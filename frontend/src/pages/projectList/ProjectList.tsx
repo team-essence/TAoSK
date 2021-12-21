@@ -1,5 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import styled, { css } from 'styled-components'
+import { Notifications } from 'types/notification'
 import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
@@ -13,9 +15,11 @@ import {
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/models/projectList/ProjectListItem'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
-import { Notifications } from 'types/notification'
-import styled, { css } from 'styled-components'
 import { ProjectListDetail } from 'components/models/projectList/ProjectListDetail'
+import {
+  projectListBodyWidth,
+  projectListDetailMarginLeft,
+} from 'utils/calculateProjectListDetailWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 export const ProjectList: FC = () => {
@@ -167,7 +171,7 @@ const padding = `${calculateVhBasedOnFigma(64)} ${calculateMinSizeBasedOnFigmaWi
 const StyledProjectListBodyWrapper = styled.div`
   margin-top: ${calculateVhBasedOnFigma(-22)};
   padding: ${padding};
-  width: ${calculateMinSizeBasedOnFigmaWidth(437)};
+  width: ${projectListBodyWidth};
   height: ${calculateVhBasedOnFigma(708)};
   background: url('/svg/project-list_background.svg');
   background-size: 100% 100%;
@@ -200,17 +204,20 @@ const StyledProject = styled.li`
 
 const StyledProjectListDetail = styled(ProjectListDetail)`
   margin-top: ${calculateVhBasedOnFigma(44)};
-  margin-left: ${calculateMinSizeBasedOnFigmaWidth(34)};
+  margin-left: ${projectListDetailMarginLeft};
 `
 
 const StyledProjectListBackground = styled.div`
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
-  position: absolute;
-  top: ${({ theme }) => theme.HEADER_HEIGHT};
-  left: 0;
-  max-width: ${({ theme }) => theme.MAX_WIDTH};
-  width: 100vw;
-  height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
+  ${({ theme }) =>
+    css`
+      position: absolute;
+      z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
+      top: ${theme.HEADER_HEIGHT};
+      left: 0;
+      max-width: ${theme.MAX_WIDTH};
+      width: 100vw;
+      height: calc(100vh - ${theme.HEADER_HEIGHT});
+    `}
   background: url('/images/project-list-page_background.webp');
   background-attachment: fixed;
   background-size: 100% 100%;

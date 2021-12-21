@@ -6,6 +6,7 @@ import {
   calculateVhBasedOnFigma,
   calculateMinSizeBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
+import { calculateProjectListDetailWidth } from 'utils/calculateProjectListDetailWidth'
 import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
@@ -93,7 +94,7 @@ const StyledProjectListDetailContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${calculateVwBasedOnFigma(942)};
+  width: ${calculateProjectListDetailWidth(963)};
   height: ${calculateVhBasedOnFigma(721)};
   background: url('/svg/project-detail_background.svg');
   background-position: center;
@@ -105,7 +106,7 @@ const StyledProjectDetail = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto ${calculateVhBasedOnFigma(36)} auto;
-  width: ${calculateVwBasedOnFigma(813)};
+  width: ${calculateProjectListDetailWidth(813)};
   height: ${calculateVhBasedOnFigma(665)};
 `
 

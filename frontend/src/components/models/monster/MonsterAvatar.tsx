@@ -24,7 +24,7 @@ export const MonsterAvatar: FCX = () => {
 }
 
 const StyledMonsterAvatarContainer = styled.div`
-  width: ${calculateVhBasedOnFigma(346)};
+  width: 100%;
   height: ${calculateVhBasedOnFigma(346)};
   cursor: grab;
 
