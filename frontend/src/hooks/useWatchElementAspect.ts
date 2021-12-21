@@ -24,8 +24,8 @@ export const useWatchElementAspect = <T extends HTMLElement>(): UseWatchElementW
 
     const obs = new ResizeObserver(entries => {
       // clientRectでは小数点以下が切り捨てられてしまうためgetBoundingClientRectを使用
-      setWidth(entries[0].target.getBoundingClientRect().width)
-      setHeight(entries[0].target.getBoundingClientRect().height)
+      // setWidth(entries[0].target.getBoundingClientRect().width)
+      // setHeight(entries[0].target.getBoundingClientRect().height)
     })
     obs.observe(sizeInspectedEl.current)
 

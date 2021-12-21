@@ -104,7 +104,7 @@ const StyledProjectListDetailContainer = styled.div`
 
 const StyledProjectDetail = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 66px 1fr;
   grid-template-rows: auto auto ${calculateVhBasedOnFigma(36)} auto;
   width: ${calculateProjectListDetailWidth(813)};
   height: ${calculateVhBasedOnFigma(665)};
@@ -112,7 +112,7 @@ const StyledProjectDetail = styled.div`
 
 const StyledProjectTitleContainer = styled.div`
   grid-row: 1 / 2;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -163,7 +163,7 @@ const StyledProjectOption = styled.div`
 
 const StyledComplicateButtonContainer = styled.div`
   grid-row: 4 / 5;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   display: flex;
   justify-content: center;
   align-items: center;

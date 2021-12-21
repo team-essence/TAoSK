@@ -21,5 +21,5 @@ export const calculateProjectListDetailWidth = (
   const listWidthDiff = `(${listVwWidth} - ${projectListBodyWidth})`
   const listDetailMarginLeftDiff = `(${listDetailVwMarginLeft} - ${projectListDetailMarginLeft})`
 
-  return `min(calc(${targetVwWidth} + ${listWidthDiff} + ${listDetailMarginLeftDiff}))`
+  return `calc(${targetVwWidth} + ${listWidthDiff} + ${listDetailMarginLeftDiff})`
 }

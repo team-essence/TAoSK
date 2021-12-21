@@ -134,7 +134,7 @@ const StyledProjectInfoTitle = styled.h3`
 
 const StyledProjectInfoContainer = styled.div`
   grid-row: 2 / 3;
-  grid-column: 2 / 3;
+  grid-column: 3 / 4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
