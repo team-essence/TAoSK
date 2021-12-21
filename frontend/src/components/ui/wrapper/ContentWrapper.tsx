@@ -25,6 +25,7 @@ const StyledBackground = styled.div`
 `
 const Wrapper = styled.div`
   overflow: hidden;
-  max-width: ${({ theme }) => theme.MAX_WIDTH};
   margin: 0 auto;
+  max-width: ${({ theme }) => theme.MAX_WIDTH};
+  height: 100vw;
 `
