@@ -3,6 +3,16 @@ import { FIGMA_WIDTH_PX, FIGMA_HEIGHT_PX, MAX_WIDTH } from 'consts/aspect'
 type pxStr = `${number}px`
 
 /**
+ * MAX_WIDTHの時のwidthの値を算出する
+ */
+const calculateMaxWidth = (px: number | pxStr) => {
+  const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
+  const figmaWidthRatio = numPx / FIGMA_WIDTH_PX
+
+  return `${figmaWidthRatio * MAX_WIDTH}px`
+}
+
+/**
  * Figma の画面設計で指定されている px を、画面設計上の画面サイズ準拠で vw, vh に変換し、
  * 指定したピクセル数, vw, vh で一番小さい値が適用されるように css の min 関数を返却する
  * @param {number | pxStr} px - number | '${number}px'
@@ -14,7 +24,7 @@ export const calculateMinSizeBasedOnFigma = (px: number | pxStr) => {
   const vh = `${(numPx / FIGMA_HEIGHT_PX) * 100}vh`
 
   if (numPx > 0) {
-    return `min(${numPx}px, ${vw}, ${vh}, ${MAX_WIDTH}px)`
+    return `min(${numPx}px, ${vw}, ${vh}, ${calculateMaxWidth(px)})`
   } else {
     return `max(${numPx}px, ${vw}, ${vh})`
   }
@@ -32,7 +42,7 @@ export const calculateMinSizeBasedOnFigmaWidth = (px: number | pxStr) => {
   const vw = `${(numPx / FIGMA_WIDTH_PX) * 100}vw`
 
   if (numPx > 0) {
-    return `min(${numPx}px, ${vw}, ${MAX_WIDTH}px)`
+    return `min(${numPx}px, ${vw}, ${calculateMaxWidth(px)})`
   } else {
     return `max(${numPx}px, ${vw})`
   }
@@ -49,7 +59,7 @@ export const calculateMinNegativeSizeBasedOnFigmaWidth = (px: number | pxStr) =>
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
   const vw = `${(numPx / FIGMA_WIDTH_PX) * 100}vw`
 
-  return `min(-${numPx}px, ${vw}, ${MAX_WIDTH}px)`
+  return `min(-${numPx}px, ${vw}, ${calculateMaxWidth(px)})`
 }
 
 /**
@@ -64,7 +74,7 @@ export const calculateMinSizeBasedOnFigmaHeight = (px: number | pxStr): string =
   const vh = `${(numPx / FIGMA_HEIGHT_PX) * 100}vh`
 
   if (numPx > 0) {
-    return `min(${numPx}px, ${vh}, ${MAX_WIDTH}px)`
+    return `min(${numPx}px, ${vh}, ${calculateMaxWidth(px)})`
   } else {
     return `max(${numPx}px, ${vh})`
   }
@@ -79,7 +89,7 @@ export const calculateVwBasedOnFigma = (px: number | pxStr): string => {
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
   const vw = `${(numPx / FIGMA_WIDTH_PX) * 100}vw`
 
-  return `min(${vw}, ${MAX_WIDTH}px)`
+  return `min(${vw}, ${calculateMaxWidth(px)})`
 }
 
 /**
@@ -91,5 +101,5 @@ export const calculateVhBasedOnFigma = (px: number | pxStr): string => {
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
   const vh = `${(numPx / FIGMA_HEIGHT_PX) * 100}vh`
 
-  return `min(${vh}, ${MAX_WIDTH}px)`
+  return `min(${vh}, ${calculateMaxWidth(px)})`
 }
