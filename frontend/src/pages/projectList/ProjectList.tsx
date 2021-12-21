@@ -68,6 +68,24 @@ export const ProjectList: FC = () => {
                   onClick={() => setShouldShowModal(true)}
                 />
               </StyledCreateProjectButton>
+
+              <StyledProjectListScroll>
+                <StyledProjectList>
+                  {userData.data?.user.groups.map((group, index) => (
+                    <StyledProject key={index} onClick={() => setSelectProject(index)}>
+                      <ProjectListItem
+                        activeStatue={
+                          index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
+                        }
+                        isEnd={group.project.project_end_flg}
+                        projectTitle={group.project.name}
+                        startDate={group.project.created_at}
+                        endDate={group.project.end_date}
+                      />
+                    </StyledProject>
+                  ))}
+                </StyledProjectList>
+              </StyledProjectListScroll>
             </StyledProjectListBodyWrapper>
           </StyledProjectListContainer>
 
@@ -229,7 +247,7 @@ const StyledProjectListScroll = styled.div`
   justify-content: center;
   overflow-y: scroll;
   direction: rtl;
-  height: calc(100% - ${calculateVhBasedOnFigma(52)});
+  height: 100%;
 `
 
 const StyledProjectList = styled.ul`
