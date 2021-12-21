@@ -6,13 +6,15 @@ import { useUsersLazyQuery } from './projectList.gen'
 import { ContentWrapper } from 'components/ui/wrapper/ContentWrapper'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { ProjectListCreateModal } from 'components/models/projectList/ProjectListCreateModal'
-import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
-import { calculateMinSizeBasedOnFigmaHeight } from 'utils/calculateSizeBasedOnFigma'
+import {
+  calculateMinSizeBasedOnFigmaWidth,
+  calculateVhBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/models/projectList/ProjectListItem'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { Notifications } from 'types/notification'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { ProjectListDetail } from 'components/models/projectList/ProjectListDetail'
 
 export const ProjectList: FC = () => {
@@ -54,6 +56,22 @@ export const ProjectList: FC = () => {
 
         <StyledProjectListPageContainer>
           <StyledProjectListContainer>
+            <StyledProjectTitleWrapper>
+              <StyledProjectTitle>プロジェクト一覧</StyledProjectTitle>
+            </StyledProjectTitleWrapper>
+            <StyledProjectListBodyWrapper>
+              <StyledCreateProjectButton>
+                <ComplicateButton
+                  buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
+                  text="プロジェクト作成"
+                  onClick={() => setShouldShowModal(true)}
+                />
+              </StyledCreateProjectButton>
+            </StyledProjectListBodyWrapper>
+          </StyledProjectListContainer>
+
+          {/* <StyledProjectListContainer>
+            <StyledProjectListTitleWrapper />
             <StyledProjectListWrapper>
               <StyledCreateProjectButton>
                 <ComplicateButton
@@ -81,7 +99,7 @@ export const ProjectList: FC = () => {
                 </StyledProjectList>
               </StyledProjectListScroll>
             </StyledProjectListWrapper>
-          </StyledProjectListContainer>
+          </StyledProjectListContainer> */}
 
           <ProjectListDetail
             isJoiningProject={!!userData.data?.user.groups.length}
@@ -105,38 +123,86 @@ export const ProjectList: FC = () => {
 const StyledProjectListPageContainer = styled.div`
   position: relative;
   display: flex;
-  padding-top: ${({ theme }) => theme.HEADER_HEIGHT};
-  max-width: ${({ theme }) => theme.MAX_WIDTH};
   width: 100%;
-  color: ${({ theme }) => theme.COLORS.SHIP_GRAY};
+  ${({ theme }) =>
+    css`
+      padding-top: ${theme.HEADER_HEIGHT};
+      max-width: ${theme.MAX_WIDTH};
+      color: ${theme.COLORS.SHIP_GRAY};
+    `}
 `
 
 const StyledProjectListContainer = styled.div`
   position: relative;
-  margin-top: ${calculateMinSizeBasedOnFigmaWidth(3)};
-  margin-left: ${calculateMinSizeBasedOnFigmaHeight(-10)};
+`
+
+const StyledProjectTitleWrapper = styled.div`
+  position: relative;
+  width: ${calculateMinSizeBasedOnFigmaWidth(306)};
+  height: ${calculateMinSizeBasedOnFigmaWidth(90)};
+  background: url('/svg/project-list_title-background.svg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+`
+
+const StyledProjectTitle = styled.p`
+  ${({ theme }) =>
+    css`
+      position: absolute;
+      bottom: ${calculateMinSizeBasedOnFigmaWidth(3)};
+      left: ${calculateMinSizeBasedOnFigmaWidth(84)};
+      font-size: ${theme.FONT_SIZES.SIZE_18};
+      color: ${theme.COLORS.WHITE};
+    `}
+`
+
+const padding = `${calculateMinSizeBasedOnFigmaWidth(65)} ${calculateMinSizeBasedOnFigmaWidth(
+  9,
+)} ${calculateMinSizeBasedOnFigmaWidth(38)}` // ts-styled-pluginエラーを避けるため
+const StyledProjectListBodyWrapper = styled.div`
+  margin-top: ${calculateVhBasedOnFigma(-22)};
+  padding: ${padding};
   width: ${calculateMinSizeBasedOnFigmaWidth(437)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(786)};
+  height: ${calculateVhBasedOnFigma(708)};
   background: url('/svg/project-list_background.svg');
-  background-position: cover;
-  background-size: cover;
+  background-size: 100% 100%;
   background-repeat: no-repeat;
 `
 
-const StyledProjectListWrapper = styled.div`
-  position: absolute;
-  top: ${calculateMinSizeBasedOnFigmaWidth(120)};
-  left: 50%;
-  transform: translateX(-52%);
-  width: ${calculateMinSizeBasedOnFigmaWidth(460)};
-  height: ${calculateMinSizeBasedOnFigmaHeight(584)};
-`
+// const StyledProjectListContainer = styled.div`
+//   position: relative;
+//   margin-top: ${calculateVhBasedOnFigma(3)};
+//   margin-left: ${calculateMinSizeBasedOnFigmaWidth(-10)};
+//   width: ${calculateMinSizeBasedOnFigmaWidth(437)};
+//   height: ${calculateVhBasedOnFigma(786)};
+// `
+
+// const StyledProjectListTitleWrapper = styled.div`
+//   position: relative;
+//   width: ${calculateMinSizeBasedOnFigmaWidth(296.43)};
+//   height: ${calculateVhBasedOnFigma(102.93)};
+//   background: url('/svg/project-list_title-background.svg');
+//   background-size: 100% 100%;
+//   background-repeat: no-repeat;
+// `
+
+// const StyledProjectListWrapper = styled.div`
+//   position: absolute;
+//   top: ${calculateVhBasedOnFigma(79)};
+//   left: 50%;
+//   transform: translateX(-52%);
+//   width: ${calculateMinSizeBasedOnFigmaWidth(460)};
+//   height: ${calculateVhBasedOnFigma(584)};
+//   background: url('/svg/project-list_background.svg');
+//   background-size: 100% 100%;
+//   background-repeat: no-repeat;
+// `
 
 const StyledCreateProjectButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(24)};
+  margin-bottom: ${calculateVhBasedOnFigma(24)};
 `
 
 const StyledProjectListScroll = styled.div`
@@ -144,7 +210,7 @@ const StyledProjectListScroll = styled.div`
   justify-content: center;
   overflow-y: scroll;
   direction: rtl;
-  height: calc(100% - ${calculateMinSizeBasedOnFigmaHeight(52)});
+  height: calc(100% - ${calculateVhBasedOnFigma(52)});
 `
 
 const StyledProjectList = styled.ul`
