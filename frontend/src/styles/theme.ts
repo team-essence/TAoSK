@@ -109,8 +109,10 @@ export const theme = {
     DOVE_GRAY: '#707070',
     SILVER_CHALICE: '#B1B1B1',
     CITRON: '#98B819',
-    AKAROA: '#d4b99f',
-    RODEO_DUST: '#c9ae95',
+    AKAROA: '#D4B99F',
+    RODEO_DUST: '#C9AE95',
+    HELIOTROPE: '#8D7AFF',
+    PEACH_ORANGE: '#FFBE9A',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',

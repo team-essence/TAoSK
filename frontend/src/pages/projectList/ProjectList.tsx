@@ -16,6 +16,7 @@ import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { Notifications } from 'types/notification'
 import styled, { css } from 'styled-components'
 import { ProjectListDetail } from 'components/models/projectList/ProjectListDetail'
+import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
@@ -136,6 +137,22 @@ const StyledProjectListContainer = styled.div`
   position: relative;
 `
 
+const projectListWrapperBoxCss = css`
+  ${({ theme }) =>
+    css`
+      filter: drop-shadow(
+          ${calculateMinSizeBasedOnFigmaWidth(3.06)} ${calculateMinSizeBasedOnFigmaWidth(1.6)}
+            ${calculateMinSizeBasedOnFigmaWidth(3.06)}
+            ${convertIntoRGBA(theme.COLORS.HELIOTROPE, 0.29)}
+        )
+        drop-shadow(
+          0 ${calculateMinSizeBasedOnFigmaWidth(3.21)} ${calculateMinSizeBasedOnFigmaWidth(9.62)}
+            ${convertIntoRGBA(theme.COLORS.PEACH_ORANGE, 0.76)}
+        );
+    `}
+  opacity: 0.9;
+`
+
 const StyledProjectTitleWrapper = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(306)};
@@ -143,6 +160,7 @@ const StyledProjectTitleWrapper = styled.div`
   background: url('/svg/project-list_title-background.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  ${projectListWrapperBoxCss};
 `
 
 const StyledProjectTitle = styled.p`
@@ -158,7 +176,7 @@ const StyledProjectTitle = styled.p`
 
 const padding = `${calculateMinSizeBasedOnFigmaWidth(65)} ${calculateMinSizeBasedOnFigmaWidth(
   9,
-)} ${calculateMinSizeBasedOnFigmaWidth(38)}` // ts-styled-pluginエラーを避けるため
+)} ${calculateMinSizeBasedOnFigmaWidth(38)} 0` // ts-styled-pluginエラーを避けるため
 const StyledProjectListBodyWrapper = styled.div`
   margin-top: ${calculateVhBasedOnFigma(-22)};
   padding: ${padding};
@@ -167,6 +185,7 @@ const StyledProjectListBodyWrapper = styled.div`
   background: url('/svg/project-list_background.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  ${projectListWrapperBoxCss};
 `
 
 // const StyledProjectListContainer = styled.div`
