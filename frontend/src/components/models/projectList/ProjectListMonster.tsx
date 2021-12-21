@@ -5,7 +5,7 @@ import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ShinyStarIcon } from 'components/ui/icon/ShinyStarIcon'
 import { EmptyShinyStarIcon } from 'components/ui/icon/EmptyShinyStarIcon'
 import {
-  calculateMinSizeBasedOnFigmaHeight,
+  calculateVwBasedOnFigma,
   calculateMinSizeBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
 import date from 'utils/date/date'
@@ -52,17 +52,17 @@ const StyledMonsterContainer = styled.div`
 `
 
 const StyledMonsterStatusContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(346)};
+  width: ${calculateVwBasedOnFigma(346)};
   border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER};
   border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
 `
 
 const StyledMonsterStatus = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaHeight(6)} 0px;
+  padding: ${calculateVwBasedOnFigma(6)} 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
 
   &:nth-child(2) {
     border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER};

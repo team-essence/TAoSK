@@ -89,38 +89,7 @@ export const ProjectList: FC = () => {
             </StyledProjectListBodyWrapper>
           </StyledProjectListContainer>
 
-          {/* <StyledProjectListContainer>
-            <StyledProjectListTitleWrapper />
-            <StyledProjectListWrapper>
-              <StyledCreateProjectButton>
-                <ComplicateButton
-                  buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
-                  text="プロジェクト作成"
-                  onClick={() => setShouldShowModal(true)}
-                />
-              </StyledCreateProjectButton>
-
-              <StyledProjectListScroll>
-                <StyledProjectList>
-                  {userData.data?.user.groups.map((group, index) => (
-                    <StyledProject key={index} onClick={() => setSelectProject(index)}>
-                      <ProjectListItem
-                        activeStatue={
-                          index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
-                        }
-                        isEnd={group.project.project_end_flg}
-                        projectTitle={group.project.name}
-                        startDate={group.project.created_at}
-                        endDate={group.project.end_date}
-                      />
-                    </StyledProject>
-                  ))}
-                </StyledProjectList>
-              </StyledProjectListScroll>
-            </StyledProjectListWrapper>
-          </StyledProjectListContainer> */}
-
-          <ProjectListDetail
+          <StyledProjectListDetail
             isJoiningProject={!!userData.data?.user.groups.length}
             userQuery={userData.data}
             selectProject={selectProject}
@@ -192,9 +161,9 @@ const StyledProjectTitle = styled.p`
     `}
 `
 
-const padding = `${calculateMinSizeBasedOnFigmaWidth(65)} ${calculateMinSizeBasedOnFigmaWidth(
+const padding = `${calculateVhBasedOnFigma(64)} ${calculateMinSizeBasedOnFigmaWidth(
   9,
-)} ${calculateMinSizeBasedOnFigmaWidth(38)} 0` // ts-styled-pluginエラーを避けるため
+)} ${calculateVhBasedOnFigma(38)} 0` // ts-styled-pluginエラーを避けるため
 const StyledProjectListBodyWrapper = styled.div`
   margin-top: ${calculateVhBasedOnFigma(-22)};
   padding: ${padding};
@@ -205,35 +174,6 @@ const StyledProjectListBodyWrapper = styled.div`
   background-repeat: no-repeat;
   ${projectListWrapperBoxCss};
 `
-
-// const StyledProjectListContainer = styled.div`
-//   position: relative;
-//   margin-top: ${calculateVhBasedOnFigma(3)};
-//   margin-left: ${calculateMinSizeBasedOnFigmaWidth(-10)};
-//   width: ${calculateMinSizeBasedOnFigmaWidth(437)};
-//   height: ${calculateVhBasedOnFigma(786)};
-// `
-
-// const StyledProjectListTitleWrapper = styled.div`
-//   position: relative;
-//   width: ${calculateMinSizeBasedOnFigmaWidth(296.43)};
-//   height: ${calculateVhBasedOnFigma(102.93)};
-//   background: url('/svg/project-list_title-background.svg');
-//   background-size: 100% 100%;
-//   background-repeat: no-repeat;
-// `
-
-// const StyledProjectListWrapper = styled.div`
-//   position: absolute;
-//   top: ${calculateVhBasedOnFigma(79)};
-//   left: 50%;
-//   transform: translateX(-52%);
-//   width: ${calculateMinSizeBasedOnFigmaWidth(460)};
-//   height: ${calculateVhBasedOnFigma(584)};
-//   background: url('/svg/project-list_background.svg');
-//   background-size: 100% 100%;
-//   background-repeat: no-repeat;
-// `
 
 const StyledCreateProjectButton = styled.div`
   display: flex;
@@ -256,6 +196,11 @@ const StyledProjectList = styled.ul`
 
 const StyledProject = styled.li`
   cursor: pointer;
+`
+
+const StyledProjectListDetail = styled(ProjectListDetail)`
+  margin-top: ${calculateVhBasedOnFigma(44)};
+  margin-left: ${calculateMinSizeBasedOnFigmaWidth(34)};
 `
 
 const StyledProjectListBackground = styled.div`

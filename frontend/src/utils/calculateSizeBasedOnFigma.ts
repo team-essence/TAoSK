@@ -77,8 +77,9 @@ export const calculateMinSizeBasedOnFigmaHeight = (px: number | pxStr): string =
  */
 export const calculateVwBasedOnFigma = (px: number | pxStr): string => {
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
+  const vw = `${(numPx / FIGMA_WIDTH_PX) * 100}vw`
 
-  return `min(${(numPx / FIGMA_WIDTH_PX) * 100}vw, ${MAX_WIDTH}px)`
+  return `min(${vw}, ${MAX_WIDTH}px)`
 }
 
 /**
@@ -88,6 +89,7 @@ export const calculateVwBasedOnFigma = (px: number | pxStr): string => {
  */
 export const calculateVhBasedOnFigma = (px: number | pxStr): string => {
   const numPx = typeof px === 'string' ? Number(px.replace('px', '')) : px
+  const vh = `${(numPx / FIGMA_HEIGHT_PX) * 100}vh`
 
-  return `min(${(numPx / FIGMA_HEIGHT_PX) * 100}vh, ${MAX_WIDTH}px)`
+  return `min(${vh}, ${MAX_WIDTH}px)`
 }

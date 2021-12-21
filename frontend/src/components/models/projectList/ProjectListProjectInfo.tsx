@@ -1,7 +1,11 @@
 import React, { FCX, useMemo } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
-import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import styled, { css } from 'styled-components'
+import {
+  calculateMinSizeBasedOnFigma,
+  calculateVwBasedOnFigma,
+  calculateVhBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
@@ -112,39 +116,48 @@ const StyledProjectInfoTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 
   img {
     opacity: 0.2;
-    width: ${calculateMinSizeBasedOnFigma(98)};
+    width: ${calculateVwBasedOnFigma(98)};
+    height: ${calculateVhBasedOnFigma(70)};
   }
 `
 
 const StyledProjectInfoTitle = styled.h3`
-  font-size: ${calculateMinSizeBasedOnFigma(16)};
-  color: ${({ theme }) => theme.COLORS.CHOCOLATE};
+  ${({ theme }) => css`
+    font-size: ${theme.FONT_SIZES.SIZE_16};
+    color: ${theme.COLORS.CHOCOLATE};
+  `}
 `
 
 const StyledProjectInfoContainer = styled.div`
   grid-row: 2 / 3;
   grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 `
 
 const StyledStyledProjectInfoText = styled.p`
-  margin-bottom: ${calculateMinSizeBasedOnFigma(12)};
+  width: 100%;
   text-align: justify;
-  font-size: ${calculateMinSizeBasedOnFigma(16)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_16};
 `
 
 const StyledStyledProjectInfoTextStory = styled(StyledStyledProjectInfoText)`
-  height: ${calculateMinSizeBasedOnFigma(72)};
+  height: ${calculateVhBasedOnFigma(72)};
 `
 
 const StyledStyledProjectInfoTextOverview = styled(StyledStyledProjectInfoText)`
-  height: ${calculateMinSizeBasedOnFigma(180)};
+  height: ${calculateVhBasedOnFigma(180)};
 `
 
 const StyledPartyContainer = styled.div`
   display: flex;
   position: relative;
   gap: 0 ${calculateMinSizeBasedOnFigma(6)};
+  width: 100%;
 `
