@@ -164,10 +164,13 @@ const StyledProjectTitle = styled.p`
     `}
 `
 
-const padding = `${calculateVhBasedOnFigma(64)} ${calculateMinSizeBasedOnFigmaWidth(
+const projectListBodyPaddingTop = calculateVhBasedOnFigma(64)
+const projectListBodyPaddingBottom = calculateVhBasedOnFigma(38)
+const padding = `${projectListBodyPaddingTop} ${calculateMinSizeBasedOnFigmaWidth(
   9,
-)} ${calculateVhBasedOnFigma(38)} 0` // ts-styled-pluginエラーを避けるため
+)} ${projectListBodyPaddingBottom} 0` // ts-styled-pluginエラーを避けるため
 const StyledProjectListBodyWrapper = styled.div`
+  position: relative;
   margin-top: ${calculateVhBasedOnFigma(-22)};
   padding: ${padding};
   width: ${projectListBodyWidth};
@@ -187,15 +190,19 @@ const StyledCreateProjectButton = styled.div`
 
 const StyledScrollWrapper = styled.div`
   overflow-x: visible;
+  position: relative;
   margin-left: ${calculateMinSizeBasedOnFigmaWidth(15)};
   width: ${calculateMinSizeBasedOnFigmaWidth(439)};
+  height: 100%;
 `
 
 const StyledProjectListScroll = styled.div`
   position: relative;
   display: flex;
+  flex-direction: row-reverse;
   overflow-y: scroll;
-  height: 100%;
+  direction: rtl; // スクロールバーを左側に表示する
+  height: calc(100% - (${projectListBodyPaddingTop} + ${projectListBodyPaddingBottom}));
 `
 
 const StyledProjectList = styled.ul`
