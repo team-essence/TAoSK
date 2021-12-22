@@ -46,8 +46,8 @@ export const ProjectMyBars: FCX<Props> = ({ className, hp, mp, totalExp }) => {
 
 const StyledProjectMyBarsContainer = styled.div`
   position: absolute;
-  top: 69px;
-  left: 112px;
+  top: ${calculateMinSizeBasedOnFigmaWidth(69)};
+  left: ${calculateMinSizeBasedOnFigmaWidth(112)};
   display: grid;
   grid-template-columns: auto auto;
   grid-template-rows: 1fr 1fr;
