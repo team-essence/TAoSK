@@ -71,23 +71,25 @@ export const ProjectList: FC = () => {
               />
             </StyledCreateProjectButton>
 
-            <StyledProjectListScroll>
-              <StyledProjectList>
-                {userData.data?.user.groups.map((group, index) => (
-                  <StyledProject key={index} onClick={() => setSelectProject(index)}>
-                    <ProjectListItem
-                      activeStatue={
-                        index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
-                      }
-                      isEnd={group.project.project_end_flg}
-                      projectTitle={group.project.name}
-                      startDate={group.project.created_at}
-                      endDate={group.project.end_date}
-                    />
-                  </StyledProject>
-                ))}
-              </StyledProjectList>
-            </StyledProjectListScroll>
+            <StyledScrollWrapper>
+              <StyledProjectListScroll>
+                <StyledProjectList>
+                  {userData.data?.user.groups.map((group, index) => (
+                    <StyledProject key={index} onClick={() => setSelectProject(index)}>
+                      <ProjectListItem
+                        activeStatue={
+                          index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
+                        }
+                        isEnd={group.project.project_end_flg}
+                        projectTitle={group.project.name}
+                        startDate={group.project.created_at}
+                        endDate={group.project.end_date}
+                      />
+                    </StyledProject>
+                  ))}
+                </StyledProjectList>
+              </StyledProjectListScroll>
+            </StyledScrollWrapper>
           </StyledProjectListBodyWrapper>
         </StyledProjectListContainer>
 
@@ -183,11 +185,16 @@ const StyledCreateProjectButton = styled.div`
   margin-bottom: ${calculateVhBasedOnFigma(24)};
 `
 
+const StyledScrollWrapper = styled.div`
+  overflow-x: visible;
+  margin-left: ${calculateMinSizeBasedOnFigmaWidth(15)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(439)};
+`
+
 const StyledProjectListScroll = styled.div`
+  position: relative;
   display: flex;
-  justify-content: center;
   overflow-y: scroll;
-  direction: rtl;
   height: 100%;
 `
 
