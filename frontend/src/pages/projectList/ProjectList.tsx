@@ -5,7 +5,6 @@ import { Notifications } from 'types/notification'
 import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useUsersLazyQuery } from './projectList.gen'
-import { ContentWrapper } from 'components/ui/wrapper/ContentWrapper'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { ProjectListCreateModal } from 'components/models/projectList/ProjectListCreateModal'
 import {
@@ -50,64 +49,62 @@ export const ProjectList: FC = () => {
   return (
     <>
       <LazyLoading />
-      <ContentWrapper>
-        <ProjectListHeader
-          iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
-          name={userData.data?.user.name ?? ''}
-          uid={userData.data?.user.id ?? ''}
-          totalExp={userData.data?.user.exp ?? 0}
-          notifications={notifications}
+      <ProjectListHeader
+        iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
+        name={userData.data?.user.name ?? ''}
+        uid={userData.data?.user.id ?? ''}
+        totalExp={userData.data?.user.exp ?? 0}
+        notifications={notifications}
+      />
+
+      <StyledProjectListPageContainer>
+        <StyledProjectListContainer>
+          <StyledProjectTitleWrapper>
+            <StyledProjectTitle>プロジェクト一覧</StyledProjectTitle>
+          </StyledProjectTitleWrapper>
+          <StyledProjectListBodyWrapper>
+            <StyledCreateProjectButton>
+              <ComplicateButton
+                buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
+                text="プロジェクト作成"
+                onClick={() => setShouldShowModal(true)}
+              />
+            </StyledCreateProjectButton>
+
+            <StyledProjectListScroll>
+              <StyledProjectList>
+                {userData.data?.user.groups.map((group, index) => (
+                  <StyledProject key={index} onClick={() => setSelectProject(index)}>
+                    <ProjectListItem
+                      activeStatue={
+                        index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
+                      }
+                      isEnd={group.project.project_end_flg}
+                      projectTitle={group.project.name}
+                      startDate={group.project.created_at}
+                      endDate={group.project.end_date}
+                    />
+                  </StyledProject>
+                ))}
+              </StyledProjectList>
+            </StyledProjectListScroll>
+          </StyledProjectListBodyWrapper>
+        </StyledProjectListContainer>
+
+        <StyledProjectListDetail
+          isJoiningProject={!!userData.data?.user.groups.length}
+          userQuery={userData.data}
+          selectProject={selectProject}
+          openModal={() => setShouldShowModal(true)}
         />
 
-        <StyledProjectListPageContainer>
-          <StyledProjectListContainer>
-            <StyledProjectTitleWrapper>
-              <StyledProjectTitle>プロジェクト一覧</StyledProjectTitle>
-            </StyledProjectTitleWrapper>
-            <StyledProjectListBodyWrapper>
-              <StyledCreateProjectButton>
-                <ComplicateButton
-                  buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
-                  text="プロジェクト作成"
-                  onClick={() => setShouldShowModal(true)}
-                />
-              </StyledCreateProjectButton>
+        <StyledProjectListBackground />
+      </StyledProjectListPageContainer>
 
-              <StyledProjectListScroll>
-                <StyledProjectList>
-                  {userData.data?.user.groups.map((group, index) => (
-                    <StyledProject key={index} onClick={() => setSelectProject(index)}>
-                      <ProjectListItem
-                        activeStatue={
-                          index === selectProject ? ACTIVE_STATUS.ACTIVE : ACTIVE_STATUS.NOT_ACTIVE
-                        }
-                        isEnd={group.project.project_end_flg}
-                        projectTitle={group.project.name}
-                        startDate={group.project.created_at}
-                        endDate={group.project.end_date}
-                      />
-                    </StyledProject>
-                  ))}
-                </StyledProjectList>
-              </StyledProjectListScroll>
-            </StyledProjectListBodyWrapper>
-          </StyledProjectListContainer>
-
-          <StyledProjectListDetail
-            isJoiningProject={!!userData.data?.user.groups.length}
-            userQuery={userData.data}
-            selectProject={selectProject}
-            openModal={() => setShouldShowModal(true)}
-          />
-
-          <StyledProjectListBackground />
-        </StyledProjectListPageContainer>
-
-        <ProjectListCreateModal
-          shouldShow={shouldShowModal}
-          closeModal={() => setShouldShowModal(false)}
-        />
-      </ContentWrapper>
+      <ProjectListCreateModal
+        shouldShow={shouldShowModal}
+        closeModal={() => setShouldShowModal(false)}
+      />
     </>
   )
 }
