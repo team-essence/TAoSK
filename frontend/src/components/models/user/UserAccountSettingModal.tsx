@@ -7,9 +7,11 @@ import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { firebaseAuth } from 'utils/lib/firebase/firebaseAuth'
 import { useChangeEmailForm } from 'hooks/useChangeEmailForm'
 import { useUpdateUserNameForm } from 'hooks/useUpdateUserNameForm'
 import { useUpdateUserIconImage } from 'hooks/useUpdateUserIconImage'
+import toast from 'utils/toast/toast'
 
 type Props = {
   shouldShow: boolean
@@ -109,10 +111,16 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
             </StyledText>
           </StyledTextWrapper>
           <StyledSendButtonWrapper>
-            {/* TODO: 未実装。パスワード再設定メール送信処理が出来次第追加する */}
             <StyledSendChangePasswordEmailButton
               text="メールを送信する"
-              onClick={() => console.log('hoge')}
+              onClick={() =>
+                firebaseAuth
+                  .changePassword(currentEmail)
+                  .then(() => toast.success('パスワード変更メールを送信しました'))
+                  .catch(() =>
+                    toast.error('パスワードの変更に失敗しました。再度ログイン後にお試しください。'),
+                  )
+              }
             />
           </StyledSendButtonWrapper>
         </StyledLeftColumn>
