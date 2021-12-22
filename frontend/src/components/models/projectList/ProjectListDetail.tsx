@@ -2,7 +2,6 @@ import React, { FCX } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import {
-  calculateVwBasedOnFigma,
   calculateVhBasedOnFigma,
   calculateMinSizeBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
