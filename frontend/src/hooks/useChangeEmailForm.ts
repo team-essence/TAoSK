@@ -48,7 +48,9 @@ export const useChangeEmailForm = (): UseAccountSettingFormReturn => {
     await firebaseAuth
       .changeEmail(email)
       .then(() => toast.success('メールアドレスを変更しました'))
-      .catch(() => toast.error('メールアドレスの変更に失敗しました'))
+      .catch(() =>
+        toast.error('メールアドレスの変更に失敗しました。再度ログイン後にお試しください。'),
+      )
       .finally(() => setIsUploading(false))
   }, [email, errors.email])
 
