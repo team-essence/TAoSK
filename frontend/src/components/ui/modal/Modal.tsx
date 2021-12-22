@@ -5,7 +5,7 @@ import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { theme } from 'styles/theme'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type Props = {
   title?: string
@@ -59,10 +59,13 @@ const StyledNamePlate = styled.p`
   background-image: url('/svg/nameplate.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_20};
-  font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
-  ${({ theme }) => strokeTextShadow('2px', theme.COLORS.BLACK)};
+  ${({ theme }) =>
+    css`
+      color: ${theme.COLORS.WHITE};
+      font-size: ${theme.FONT_SIZES.SIZE_20};
+      font-weight: ${theme.FONT_WEIGHTS.BOLD};
+      ${strokeTextShadow('2px', theme.COLORS.BLACK)};
+    `}
 `
 const StyledBackgroundDragonSymbol = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};

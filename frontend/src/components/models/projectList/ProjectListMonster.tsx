@@ -1,11 +1,11 @@
 import React, { FCX } from 'react'
 import Rating from '@mui/material/Rating'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { MonsterAvatar } from 'components/models/monster/MonsterAvatar'
 import { ShinyStarIcon } from 'components/ui/icon/ShinyStarIcon'
 import { EmptyShinyStarIcon } from 'components/ui/icon/EmptyShinyStarIcon'
 import {
-  calculateMinSizeBasedOnFigmaHeight,
+  calculateVwBasedOnFigma,
   calculateMinSizeBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
 import date from 'utils/date/date'
@@ -16,10 +16,15 @@ type Props = {
   limitDeadline: string
 }
 
-export const ProjectListMonster: FCX<Props> = ({ specie, difficulty, limitDeadline }) => {
+export const ProjectListMonster: FCX<Props> = ({
+  specie,
+  difficulty,
+  limitDeadline,
+  className,
+}) => {
   return (
-    <StyledMonsterContainer>
-      <MonsterAvatar />
+    <StyledMonsterContainer className={className}>
+      <StyledMonsterAvatar />
 
       <StyledMonsterStatusContainer>
         <StyledMonsterStatus>
@@ -47,27 +52,40 @@ export const ProjectListMonster: FCX<Props> = ({ specie, difficulty, limitDeadli
 }
 
 const StyledMonsterContainer = styled.div`
+  position: relative;
   grid-row: 2 / 3;
   grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+`
+
+const StyledMonsterAvatar = styled(MonsterAvatar)`
+  flex-grow: 1;
 `
 
 const StyledMonsterStatusContainer = styled.div`
-  width: ${calculateMinSizeBasedOnFigmaHeight(346)};
-  border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER};
-  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
+  width: 100%;
+  ${({ theme }) =>
+    css`
+      border-top: solid 1px ${theme.COLORS.SILVER};
+      border-bottom: solid 1px ${theme.COLORS.SILVER};
+    `}
 `
 
 const StyledMonsterStatus = styled.div`
-  padding: ${calculateMinSizeBasedOnFigmaHeight(6)} 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: ${calculateMinSizeBasedOnFigmaHeight(16)};
+  ${({ theme }) =>
+    css`
+      padding: ${calculateVwBasedOnFigma(6)} 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: ${theme.FONT_SIZES.SIZE_16};
 
-  &:nth-child(2) {
-    border-top: solid 1px ${({ theme }) => theme.COLORS.SILVER};
-    border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
-  }
+      &:nth-child(2) {
+        border-top: solid 1px ${theme.COLORS.SILVER};
+        border-bottom: solid 1px ${theme.COLORS.SILVER};
+      }
+    `}
 `
 const StyledRating = styled(Rating)`
   width: ${calculateMinSizeBasedOnFigma(251)};

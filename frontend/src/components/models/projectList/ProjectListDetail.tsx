@@ -1,7 +1,12 @@
 import React, { FCX } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import {
+  calculateVwBasedOnFigma,
+  calculateVhBasedOnFigma,
+  calculateMinSizeBasedOnFigma,
+} from 'utils/calculateSizeBasedOnFigma'
+import { calculateProjectListDetailWidth } from 'utils/calculateProjectListDetailWidth'
 import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
@@ -86,37 +91,36 @@ export const ProjectListDetail: FCX<Props> = ({
 }
 
 const StyledProjectListDetailContainer = styled.div`
-  padding: 28px;
-  margin-top: ${calculateMinSizeBasedOnFigma(28)};
-  width: ${calculateMinSizeBasedOnFigma(977)};
-  min-height: ${calculateMinSizeBasedOnFigma(758)};
-  background: url('/svg/project-detail_background.svg');
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: ${calculateProjectListDetailWidth(963)};
+  height: ${calculateVhBasedOnFigma(721)};
+  background: url('/svg/project-detail_background.svg');
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 `
 
 const StyledProjectDetail = styled.div`
-  width: ${calculateMinSizeBasedOnFigma(813)};
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr ${calculateMinSizeBasedOnFigma(40)} auto;
+  grid-template-columns: 1fr 66px 1fr;
+  grid-template-rows: auto auto ${calculateVhBasedOnFigma(36)} auto;
+  width: ${calculateProjectListDetailWidth(813)};
+  height: ${calculateVhBasedOnFigma(665)};
 `
 
 const StyledProjectTitleContainer = styled.div`
   grid-row: 1 / 2;
-  grid-column: 1 / 3;
-  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
+  grid-column: 1 / 4;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: solid 1px ${({ theme }) => theme.COLORS.SILVER};
 `
 
 const StyledProjectTitle = styled.h2`
-  font-size: ${calculateMinSizeBasedOnFigma(24)};
+  font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_24};
 `
 
 const StyledProjectOptionContainer = styled.div`
@@ -159,7 +163,7 @@ const StyledProjectOption = styled.div`
 
 const StyledComplicateButtonContainer = styled.div`
   grid-row: 4 / 5;
-  grid-column: 1 / 3;
+  grid-column: 1 / 4;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -172,17 +176,17 @@ const StyledNoProjectListDetailContainer = styled(StyledProjectListDetailContain
 `
 
 const StyledNoProjectContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${calculateMinSizeBasedOnFigma(20)} 0;
   width: ${calculateMinSizeBasedOnFigma(708)};
   height: ${calculateMinSizeBasedOnFigma(228.63)};
   background: url('/images/no-projects_background.svg');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: ${calculateMinSizeBasedOnFigma(20)} 0;
 
   &::after {
     content: '';

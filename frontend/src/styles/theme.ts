@@ -1,9 +1,12 @@
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import 'styled-components'
+import { MAX_WIDTH } from 'consts/aspect'
 
 export const theme = {
   HEADER_HEIGHT: calculateMinSizeBasedOnFigma('70px'),
+  MAX_WIDTH: `${MAX_WIDTH}px`,
   Z_INDEX: {
+    TAILED_DISPLAY: -1000,
     INDEX_MINUS_1: -1,
     INDEX_0: 0,
     INDEX_1: 1,
@@ -107,8 +110,10 @@ export const theme = {
     DOVE_GRAY: '#707070',
     SILVER_CHALICE: '#B1B1B1',
     CITRON: '#98B819',
-    AKAROA: '#d4b99f',
-    RODEO_DUST: '#c9ae95',
+    AKAROA: '#D4B99F',
+    RODEO_DUST: '#C9AE95',
+    HELIOTROPE: '#8D7AFF',
+    PEACH_ORANGE: '#FFBE9A',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',
