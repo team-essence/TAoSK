@@ -11,6 +11,8 @@ import { ProjectsService } from './projects.service';
 import { User } from 'src/users/user';
 import { Monster } from 'src/monsters/monster';
 import { ListSort } from 'src/list-sorts/list-sort';
+import { Allocation } from 'src/allocations/allocation';
+import { Chat } from 'src/chats/chat';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Project]),
@@ -23,6 +25,8 @@ import { ListSort } from 'src/list-sorts/list-sort';
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([Monster]),
     TypeOrmModule.forFeature([GameLog]),
+    TypeOrmModule.forFeature([Allocation]),
+    TypeOrmModule.forFeature([Chat]),
   ],
   providers: [ProjectsResolver, ProjectsService],
 })
