@@ -16,9 +16,14 @@ type Props = {
   limitDeadline: string
 }
 
-export const ProjectListMonster: FCX<Props> = ({ specie, difficulty, limitDeadline }) => {
+export const ProjectListMonster: FCX<Props> = ({
+  specie,
+  difficulty,
+  limitDeadline,
+  className,
+}) => {
   return (
-    <StyledMonsterContainer>
+    <StyledMonsterContainer className={className}>
       <StyledMonsterAvatar />
 
       <StyledMonsterStatusContainer>

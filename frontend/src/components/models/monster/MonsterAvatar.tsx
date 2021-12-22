@@ -4,11 +4,10 @@ import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './DragonIdle'
 import styled from 'styled-components'
-import { calculateVhBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
-export const MonsterAvatar: FCX = () => {
+export const MonsterAvatar: FCX = ({ className }) => {
   return (
-    <StyledMonsterAvatarContainer>
+    <StyledMonsterAvatarContainer className={className}>
       <StyledCanvasWrapper>
         <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>
           <OrbitControls enablePan={false} />
