@@ -77,7 +77,7 @@ const StyledMyPageTagsScroll = styled.div`
   transform: translate(-50%, -50%);
   width: ${calculateMinSizeBasedOnFigmaWidth(420)};
   height: ${calculateMinSizeBasedOnFigmaWidth(260)};
-  overflow-y: scroll;
+  overflow-y: auto;
   direction: rtl;
 `
 

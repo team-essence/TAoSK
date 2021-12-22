@@ -189,7 +189,7 @@ const StyledCreateProjectButton = styled.div`
 `
 
 const StyledScrollWrapper = styled.div`
-  overflow-x: visible;
+  overflow-x: auto;
   position: relative;
   margin-left: ${calculateMinSizeBasedOnFigmaWidth(15)};
   width: ${calculateMinSizeBasedOnFigmaWidth(439)};
@@ -200,7 +200,7 @@ const StyledProjectListScroll = styled.div`
   position: relative;
   display: flex;
   flex-direction: row-reverse;
-  overflow-y: scroll;
+  overflow-y: auto;
   direction: rtl; // スクロールバーを左側に表示する
   height: calc(100% - (${projectListBodyPaddingTop} + ${projectListBodyPaddingBottom}));
 `
