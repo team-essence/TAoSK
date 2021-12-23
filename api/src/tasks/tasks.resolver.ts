@@ -5,6 +5,7 @@ import {
   AssignTaskInput,
   NewAllocationInput,
 } from 'src/allocations/dto/newAllocation.input';
+import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
@@ -37,6 +38,12 @@ export class TasksResolver {
       endTask: result.updatedTask,
     });
 
+    if (result.logs.isUpdate) {
+      this.pubSub.publish('updateLogsByTask', {
+        updateLogsByTask: result.logs.logs,
+      });
+    }
+
     return result.updatedTask;
   }
 
@@ -45,17 +52,21 @@ export class TasksResolver {
     @Args({ name: 'newTask' }) newTask: NewTaskInput,
     @Args({ name: 'assignTask' }) assignTask: AssignTaskInput,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .addTask(newTask, assignTask)
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: result.lists,
     });
 
-    return lists;
+    this.pubSub.publish('updateLogsByTask', {
+      updateLogsByTask: result.logs,
+    });
+
+    return result.lists;
   }
 
   @Mutation(() => [List])
@@ -208,5 +219,16 @@ export class TasksResolver {
   })
   endTask(@Args({ name: 'projectId', type: () => String }) projectId: string) {
     return this.pubSub.asyncIterator('endTask');
+  }
+
+  @Subscription((returns) => GameLog, {
+    filter: (payload, variables) => {
+      return payload.updateLogsByTask.project.id === variables.projectId;
+    },
+  })
+  updateLogsByTask(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateLogsByTask');
   }
 }

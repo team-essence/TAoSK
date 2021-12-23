@@ -19,8 +19,6 @@ export const useGameLog = () => {
         setGameLogs(gameLog => [...gameLog, init])
       })
     },
-
-    fetchPolicy: 'network-only',
   })
 
   useEffect(() => {
