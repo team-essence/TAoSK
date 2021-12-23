@@ -468,3 +468,89 @@ subscription UpdateLogsByOnline($project_id: String!) {
     }
   }
 }
+
+subscription UpdateListByListSubscription($project_id: String!) {
+  updateListByList(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateListByListSort($project_id: String!) {
+  updateListByListSort(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

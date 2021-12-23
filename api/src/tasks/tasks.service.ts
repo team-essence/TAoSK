@@ -311,15 +311,6 @@ export class TasksService {
       .getMany();
     console.log(lists);
 
-    // const lists = await this.taskRepository
-    //   .createQueryBuilder('task')
-    //   .leftJoinAndSelect('task.project', 'project')
-    //   .leftJoinAndSelect('task.allocations', 'allocations')
-    //   .leftJoinAndSelect('task.chats', 'chats')
-    //   .loadRelationCountAndMap('task.chatCount', 'task.chats')
-    //   .where('task.id=:id', { id: task.id })
-    //   .getOne();
-
     const logs = await this.gameLogRepository.find({
       where: {
         project: {
