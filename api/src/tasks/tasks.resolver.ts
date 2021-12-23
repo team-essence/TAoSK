@@ -221,9 +221,11 @@ export class TasksResolver {
     return this.pubSub.asyncIterator('endTask');
   }
 
-  @Subscription((returns) => GameLog, {
+  @Subscription((returns) => [GameLog], {
     filter: (payload, variables) => {
-      return payload.updateLogsByTask.project.id === variables.projectId;
+      return payload.updateLogsByTask.map((logs: GameLog) => {
+        return logs.project.id === variables.projectId;
+      });
     },
   })
   updateLogsByTask(

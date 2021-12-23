@@ -455,3 +455,16 @@ subscription UpdateLogsByTaskSubSc($project_id: String!) {
     }
   }
 }
+
+subscription UpdateLogsByOnline($project_id: String!) {
+  updateLogsByOnline(projectId: $project_id) {
+    id
+    context
+    created_at
+
+    user {
+      id
+      name
+    }
+  }
+}

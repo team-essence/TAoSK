@@ -222,7 +222,20 @@ export class UsersService {
       throw err;
     });
 
-    return user;
+    const logs = await this.gameLogRepository.find({
+      where: {
+        project: {
+          id: project_id,
+        },
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 25,
+      relations: ['user', 'project'],
+    });
+
+    return { user, logs };
   }
 
   async updateMemo(id: string, memo: string) {
