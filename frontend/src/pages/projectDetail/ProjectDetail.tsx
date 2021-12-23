@@ -247,15 +247,6 @@ export const ProjectDetail: FC = () => {
     setList(listCopy)
   }
 
-  const handleInvitation = async (userId: string, projectId: string) => {
-    await createInvitation({
-      variables: {
-        userId,
-        projectId,
-      },
-    })
-  }
-
   const handleCreateList = async () => {
     await createList({
       variables: {
