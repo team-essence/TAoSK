@@ -1,5 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
 import { EndProjectInput } from './dto/endProject.input';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
@@ -7,7 +8,10 @@ import { ProjectsService } from './projects.service';
 
 @Resolver()
 export class ProjectsResolver {
-  constructor(private projectService: ProjectsService) {}
+  private pubSub: PubSub;
+  constructor(private projectService: ProjectsService) {
+    this.pubSub = new PubSub();
+  }
 
   @Query(() => Project)
   async getProjectById(@Args({ name: 'id' }) id: string) {
@@ -32,6 +36,10 @@ export class ProjectsResolver {
         throw err;
       });
 
+    this.pubSub.publish('projectCreate', {
+      projectCreate: newProjectData,
+    });
+
     return newProjectData;
   }
 
@@ -40,5 +48,10 @@ export class ProjectsResolver {
     @Args({ name: 'endProject' }) endProject: EndProjectInput,
   ) {
     return this.projectService.completedProject(endProject);
+  }
+
+  @Subscription((returns) => Project, {})
+  projectCreate() {
+    return this.pubSub.asyncIterator('projectCreate');
   }
 }

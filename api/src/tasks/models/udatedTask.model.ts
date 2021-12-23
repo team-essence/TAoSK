@@ -6,6 +6,9 @@ export class UpdatedTask {
   id: number;
 
   @Field()
+  project_id: string;
+
+  @Field()
   high_status_name: string;
 
   @Field()

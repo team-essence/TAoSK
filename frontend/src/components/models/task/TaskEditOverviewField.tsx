@@ -15,7 +15,7 @@ type Props = {
 }
 
 export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) => {
-  const { state, setState, newOverview, onClickSaveButton, disabled, register, error } =
+  const { state, setState, onClickSaveButton, disabled, register, error } =
     useTaskOverviewEditForm({ id, initialOverview: overview })
 
   if (state === 'view') {
@@ -23,7 +23,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
       <StyledViewWrapper className={className}>
         <StyledH3>概要</StyledH3>
         <StyledClickableArea onClick={() => setState('edit')}>
-          <StyledOverview>{newOverview || '詳しい説明を追加してください'}</StyledOverview>
+          <StyledOverview>{overview || '詳しい説明を追加してください'}</StyledOverview>
           <StyledAnnotation>
             クリックで編集
             <FontAwesomeIcon icon={faPencilAlt} />
@@ -36,7 +36,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
       <StyledEditWrapper className={className}>
         <StyledH3>概要</StyledH3>
         <StyledFlexTextarea
-          initialVal={newOverview}
+          initialVal={overview}
           {...register('overview', {
             maxLength: { value: 1024, message: '1024文字以内で入力してください' },
           })}

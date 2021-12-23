@@ -1,11 +1,15 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import { Args, Resolver, Query, Mutation, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
 import { Chat } from './chat';
 import { ChatsService } from './chats.service';
 
 @Resolver()
 export class ChatsResolver {
-  constructor(private chatsService: ChatsService) {}
+  private pubSub: PubSub;
+  constructor(private chatsService: ChatsService) {
+    this.pubSub = new PubSub();
+  }
 
   @Query(() => [Chat])
   async getChats(@Args({ name: 'taskId' }) taskId: number): Promise<Chat[]> {
@@ -21,8 +25,11 @@ export class ChatsResolver {
     @Args({ name: 'userId' }) userId: string,
   ) {
     const chats = await this.chatsService.addChat(comment, taskId, userId);
-
     if (!chats) throw new NotFoundException();
+
+    this.pubSub.publish('updateChatSubscription', {
+      updateChatSubscription: chats,
+    });
 
     return chats;
   }
@@ -34,8 +41,11 @@ export class ChatsResolver {
     @Args({ name: 'taskId' }) taskId: number,
   ) {
     const chats = await this.chatsService.updateChat(chatId, comment, taskId);
-
     if (!chats) throw new NotFoundException();
+
+    this.pubSub.publish('updateChatSubscription', {
+      updateChatSubscription: chats,
+    });
 
     return chats;
   }
@@ -46,9 +56,29 @@ export class ChatsResolver {
     @Args({ name: 'taskId' }) taskId: number,
   ) {
     const chats = await this.chatsService.deleteChat(chatId, taskId);
-
     if (!chats) throw new NotFoundException();
 
+    this.pubSub.publish('updateChatSubscription', {
+      updateChatSubscription: chats,
+    });
+
     return chats;
+  }
+
+  @Subscription((returns) => [Chat], {
+    filter: (payload, variables) => {
+      return payload.updateChatSubscription.map((chat: Chat) => {
+        return (
+          chat.task.project.id === variables.projectId &&
+          chat.task.id === variables.taskId
+        );
+      });
+    },
+  })
+  updateChatSubscription(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+    @Args({ name: 'taskId', type: () => String }) taskId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateChatSubscription');
   }
 }

@@ -27,7 +27,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user', 'user.occupation'],
+      relations: ['user', 'user.occupation', 'task', 'task.project'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -57,7 +57,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user', 'user.occupation'],
+      relations: ['user', 'user.occupation', 'task', 'task.project'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -73,7 +73,7 @@ export class ChatsService {
       where: {
         id: chatId,
       },
-      relations: ['user', 'user.occupation'],
+      relations: ['user', 'user.occupation', 'task', 'task.project'],
     });
 
     chat.comment = comment;
@@ -88,7 +88,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user', 'user.occupation'],
+      relations: ['user', 'user.occupation', 'task', 'task.project'],
     });
     if (!chats) throw new NotFoundException();
 
@@ -112,7 +112,7 @@ export class ChatsService {
           id: taskId,
         },
       },
-      relations: ['user', 'user.occupation'],
+      relations: ['user', 'user.occupation', 'task', 'task.project'],
     });
     if (!chats) throw new NotFoundException();
 

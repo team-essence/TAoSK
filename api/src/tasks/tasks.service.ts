@@ -5,7 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Allocation } from 'src/allocations/allocation';
-import { AssignTaskInput } from 'src/allocations/dto/newAllocation.input';
+import {
+  AssignTaskInput,
+  NewAllocationInput,
+} from 'src/allocations/dto/newAllocation.input';
 import { Chat } from 'src/chats/chat';
 import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
@@ -16,7 +19,6 @@ import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
 import { UpdatedTask } from './models/udatedTask.model';
 import { Task } from './task';
-import { UpdatedTaskType } from './types/updatedTask.type';
 import StatusPointUtil from './utils/StatusPointUtil';
 
 @Injectable()
@@ -38,11 +40,15 @@ export class TasksService {
     private chatRepository: Repository<Chat>,
   ) {}
 
-  async updateTaskSort(updateTask: UpdateTaskSort): Promise<UpdatedTask> {
+  async updateTaskSort(updateTask: UpdateTaskSort): Promise<{
+    lists: List[];
+    updatedTask: UpdatedTask;
+  }> {
     const returnObjectTask = {
       id: 0,
       high_status_name: '',
       is_completed: false,
+      project_id: updateTask.project_id,
     };
 
     for (let index = 0; index < updateTask.tasks.length; index++) {
@@ -162,13 +168,32 @@ export class TasksService {
       });
     }
 
-    return returnObjectTask;
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: updateTask.project_id })
+      .getMany();
+
+    return {
+      lists: lists,
+      updatedTask: returnObjectTask,
+    };
   }
 
   async addTask(
     newTask: NewTaskInput,
     assignUser: AssignTaskInput,
-  ): Promise<Task> {
+  ): Promise<List[]> {
     const tasks = await this.taskRepository.find({
       where: {
         project: {
@@ -242,14 +267,41 @@ export class TasksService {
       });
     }
 
-    return task;
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: newTask.project_id })
+      .getMany();
+    console.log(lists);
+
+    // const lists = await this.taskRepository
+    //   .createQueryBuilder('task')
+    //   .leftJoinAndSelect('task.project', 'project')
+    //   .leftJoinAndSelect('task.allocations', 'allocations')
+    //   .leftJoinAndSelect('task.chats', 'chats')
+    //   .loadRelationCountAndMap('task.chatCount', 'task.chats')
+    //   .where('task.id=:id', { id: task.id })
+    //   .getOne();
+
+    return lists;
   }
 
-  async updateTitle(taskId: number, title: string): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  async updateTitle(taskId: number, title: string): Promise<List[]> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.title = title;
@@ -258,20 +310,31 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return lists;
   }
 
-  async updateOverview(taskId: number, overview: string): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  async updateOverview(taskId: number, overview: string): Promise<List[]> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.overview = overview;
@@ -280,13 +343,23 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return lists;
   }
 
   async updateParameters(
@@ -297,11 +370,12 @@ export class TasksService {
     motivation: number,
     plan: number,
     design: number,
-  ): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  ): Promise<List[]> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.technology = technology;
@@ -315,20 +389,31 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return lists;
   }
 
-  async updateEndDate(taskId: number, end_date: string): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  async updateEndDate(taskId: number, end_date: string): Promise<List[]> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.end_date = end_date;
@@ -337,13 +422,23 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return lists;
   }
 
   async deleteTask(taskId: number): Promise<Task[]> {
@@ -368,5 +463,84 @@ export class TasksService {
     });
 
     return tasks;
+  }
+
+  async assign({
+    newAllocation,
+  }: {
+    newAllocation: NewAllocationInput;
+  }): Promise<List[]> {
+    const user = await this.userRepository.findOne(newAllocation.user_id);
+    if (!user) throw new NotFoundException();
+
+    const task = await this.taskRepository.findOne(newAllocation.task_id, {
+      relations: ['project'],
+    });
+    if (!task) throw new NotFoundException();
+
+    const allocation = this.allocationRepository.create({
+      user,
+      task,
+    });
+
+    await this.allocationRepository.save(allocation).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
+
+    return lists;
+  }
+
+  async unassign(userId: string, taskId): Promise<List[]> {
+    const allocation = await this.allocationRepository.findOne({
+      user: {
+        id: userId,
+      },
+      task: {
+        id: taskId,
+      },
+    });
+
+    this.allocationRepository.remove(allocation).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    const task = await this.taskRepository.findOne(taskId, {
+      relations: ['project'],
+    });
+    if (!task) throw new NotFoundException();
+
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
+
+    return lists;
   }
 }
