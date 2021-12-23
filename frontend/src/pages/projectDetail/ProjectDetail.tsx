@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -32,6 +32,7 @@ import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { Notifications } from 'types/notification'
+import { useListsByTaskSubscription } from 'hooks/subscriptions/useListsByTaskSubscription'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -45,7 +46,20 @@ export const ProjectDetail: FC = () => {
   const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
   const [monsterTotalHP, setMonsterTotalHP] = useState(0)
   const [isTasks, setIsTasks] = useState(false)
+  const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
+  const { updatedLists, updatedMonsterHPRemaining, updatedMonsterTotalHP, updatedIsTasks } =
+    useListsByTaskSubscription()
+
+  // サブスクリプション, task周り
+  useEffect(() => {
+    setList([])
+    setList(updatedLists)
+    setIsTasks(updatedIsTasks)
+    setMonsterHPRemaining(updatedMonsterHPRemaining)
+    setMonsterTotalHP(updatedMonsterTotalHP)
+  }, [updatedLists, updatedMonsterHPRemaining, updatedMonsterTotalHP, updatedIsTasks])
+
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
       data.getProjectById.groups.map(group => {
@@ -143,6 +157,7 @@ export const ProjectDetail: FC = () => {
       toast.error('招待に失敗しました')
     },
   })
+
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
@@ -232,7 +247,6 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const [list, setList] = useState<List[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
   useEffect(() => {

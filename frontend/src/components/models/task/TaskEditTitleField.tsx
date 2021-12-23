@@ -13,13 +13,15 @@ type Props = {
 }
 
 export const TaskEditTitleField: FCX<Props> = ({ className, id, title }) => {
-  const { state, setState, newTitle, onClickSaveButton, disabled, register, error } =
-    useTaskTitleEditForm({ id, initialTitle: title })
+  const { state, setState, onClickSaveButton, disabled, register, error } = useTaskTitleEditForm({
+    id,
+    initialTitle: title,
+  })
 
   if (state === 'view') {
     return (
       <StyledViewWrapper className={className} onClick={() => setState('edit')}>
-        <StyledH2>{newTitle}</StyledH2>
+        <StyledH2>{title}</StyledH2>
         <StyledFontAwesomeIcon icon={faPencilAlt} />
       </StyledViewWrapper>
     )

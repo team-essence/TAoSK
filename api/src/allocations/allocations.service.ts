@@ -22,55 +22,55 @@ export class AllocationsService {
     private taskRepository: Repository<Task>,
   ) {}
 
-  async create({
-    newAllocation,
-  }: {
-    newAllocation: NewAllocationInput;
-  }): Promise<Allocation> {
-    const user = await this.userRepository.findOne(newAllocation.user_id);
-    if (!user) throw new NotFoundException();
+  // async create({
+  //   newAllocation,
+  // }: {
+  //   newAllocation: NewAllocationInput;
+  // }): Promise<Allocation> {
+  //   const user = await this.userRepository.findOne(newAllocation.user_id);
+  //   if (!user) throw new NotFoundException();
 
-    const task = await this.taskRepository.findOne(newAllocation.task_id);
-    if (!task) throw new NotFoundException();
+  //   const task = await this.taskRepository.findOne(newAllocation.task_id);
+  //   if (!task) throw new NotFoundException();
 
-    const allocation = this.allocationRepository.create({
-      user,
-      task,
-    });
+  //   const allocation = this.allocationRepository.create({
+  //     user,
+  //     task,
+  //   });
 
-    await this.allocationRepository.save(allocation).catch(() => {
-      new InternalServerErrorException();
-    });
+  //   await this.allocationRepository.save(allocation).catch(() => {
+  //     new InternalServerErrorException();
+  //   });
 
-    return allocation;
-  }
+  //   return allocation;
+  // }
 
-  async unassign(userId: string, taskId): Promise<Allocation[]> {
-    const allocation = await this.allocationRepository.findOne({
-      user: {
-        id: userId,
-      },
-      task: {
-        id: taskId,
-      },
-    });
+  // async unassign(userId: string, taskId): Promise<Allocation[]> {
+  //   const allocation = await this.allocationRepository.findOne({
+  //     user: {
+  //       id: userId,
+  //     },
+  //     task: {
+  //       id: taskId,
+  //     },
+  //   });
 
-    this.allocationRepository.remove(allocation).catch(() => {
-      new InternalServerErrorException();
-    });
+  //   this.allocationRepository.remove(allocation).catch(() => {
+  //     new InternalServerErrorException();
+  //   });
 
-    const allocations = this.allocationRepository.find({
-      where: {
-        task: {
-          id: taskId,
-        },
-      },
-      relations: ['user', 'task'],
-    });
-    if (!allocations) throw new NotFoundException();
+  //   const allocations = this.allocationRepository.find({
+  //     where: {
+  //       task: {
+  //         id: taskId,
+  //       },
+  //     },
+  //     relations: ['user', 'task'],
+  //   });
+  //   if (!allocations) throw new NotFoundException();
 
-    return allocations;
-  }
+  //   return allocations;
+  // }
 
   completedTask(userId: string): Promise<Allocation[]> {
     const allocations = this.allocationRepository.find({

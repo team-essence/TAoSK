@@ -7,6 +7,7 @@ import { useAuthContext } from 'providers/AuthProvider'
 import type { UserData } from 'types/userData'
 import { StatusParam } from 'types/status'
 import { INITIAL_STATUS_COUNTS } from 'consts/status'
+import logger from 'utils/debugger/logger'
 
 type StatusCounts = Record<StatusParam, number>
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
@@ -73,6 +74,7 @@ export const useTaskCreateForm: UseTaskCreateForm<FormInputs> = ({
       toast.success('タスクを追加しました')
     },
     onError(err) {
+      logger.debug(err)
       toast.error('タスクの追加に失敗しました')
     },
   })

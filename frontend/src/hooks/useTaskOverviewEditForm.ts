@@ -3,13 +3,13 @@ import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useUpdateTaskOverviewMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
 import type { FieldType } from 'types/formField'
+import logger from 'utils/debugger/logger'
 
 type FormInputs = { overview: string }
 
 type UseTaskOverviewEditFormReturn<T> = {
   state: FieldType
   setState: Dispatch<SetStateAction<FieldType>>
-  newOverview: string
   onClickSaveButton: () => void
   disabled: boolean
   register: UseFormRegister<T>
@@ -36,11 +36,11 @@ export const useTaskOverviewEditForm: UseTaskOverviewEditForm<FormInputs> = ({
   } = useForm<FormInputs>({ mode: 'onChange' })
   const [updateTaskOverview] = useUpdateTaskOverviewMutation({
     onCompleted(data) {
-      setNewOverview(data.updateTaskOverview.overview)
       setState('view')
       toast.success('概要を変更しました')
     },
     onError(err) {
+      logger.debug(err)
       toast.error('概要の変更に失敗しました')
     },
   })
@@ -67,7 +67,6 @@ export const useTaskOverviewEditForm: UseTaskOverviewEditForm<FormInputs> = ({
   return {
     state,
     setState,
-    newOverview,
     onClickSaveButton: handleSubmit(onClickSaveButton),
     register,
     error: errors['overview'],

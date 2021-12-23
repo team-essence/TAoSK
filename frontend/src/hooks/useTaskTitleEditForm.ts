@@ -3,13 +3,13 @@ import { useForm, UseFormRegister, FieldError } from 'react-hook-form'
 import { useUpdateTaskTitleMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
 import type { FieldType } from 'types/formField'
+import logger from 'utils/debugger/logger'
 
 type FormInputs = { title: string }
 
 type UseTaskTitleEditFormReturn<T> = {
   state: FieldType
   setState: Dispatch<SetStateAction<FieldType>>
-  newTitle: string
   onClickSaveButton: () => void
   disabled: boolean
   register: UseFormRegister<T>
@@ -33,11 +33,11 @@ export const useTaskTitleEditForm: UseTaskTitleEditForm<FormInputs> = ({ id, ini
   } = useForm<FormInputs>({ mode: 'onChange' })
   const [updateTaskTitle] = useUpdateTaskTitleMutation({
     onCompleted(data) {
-      setNewTitle(data.updateTaskTitle.title)
       setState('view')
       toast.success('タイトルを変更しました')
     },
     onError(err) {
+      logger.debug(err)
       toast.error('タイトルの変更に失敗しました')
     },
   })
@@ -64,7 +64,6 @@ export const useTaskTitleEditForm: UseTaskTitleEditForm<FormInputs> = ({ id, ini
   return {
     state,
     setState,
-    newTitle,
     onClickSaveButton: handleSubmit(onClickSaveButton),
     register,
     error: errors['title'],
