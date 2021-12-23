@@ -8,6 +8,7 @@ import { NewCertificationClientInput } from 'src/certifications/dto/newCertifica
 import { PubSub } from 'graphql-subscriptions';
 import { SearchUserInput } from './dto/searchUser.input';
 import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
+import { GameLog } from 'src/game-logs/game-log';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -88,14 +89,18 @@ export class UsersResolver {
     @Args({ name: 'project_id' }) project_id: string,
     @Args({ name: 'isOnline' }) isOnline: boolean,
   ) {
-    const user = await this.usersService.updateOnlineFlag(
+    const result = await this.usersService.updateOnlineFlag(
       id,
       project_id,
       isOnline,
     );
-    if (!user) throw new NotFoundException({ id, isOnline });
+    if (!result) throw new NotFoundException({ id, isOnline });
 
-    return user;
+    this.pubSub.publish('updateLogsByOnline', {
+      updateLogsByOnline: result.logs,
+    });
+
+    return result.user;
   }
 
   @Mutation(() => User)
@@ -134,6 +139,19 @@ export class UsersResolver {
   @Subscription((returns) => User, {})
   userAdded() {
     return this.pubSub.asyncIterator('userAdded');
+  }
+
+  @Subscription((returns) => [GameLog], {
+    filter: (payload, variables) => {
+      return payload.updateLogsByOnline.map((logs: GameLog) => {
+        return logs.project.id === variables.projectId;
+      });
+    },
+  })
+  updateLogsByOnline(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateLogsByOnline');
   }
 
   // @Mutation((returns) => Boolean)

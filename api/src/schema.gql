@@ -386,8 +386,10 @@ input NewLogInput {
 
 type Subscription {
   userAdded: User!
+  updateLogsByOnline(projectId: String!): [GameLog!]!
   projectCreate: Project!
   updateList(projectId: String!): [List!]!
   endTask(projectId: String!): UpdatedTask!
+  updateLogsByTask(projectId: String!): [GameLog!]!
   updateChatSubscription(taskId: String!, projectId: String!): [Chat!]!
 }

@@ -442,3 +442,29 @@ subscription EndTaskSubSc($project_id: String!) {
     is_completed
   }
 }
+
+subscription UpdateLogsByTaskSubSc($project_id: String!) {
+  updateLogsByTask(projectId: $project_id) {
+    id
+    context
+    created_at
+
+    user {
+      id
+      name
+    }
+  }
+}
+
+subscription UpdateLogsByOnline($project_id: String!) {
+  updateLogsByOnline(projectId: $project_id) {
+    id
+    context
+    created_at
+
+    user {
+      id
+      name
+    }
+  }
+}

@@ -43,7 +43,15 @@ export class TasksService {
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<{
     lists: List[];
     updatedTask: UpdatedTask;
+    logs: {
+      isUpdate: boolean;
+      logs: GameLog[];
+    };
   }> {
+    const logs = {
+      isUpdate: false,
+      logs: [],
+    };
     const returnObjectTask = {
       id: 0,
       high_status_name: '',
@@ -91,6 +99,7 @@ export class TasksService {
         returnObjectTask.id = task.id;
         returnObjectTask.is_completed = true;
         returnObjectTask.high_status_name = highStatus.status_name;
+        logs.isUpdate = true;
 
         task.completed_flg = updateTask.tasks[index].completed_flg;
 
@@ -184,16 +193,34 @@ export class TasksService {
       .where('project.id=:id', { id: updateTask.project_id })
       .getMany();
 
+    const gameLogs = await this.gameLogRepository.find({
+      where: {
+        project: {
+          id: updateTask.project_id,
+        },
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 25,
+      relations: ['user', 'project'],
+    });
+    logs.logs = gameLogs;
+
     return {
       lists: lists,
       updatedTask: returnObjectTask,
+      logs,
     };
   }
 
   async addTask(
     newTask: NewTaskInput,
     assignUser: AssignTaskInput,
-  ): Promise<List[]> {
+  ): Promise<{
+    lists: List[];
+    logs: GameLog[];
+  }> {
     const tasks = await this.taskRepository.find({
       where: {
         project: {
@@ -293,7 +320,23 @@ export class TasksService {
     //   .where('task.id=:id', { id: task.id })
     //   .getOne();
 
-    return lists;
+    const logs = await this.gameLogRepository.find({
+      where: {
+        project: {
+          id: newTask.project_id,
+        },
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 25,
+      relations: ['user', 'project'],
+    });
+
+    return {
+      lists,
+      logs,
+    };
   }
 
   async updateTitle(taskId: number, title: string): Promise<List[]> {
