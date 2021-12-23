@@ -11,8 +11,6 @@ import {
   useUpdateTaskSortMutation,
   useCreateListMutation,
   useUpdateListSortMutation,
-  useEndTaskSubScSubscription,
-  // useUpdateListSubScSubscription,
 } from './projectDetail.gen'
 import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
@@ -160,23 +158,13 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { data } = useEndTaskSubScSubscription({
-    variables: {
-      project_id: String(id),
-    },
-  })
-
-  useEffect(() => {
-    if (!data) return
-    if (data.endTask.is_completed) {
-      setWeapon(data.endTask.high_status_name as StatusParam)
-      setIsCompleted(true)
-    }
-  }, [data])
-
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.table(data.updateTaskSort)
+      if (data.updateTaskSort.is_completed) {
+        setWeapon(data.updateTaskSort.high_status_name as StatusParam)
+        setIsCompleted(true)
+      }
     },
     onError(err) {
       logger.debug(err)
