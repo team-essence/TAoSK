@@ -24,26 +24,7 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
     if (!groups) return
 
     setGroupList(
-      groups.map(group => {
-        return {
-          id: group.user.id,
-          name: group.user.name,
-          icon_image: group.user.icon_image,
-          hp: group.user.hp,
-          mp: group.user.mp,
-          exp: group.user.exp,
-          online_flg: group.user.online_flg,
-          technology: group.user.technology,
-          achievement: group.user.achievement,
-          motivation: group.user.motivation,
-          solution: group.user.solution,
-          plan: group.user.plan,
-          design: group.user.design,
-          interests: group.user.interests,
-          certifications: group.user.certifications,
-          occupation: group.user.occupation,
-        }
-      }),
+      groups.map(group => ({...group.user})),
     )
   }, [groups])
 
