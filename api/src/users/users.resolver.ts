@@ -9,6 +9,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { SearchUserInput } from './dto/searchUser.input';
 import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
 import { GameLog } from 'src/game-logs/game-log';
+import { Group } from 'src/groups/group';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -100,6 +101,10 @@ export class UsersResolver {
       updateLogsByOnline: result.logs,
     });
 
+    this.pubSub.publish('updateGroupsByOnline', {
+      updateGroupsByOnline: result.groups,
+    });
+
     return result.user;
   }
 
@@ -152,6 +157,13 @@ export class UsersResolver {
     @Args({ name: 'projectId', type: () => String }) projectId: string,
   ) {
     return this.pubSub.asyncIterator('updateLogsByOnline');
+  }
+
+  @Subscription((returns) => [Group], {})
+  updateGroupsByOnline(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateGroupsByOnline');
   }
 
   // @Mutation((returns) => Boolean)

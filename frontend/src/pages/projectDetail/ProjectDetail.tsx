@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -6,7 +6,6 @@ import { useAuthContext } from 'providers/AuthProvider'
 import { GetCurrentUserQuery, useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
-  useGetProjectLazyQuery,
   useCreateInvitationMutation,
   useUpdateTaskSortMutation,
   useCreateListMutation,
@@ -32,8 +31,8 @@ import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { Notifications } from 'types/notification'
-import { useListsByTaskSubscription } from 'hooks/subscriptions/useListsByTaskSubscription'
 import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
+import { useProjectDetail } from 'hooks/useProjectDetail'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -44,15 +43,9 @@ export const ProjectDetail: FC = () => {
   const { anchorEl, isCompleted, setIsCompleted } = useCompleteAnimation<HTMLDivElement>(json)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [notifications, setNotifications] = useState<Notifications>([])
-  const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
-  const [monsterTotalHP, setMonsterTotalHP] = useState(0)
-  const [isTasks, setIsTasks] = useState(false)
   const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
   const [userData, setUserData] = useState<GetCurrentUserQuery['user']>()
-  const { updatedLists, updatedMonsterHPRemaining, updatedMonsterTotalHP, updatedIsTasks } =
-    useListsByTaskSubscription()
-
   const { updateUserByTask } = useUpdateUserByTaskSubscription()
 
   useEffect(() => {
@@ -62,89 +55,11 @@ export const ProjectDetail: FC = () => {
     setUserData(updateUserByTask)
   }, [updateUserByTask])
 
-  // サブスクリプション, task周り
-  useEffect(() => {
-    setList([])
-    setList(updatedLists)
-    setIsTasks(updatedIsTasks)
-    setMonsterHPRemaining(updatedMonsterHPRemaining)
-    setMonsterTotalHP(updatedMonsterTotalHP)
-  }, [updatedLists, updatedMonsterHPRemaining, updatedMonsterTotalHP, updatedIsTasks])
+  const { projectData, monsterHPRemaining, monsterTotalHP, isTasks } = useProjectDetail(
+    setSelectUserIds,
+    setList,
+  )
 
-  const [getProjectById, projectData] = useGetProjectLazyQuery({
-    onCompleted(data) {
-      data.getProjectById.groups.map(group => {
-        setSelectUserIds(groupList => [...groupList, group.user.id])
-      })
-
-      const sortList: List[] = data.getProjectById.lists.map(list => {
-        const tasks = list.tasks.map(task => {
-          const totalStatusPoint =
-            task.technology +
-            task.achievement +
-            task.solution +
-            task.motivation +
-            task.plan +
-            task.design
-
-          setMonsterHPRemaining(monsterHPRemaining => {
-            if (task.completed_flg) return monsterHPRemaining
-            return monsterHPRemaining + totalStatusPoint
-          })
-          setMonsterTotalHP(monsterTotalHP => monsterTotalHP + totalStatusPoint)
-
-          const allocations = task.allocations.map(allocation => {
-            return {
-              id: allocation.user.id,
-              name: allocation.user.name,
-              icon_image: allocation.user.icon_image,
-              occupation: allocation.user.occupation,
-            }
-          })
-
-          return {
-            id: task.id,
-            title: task.title,
-            overview: task.overview,
-            technology: task.technology,
-            achievement: task.achievement,
-            solution: task.solution,
-            motivation: task.motivation,
-            plan: task.plan,
-            design: task.design,
-            vertical_sort: task.vertical_sort,
-            end_date: task.end_date,
-            chatCount: task.chatCount,
-            completed_flg: task.completed_flg,
-            allocations,
-          }
-        })
-
-        logger.debug(tasks.length, 'タスクの数')
-        setIsTasks(isTasks => {
-          if (isTasks) return isTasks
-          return !!tasks.length
-        })
-
-        return {
-          id: list.id,
-          list_id: list.list_id,
-          sort_id: list.listSorts[0].id,
-          index: list.listSorts[0].task_list,
-          title: list.name,
-          tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
-        }
-      })
-
-      sortList.sort((a, b) => a.index - b.index)
-
-      logger.debug(sortList)
-      setList(sortList)
-    },
-    onError(err) {
-      logger.debug(err)
-    },
-  })
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
     onCompleted(data) {
       setUserData(data.user)
@@ -187,66 +102,6 @@ export const ProjectDetail: FC = () => {
   const [createList] = useCreateListMutation({
     onCompleted(data) {
       toast.success('リストを作成しました')
-      const newListData = data.createList
-
-      const tasks = newListData.tasks.map(task => {
-        const allocations = task.allocations.map(allocation => {
-          return {
-            id: allocation.user.id,
-            name: allocation.user.name,
-            icon_image: allocation.user.icon_image,
-            occupation: allocation.user.occupation,
-          }
-        })
-
-        return {
-          id: task.id,
-          title: task.title,
-          overview: task.overview,
-          technology: task.technology,
-          achievement: task.achievement,
-          solution: task.solution,
-          motivation: task.motivation,
-          plan: task.plan,
-          design: task.design,
-          vertical_sort: task.vertical_sort,
-          end_date: task.end_date,
-          chatCount: task.chatCount,
-          completed_flg: task.completed_flg,
-          allocations,
-        }
-      })
-
-      const newList: List = {
-        id: newListData.id,
-        list_id: newListData.list_id,
-        sort_id: newListData.listSorts[0].id,
-        index: newListData.listSorts[0].task_list,
-        title: newListData.name,
-        tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
-      }
-
-      const listCopy = list
-      listCopy.splice(newListData.listSorts[0].task_list, 0, newList)
-      const result = listCopy
-        .map((list, index) => {
-          list.index = index
-          return list
-        })
-        .sort((a, b) => a.index - b.index)
-
-      setList(result)
-      const updateListSort = result.map((list, index) => {
-        return {
-          id: list.sort_id,
-          task_list: index,
-        }
-      })
-      updateList({
-        variables: {
-          listSort: updateListSort,
-        },
-      })
     },
     onError(err) {
       toast.error('リスト作成に失敗しました')
@@ -270,16 +125,6 @@ export const ProjectDetail: FC = () => {
       },
     })
   }, [currentUser])
-
-  useEffect(() => {
-    if (!id) return
-
-    getProjectById({
-      variables: {
-        id,
-      },
-    })
-  }, [id])
 
   useEffect(() => {
     searchSameCompanyUsers({
@@ -411,15 +256,6 @@ export const ProjectDetail: FC = () => {
     })
 
     setList(listCopy)
-  }
-
-  const handleInvitation = async (userId: string, projectId: string) => {
-    await createInvitation({
-      variables: {
-        userId,
-        projectId,
-      },
-    })
   }
 
   const handleCreateList = async () => {

@@ -17,6 +17,7 @@ import { Project } from 'src/projects/project';
 import { GameLog } from 'src/game-logs/game-log';
 import { Occupation } from 'src/occupations/occupation';
 import { updateUserStatus } from './dto/updateUserStatus.input';
+import { Group } from 'src/groups/group';
 
 @Injectable()
 export class UsersService {
@@ -33,6 +34,8 @@ export class UsersService {
     private gameLogRepository: Repository<GameLog>,
     @InjectRepository(Occupation)
     private occupationRepository: Repository<Occupation>,
+    @InjectRepository(Group)
+    private groupRepository: Repository<Group>,
   ) {}
 
   getAllUsers(): Promise<User[]> {
@@ -235,7 +238,21 @@ export class UsersService {
       relations: ['user', 'project'],
     });
 
-    return { user, logs };
+    const groups = await this.groupRepository.find({
+      where: {
+        project: {
+          id: project_id,
+        },
+      },
+      relations: [
+        'user',
+        'user.interests',
+        'user.certifications',
+        'user.occupation',
+      ],
+    });
+
+    return { user, logs, groups };
   }
 
   async updateMemo(id: string, memo: string) {
