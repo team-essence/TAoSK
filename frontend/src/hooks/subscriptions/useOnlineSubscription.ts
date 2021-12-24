@@ -21,7 +21,7 @@ export const useOnlineSubscription = (): UseChatSubscription => {
 
   useEffect(() => {
     if (!data) return
-    setUpdateGroupList(data.updateGroupsByOnline.map(group => ({ ...group.user })))
+    setUpdateGroupList({ ...data.updateGroupsByOnline.map(group => ({ ...group.user })) })
   }, [data])
 
   return { updateGroupList }
