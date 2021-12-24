@@ -1,6 +1,7 @@
 import { isAfter, formatDistanceToNow, differenceInDays, format } from 'date-fns'
 
 import ja from 'date-fns/locale/ja'
+import logger from 'utils/debugger/logger'
 
 type PropsDate = Date | string | number
 
@@ -42,7 +43,10 @@ export default class date {
    * @memberof date
    */
   public static formatDistance = (date: PropsDate): string => {
-    return formatDistanceToNow(new Date(date), { locale: ja })
+    // BUG: データベースから取得した日付にタイムゾーンを適応して、日本との時間の差９時間を足してしまう
+    const utcDate = new Date(date)
+    const jstDate = utcDate.toLocaleString('ja-JP', { timeZone: 'Europe/London' })
+    return formatDistanceToNow(new Date(jstDate), { addSuffix: true, locale: ja })
   }
 
   /**

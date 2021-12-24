@@ -21,9 +21,9 @@ export const useShowChats = (id: string): UseShowChatsReturn => {
 
   const judgeIsYourComment = useCallback(
     (id: string) => {
-      return id === currentUserData.data?.user.id
+      return id === currentUserData?.id
     },
-    [currentUserData.data],
+    [currentUserData],
   )
 
   useEffect(() => {

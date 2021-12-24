@@ -10,11 +10,11 @@ import { calculateProjectListDetailWidth } from 'utils/calculateProjectListDetai
 import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
 import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
-import { UsersQuery } from 'pages/projectList/projectList.gen'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 
 type Props = {
   isJoiningProject: boolean
-  userQuery: UsersQuery | undefined
+  userQuery: GetCurrentUserQuery['user'] | undefined
   selectProject: number
   openModal: () => void
 }
@@ -55,7 +55,7 @@ export const ProjectListDetail: FCX<Props> = ({
       <StyledProjectDetail>
         <StyledProjectTitleContainer>
           <StyledProjectTitle>
-            {userQuery?.user.groups[selectProject].project.name}
+            {userQuery?.groups[selectProject].project.name}
           </StyledProjectTitle>
 
           <StyledProjectOptionContainer>
@@ -64,9 +64,9 @@ export const ProjectListDetail: FCX<Props> = ({
         </StyledProjectTitleContainer>
 
         <ProjectListMonster
-          specie={userQuery?.user.groups[selectProject].project.monster.specie.name}
-          difficulty={userQuery?.user.groups[selectProject].project.difficulty}
-          limitDeadline={userQuery?.user.groups[selectProject].project.end_date}
+          specie={userQuery?.groups[selectProject].project.monster.specie.name}
+          difficulty={userQuery?.groups[selectProject].project.difficulty}
+          limitDeadline={userQuery?.groups[selectProject].project.end_date}
         />
 
         <StyledComplicateButtonContainer>
@@ -74,16 +74,16 @@ export const ProjectListDetail: FCX<Props> = ({
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="クエスト開始"
             onClick={() =>
-              handleTransitionToProject(userQuery?.user.groups[selectProject].project.id)
+              handleTransitionToProject(userQuery?.groups[selectProject].project.id)
             }
           />
         </StyledComplicateButtonContainer>
 
         <ProjectListProjectInfo
-          story={userQuery?.user.groups[selectProject].project.monster.story}
-          overview={userQuery?.user.groups[selectProject].project.overview}
+          story={userQuery?.groups[selectProject].project.monster.story}
+          overview={userQuery?.groups[selectProject].project.overview}
           selectProject={selectProject}
-          groupsProject={userQuery?.user.groups ?? []}
+          groupsProject={userQuery?.groups ?? []}
         />
       </StyledProjectDetail>
     </StyledProjectListDetailContainer>

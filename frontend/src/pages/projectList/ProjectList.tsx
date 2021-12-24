@@ -32,10 +32,10 @@ export const ProjectList: FC = () => {
     <>
       <LazyLoading />
       <ProjectListHeader
-        iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
-        name={currentUserData.data?.user.name ?? ''}
-        uid={currentUserData.data?.user.id ?? ''}
-        totalExp={currentUserData.data?.user.exp ?? 0}
+        iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+        name={currentUserData?.name ?? ''}
+        uid={currentUserData?.id ?? ''}
+        totalExp={currentUserData?.exp ?? 0}
         notifications={notifications}
       />
 
@@ -56,7 +56,7 @@ export const ProjectList: FC = () => {
             <StyledScrollWrapper>
               <StyledProjectListScroll>
                 <StyledProjectList>
-                  {currentUserData.data?.user.groups.map((group, index) => (
+                  {currentUserData?.groups.map((group, index) => (
                     <StyledProject key={index} onClick={() => setSelectProject(index)}>
                       <ProjectListItem
                         activeStatue={
@@ -76,8 +76,8 @@ export const ProjectList: FC = () => {
         </StyledProjectListContainer>
 
         <StyledProjectListDetail
-          isJoiningProject={!!currentUserData.data?.user.groups.length}
-          userQuery={currentUserData.data}
+          isJoiningProject={!!currentUserData?.groups.length}
+          userQuery={currentUserData}
           selectProject={selectProject}
           openModal={() => setShouldShowModal(true)}
         />
@@ -171,7 +171,7 @@ const StyledCreateProjectButton = styled.div`
 `
 
 const StyledScrollWrapper = styled.div`
-  overflow-x: visible;
+  overflow-x: auto;
   position: relative;
   margin-left: ${calculateMinSizeBasedOnFigmaWidth(15)};
   width: ${calculateMinSizeBasedOnFigmaWidth(439)};
@@ -182,7 +182,7 @@ const StyledProjectListScroll = styled.div`
   position: relative;
   display: flex;
   flex-direction: row-reverse;
-  overflow-y: scroll;
+  overflow-y: auto;
   direction: rtl; // スクロールバーを左側に表示する
   height: calc(100% - (${projectListBodyPaddingTop} + ${projectListBodyPaddingBottom}));
 `

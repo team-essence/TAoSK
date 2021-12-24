@@ -26,38 +26,38 @@ export const MyPage: FC = () => {
     <>
       <LazyLoading />
       <ProjectListHeader
-        iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
-        name={currentUserData.data?.user.name ?? ''}
-        uid={currentUserData.data?.user.id ?? ''}
-        totalExp={currentUserData.data?.user.exp ?? 0}
+        iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+        name={currentUserData?.name ?? ''}
+        uid={currentUserData?.id ?? ''}
+        totalExp={currentUserData?.exp ?? 0}
         notifications={notifications}
       />
 
       <StyledMyPageContainer>
         <StyledMyPageGridContainer>
           <MyPageUserInfo
-            iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
-            name={currentUserData.data?.user.name ?? ''}
-            uid={currentUserData.data?.user.id ?? ''}
-            company={currentUserData.data?.user.company ?? ''}
-            totalExp={currentUserData.data?.user.exp ?? 0}
-            occupation={currentUserData.data?.user.occupation.name ?? ''}
-            hp={currentUserData.data?.user.hp ?? 100}
-            mp={currentUserData.data?.user.mp ?? 100}
+            iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+            name={currentUserData?.name ?? ''}
+            uid={currentUserData?.id ?? ''}
+            company={currentUserData?.company ?? ''}
+            totalExp={currentUserData?.exp ?? 0}
+            occupation={currentUserData?.occupation.name ?? ''}
+            hp={currentUserData?.hp ?? 100}
+            mp={currentUserData?.mp ?? 100}
           />
 
           <MyPageStatus
-            technology={currentUserData.data?.user.technology ?? 0}
-            solution={currentUserData.data?.user.solution ?? 0}
-            achievement={currentUserData.data?.user.achievement ?? 0}
-            motivation={currentUserData.data?.user.motivation ?? 0}
-            design={currentUserData.data?.user.design ?? 0}
-            plan={currentUserData.data?.user.plan ?? 0}
+            technology={currentUserData?.technology ?? 0}
+            solution={currentUserData?.solution ?? 0}
+            achievement={currentUserData?.achievement ?? 0}
+            motivation={currentUserData?.motivation ?? 0}
+            design={currentUserData?.design ?? 0}
+            plan={currentUserData?.plan ?? 0}
           />
 
           <MyPageTags
-            interests={currentUserData.data?.user.interests ?? []}
-            certifications={currentUserData.data?.user.certifications ?? []}
+            interests={currentUserData?.interests ?? []}
+            certifications={currentUserData?.certifications ?? []}
           />
         </StyledMyPageGridContainer>
       </StyledMyPageContainer>

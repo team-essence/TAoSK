@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
+import { GetCurrentUserQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useCreateInvitationMutation,
@@ -31,6 +32,9 @@ import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { useProjectDetail } from 'hooks/useProjectDetail'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { Notifications } from 'types/notification'
+import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
+import Exp from 'utils/exp/exp'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -42,13 +46,28 @@ export const ProjectDetail: FC = () => {
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
+  const [userData, setUserData] = useState<GetCurrentUserQuery['user']>()
+  const { updateUserByTask } = useUpdateUserByTaskSubscription()
+
+  useEffect(() => {
+    logger.debug(updateUserByTask)
+    if (!updateUserByTask) return
+
+    if (userData && Exp.toLevel(updateUserByTask.exp) > Exp.toLevel(userData.exp)) {
+      toast.success(
+        'レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！',
+      )
+    }
+
+    setUserData(updateUserByTask)
+  }, [updateUserByTask])
 
   const { projectData, monsterHPRemaining, monsterTotalHP, isTasks } = useProjectDetail(
     setSelectUserIds,
     setList,
   )
 
-  const {currentUserData, notifications} = useGetCurrentUserData()
+  const { currentUserData, notifications } = useGetCurrentUserData()
 
   const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
   const [createInvitation] = useCreateInvitationMutation({
@@ -97,7 +116,7 @@ export const ProjectDetail: FC = () => {
       variables: {
         selectUserIds: selectUserIds,
         name: debouncedInputText,
-        company: currentUserData.data?.user.company ? currentUserData.data.user.company : '',
+        company: currentUserData?.company ? currentUserData.company : '',
       },
     })
   }, [debouncedInputText])
@@ -242,11 +261,11 @@ export const ProjectDetail: FC = () => {
       <LazyLoading />
       {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
-        iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
-        name={currentUserData.data?.user.name ?? ''}
-        uid={currentUserData.data?.user.id ?? ''}
-        totalExp={currentUserData.data?.user.exp ?? 0}
-        company={currentUserData.data?.user.company ?? ''}
+        iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+        name={currentUserData?.name ?? ''}
+        uid={currentUserData?.id ?? ''}
+        totalExp={currentUserData?.exp ?? 0}
+        company={currentUserData?.company ?? ''}
         notifications={notifications}
         list={list}
         groups={projectData.data?.getProjectById.groups ?? []}
@@ -258,12 +277,12 @@ export const ProjectDetail: FC = () => {
             lists={list}
             onDragEnd={onDragEnd}
           />
-          {!!currentUserData.data && (
+          {!!userData && (
             <ProjectMyInfo
-              {...currentUserData.data.user}
-              iconImage={currentUserData.data.user.icon_image}
-              occupation={currentUserData.data.user.occupation.name}
-              totalExp={currentUserData.data.user.exp}
+              {...userData}
+              iconImage={userData.icon_image}
+              occupation={userData.occupation.name}
+              totalExp={userData.exp}
             />
           )}
         </StyledProjectDetailLeftContainer>

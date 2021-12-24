@@ -39,8 +39,8 @@ export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
     },
   })
   const defaultSrc = useMemo(
-    () => currentUserData.data?.user.icon_image ?? DEFAULT_USER,
-    [currentUserData.data?.user.icon_image],
+    () => currentUserData?.icon_image ?? DEFAULT_USER,
+    [currentUserData?.icon_image],
   )
   const { canvasContext, imageUrl, initializeUploadImg, handleChangeImg } = useImageResize(
     defaultSrc,
@@ -54,7 +54,7 @@ export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
   )
 
   const handleUpdateUserIconImageMutation = useCallback(async () => {
-    if (!fileData || !currentUserData.data || shouldDisable) return
+    if (!fileData || !currentUserData || shouldDisable) return
     try {
       setIsUploading(true)
       const blobsInContainer: string[] = await uploadFileToBlob(fileData)
@@ -62,7 +62,7 @@ export const useUpdateUserIconImage = (): UseUpdateUserIconImageReturn => {
       updateUserIconImageMutation({
         variables: {
           icon_image: url,
-          id: currentUserData.data.user.id,
+          id: currentUserData.id,
         },
       })
     } catch (error) {
