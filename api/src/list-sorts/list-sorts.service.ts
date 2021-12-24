@@ -22,6 +22,7 @@ export class ListSortsService {
   async update(updateListSort: UpdateListSort): Promise<{
     result: boolean;
     lists: List[];
+    project_id: string;
   }> {
     try {
       let projectId = '';
@@ -58,11 +59,13 @@ export class ListSortsService {
       return {
         result: true,
         lists: lists,
+        project_id: projectId,
       };
     } catch (error) {
       return {
         result: false,
         lists: [],
+        project_id: '',
       };
     }
   }
