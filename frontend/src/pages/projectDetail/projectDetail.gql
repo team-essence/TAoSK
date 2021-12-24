@@ -672,3 +672,38 @@ subscription UpdateGroupsByOnline($project_id: String!) {
     }
   }
 }
+
+subscription UpdateGroupsByTaskSubSc($project_id: String!) {
+  updateGroupsByTask(projectId: $project_id) {
+    user {
+      id
+      name
+      icon_image
+      hp
+      mp
+      exp
+      technology
+      achievement
+      motivation
+      solution
+      plan
+      design
+      online_flg
+
+      interests {
+        id
+        context
+      }
+
+      certifications {
+        id
+        name
+      }
+
+      occupation {
+        id
+        name
+      }
+    }
+  }
+}

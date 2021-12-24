@@ -6,6 +6,7 @@ import {
   NewAllocationInput,
 } from 'src/allocations/dto/newAllocation.input';
 import { GameLog } from 'src/game-logs/game-log';
+import { Group } from 'src/groups/group';
 import { List } from 'src/lists/list';
 import { User } from 'src/users/user';
 import { NewTaskInput } from './dto/newTask.input';
@@ -50,6 +51,13 @@ export class TasksResolver {
         },
       });
     }
+
+    this.pubSub.publish('updateGroupsByTask', {
+      updateGroupsByTask: {
+        projectId: updateTask.project_id,
+        groups: result.groups,
+      },
+    });
 
     for (let index = 0; index < result.allocationUsers.length; index++) {
       this.pubSub.publish('updateUserByTask', {
@@ -297,5 +305,19 @@ export class TasksResolver {
     @Args({ name: 'userId', type: () => String }) userId: string,
   ) {
     return this.pubSub.asyncIterator('updateUserByTask');
+  }
+
+  @Subscription((returns) => [Group], {
+    filter: (payload, variables) => {
+      return payload.updateGroupsByTask.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateGroupsByTask.groups;
+    },
+  })
+  updateGroupsByTask(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateGroupsByTask');
   }
 }

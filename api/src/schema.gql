@@ -400,5 +400,6 @@ type Subscription {
   endTask(projectId: String!): UpdatedTask!
   updateLogsByTask(projectId: String!): [GameLog!]!
   updateUserByTask(userId: String!): User!
+  updateGroupsByTask(projectId: String!): [Group!]!
   updateChatSubscription(taskId: String!, projectId: String!): [Chat!]!
 }
