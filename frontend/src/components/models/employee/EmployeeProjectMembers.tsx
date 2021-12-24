@@ -1,4 +1,4 @@
-import React, { FCX } from 'react'
+import React, { FCX, useEffect, useState } from 'react'
 import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 import {
   calculateMinSizeBasedOnFigmaWidth,
@@ -7,32 +7,53 @@ import {
 import { EmployeeOnlineStatusLabel } from 'components/models/employee/EmployeeOnlineStatusLabel'
 import { EmployeeInformation } from 'components/models/employee/EmployeeInformation'
 import styled from 'styled-components'
+import { GetUserQuery } from 'pages/mypage/mypage.gen'
+import { useOnlineSubscription } from 'hooks/subscriptions/useOnlineSubscription'
 
 type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
 type Props = Partial<Groups>
 
 export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
+  const [groupList, setGroupList] = useState<
+    Omit<GetUserQuery['user'], 'company' | 'memo' | 'invitations'>[]
+  >([])
+
+  const { updateGroupList } = useOnlineSubscription()
+
+  useEffect(() => {
+    if (!groups) return
+
+    setGroupList(
+      groups.map(group => ({...group.user})),
+    )
+  }, [groups])
+
+  useEffect(() => {
+    setGroupList(updateGroupList)
+  }, [updateGroupList])
+
   return (
     <StyledContainer>
       <StyledLabelContainer>
         <EmployeeOnlineStatusLabel label="オンライン" status={true} />
       </StyledLabelContainer>
-      {groups?.map(
+      {groupList.map(
         (group, index) =>
-          group.user.online_flg && (
+          group.online_flg && (
             <StyledEmployeeContainer key={index}>
-              <EmployeeInformation {...group.user} />
+              <EmployeeInformation {...group} />
             </StyledEmployeeContainer>
           ),
       )}
+
       <StyledLabelContainer>
         <EmployeeOnlineStatusLabel label="オフライン" status={false} />
       </StyledLabelContainer>
-      {groups?.map(
+      {groupList.map(
         (group, index) =>
-          !group.user.online_flg && (
+          !group.online_flg && (
             <StyledEmployeeContainer key={index}>
-              <EmployeeInformation {...group.user} />
+              <EmployeeInformation {...group} />
             </StyledEmployeeContainer>
           ),
       )}
