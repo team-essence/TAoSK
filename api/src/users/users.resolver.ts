@@ -98,11 +98,14 @@ export class UsersResolver {
     if (!result) throw new NotFoundException({ id, isOnline });
 
     this.pubSub.publish('updateLogsByOnline', {
-      updateLogsByOnline: result.logs,
+      updateLogsByOnline: {
+        gameLogs: result.logs,
+        projectId: project_id,
+      },
     });
 
     this.pubSub.publish('updateGroupsByOnline', {
-      updateGroupsByOnline: result.groups,
+      updateGroupsByOnline: { groups: result.groups, projectId: project_id },
     });
 
     return result.user;
@@ -148,9 +151,10 @@ export class UsersResolver {
 
   @Subscription((returns) => [GameLog], {
     filter: (payload, variables) => {
-      return payload.updateLogsByOnline.map((logs: GameLog) => {
-        return logs.project.id === variables.projectId;
-      });
+      return payload.updateLogsByOnline.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateLogsByOnline.gameLogs;
     },
   })
   updateLogsByOnline(
@@ -159,7 +163,14 @@ export class UsersResolver {
     return this.pubSub.asyncIterator('updateLogsByOnline');
   }
 
-  @Subscription((returns) => [Group], {})
+  @Subscription((returns) => [Group], {
+    filter: (payload, variables) => {
+      return payload.updateGroupsByOnline.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateGroupsByOnline.groups;
+    },
+  })
   updateGroupsByOnline(
     @Args({ name: 'projectId', type: () => String }) projectId: string,
   ) {

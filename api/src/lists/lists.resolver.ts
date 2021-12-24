@@ -29,7 +29,10 @@ export class ListsResolver {
     });
 
     this.pubSub.publish('updateListByList', {
-      updateListByList: lists,
+      updateListByList: {
+        projectId: newList.project_id,
+        lists,
+      },
     });
 
     return lists;
@@ -39,17 +42,20 @@ export class ListsResolver {
   public async updateListName(
     @Args({ name: 'updateList' }) updateList: UpdateListInput,
   ) {
-    const lists = await this.listsService
+    const result = await this.listsService
       .updateListName(updateList)
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateListByList', {
-      updateListByList: lists,
+      updateListByList: {
+        projectId: result.project_id,
+        lists: result.lists,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
   @Mutation(() => Boolean)
@@ -63,7 +69,10 @@ export class ListsResolver {
       });
 
     this.pubSub.publish('updateListByList', {
-      updateListByList: result.lists,
+      updateListByList: {
+        projectId: removeList.project_id,
+        lists: result.lists,
+      },
     });
 
     return result.result;
@@ -71,9 +80,10 @@ export class ListsResolver {
 
   @Subscription((returns) => [List], {
     filter: (payload, variables) => {
-      return payload.updateListByList.map((list: List) => {
-        return list.project.id === variables.projectId;
-      });
+      return payload.updateListByList.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateListByList.lists;
     },
   })
   updateListByList(

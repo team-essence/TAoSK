@@ -19,13 +19,9 @@ export const useUpdateUserByTaskSubscription = (): UseUpdateUserByTaskSubscripti
   })
 
   useEffect(() => {
-    setUpdateUserByTask(
-      data?.updateUserByTask
-        .filter(user => {
-          return user.id == String(currentUser?.uid)
-        })
-        .shift() ?? undefined,
-    )
+    if (!data) return
+
+    setUpdateUserByTask({ ...data.updateUserByTask })
   }, [data])
 
   return { updateUserByTask }

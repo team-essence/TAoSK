@@ -32,7 +32,10 @@ export class TasksResolver {
       });
 
     this.pubSub.publish('updateList', {
-      updateList: result.lists,
+      updateList: {
+        lists: result.lists,
+        projectId: updateTask.project_id,
+      },
     });
 
     this.pubSub.publish('endTask', {
@@ -41,13 +44,21 @@ export class TasksResolver {
 
     if (result.logs.isUpdate) {
       this.pubSub.publish('updateLogsByTask', {
-        updateLogsByTask: result.logs.logs,
+        updateLogsByTask: {
+          gameLogs: result.logs.logs,
+          projectId: updateTask.project_id,
+        },
       });
     }
 
-    this.pubSub.publish('updateUserByTask', {
-      updateUserByTask: result.allocationUsers,
-    });
+    for (let index = 0; index < result.allocationUsers.length; index++) {
+      this.pubSub.publish('updateUserByTask', {
+        updateUserByTask: {
+          user: result.allocationUsers[index],
+          userId: result.allocationUsers[index].id,
+        },
+      });
+    }
 
     return result.updatedTask;
   }
@@ -64,11 +75,17 @@ export class TasksResolver {
       });
 
     this.pubSub.publish('updateList', {
-      updateList: result.lists,
+      updateList: {
+        lists: result.lists,
+        projectId: newTask.project_id,
+      },
     });
 
     this.pubSub.publish('updateLogsByTask', {
-      updateLogsByTask: result.logs,
+      updateLogsByTask: {
+        gameLogs: result.logs,
+        projectId: newTask.project_id,
+      },
     });
 
     return result.lists;
@@ -79,17 +96,20 @@ export class TasksResolver {
     @Args({ name: 'title' }) title: string,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .updateTitle(taskId, title)
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
   @Mutation(() => [List])
@@ -97,17 +117,20 @@ export class TasksResolver {
     @Args({ name: 'overview' }) overview: string,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .updateOverview(taskId, overview)
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
   @Mutation(() => [List])
@@ -120,7 +143,7 @@ export class TasksResolver {
     @Args({ name: 'design' }) design: number,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .updateParameters(
         taskId,
         technology,
@@ -135,10 +158,13 @@ export class TasksResolver {
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
   @Mutation(() => [List])
@@ -146,41 +172,56 @@ export class TasksResolver {
     @Args({ name: 'end_date' }) end_date: string,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .updateEndDate(taskId, end_date)
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
-  @Mutation(() => [Task])
+  @Mutation(() => [List])
   public async deleteTask(@Args({ name: 'taskId' }) taskId: number) {
-    return await this.taskService.deleteTask(taskId).catch((err) => {
+    const result = await this.taskService.deleteTask(taskId).catch((err) => {
       throw err;
     });
+
+    this.pubSub.publish('updateList', {
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
+    });
+
+    return result.lists;
   }
 
   @Mutation(() => [List])
   public async createAllocation(
     @Args({ name: 'newAllocation' }) newAllocation: NewAllocationInput,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .assign({ newAllocation })
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
   @Mutation(() => [List])
@@ -188,24 +229,28 @@ export class TasksResolver {
     @Args({ name: 'user_id' }) userId: string,
     @Args({ name: 'task_id' }) taskId: number,
   ) {
-    const lists = await this.taskService
+    const result = await this.taskService
       .unassign(userId, taskId)
       .catch((err) => {
         throw err;
       });
 
     this.pubSub.publish('updateList', {
-      updateList: lists,
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
-    return lists;
+    return result.lists;
   }
 
   @Subscription((returns) => [List], {
     filter: (payload, variables) => {
-      return payload.updateList.map((list: List) => {
-        return list.project.id === variables.projectId;
-      });
+      return payload.updateList.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateList.lists;
     },
   })
   updateList(
@@ -228,9 +273,10 @@ export class TasksResolver {
 
   @Subscription((returns) => [GameLog], {
     filter: (payload, variables) => {
-      return payload.updateLogsByTask.map((logs: GameLog) => {
-        return logs.project.id === variables.projectId;
-      });
+      return payload.updateLogsByTask.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateLogsByTask.gameLogs;
     },
   })
   updateLogsByTask(
@@ -239,11 +285,12 @@ export class TasksResolver {
     return this.pubSub.asyncIterator('updateLogsByTask');
   }
 
-  @Subscription((returns) => [User], {
+  @Subscription((returns) => User, {
     filter: (payload, variables) => {
-      return payload.updateUserByTask.map((allocationUser: User) => {
-        return allocationUser.id === variables.userId;
-      });
+      return payload.updateUserByTask.userId === variables.userId;
+    },
+    resolve: (values) => {
+      return values.updateUserByTask.user;
     },
   })
   updateUserByTask(

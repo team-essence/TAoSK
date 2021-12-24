@@ -22,7 +22,10 @@ export class ListSortsResolver {
       });
 
     this.pubSub.publish('updateListByListSort', {
-      updateListByListSort: result.lists,
+      updateListByListSort: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
     });
 
     return result.result;
@@ -30,9 +33,10 @@ export class ListSortsResolver {
 
   @Subscription((returns) => [List], {
     filter: (payload, variables) => {
-      return payload.updateListByListSort.map((list: List) => {
-        return list.project.id === variables.projectId;
-      });
+      return payload.updateListByListSort.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateListByListSort.lists;
     },
   })
   updateListByListSort(

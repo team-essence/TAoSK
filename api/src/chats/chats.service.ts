@@ -38,8 +38,13 @@ export class ChatsService {
     comment: string,
     taskId: number,
     userId: string,
-  ): Promise<Chat[]> {
-    const task = await this.taskRepository.findOne(taskId);
+  ): Promise<{
+    chats: Chat[];
+    project_id: string;
+  }> {
+    const task = await this.taskRepository.findOne(taskId, {
+      relations: ['project'],
+    });
     const user = await this.userRepository.findOne(userId);
     const chat = this.chatRepository.create({
       comment: comment,
@@ -51,7 +56,7 @@ export class ChatsService {
       new InternalServerErrorException();
     });
 
-    const chats = this.chatRepository.find({
+    const chats = await this.chatRepository.find({
       where: {
         task: {
           id: taskId,
@@ -61,14 +66,17 @@ export class ChatsService {
     });
     if (!chats) throw new NotFoundException();
 
-    return chats;
+    return { chats, project_id: task.project.id };
   }
 
   async updateChat(
     chatId: number,
     comment: string,
     taskId: number,
-  ): Promise<Chat[]> {
+  ): Promise<{
+    chats: Chat[];
+    project_id: string;
+  }> {
     const chat = await this.chatRepository.findOne({
       where: {
         id: chatId,
@@ -82,7 +90,7 @@ export class ChatsService {
       new InternalServerErrorException();
     });
 
-    const chats = this.chatRepository.find({
+    const chats = await this.chatRepository.find({
       where: {
         task: {
           id: taskId,
@@ -92,10 +100,21 @@ export class ChatsService {
     });
     if (!chats) throw new NotFoundException();
 
-    return chats;
+    const task = await this.taskRepository.findOne(taskId, {
+      relations: ['project'],
+    });
+    if (!task) throw new NotFoundException();
+
+    return { chats, project_id: task.project.id };
   }
 
-  async deleteChat(chatId: number, taskId: number): Promise<Chat[]> {
+  async deleteChat(
+    chatId: number,
+    taskId: number,
+  ): Promise<{
+    chats: Chat[];
+    project_id: string;
+  }> {
     const chat = await this.chatRepository.findOne({
       where: {
         id: chatId,
@@ -106,7 +125,7 @@ export class ChatsService {
       new InternalServerErrorException();
     });
 
-    const chats = this.chatRepository.find({
+    const chats = await this.chatRepository.find({
       where: {
         task: {
           id: taskId,
@@ -116,6 +135,11 @@ export class ChatsService {
     });
     if (!chats) throw new NotFoundException();
 
-    return chats;
+    const task = await this.taskRepository.findOne(taskId, {
+      relations: ['project'],
+    });
+    if (!task) throw new NotFoundException();
+
+    return { chats, project_id: task.project.id };
   }
 }

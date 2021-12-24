@@ -234,7 +234,7 @@ type Mutation {
   updateTaskOverview(taskId: Float!, overview: String!): [List!]!
   updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): [List!]!
   updateTaskEndDate(taskId: Float!, end_date: String!): [List!]!
-  deleteTask(taskId: Float!): [Task!]!
+  deleteTask(taskId: Float!): [List!]!
   createAllocation(newAllocation: NewAllocationInput!): [List!]!
   unAssignTask(task_id: Float!, user_id: String!): [List!]!
   addChat(userId: String!, taskId: Float!, comment: String!): [Chat!]!
@@ -396,6 +396,6 @@ type Subscription {
   updateList(projectId: String!): [List!]!
   endTask(projectId: String!): UpdatedTask!
   updateLogsByTask(projectId: String!): [GameLog!]!
-  updateUserByTask(userId: String!): [User!]!
+  updateUserByTask(userId: String!): User!
   updateChatSubscription(taskId: String!, projectId: String!): [Chat!]!
 }
