@@ -105,7 +105,7 @@ export class UsersResolver {
     });
 
     this.pubSub.publish('updateGroupsByOnline', {
-      updateGroupsByOnline: result.groups,
+      updateGroupsByOnline: { groups: result.groups, projectId: project_id },
     });
 
     return result.user;
@@ -163,7 +163,14 @@ export class UsersResolver {
     return this.pubSub.asyncIterator('updateLogsByOnline');
   }
 
-  @Subscription((returns) => [Group], {})
+  @Subscription((returns) => [Group], {
+    filter: (payload, variables) => {
+      return payload.updateGroupsByOnline.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateGroupsByOnline.groups;
+    },
+  })
   updateGroupsByOnline(
     @Args({ name: 'projectId', type: () => String }) projectId: string,
   ) {
