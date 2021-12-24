@@ -5,7 +5,7 @@ import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
 import { theme } from 'styles/theme'
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 type Props = {
   title?: string
@@ -16,7 +16,11 @@ type Props = {
 
 export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   return (
-    <MuiModal open={shouldShow} onBackdropClick={() => onClickCloseBtn()}>
+    <MuiModal
+      open={shouldShow}
+      onBackdropClick={() => onClickCloseBtn()}
+      BackdropComponent={StyledBackdrop}
+      BackdropProps={{ transitionDuration: 3000 }}>
       <StyledWrapper className={className}>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
@@ -31,6 +35,26 @@ export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, classNam
   )
 }
 
+const fadeIn = keyframes`
+from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+const StyledBackdrop = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.6)};
+  opacity: 0;
+  will-change: animation, opacity;
+  animation: ${fadeIn} 0.5s forwards linear;
+`
 const StyledWrapper = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
   position: absolute;
