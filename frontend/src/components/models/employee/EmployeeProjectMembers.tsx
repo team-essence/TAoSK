@@ -10,6 +10,8 @@ import { EmployeeInformation } from 'components/models/employee/EmployeeInformat
 import styled from 'styled-components'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { useOnlineSubscription } from 'hooks/subscriptions/useOnlineSubscription'
+import { useGroupByTaskSubscription } from 'hooks/subscriptions/useGroupByTaskSubscription'
+import logger from 'utils/debugger/logger'
 
 type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
 type Props = Partial<Groups>
@@ -20,6 +22,7 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
   >([])
 
   const { updateGroupList } = useOnlineSubscription()
+  const { updateGroupListByTask } = useGroupByTaskSubscription()
 
   useEffect(() => {
     if (!groups) return
@@ -30,6 +33,11 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
   useEffect(() => {
     setGroupList(updateGroupList)
   }, [updateGroupList])
+
+  useEffect(() => {
+    logger.debug(updateGroupListByTask, 'hoge')
+    setGroupList(updateGroupListByTask)
+  }, [updateGroupListByTask])
 
   return (
     <StyledContainer>

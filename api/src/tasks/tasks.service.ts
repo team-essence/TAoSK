@@ -11,6 +11,7 @@ import {
 } from 'src/allocations/dto/newAllocation.input';
 import { Chat } from 'src/chats/chat';
 import { GameLog } from 'src/game-logs/game-log';
+import { Group } from 'src/groups/group';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
 import { User } from 'src/users/user';
@@ -38,6 +39,8 @@ export class TasksService {
     private gameLogRepository: Repository<GameLog>,
     @InjectRepository(Chat)
     private chatRepository: Repository<Chat>,
+    @InjectRepository(Group)
+    private groupRepository: Repository<Group>,
   ) {}
 
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<{
@@ -48,6 +51,7 @@ export class TasksService {
       logs: GameLog[];
     };
     allocationUsers: User[];
+    groups: Group[];
   }> {
     const allocationUsers: User[] = [];
     const logs = {
@@ -262,11 +266,26 @@ export class TasksService {
     });
     logs.logs = gameLogs;
 
+    const groups = await this.groupRepository.find({
+      where: {
+        project: {
+          id: updateTask.project_id,
+        },
+      },
+      relations: [
+        'user',
+        'user.interests',
+        'user.certifications',
+        'user.occupation',
+      ],
+    });
+
     return {
       lists: lists,
       updatedTask: returnObjectTask,
       logs,
       allocationUsers,
+      groups,
     };
   }
 
