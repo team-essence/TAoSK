@@ -104,3 +104,252 @@ subscription NewNotificationsByCreateProjectSubSc($user_id: String!) {
     }
   }
 }
+
+subscription UpdateUserDataSubSc($user_id: String!) {
+  updateUserData(userId: $user_id) {
+    id
+    name
+    icon_image
+    company
+    hp
+    mp
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+
+    occupation {
+      id
+      name
+    }
+
+    interests {
+      id
+      context
+    }
+
+    certifications {
+      id
+      name
+    }
+
+    invitations {
+      id
+      created_at
+
+      project {
+        id
+        name
+      }
+    }
+
+    groups {
+      id
+
+      project {
+        id
+        name
+        overview
+        created_at
+        end_date
+        project_end_flg
+        difficulty
+
+        groups {
+          id
+
+          user {
+            id
+            name
+            icon_image
+
+            occupation {
+              id
+              name
+            }
+          }
+        }
+
+        monster {
+          id
+          name
+          story
+
+          specie {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateUserDataByCertificationSubSc($user_id: String!) {
+  updateUserDataByCertification(userId: $user_id) {
+    id
+    name
+    icon_image
+    company
+    hp
+    mp
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+
+    occupation {
+      id
+      name
+    }
+
+    interests {
+      id
+      context
+    }
+
+    certifications {
+      id
+      name
+    }
+
+    invitations {
+      id
+      created_at
+
+      project {
+        id
+        name
+      }
+    }
+
+    groups {
+      id
+
+      project {
+        id
+        name
+        overview
+        created_at
+        end_date
+        project_end_flg
+        difficulty
+
+        groups {
+          id
+
+          user {
+            id
+            name
+            icon_image
+
+            occupation {
+              id
+              name
+            }
+          }
+        }
+
+        monster {
+          id
+          name
+          story
+
+          specie {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateUserDataByInterestSubSc($user_id: String!) {
+  updateUserDataByInterest(userId: $user_id) {
+    id
+    name
+    icon_image
+    company
+    hp
+    mp
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+
+    occupation {
+      id
+      name
+    }
+
+    interests {
+      id
+      context
+    }
+
+    certifications {
+      id
+      name
+    }
+
+    invitations {
+      id
+      created_at
+
+      project {
+        id
+        name
+      }
+    }
+
+    groups {
+      id
+
+      project {
+        id
+        name
+        overview
+        created_at
+        end_date
+        project_end_flg
+        difficulty
+
+        groups {
+          id
+
+          user {
+            id
+            name
+            icon_image
+
+            occupation {
+              id
+              name
+            }
+          }
+        }
+
+        monster {
+          id
+          name
+          story
+
+          specie {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

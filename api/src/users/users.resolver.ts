@@ -130,6 +130,13 @@ export class UsersResolver {
     const user = await this.usersService.updateUserName(id, name);
     if (!user) throw new NotFoundException({ id, name });
 
+    this.pubSub.publish('updateUserData', {
+      updateUserData: {
+        user,
+        userId: id,
+      },
+    });
+
     return user;
   }
 
@@ -140,6 +147,13 @@ export class UsersResolver {
   ) {
     const user = await this.usersService.updateUserIconImage(id, icon_image);
     if (!user) throw new NotFoundException({ id, icon_image });
+
+    this.pubSub.publish('updateUserData', {
+      updateUserData: {
+        user,
+        userId: id,
+      },
+    });
 
     return user;
   }
@@ -175,6 +189,18 @@ export class UsersResolver {
     @Args({ name: 'projectId', type: () => String }) projectId: string,
   ) {
     return this.pubSub.asyncIterator('updateGroupsByOnline');
+  }
+
+  @Subscription((returns) => User, {
+    filter: (payload, variables) => {
+      return payload.updateUserData.userId === variables.userId;
+    },
+    resolve: (values) => {
+      return values.updateUserData.user;
+    },
+  })
+  updateUserData(@Args({ name: 'userId', type: () => String }) userId: string) {
+    return this.pubSub.asyncIterator('updateUserData');
   }
 
   // @Mutation((returns) => Boolean)

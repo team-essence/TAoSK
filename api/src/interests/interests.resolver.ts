@@ -1,12 +1,17 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Interest } from './interest';
 import { InterestsService } from './interests.service';
 import { NewInterestInput } from './dto/newInterest.input';
+import { PubSub } from 'graphql-subscriptions';
+import { User } from 'src/users/user';
 
 @Resolver(() => Interest)
 export class InterestsResolver {
-  constructor(private interestsService: InterestsService) {}
+  private pubSub: PubSub;
+  constructor(private interestsService: InterestsService) {
+    this.pubSub = new PubSub();
+  }
 
   @Query(() => [Interest])
   public async allInterests() {
@@ -32,9 +37,20 @@ export class InterestsResolver {
   public async addInterest(
     @Args('newInterest') newInterest: NewInterestInput,
   ): Promise<Interest> {
-    return this.interestsService.create(newInterest).catch((err) => {
-      throw err;
+    const result = await this.interestsService
+      .create(newInterest)
+      .catch((err) => {
+        throw err;
+      });
+
+    this.pubSub.publish('updateUserDataByInterest', {
+      updateUserDataByInterest: {
+        user: result.user,
+        userId: newInterest.user_id,
+      },
     });
+
+    return result.interest;
   }
 
   @Mutation(() => [Interest])
@@ -42,8 +58,33 @@ export class InterestsResolver {
     @Args('user_id') user_id: string,
     @Args({ name: 'contexts', type: () => [String] }) contexts: [string],
   ): Promise<Interest[]> {
-    return this.interestsService.update(user_id, contexts).catch((err) => {
-      throw err;
+    const result = await this.interestsService
+      .update(user_id, contexts)
+      .catch((err) => {
+        throw err;
+      });
+
+    this.pubSub.publish('updateUserDataByInterest', {
+      updateUserDataByInterest: {
+        user: result.user,
+        userId: user_id,
+      },
     });
+
+    return result.interests;
+  }
+
+  @Subscription((returns) => User, {
+    filter: (payload, variables) => {
+      return payload.updateUserDataByInterest.userId === variables.userId;
+    },
+    resolve: (values) => {
+      return values.updateUserDataByInterest.user;
+    },
+  })
+  updateUserDataByInterest(
+    @Args({ name: 'userId', type: () => String }) userId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateUserDataByInterest');
   }
 }

@@ -4,6 +4,9 @@ import {
   useGetCurrentUserLazyQuery,
   useNewNotificationsByCreateProjectSubScSubscription,
   useNewNotificationsSubScSubscription,
+  useUpdateUserDataByCertificationSubScSubscription,
+  useUpdateUserDataByInterestSubScSubscription,
+  useUpdateUserDataSubScSubscription,
 } from 'pages/projectDetail/getUser.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 import { Notifications } from 'types/notification'
@@ -44,6 +47,21 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
     },
   })
   const newNotificationsByCreateProject = useNewNotificationsByCreateProjectSubScSubscription({
+    variables: {
+      user_id: String(firebaseCurrentUser?.uid),
+    },
+  })
+  const updateUserData = useUpdateUserDataSubScSubscription({
+    variables: {
+      user_id: String(firebaseCurrentUser?.uid),
+    },
+  })
+  const updateUserDataByCertification = useUpdateUserDataByCertificationSubScSubscription({
+    variables: {
+      user_id: String(firebaseCurrentUser?.uid),
+    },
+  })
+  const updateUserDataByInterest = useUpdateUserDataByInterestSubScSubscription({
     variables: {
       user_id: String(firebaseCurrentUser?.uid),
     },
@@ -101,6 +119,18 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
 
     setUserData(updateUserByTask)
   }, [updateUserByTask])
+
+  useEffect(() => {
+    setUserData(updateUserData.data?.updateUserData)
+  }, [updateUserData.data])
+
+  useEffect(() => {
+    setUserData(updateUserDataByCertification.data?.updateUserDataByCertification)
+  }, [updateUserDataByCertification.data])
+
+  useEffect(() => {
+    setUserData(updateUserDataByInterest.data?.updateUserDataByInterest)
+  }, [updateUserDataByInterest.data])
 
   return { getCurrentUser, currentUserData: userData, firebaseCurrentUser, notifications }
 }
