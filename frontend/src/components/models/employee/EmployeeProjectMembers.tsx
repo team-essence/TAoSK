@@ -3,6 +3,7 @@ import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVhBasedOnFigma,
+  calculateVwBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
 import { EmployeeOnlineStatusLabel } from 'components/models/employee/EmployeeOnlineStatusLabel'
 import { EmployeeInformation } from 'components/models/employee/EmployeeInformation'
@@ -23,9 +24,7 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
   useEffect(() => {
     if (!groups) return
 
-    setGroupList(
-      groups.map(group => ({...group.user})),
-    )
+    setGroupList(groups.map(group => ({ ...group.user })))
   }, [groups])
 
   useEffect(() => {
@@ -64,7 +63,7 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
 const StyledContainer = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(210)};
-  height: ${calculateVhBasedOnFigma(460)};
+  height: ${calculateVwBasedOnFigma(580)};
   padding: 0 ${calculateMinSizeBasedOnFigmaWidth(8)};
   border: 2px solid ${({ theme }) => theme.COLORS.BRANDY};
   border-radius: 4px;
