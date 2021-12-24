@@ -44,7 +44,18 @@ export class ProjectsService {
   }: {
     newProject: NewProjectInput;
     selectUser: SelectUser;
-  }): Promise<Project> {
+  }): Promise<{
+    project: Project;
+    invitations: {
+      invitations: Invitation[];
+      userId: string;
+    }[];
+  }> {
+    const invitations: {
+      invitations: Invitation[];
+      userId: string;
+    }[] = [];
+
     // モンスターの取得
     const monster = await this.monsterRepository.findOne(1);
 
@@ -75,6 +86,20 @@ export class ProjectsService {
 
       await this.invitationRepository.save(newInvitationData).catch((err) => {
         new InternalServerErrorException();
+      });
+
+      const invitationsData = await this.invitationRepository.find({
+        where: {
+          user: {
+            id: selectUser.ids[userIdsIndex],
+          },
+        },
+        relations: ['user', 'project'],
+      });
+
+      invitations.push({
+        invitations: invitationsData,
+        userId: selectUser.ids[userIdsIndex],
       });
     }
 
@@ -122,7 +147,10 @@ export class ProjectsService {
       });
     }
 
-    return project;
+    return {
+      project,
+      invitations,
+    };
   }
 
   findProjectOne(id: string): Promise<Project> {

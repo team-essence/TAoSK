@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { Notifications } from 'types/notification'
 import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
-import { useUsersLazyQuery } from './projectList.gen'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { ProjectListCreateModal } from 'components/models/projectList/ProjectListCreateModal'
 import {
@@ -20,29 +18,13 @@ import {
   projectListDetailMarginLeft,
 } from 'utils/calculateProjectListDetailWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
-  const [getUserById, userData] = useUsersLazyQuery({
-    onCompleted(data) {
-      const notifications = data.user.invitations.map(invitation => {
-        return {
-          id: invitation.project.id,
-          name: invitation.project.name,
-          createAt: invitation.created_at,
-        }
-      })
-      setNotifications(notifications)
-    },
-  })
+  const { currentUserData, notifications } = useGetCurrentUserData()
   const [selectProject, setSelectProject] = useState(0)
-  const [notifications, setNotifications] = useState<Notifications>([])
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (!currentUser) return
-    getUserById({ variables: { id: currentUser.uid } })
-  }, [currentUser])
 
   if (!currentUser) return <Navigate to="/signup" />
 
@@ -50,10 +32,10 @@ export const ProjectList: FC = () => {
     <>
       <LazyLoading />
       <ProjectListHeader
-        iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
-        name={userData.data?.user.name ?? ''}
-        uid={userData.data?.user.id ?? ''}
-        totalExp={userData.data?.user.exp ?? 0}
+        iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+        name={currentUserData?.name ?? ''}
+        uid={currentUserData?.id ?? ''}
+        totalExp={currentUserData?.exp ?? 0}
         notifications={notifications}
       />
 
@@ -74,7 +56,7 @@ export const ProjectList: FC = () => {
             <StyledScrollWrapper>
               <StyledProjectListScroll>
                 <StyledProjectList>
-                  {userData.data?.user.groups.map((group, index) => (
+                  {currentUserData?.groups.map((group, index) => (
                     <StyledProject key={index} onClick={() => setSelectProject(index)}>
                       <ProjectListItem
                         activeStatue={
@@ -94,8 +76,8 @@ export const ProjectList: FC = () => {
         </StyledProjectListContainer>
 
         <StyledProjectListDetail
-          isJoiningProject={!!userData.data?.user.groups.length}
-          userQuery={userData.data}
+          isJoiningProject={!!currentUserData?.groups.length}
+          userQuery={currentUserData}
           selectProject={selectProject}
           openModal={() => setShouldShowModal(true)}
         />

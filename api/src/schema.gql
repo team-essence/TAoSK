@@ -389,6 +389,8 @@ type Subscription {
   updateLogsByOnline(projectId: String!): [GameLog!]!
   updateGroupsByOnline(projectId: String!): [Group!]!
   projectCreate: Project!
+  newInvitationByCreateProject(userId: String!): [Invitation!]!
+  newInvitation(userId: String!): [Invitation!]!
   updateListByList(projectId: String!): [List!]!
   updateListByListSort(projectId: String!): [List!]!
   updateList(projectId: String!): [List!]!

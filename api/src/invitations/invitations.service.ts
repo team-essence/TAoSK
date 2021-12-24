@@ -54,7 +54,13 @@ export class InvitationsService {
     return invitation;
   }
 
-  async create(userId: string, projectId: string): Promise<Invitation> {
+  async create(
+    userId: string,
+    projectId: string,
+  ): Promise<{
+    invitation: Invitation;
+    invitations: Invitation[];
+  }> {
     const user = await this.userRepository.findOne(userId);
     const project = await this.projectRepository.findOne(projectId);
     const invitation = this.invitationRepository.create({
@@ -66,6 +72,15 @@ export class InvitationsService {
       new InternalServerErrorException();
     });
 
-    return invitation;
+    const invitations = await this.invitationRepository.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: ['user', 'project'],
+    });
+
+    return { invitation, invitations };
   }
 }

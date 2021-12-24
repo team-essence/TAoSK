@@ -30,10 +30,7 @@ export const useUpdateUserNameForm = (): UseUpdateUserNameFormReturn => {
     mode: 'onChange',
   })
   const name = watch('name')
-  const currentName = useMemo(
-    () => currentUserData.data?.user.name ?? '',
-    [currentUserData.data?.user.name],
-  )
+  const currentName = useMemo(() => currentUserData?.name ?? '', [currentUserData?.name])
   const disabled = useMemo(
     () => !!errors.name || currentName === name || isUploading,
     [currentName, errors.name, name, isUploading],
@@ -55,15 +52,15 @@ export const useUpdateUserNameForm = (): UseUpdateUserNameFormReturn => {
   })
 
   const handleUpdateUserNameMutation = useCallback(() => {
-    if (errors.name || !currentUserData.data?.user.id) return
+    if (errors.name || !currentUserData?.id) return
     setIsUploading(true)
     updateUserNameMutation({
       variables: {
         name,
-        id: currentUserData.data.user.id,
+        id: currentUserData?.id,
       },
     })
-  }, [name, errors.name, currentUserData.data?.user.id])
+  }, [name, errors.name, currentUserData?.id])
 
   useEffect(() => {
     if (shouldInitialize.current && currentName) {

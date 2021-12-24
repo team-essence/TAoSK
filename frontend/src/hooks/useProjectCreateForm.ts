@@ -80,11 +80,11 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
   }, [userData, difficulty])
 
   useEffect(() => {
-    if (!currentUserData.data) return
+    if (!currentUserData) return
     if (!userData.length) {
-      setUserData([currentUserData.data.user])
+      setUserData([currentUserData])
     }
-  }, [currentUserData.data])
+  }, [currentUserData])
 
   useEffect(() => {
     const initializeInputValues = () => {

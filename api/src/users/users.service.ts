@@ -183,7 +183,6 @@ export class UsersService {
         },
       )
       .leftJoinAndSelect('invitations.project', 'project')
-      .where('groups.id IS NULL')
       .andWhere('user.company = :company', {
         company: projectDetailSearchSameCompanyUsers.company,
       })

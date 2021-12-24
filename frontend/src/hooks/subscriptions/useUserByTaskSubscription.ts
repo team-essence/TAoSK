@@ -1,15 +1,16 @@
-import { GetUserQuery } from 'pages/mypage/mypage.gen'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
+
 import { useUpdateUserByTaskSubScSubscription } from 'pages/projectDetail/projectDetail.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 import { useEffect, useState } from 'react'
 
 type UseUpdateUserByTaskSubscription = {
-  updateUserByTask: GetUserQuery['user'] | undefined
+  updateUserByTask: GetCurrentUserQuery['user'] | undefined
 }
 
 export const useUpdateUserByTaskSubscription = (): UseUpdateUserByTaskSubscription => {
   const { currentUser } = useAuthContext()
-  const [updateUserByTask, setUpdateUserByTask] = useState<GetUserQuery['user']>()
+  const [updateUserByTask, setUpdateUserByTask] = useState<GetCurrentUserQuery['user']>()
 
   const { data } = useUpdateUserByTaskSubScSubscription({
     variables: {

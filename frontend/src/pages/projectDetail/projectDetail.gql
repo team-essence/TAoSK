@@ -474,11 +474,9 @@ subscription UpdateUserByTaskSubSc($user_id: String!) {
     id
     name
     icon_image
-    online_flg
+    company
     hp
     mp
-    company
-    memo
     technology
     achievement
     motivation
@@ -486,24 +484,69 @@ subscription UpdateUserByTaskSubSc($user_id: String!) {
     plan
     design
     exp
+
     occupation {
       id
       name
     }
+
     interests {
       id
       context
     }
+
     certifications {
       id
       name
     }
+
     invitations {
       id
       created_at
+
       project {
         id
         name
+      }
+    }
+
+    groups {
+      id
+
+      project {
+        id
+        name
+        overview
+        created_at
+        end_date
+        project_end_flg
+        difficulty
+
+        groups {
+          id
+
+          user {
+            id
+            name
+            icon_image
+
+            occupation {
+              id
+              name
+            }
+          }
+        }
+
+        monster {
+          id
+          name
+          story
+
+          specie {
+            id
+            name
+          }
+        }
       }
     }
   }

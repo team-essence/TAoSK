@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { Invitation } from 'src/invitations/invitation';
 import { EndProjectInput } from './dto/endProject.input';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
 import { Project } from './project';
@@ -37,10 +38,16 @@ export class ProjectsResolver {
       });
 
     this.pubSub.publish('projectCreate', {
-      projectCreate: newProjectData,
+      projectCreate: newProjectData.project,
     });
 
-    return newProjectData;
+    for (let index = 0; index < newProjectData.invitations.length; index++) {
+      this.pubSub.publish('newInvitationByCreateProject', {
+        newInvitationByCreateProject: newProjectData.invitations[index],
+      });
+    }
+
+    return newProjectData.project;
   }
 
   @Mutation(() => Boolean)
@@ -53,5 +60,19 @@ export class ProjectsResolver {
   @Subscription((returns) => Project, {})
   projectCreate() {
     return this.pubSub.asyncIterator('projectCreate');
+  }
+
+  @Subscription((returns) => [Invitation], {
+    filter: (payload, variables) => {
+      return payload.newInvitationByCreateProject.userId === variables.userId;
+    },
+    resolve: (value) => {
+      return value.newInvitationByCreateProject.invitations;
+    },
+  })
+  newInvitationByCreateProject(
+    @Args({ name: 'userId', type: () => String }) userId: string,
+  ) {
+    return this.pubSub.asyncIterator('newInvitationByCreateProject');
   }
 }
