@@ -46,21 +46,6 @@ export const ProjectDetail: FC = () => {
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
   const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
-  const [userData, setUserData] = useState<GetCurrentUserQuery['user']>()
-  const { updateUserByTask } = useUpdateUserByTaskSubscription()
-
-  useEffect(() => {
-    logger.debug(updateUserByTask)
-    if (!updateUserByTask) return
-
-    if (userData && Exp.toLevel(updateUserByTask.exp) > Exp.toLevel(userData.exp)) {
-      toast.success(
-        'レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！',
-      )
-    }
-
-    setUserData(updateUserByTask)
-  }, [updateUserByTask])
 
   const { projectData, monsterHPRemaining, monsterTotalHP, isTasks } = useProjectDetail(
     setSelectUserIds,
@@ -277,12 +262,12 @@ export const ProjectDetail: FC = () => {
             lists={list}
             onDragEnd={onDragEnd}
           />
-          {!!userData && (
+          {!!currentUserData && (
             <ProjectMyInfo
-              {...userData}
-              iconImage={userData.icon_image}
-              occupation={userData.occupation.name}
-              totalExp={userData.exp}
+              {...currentUserData}
+              iconImage={currentUserData.icon_image}
+              occupation={currentUserData.occupation.name}
+              totalExp={currentUserData.exp}
             />
           )}
         </StyledProjectDetailLeftContainer>

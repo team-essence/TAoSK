@@ -59,6 +59,10 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
   }, [firebaseCurrentUser])
 
   useEffect(() => {
+    setUserData(currentUserData.data?.user)
+  }, [currentUserData])
+
+  useEffect(() => {
     if (!newNotifications.data) return
     logger.debug(newNotifications.data)
 
