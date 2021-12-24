@@ -1,11 +1,15 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
 import { Invitation } from './invitation';
 import { InvitationsService } from './invitations.service';
 
 @Resolver()
 export class InvitationsResolver {
-  constructor(private invitationService: InvitationsService) {}
+  private pubSub: PubSub;
+  constructor(private invitationService: InvitationsService) {
+    this.pubSub = new PubSub();
+  }
 
   @Query(() => Invitation)
   public async invitation(
@@ -31,10 +35,31 @@ export class InvitationsResolver {
     @Args({ name: 'userId' }) userId: string,
     @Args({ name: 'projectId' }) projectId: string,
   ) {
-    const invitation = await this.invitationService.create(userId, projectId);
+    const result = await this.invitationService.create(userId, projectId);
 
-    if (!invitation) throw new NotFoundException({ userId, projectId });
+    if (!result.invitation) throw new NotFoundException({ userId, projectId });
 
-    return invitation;
+    this.pubSub.publish('newInvitation', {
+      newInvitation: {
+        userId,
+        invitations: result.invitations,
+      },
+    });
+
+    return result.invitation;
+  }
+
+  @Subscription((returns) => [Invitation], {
+    filter: (payload, variables) => {
+      return payload.newInvitation.userId === variables.userId;
+    },
+    resolve: (value) => {
+      console.log(value);
+
+      return value.newInvitation.invitations;
+    },
+  })
+  newInvitation(@Args({ name: 'userId', type: () => String }) userId: string) {
+    return this.pubSub.asyncIterator('newInvitation');
   }
 }

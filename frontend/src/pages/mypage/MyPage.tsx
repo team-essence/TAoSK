@@ -1,9 +1,7 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { DEFAULT_USER } from 'consts/defaultImages'
-import { Notifications } from 'types/notification'
 import { useAuthContext } from 'providers/AuthProvider'
-import { useGetUserLazyQuery } from './mypage.gen'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import {
   calculateMinSizeBasedOnFigmaHeight,
@@ -14,28 +12,12 @@ import { MyPageStatus } from 'components/models/myPage/MyPageStatus'
 import { MyPageTags } from 'components/models/myPage/MyPageTags'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import styled, { css } from 'styled-components'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext()
   const { id } = useParams()
-  const [notifications, setNotifications] = useState<Notifications>([])
-  const [getUserById, userQuery] = useGetUserLazyQuery({
-    onCompleted(data) {
-      const notifications = data.user.invitations.map(invitation => {
-        return {
-          id: invitation.project.id,
-          name: invitation.project.name,
-          createAt: invitation.created_at,
-        }
-      })
-      setNotifications(notifications)
-    },
-  })
-
-  useEffect(() => {
-    if (!currentUser) return
-    getUserById({ variables: { id: currentUser.uid } })
-  }, [currentUser, getUserById])
+  const { currentUserData, notifications } = useGetCurrentUserData()
 
   if (!currentUser) return <Navigate to="/" />
   if (currentUser.uid !== id) return <Navigate to="/" />
@@ -44,38 +26,38 @@ export const MyPage: FC = () => {
     <>
       <LazyLoading />
       <ProjectListHeader
-        iconImage={userQuery.data?.user.icon_image ?? DEFAULT_USER}
-        name={userQuery.data?.user.name ?? ''}
-        uid={userQuery.data?.user.id ?? ''}
-        totalExp={userQuery.data?.user.exp ?? 0}
+        iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
+        name={currentUserData.data?.user.name ?? ''}
+        uid={currentUserData.data?.user.id ?? ''}
+        totalExp={currentUserData.data?.user.exp ?? 0}
         notifications={notifications}
       />
 
       <StyledMyPageContainer>
         <StyledMyPageGridContainer>
           <MyPageUserInfo
-            iconImage={userQuery.data?.user.icon_image ?? DEFAULT_USER}
-            name={userQuery.data?.user.name ?? ''}
-            uid={userQuery.data?.user.id ?? ''}
-            company={userQuery.data?.user.company ?? ''}
-            totalExp={userQuery.data?.user.exp ?? 0}
-            occupation={userQuery.data?.user.occupation.name ?? ''}
-            hp={userQuery.data?.user.hp ?? 100}
-            mp={userQuery.data?.user.mp ?? 100}
+            iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
+            name={currentUserData.data?.user.name ?? ''}
+            uid={currentUserData.data?.user.id ?? ''}
+            company={currentUserData.data?.user.company ?? ''}
+            totalExp={currentUserData.data?.user.exp ?? 0}
+            occupation={currentUserData.data?.user.occupation.name ?? ''}
+            hp={currentUserData.data?.user.hp ?? 100}
+            mp={currentUserData.data?.user.mp ?? 100}
           />
 
           <MyPageStatus
-            technology={userQuery.data?.user.technology ?? 0}
-            solution={userQuery.data?.user.solution ?? 0}
-            achievement={userQuery.data?.user.achievement ?? 0}
-            motivation={userQuery.data?.user.motivation ?? 0}
-            design={userQuery.data?.user.design ?? 0}
-            plan={userQuery.data?.user.plan ?? 0}
+            technology={currentUserData.data?.user.technology ?? 0}
+            solution={currentUserData.data?.user.solution ?? 0}
+            achievement={currentUserData.data?.user.achievement ?? 0}
+            motivation={currentUserData.data?.user.motivation ?? 0}
+            design={currentUserData.data?.user.design ?? 0}
+            plan={currentUserData.data?.user.plan ?? 0}
           />
 
           <MyPageTags
-            interests={userQuery.data?.user.interests ?? []}
-            certifications={userQuery.data?.user.certifications ?? []}
+            interests={currentUserData.data?.user.interests ?? []}
+            certifications={currentUserData.data?.user.certifications ?? []}
           />
         </StyledMyPageGridContainer>
       </StyledMyPageContainer>

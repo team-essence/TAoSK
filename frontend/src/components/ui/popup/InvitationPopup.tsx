@@ -5,6 +5,7 @@ import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import { useDebounce } from 'hooks/useDebounce'
 import { useAuthContext } from 'providers/AuthProvider'
 import {
+  GetProjectQuery,
   useCreateInvitationMutation,
   useSearchUsersLazyQuery,
 } from 'pages/projectDetail/projectDetail.gen'
@@ -18,6 +19,7 @@ type Props = {
   isClick: boolean
   company: string
   closeClick: () => void
+  groups: GetProjectQuery['getProjectById']['groups']
 }
 
 export const InvitationPopup: FCX<Props> = ({
@@ -26,20 +28,29 @@ export const InvitationPopup: FCX<Props> = ({
   isClick,
   closeClick,
   company,
+  groups,
 }) => {
   const { id } = useParams()
   const [searchInput, setSearchInput] = useState('')
   const [searchUser, searchUserQuery] = useSearchUsersLazyQuery({
     onCompleted(data) {
-      const users = data.findProjectDetailSameCompanyUsers.map(user => {
-        return {
-          id: user.id,
-          name: user.name,
-          iconImage: user.icon_image,
-          isInvitation: !!user.invitations.length,
-        }
+      setSearchedList([])
+      const users = data.findProjectDetailSameCompanyUsers.filter(user => {
+        const groupsUser = groups.map(group => group.user.id)
+        logger.debug(user.id)
+        return !groupsUser.includes(user.id)
       })
-      setSearchedList(users)
+      users.map(user => {
+        setSearchedList(searchList => {
+          const init = {
+            id: user.id,
+            name: user.name,
+            iconImage: user.icon_image,
+            isInvitation: !!user.invitations.length,
+          }
+          return [...searchList, init]
+        })
+      })
       !debouncedInputText && setSearchedList([])
     },
     fetchPolicy: 'network-only',

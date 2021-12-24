@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
-import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useCreateInvitationMutation,
@@ -30,8 +29,8 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
-import { Notifications } from 'types/notification'
 import { useProjectDetail } from 'hooks/useProjectDetail'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -41,7 +40,6 @@ export const ProjectDetail: FC = () => {
   const { json, setWeapon } = useSetWeaponJson()
   const { anchorEl, isCompleted, setIsCompleted } = useCompleteAnimation<HTMLDivElement>(json)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
-  const [notifications, setNotifications] = useState<Notifications>([])
   const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
 
@@ -50,18 +48,7 @@ export const ProjectDetail: FC = () => {
     setList,
   )
 
-  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
-    onCompleted(data) {
-      const notifications: Notifications = data.user.invitations.map(invitation => {
-        return {
-          id: invitation.project.id,
-          name: invitation.project.name,
-          createAt: invitation.created_at,
-        }
-      })
-      setNotifications(notifications)
-    },
-  })
+  const {currentUserData, notifications} = useGetCurrentUserData()
 
   const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
   const [createInvitation] = useCreateInvitationMutation({
@@ -104,16 +91,6 @@ export const ProjectDetail: FC = () => {
   })
 
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
-
-  useEffect(() => {
-    if (!currentUser) return
-
-    getCurrentUser({
-      variables: {
-        id: currentUser.uid,
-      },
-    })
-  }, [currentUser])
 
   useEffect(() => {
     searchSameCompanyUsers({
@@ -272,6 +249,7 @@ export const ProjectDetail: FC = () => {
         company={currentUserData.data?.user.company ?? ''}
         notifications={notifications}
         list={list}
+        groups={projectData.data?.getProjectById.groups ?? []}
       />
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
