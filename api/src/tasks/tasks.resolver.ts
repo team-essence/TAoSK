@@ -51,9 +51,14 @@ export class TasksResolver {
       });
     }
 
-    this.pubSub.publish('updateUserByTask', {
-      updateUserByTask: result.allocationUsers,
-    });
+    for (let index = 0; index < result.allocationUsers.length; index++) {
+      this.pubSub.publish('updateUserByTask', {
+        updateUserByTask: {
+          user: result.allocationUsers[index],
+          userId: result.allocationUsers[index].id,
+        },
+      });
+    }
 
     return result.updatedTask;
   }
@@ -271,11 +276,12 @@ export class TasksResolver {
     return this.pubSub.asyncIterator('updateLogsByTask');
   }
 
-  @Subscription((returns) => [User], {
+  @Subscription((returns) => User, {
     filter: (payload, variables) => {
-      return payload.updateUserByTask.map((allocationUser: User) => {
-        return allocationUser.id === variables.userId;
-      });
+      return payload.updateUserByTask.userId === variables.userId;
+    },
+    resolve: (values) => {
+      return values.updateUserByTask.user;
     },
   })
   updateUserByTask(
