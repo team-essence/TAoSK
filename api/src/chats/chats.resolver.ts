@@ -24,14 +24,18 @@ export class ChatsResolver {
     @Args({ name: 'taskId' }) taskId: number,
     @Args({ name: 'userId' }) userId: string,
   ) {
-    const chats = await this.chatsService.addChat(comment, taskId, userId);
-    if (!chats) throw new NotFoundException();
+    const result = await this.chatsService.addChat(comment, taskId, userId);
+    if (!result.chats) throw new NotFoundException();
 
     this.pubSub.publish('updateChatSubscription', {
-      updateChatSubscription: chats,
+      updateChatSubscription: {
+        chats: result.chats,
+        projectId: result.project_id,
+        taskId,
+      },
     });
 
-    return chats;
+    return result.chats;
   }
 
   @Mutation(() => [Chat])
@@ -40,14 +44,18 @@ export class ChatsResolver {
     @Args({ name: 'comment' }) comment: string,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const chats = await this.chatsService.updateChat(chatId, comment, taskId);
-    if (!chats) throw new NotFoundException();
+    const result = await this.chatsService.updateChat(chatId, comment, taskId);
+    if (!result.chats) throw new NotFoundException();
 
     this.pubSub.publish('updateChatSubscription', {
-      updateChatSubscription: chats,
+      updateChatSubscription: {
+        chats: result.chats,
+        projectId: result.project_id,
+        taskId,
+      },
     });
 
-    return chats;
+    return result.chats;
   }
 
   @Mutation(() => [Chat])
@@ -55,24 +63,29 @@ export class ChatsResolver {
     @Args({ name: 'chatId' }) chatId: number,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const chats = await this.chatsService.deleteChat(chatId, taskId);
-    if (!chats) throw new NotFoundException();
+    const result = await this.chatsService.deleteChat(chatId, taskId);
+    if (!result.chats) throw new NotFoundException();
 
     this.pubSub.publish('updateChatSubscription', {
-      updateChatSubscription: chats,
+      updateChatSubscription: {
+        chats: result.chats,
+        projectId: result.project_id,
+        taskId,
+      },
     });
 
-    return chats;
+    return result.chats;
   }
 
   @Subscription((returns) => [Chat], {
     filter: (payload, variables) => {
-      return payload.updateChatSubscription.map((chat: Chat) => {
-        return (
-          chat.task.project.id === variables.projectId &&
-          chat.task.id === variables.taskId
-        );
-      });
+      return (
+        payload.updateChatSubscription.projectId === variables.projectId &&
+        payload.updateChatSubscription.taskId === Number(variables.taskId)
+      );
+    },
+    resolve: (values) => {
+      return values.updateChatSubscription.chats;
     },
   })
   updateChatSubscription(
