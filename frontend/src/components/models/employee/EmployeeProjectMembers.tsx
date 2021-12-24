@@ -27,7 +27,7 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
   useEffect(() => {
     if (!groups) return
 
-    setGroupList(groups.map(group => ({ ...group.user })))
+    setGroupList([...groups.map(group => ({ ...group.user }))])
   }, [groups])
 
   useEffect(() => {
