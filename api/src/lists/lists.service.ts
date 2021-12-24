@@ -108,7 +108,10 @@ export class ListsService {
     return lists;
   }
 
-  async updateListName(updateList: UpdateListInput): Promise<List[]> {
+  async updateListName(updateList: UpdateListInput): Promise<{
+    lists: List[];
+    project_id: string;
+  }> {
     const list = await this.listRepository.findOne({
       where: {
         list_id: updateList.list_id,
@@ -138,7 +141,7 @@ export class ListsService {
       .where('project.id=:id', { id: list.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: list.project.id };
   }
 
   async removeList(removeList: RemoveListInput): Promise<{
