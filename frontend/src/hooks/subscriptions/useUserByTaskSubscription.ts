@@ -21,7 +21,7 @@ export const useUpdateUserByTaskSubscription = (): UseUpdateUserByTaskSubscripti
   useEffect(() => {
     if (!data) return
 
-    setUpdateUserByTask(data.updateUserByTask)
+    setUpdateUserByTask({ ...data.updateUserByTask })
   }, [data])
 
   return { updateUserByTask }
