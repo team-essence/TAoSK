@@ -540,12 +540,16 @@ export class TasksService {
     return { lists, project_id: task.project.id };
   }
 
-  async deleteTask(taskId: number): Promise<Task[]> {
+  async deleteTask(
+    taskId: number,
+  ): Promise<{ lists: List[]; project_id: string }> {
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
+    const projectId = task.project.id;
 
     await this.chatRepository.delete({
       task: {
@@ -557,11 +561,23 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    const tasks = this.taskRepository.find({
-      relations: ['project', 'list'],
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: projectId })
+      .getMany();
 
-    return tasks;
+    return { lists, project_id: projectId };
   }
 
   async assign({

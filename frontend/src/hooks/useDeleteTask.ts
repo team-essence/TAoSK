@@ -2,6 +2,7 @@ import { useCallback, Dispatch, SetStateAction } from 'react'
 import { useDeleteTaskMutation } from 'pages/projectDetail/projectDetail.gen'
 import { usePopover } from 'hooks/usePopover'
 import toast from 'utils/toast/toast'
+import logger from 'utils/debugger/logger'
 
 type UseDeleteTaskReturn = {
   onClickDeleteButton: () => void
@@ -25,6 +26,7 @@ export const useDeleteTask: UseDeleteTask = ({ id, setShouldShowEditModal }) => 
       toast.success('タスクを削除しました')
     },
     onError(err) {
+      logger.debug(err)
       toast.error('タスクの削除に失敗しました')
     },
   })

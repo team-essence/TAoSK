@@ -188,11 +188,20 @@ export class TasksResolver {
     return result.lists;
   }
 
-  @Mutation(() => [Task])
+  @Mutation(() => [List])
   public async deleteTask(@Args({ name: 'taskId' }) taskId: number) {
-    return await this.taskService.deleteTask(taskId).catch((err) => {
+    const result = await this.taskService.deleteTask(taskId).catch((err) => {
       throw err;
     });
+
+    this.pubSub.publish('updateList', {
+      updateList: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
+    });
+
+    return result.lists;
   }
 
   @Mutation(() => [List])
