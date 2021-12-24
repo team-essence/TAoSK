@@ -37,16 +37,44 @@ export class InterestsService {
     return interests;
   }
 
-  async create(data: NewInterestInput): Promise<Interest> {
+  async create(data: NewInterestInput): Promise<{
+    interest: Interest;
+    user: User;
+  }> {
     const interest = this.interestsRepository.create(data);
     await this.interestsRepository.save(interest).catch((err) => {
       new InternalServerErrorException();
     });
 
-    return interest;
+    const user = await this.usersRepository.findOne(data.user_id, {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
+    return { interest, user };
   }
 
-  async update(user_id: string, contexts: [string]): Promise<Interest[]> {
+  async update(
+    user_id: string,
+    contexts: [string],
+  ): Promise<
+    Promise<{
+      interests: Interest[];
+      user: User;
+    }>
+  > {
     const interests = await this.interestsRepository.find({
       where: {
         user: {
@@ -93,7 +121,7 @@ export class InterestsService {
       }
     }
 
-    const updatedInterests = this.interestsRepository.find({
+    const updatedInterests = await this.interestsRepository.find({
       where: {
         user: {
           id: user_id,
@@ -102,6 +130,26 @@ export class InterestsService {
       relations: ['user'],
     });
 
-    return updatedInterests;
+    const updatedUser = await this.usersRepository.findOne(user_id, {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
+    return {
+      interests: updatedInterests,
+      user: updatedUser,
+    };
   }
 }

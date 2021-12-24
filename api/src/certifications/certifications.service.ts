@@ -15,7 +15,7 @@ export class CertificationsService {
     @InjectRepository(Certification)
     private CertificationsRepository: Repository<Certification>,
     @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   getCertificationsByIds(user_ids: [string]): Promise<Certification[]> {
@@ -30,16 +30,42 @@ export class CertificationsService {
     return certifications;
   }
 
-  async create(data: NewCertificationInput): Promise<Certification> {
+  async create(data: NewCertificationInput): Promise<{
+    certification: Certification;
+    user: User;
+  }> {
     const certification = this.CertificationsRepository.create(data);
     await this.CertificationsRepository.save(certification).catch((err) => {
       new InternalServerErrorException();
     });
 
-    return certification;
+    const user = await this.userRepository.findOne(data.user_id, {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
+    return { certification, user };
   }
 
-  async update(user_id: string, names: [string]): Promise<Certification[]> {
+  async update(
+    user_id: string,
+    names: [string],
+  ): Promise<{
+    certifications: Certification[];
+    user: User;
+  }> {
     const certifications = await this.CertificationsRepository.find({
       where: {
         user: {
@@ -72,7 +98,7 @@ export class CertificationsService {
     }
 
     //追加
-    const user = await this.usersRepository.findOne(user_id);
+    const user = await this.userRepository.findOne(user_id);
     for (let j = 0; j < names.length; j++) {
       //入力値に一致がなければその項目を追加
       if (!certificationsArray.find((value) => value === names[j])) {
@@ -86,7 +112,7 @@ export class CertificationsService {
       }
     }
 
-    const updatedCertifications = this.CertificationsRepository.find({
+    const updatedCertifications = await this.CertificationsRepository.find({
       where: {
         user: {
           id: user_id,
@@ -95,6 +121,23 @@ export class CertificationsService {
       relations: ['user'],
     });
 
-    return updatedCertifications;
+    const updatedUser = await this.userRepository.findOne(user_id, {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
+    return { certifications: updatedCertifications, user: updatedUser };
   }
 }
