@@ -469,6 +469,46 @@ subscription UpdateLogsByOnline($project_id: String!) {
   }
 }
 
+subscription UpdateUserByTaskSubSc($user_id: String!) {
+  updateUserByTask(userId: $user_id) {
+    id
+    name
+    icon_image
+    online_flg
+    hp
+    mp
+    company
+    memo
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+    occupation {
+      id
+      name
+    }
+    interests {
+      id
+      context
+    }
+    certifications {
+      id
+      name
+    }
+    invitations {
+      id
+      created_at
+      project {
+        id
+        name
+      }
+    }
+  }
+}
+
 subscription UpdateListByListSubscription($project_id: String!) {
   updateListByList(projectId: $project_id) {
     id

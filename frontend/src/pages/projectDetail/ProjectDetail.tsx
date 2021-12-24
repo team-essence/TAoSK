@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
-import { useGetCurrentUserLazyQuery } from './getUser.gen'
+import { GetCurrentUserQuery, useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useCreateInvitationMutation,
@@ -31,7 +31,9 @@ import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { Notifications } from 'types/notification'
+import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
 import { useProjectDetail } from 'hooks/useProjectDetail'
+import Exp from 'utils/exp/exp'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -44,6 +46,21 @@ export const ProjectDetail: FC = () => {
   const [notifications, setNotifications] = useState<Notifications>([])
   const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
+  const [userData, setUserData] = useState<GetCurrentUserQuery['user']>()
+  const { updateUserByTask } = useUpdateUserByTaskSubscription()
+
+  useEffect(() => {
+    logger.debug(updateUserByTask)
+    if (!updateUserByTask) return
+
+    if (userData && Exp.toLevel(updateUserByTask.exp) > Exp.toLevel(userData.exp)) {
+      toast.success(
+        'レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！',
+      )
+    }
+
+    setUserData(updateUserByTask)
+  }, [updateUserByTask])
 
   const { projectData, monsterHPRemaining, monsterTotalHP, isTasks } = useProjectDetail(
     setSelectUserIds,
@@ -52,6 +69,7 @@ export const ProjectDetail: FC = () => {
 
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
     onCompleted(data) {
+      setUserData(data.user)
       const notifications: Notifications = data.user.invitations.map(invitation => {
         return {
           id: invitation.project.id,
@@ -280,12 +298,12 @@ export const ProjectDetail: FC = () => {
             lists={list}
             onDragEnd={onDragEnd}
           />
-          {!!currentUserData.data && (
+          {!!userData && (
             <ProjectMyInfo
-              {...currentUserData.data.user}
-              iconImage={currentUserData.data.user.icon_image}
-              occupation={currentUserData.data.user.occupation.name}
-              totalExp={currentUserData.data.user.exp}
+              {...userData}
+              iconImage={userData.icon_image}
+              occupation={userData.occupation.name}
+              totalExp={userData.exp}
             />
           )}
         </StyledProjectDetailLeftContainer>
