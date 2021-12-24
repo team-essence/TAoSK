@@ -386,7 +386,10 @@ export class TasksService {
     };
   }
 
-  async updateTitle(taskId: number, title: string): Promise<List[]> {
+  async updateTitle(
+    taskId: number,
+    title: string,
+  ): Promise<{ lists: List[]; project_id: string }> {
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
@@ -416,10 +419,13 @@ export class TasksService {
       .where('project.id=:id', { id: task.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: task.project.id };
   }
 
-  async updateOverview(taskId: number, overview: string): Promise<List[]> {
+  async updateOverview(
+    taskId: number,
+    overview: string,
+  ): Promise<{ lists: List[]; project_id: string }> {
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
@@ -449,7 +455,7 @@ export class TasksService {
       .where('project.id=:id', { id: task.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: task.project.id };
   }
 
   async updateParameters(
@@ -460,7 +466,7 @@ export class TasksService {
     motivation: number,
     plan: number,
     design: number,
-  ): Promise<List[]> {
+  ): Promise<{ lists: List[]; project_id: string }> {
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
@@ -495,10 +501,13 @@ export class TasksService {
       .where('project.id=:id', { id: task.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: task.project.id };
   }
 
-  async updateEndDate(taskId: number, end_date: string): Promise<List[]> {
+  async updateEndDate(
+    taskId: number,
+    end_date: string,
+  ): Promise<{ lists: List[]; project_id: string }> {
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
@@ -528,7 +537,7 @@ export class TasksService {
       .where('project.id=:id', { id: task.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: task.project.id };
   }
 
   async deleteTask(taskId: number): Promise<Task[]> {
@@ -559,7 +568,7 @@ export class TasksService {
     newAllocation,
   }: {
     newAllocation: NewAllocationInput;
-  }): Promise<List[]> {
+  }): Promise<{ lists: List[]; project_id: string }> {
     const user = await this.userRepository.findOne(newAllocation.user_id);
     if (!user) throw new NotFoundException();
 
@@ -593,10 +602,13 @@ export class TasksService {
       .where('project.id=:id', { id: task.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: task.project.id };
   }
 
-  async unassign(userId: string, taskId): Promise<List[]> {
+  async unassign(
+    userId: string,
+    taskId,
+  ): Promise<{ lists: List[]; project_id: string }> {
     const allocation = await this.allocationRepository.findOne({
       user: {
         id: userId,
@@ -631,6 +643,6 @@ export class TasksService {
       .where('project.id=:id', { id: task.project.id })
       .getMany();
 
-    return lists;
+    return { lists, project_id: task.project.id };
   }
 }
