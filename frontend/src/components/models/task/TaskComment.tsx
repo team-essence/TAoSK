@@ -13,6 +13,7 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 import type { Chat } from 'types/chat'
+import date from 'utils/date/date'
 
 type Props = {
   taskId: string
@@ -42,7 +43,7 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
         <StyledCommentInfoRow>
           <StyledCommentInfoP>
             <StyledUserNameSpan>{chatInfo.user.name}</StyledUserNameSpan>
-            さんがコメントしました。&emsp;99分前
+            さんがコメントしました。&emsp;{date.formatDistance(chatInfo.updated_at)}
           </StyledCommentInfoP>
 
           {isYour && (
