@@ -44,26 +44,28 @@ export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
       <StyledLabelContainer>
         <EmployeeOnlineStatusLabel label="オンライン" status={true} />
       </StyledLabelContainer>
-      {groupList.map(
-        (group, index) =>
-          group.online_flg && (
-            <StyledEmployeeContainer key={index}>
-              <EmployeeInformation {...group} />
-            </StyledEmployeeContainer>
-          ),
-      )}
+      {!!groupList.length &&
+        groupList.map(
+          (group, index) =>
+            group.online_flg && (
+              <StyledEmployeeContainer key={index}>
+                <EmployeeInformation {...group} />
+              </StyledEmployeeContainer>
+            ),
+        )}
 
       <StyledLabelContainer>
         <EmployeeOnlineStatusLabel label="オフライン" status={false} />
       </StyledLabelContainer>
-      {groupList.map(
-        (group, index) =>
-          !group.online_flg && (
-            <StyledEmployeeContainer key={index}>
-              <EmployeeInformation {...group} />
-            </StyledEmployeeContainer>
-          ),
-      )}
+      {!!groupList.length &&
+        groupList.map(
+          (group, index) =>
+            !group.online_flg && (
+              <StyledEmployeeContainer key={index}>
+                <EmployeeInformation {...group} />
+              </StyledEmployeeContainer>
+            ),
+        )}
     </StyledContainer>
   )
 }
