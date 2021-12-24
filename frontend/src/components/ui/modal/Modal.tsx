@@ -4,8 +4,9 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
-import { theme } from 'styles/theme'
 import styled, { css, keyframes } from 'styled-components'
+import { theme } from 'styles/theme'
+import { backdropFadeIn, titleAnimation } from 'styles/animation/modalAnimation'
 
 type Props = {
   title?: string
@@ -35,14 +36,6 @@ export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, classNam
   )
 }
 
-const fadeIn = keyframes`
-from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`
 const StyledBackdrop = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: fixed;
@@ -53,7 +46,7 @@ const StyledBackdrop = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.6)};
   opacity: 0;
   will-change: animation, opacity;
-  animation: ${fadeIn} 0.5s forwards linear;
+  animation: ${backdropFadeIn} 1s forwards linear;
 `
 const StyledWrapper = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
@@ -72,9 +65,6 @@ const StyledNamePlate = styled.p`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigma(-55 / 2)};
   left: 50%;
-  transform: translateX(-50%);
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,6 +73,8 @@ const StyledNamePlate = styled.p`
   background-image: url('/svg/nameplate.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  animation: ${titleAnimation} 0.5s forwards ease;
+  will-change: animation, opacity, transform;
   ${({ theme }) =>
     css`
       color: ${theme.COLORS.WHITE};
