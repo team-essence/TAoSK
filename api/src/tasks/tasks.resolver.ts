@@ -44,7 +44,10 @@ export class TasksResolver {
 
     if (result.logs.isUpdate) {
       this.pubSub.publish('updateLogsByTask', {
-        updateLogsByTask: result.logs.logs,
+        updateLogsByTask: {
+          gameLogs: result.logs.logs,
+          projectId: updateTask.project_id,
+        },
       });
     }
 
@@ -74,7 +77,10 @@ export class TasksResolver {
     });
 
     this.pubSub.publish('updateLogsByTask', {
-      updateLogsByTask: result.logs,
+      updateLogsByTask: {
+        gameLogs: result.logs,
+        projectId: newTask.project_id,
+      },
     });
 
     return result.lists;
@@ -253,9 +259,10 @@ export class TasksResolver {
 
   @Subscription((returns) => [GameLog], {
     filter: (payload, variables) => {
-      return payload.updateLogsByTask.map((logs: GameLog) => {
-        return logs.project.id === variables.projectId;
-      });
+      return payload.updateLogsByTask.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateLogsByTask.gameLogs;
     },
   })
   updateLogsByTask(
