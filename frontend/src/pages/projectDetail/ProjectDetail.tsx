@@ -33,6 +33,7 @@ import { TaskCompleteAnimation } from 'components/models/task/animation/TaskComp
 import { Notifications } from 'types/notification'
 import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
 import { useProjectDetail } from 'hooks/useProjectDetail'
+import Exp from 'utils/exp/exp'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -51,6 +52,12 @@ export const ProjectDetail: FC = () => {
   useEffect(() => {
     logger.debug(updateUserByTask)
     if (!updateUserByTask) return
+
+    if (userData && Exp.toLevel(updateUserByTask.exp) > Exp.toLevel(userData.exp)) {
+      toast.success(
+        'レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！',
+      )
+    }
 
     setUserData(updateUserByTask)
   }, [updateUserByTask])
