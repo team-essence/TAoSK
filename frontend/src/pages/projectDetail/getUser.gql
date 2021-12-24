@@ -92,3 +92,15 @@ subscription NewNotificationsSubSc($user_id: String!) {
     }
   }
 }
+
+subscription NewNotificationsByCreateProjectSubSc($user_id: String!) {
+  newInvitationByCreateProject(userId: $user_id) {
+    id
+    created_at
+
+    project {
+      id
+      name
+    }
+  }
+}

@@ -74,7 +74,9 @@ export class InvitationsService {
 
     const invitations = await this.invitationRepository.find({
       where: {
-        user: userId,
+        user: {
+          id: userId,
+        },
       },
       relations: ['user', 'project'],
     });

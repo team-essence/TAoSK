@@ -54,8 +54,6 @@ export class InvitationsResolver {
       return payload.newInvitation.userId === variables.userId;
     },
     resolve: (value) => {
-      console.log(value);
-
       return value.newInvitation.invitations;
     },
   })

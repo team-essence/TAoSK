@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   useGetCurrentUserLazyQuery,
+  useNewNotificationsByCreateProjectSubScSubscription,
   useNewNotificationsSubScSubscription,
 } from 'pages/projectDetail/getUser.gen'
 import { useAuthContext } from 'providers/AuthProvider'
@@ -36,6 +37,11 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
       user_id: String(firebaseCurrentUser?.uid),
     },
   })
+  const newNotificationsByCreateProject = useNewNotificationsByCreateProjectSubScSubscription({
+    variables: {
+      user_id: String(firebaseCurrentUser?.uid),
+    },
+  })
 
   useEffect(() => {
     if (!firebaseCurrentUser) return
@@ -58,6 +64,20 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
     })
     setNotifications(notifications)
   }, [newNotifications.data])
+
+  useEffect(() => {
+    if (!newNotificationsByCreateProject.data) return
+    logger.debug(newNotificationsByCreateProject.data)
+
+    const notifications: Notifications =
+      newNotificationsByCreateProject.data.newInvitationByCreateProject.map(invitation => {
+        return {
+          ...invitation.project,
+          createAt: invitation.created_at,
+        }
+      })
+    setNotifications(notifications)
+  }, [newNotificationsByCreateProject.data])
 
   return { getCurrentUser, currentUserData, firebaseCurrentUser, notifications }
 }
