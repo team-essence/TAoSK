@@ -61,6 +61,7 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
                 maxLength: { value: 255, message: '255文字以内で入力してください' },
               })}
               required={false}
+              error={errors['overview']}
             />
           </StyledLeftColumn>
 
