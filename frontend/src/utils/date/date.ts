@@ -46,7 +46,7 @@ export default class date {
     // BUG: データベースから取得した日付にタイムゾーンを適応して、日本との時間の差９時間を足してしまう
     const utcDate = new Date(date)
     const jstDate = utcDate.toLocaleString('ja-JP', { timeZone: 'Europe/London' })
-    return formatDistanceToNow(new Date(jstDate), { locale: ja })
+    return formatDistanceToNow(new Date(jstDate), { addSuffix: true, locale: ja })
   }
 
   /**
