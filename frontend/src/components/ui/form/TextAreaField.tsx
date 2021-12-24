@@ -71,6 +71,7 @@ const StyledTextareaWrapper = styled.div<{ shouldShowError: boolean; errorColor:
   position: relative;
   margin-top: ${calculateMinSizeBasedOnFigma(4)};
   textarea {
+    resize: none;
     padding: ${calculateMinSizeBasedOnFigma(9.24)} ${calculateMinSizeBasedOnFigma(8)};
     border-color: ${props => (props.shouldShowError ? props.errorColor : undefined)} !important;
   }
