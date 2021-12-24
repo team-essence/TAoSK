@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { DropResult, resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
 import { useAuthContext } from 'providers/AuthProvider'
-import { useGetCurrentUserLazyQuery } from './getUser.gen'
+import { GetCurrentUserQuery, useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
 import {
   useGetProjectLazyQuery,
@@ -33,6 +33,7 @@ import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
 import { Notifications } from 'types/notification'
 import { useListsByTaskSubscription } from 'hooks/subscriptions/useListsByTaskSubscription'
+import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -48,8 +49,18 @@ export const ProjectDetail: FC = () => {
   const [isTasks, setIsTasks] = useState(false)
   const [list, setList] = useState<List[]>([])
   const inputUserName = useInput('')
+  const [userData, setUserData] = useState<GetCurrentUserQuery['user']>()
   const { updatedLists, updatedMonsterHPRemaining, updatedMonsterTotalHP, updatedIsTasks } =
     useListsByTaskSubscription()
+
+  const { updateUserByTask } = useUpdateUserByTaskSubscription()
+
+  useEffect(() => {
+    logger.debug(updateUserByTask)
+    if (!updateUserByTask) return
+
+    setUserData(updateUserByTask)
+  }, [updateUserByTask])
 
   // サブスクリプション, task周り
   useEffect(() => {
@@ -136,6 +147,7 @@ export const ProjectDetail: FC = () => {
   })
   const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
     onCompleted(data) {
+      setUserData(data.user)
       const notifications: Notifications = data.user.invitations.map(invitation => {
         return {
           id: invitation.project.id,
@@ -443,12 +455,12 @@ export const ProjectDetail: FC = () => {
             lists={list}
             onDragEnd={onDragEnd}
           />
-          {!!currentUserData.data && (
+          {!!userData && (
             <ProjectMyInfo
-              {...currentUserData.data.user}
-              iconImage={currentUserData.data.user.icon_image}
-              occupation={currentUserData.data.user.occupation.name}
-              totalExp={currentUserData.data.user.exp}
+              {...userData}
+              iconImage={userData.icon_image}
+              occupation={userData.occupation.name}
+              totalExp={userData.exp}
             />
           )}
         </StyledProjectDetailLeftContainer>

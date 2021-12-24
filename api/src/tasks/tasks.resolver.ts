@@ -7,6 +7,7 @@ import {
 } from 'src/allocations/dto/newAllocation.input';
 import { GameLog } from 'src/game-logs/game-log';
 import { List } from 'src/lists/list';
+import { User } from 'src/users/user';
 import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
 import { UpdatedTask } from './models/udatedTask.model';
@@ -43,6 +44,10 @@ export class TasksResolver {
         updateLogsByTask: result.logs.logs,
       });
     }
+
+    this.pubSub.publish('updateUserByTask', {
+      updateUserByTask: result.allocationUsers,
+    });
 
     return result.updatedTask;
   }
@@ -232,5 +237,18 @@ export class TasksResolver {
     @Args({ name: 'projectId', type: () => String }) projectId: string,
   ) {
     return this.pubSub.asyncIterator('updateLogsByTask');
+  }
+
+  @Subscription((returns) => [User], {
+    filter: (payload, variables) => {
+      return payload.updateUserByTask.map((allocationUser: User) => {
+        return allocationUser.id === variables.userId;
+      });
+    },
+  })
+  updateUserByTask(
+    @Args({ name: 'userId', type: () => String }) userId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateUserByTask');
   }
 }

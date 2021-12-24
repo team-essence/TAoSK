@@ -47,7 +47,9 @@ export class TasksService {
       isUpdate: boolean;
       logs: GameLog[];
     };
+    allocationUsers: User[];
   }> {
+    const allocationUsers: User[] = [];
     const logs = {
       isUpdate: false,
       logs: [],
@@ -110,7 +112,22 @@ export class TasksService {
 
         // 経験値付与
         task.allocations.map(async (allocation) => {
-          const user = await this.userRepository.findOne(allocation.user.id);
+          const user = await this.userRepository.findOne(allocation.user.id, {
+            relations: [
+              'interests',
+              'certifications',
+              'invitations',
+              'invitations.project',
+              'groups',
+              'groups.project',
+              'groups.project.groups',
+              'groups.project.groups.user',
+              'groups.project.groups.user.occupation',
+              'groups.project.monster',
+              'groups.project.monster.specie',
+              'occupation',
+            ],
+          });
 
           const beforeLevel = (user.exp / 100) | 0;
           const sumExp = user.exp + totalStatus;
@@ -137,6 +154,25 @@ export class TasksService {
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
+
+          allocationUsers.push(
+            await this.userRepository.findOne(allocation.user.id, {
+              relations: [
+                'interests',
+                'certifications',
+                'invitations',
+                'invitations.project',
+                'groups',
+                'groups.project',
+                'groups.project.groups',
+                'groups.project.groups.user',
+                'groups.project.groups.user.occupation',
+                'groups.project.monster',
+                'groups.project.monster.specie',
+                'occupation',
+              ],
+            }),
+          );
         });
 
         // ログ
@@ -169,6 +205,25 @@ export class TasksService {
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
+
+          allocationUsers.push(
+            await this.userRepository.findOne(allocation.user.id, {
+              relations: [
+                'interests',
+                'certifications',
+                'invitations',
+                'invitations.project',
+                'groups',
+                'groups.project',
+                'groups.project.groups',
+                'groups.project.groups.user',
+                'groups.project.groups.user.occupation',
+                'groups.project.monster',
+                'groups.project.monster.specie',
+                'occupation',
+              ],
+            }),
+          );
         });
       }
 
@@ -211,6 +266,7 @@ export class TasksService {
       lists: lists,
       updatedTask: returnObjectTask,
       logs,
+      allocationUsers,
     };
   }
 
