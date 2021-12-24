@@ -22,14 +22,7 @@ export const useListsByListSortSubscription = (): UseListByListSortSubscription 
     logger.debug('update list by list subscription')
     const sortList: List[] = data.updateListByListSort.map(list => {
       const tasks = list.tasks.map(task => {
-        const allocations = task.allocations.map(allocation => {
-          return {
-            id: allocation.user.id,
-            name: allocation.user.name,
-            icon_image: allocation.user.icon_image,
-            occupation: allocation.user.occupation,
-          }
-        })
+        const allocations = task.allocations.map(allocation => ({ ...allocation.user }))
 
         return {
           ...task,
