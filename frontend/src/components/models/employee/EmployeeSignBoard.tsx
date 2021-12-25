@@ -26,7 +26,7 @@ const StyledContainer = styled.div`
   border-radius: 4px;
   padding: ${calculateMinSizeBasedOnFigmaWidth(4)} ${calculateMinSizeBasedOnFigmaWidth(2)};
   background-color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
-  filter: drop-shadow(-4px 4px 2px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(-4px 4px 2px rgba(0, 0, 0, 0.2));
   cursor: pointer;
   writing-mode: vertical-rl;
   -webkit-writing-mode: vertical-rl;
