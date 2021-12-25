@@ -15,9 +15,9 @@ export const BUTTON_COLOR_TYPE = {
 } as const
 type BUTTON_COLOR_TYPE = typeof BUTTON_COLOR_TYPE[keyof typeof BUTTON_COLOR_TYPE]
 
-export const GorgeousButton: FCX<Props> = ({ buttonColorType, text, onClick }) => {
+export const GorgeousButton: FCX<Props> = ({ className, buttonColorType, text, onClick }) => {
   return (
-    <StyledGorgeousButton onClick={onClick}>
+    <StyledGorgeousButton className={className} onClick={onClick}>
       <img src={`/svg/${buttonColorType}`} alt="ボタン画像" />
       <StyledGorgeousButtonText>{text}</StyledGorgeousButtonText>
     </StyledGorgeousButton>
