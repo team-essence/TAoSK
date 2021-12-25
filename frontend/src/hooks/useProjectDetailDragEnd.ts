@@ -12,7 +12,7 @@ import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { reorderList, getRefreshedListsVertical } from 'utils/controlList'
-import { moveTask, getTasksInfoToUpdate } from 'utils/controlTask'
+import { moveTask, adjustTasksInfoToUpdate } from 'utils/controlTask'
 import toast from 'utils/toast/toast'
 import logger from 'utils/debugger/logger'
 
@@ -36,6 +36,7 @@ type HandleDroppedColumnList = (args: {
   listsCopy: List[]
 }) => Promise<void>
 
+/** タスク一覧画面で、リスト/タスクをドラッグ&ドロップで移動した際の処理 */
 export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
   lists,
   setLists,
@@ -113,7 +114,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     })
 
     const sortedListsCopy = getRefreshedListsVertical(listsCopy)
-    const tasksInfoToUpdate = getTasksInfoToUpdate(sortedListsCopy)
+    const tasksInfoToUpdate = adjustTasksInfoToUpdate(sortedListsCopy)
 
     logger.table([...tasksInfoToUpdate])
 

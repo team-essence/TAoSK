@@ -22,6 +22,7 @@ const addToList = (list: Task[], index: number, element: Task) => {
   return result
 }
 
+/** タスク移動する処理 */
 export const moveTask: MoveTask = ({
   listsCopy,
   sourceDroppableId,
@@ -44,7 +45,8 @@ export const moveTask: MoveTask = ({
   )
 }
 
-export const getTasksInfoToUpdate = (lists: List[]): UpdateTask[] => {
+/** DB上のタスクの順番をアップデートする時に引数として使えるよう整形する */
+export const adjustTasksInfoToUpdate = (lists: List[]): UpdateTask[] => {
   return lists
     .map((list, listIndex, { length }) => {
       const tasks = list.tasks
