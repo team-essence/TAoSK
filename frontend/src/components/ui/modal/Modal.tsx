@@ -17,19 +17,19 @@ type Props = {
 
 export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   return (
-    <MuiModal
+    <StyledMuiModal
       open={shouldShow}
       onBackdropClick={() => onClickCloseBtn()}
       BackdropComponent={StyledBackdrop}
       BackdropProps={{ transitionDuration: 3000 }}>
-      <StyledWrapper className={className}>
+      <StyledWrapper>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
 
         {!!title && <StyledNamePlate>{title}</StyledNamePlate>}
 
-        <StyledChildrenWrapper>{children}</StyledChildrenWrapper>
+        <StyledChildrenWrapper className={className}>{children}</StyledChildrenWrapper>
 
         <StyledDragonSymbolWrapper>
           <StyledDragonSymbolLeft />
@@ -41,7 +41,7 @@ export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, classNam
           <StyledBackgroundRight />
         </StyledBackgroundWrapper>
       </StyledWrapper>
-    </MuiModal>
+    </StyledMuiModal>
   )
 }
 
@@ -55,14 +55,21 @@ const StyledBackdrop = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.6)};
   ${animation.backdrop}
 `
-const StyledWrapper = styled.div`
-  z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
+const StyledMuiModal = styled(MuiModal)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   margin: auto;
+`
+const StyledWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
+  position: relative;
+  display: inline-block;
 `
 const StyledNamePlate = styled.p`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
@@ -87,11 +94,10 @@ const StyledNamePlate = styled.p`
     `}
 `
 const StyledChildrenWrapper = styled.div`
-  width: 100%;
-  height: 100%;
   ${animation.children}
 `
 const StyledBackgroundWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_2};
   position: absolute;
   display: flex;
   top: 0;
@@ -100,7 +106,6 @@ const StyledBackgroundWrapper = styled.div`
   height: 100%;
 `
 const backgroundCss = css`
-  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_2};
   width: 100%;
   height: 100%;
   background-image: url('/svg/modal-background.svg');
