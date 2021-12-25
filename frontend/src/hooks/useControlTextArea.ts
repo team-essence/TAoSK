@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback, MouseEvent } from 'react'
 
-type UseControllTextAreaReturn = {
+type UseControlTextAreaReturn = {
   isDisabled: boolean
   textAreaRef: React.RefObject<HTMLTextAreaElement>
   enableTextArea: (e: MouseEvent<HTMLElement>) => void
@@ -11,7 +11,7 @@ type UseControllTextAreaReturn = {
 /**
  * テキストエリアへの書き込みを制御する
  *
- * @return {UseControllTextAreaReturn} {
+ * @return {UseControlTextAreaReturn} {
  * isDisabled: テキストエリアの状態,
  * textAreaRef: textareaタグのrefと繋げる,
  * enableTextArea @param{e}: テキストエリアへの書き込みを有効にする,
@@ -19,7 +19,7 @@ type UseControllTextAreaReturn = {
  * makeAllTextSelected: フォーカス時に全てのテキストを選択状態にする
  * }
  */
-export const useControllTextArea = (): UseControllTextAreaReturn => {
+export const useControlTextArea = (): UseControlTextAreaReturn => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 

@@ -9,7 +9,7 @@ import {
 import { calculateProjectListDetailWidth } from 'utils/calculateProjectListDetailWidth'
 import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
-import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
+import { BUTTON_COLOR_TYPE, GorgeousButton } from 'components/ui/button/GorgeousButton'
 import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 
 type Props = {
@@ -41,7 +41,7 @@ export const ProjectListDetail: FCX<Props> = ({
             <br />
             今すぐ新しいプロジェクトを始めますか
           </p>
-          <ComplicateButton
+          <GorgeousButton
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="プロジェクト作成"
             onClick={openModal}
@@ -54,9 +54,7 @@ export const ProjectListDetail: FCX<Props> = ({
     <StyledProjectListDetailContainer className={className}>
       <StyledProjectDetail>
         <StyledProjectTitleContainer>
-          <StyledProjectTitle>
-            {userQuery?.groups[selectProject].project.name}
-          </StyledProjectTitle>
+          <StyledProjectTitle>{userQuery?.groups[selectProject].project.name}</StyledProjectTitle>
 
           <StyledProjectOptionContainer>
             <StyledProjectOption />
@@ -69,15 +67,13 @@ export const ProjectListDetail: FCX<Props> = ({
           limitDeadline={userQuery?.groups[selectProject].project.end_date}
         />
 
-        <StyledComplicateButtonContainer>
-          <ComplicateButton
+        <StyledGorgeousButtonContainer>
+          <GorgeousButton
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="クエスト開始"
-            onClick={() =>
-              handleTransitionToProject(userQuery?.groups[selectProject].project.id)
-            }
+            onClick={() => handleTransitionToProject(userQuery?.groups[selectProject].project.id)}
           />
-        </StyledComplicateButtonContainer>
+        </StyledGorgeousButtonContainer>
 
         <ProjectListProjectInfo
           story={userQuery?.groups[selectProject].project.monster.story}
@@ -161,7 +157,7 @@ const StyledProjectOption = styled.div`
   }
 `
 
-const StyledComplicateButtonContainer = styled.div`
+const StyledGorgeousButtonContainer = styled.div`
   grid-row: 4 / 5;
   grid-column: 1 / 4;
   display: flex;

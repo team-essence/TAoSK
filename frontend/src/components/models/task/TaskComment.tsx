@@ -5,7 +5,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
-import { CancelButton } from 'components/ui/button/CancelButton'
+import { InputCancelButton } from 'components/ui/button/InputCancelButton'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { usePopover } from 'hooks/usePopover'
 import { useHandleChat } from 'hooks/useHandleChat'
@@ -68,7 +68,7 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
             />
 
             <StyledButtonWrapper>
-              <CancelButton onClick={() => setState('view')} />
+              <InputCancelButton onClick={() => setState('view')} />
               <CoarseRedOxideButton text="保存" onClick={onClickUpdateButton} disabled={disabled} />
             </StyledButtonWrapper>
           </StyledInputFormField>
