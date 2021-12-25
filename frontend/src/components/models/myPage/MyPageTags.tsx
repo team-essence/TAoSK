@@ -70,15 +70,26 @@ const StyledMyPageTagsContainer = styled.div`
 `
 
 const StyledMyPageTagsScroll = styled.div`
-  padding-top: 4px;
   position: absolute;
   top: 48%;
-  left: 53%;
+  left: 51%;
   transform: translate(-50%, -50%);
-  width: ${calculateMinSizeBasedOnFigmaWidth(420)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(440)};
   height: ${calculateMinSizeBasedOnFigmaWidth(260)};
+  padding: 0 ${calculateMinSizeBasedOnFigmaWidth(16)};
   overflow-y: auto;
   direction: rtl;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #ececec;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #c0c0c0;
+  }
 `
 
 const StyledMyPageTagTitle = styled.div`

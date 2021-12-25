@@ -88,6 +88,7 @@ export const theme = {
     SHIP_GRAY: '#38373C',
     OLIVE_GREEN: '#A9BA65',
     ZINNWALDITE: '#EAC4A6',
+    SISAL: '#D7CBC1',
     MONDO: '#463E29',
     SHIP_COVE: '#657DBA',
     BOULDER: '#7B7B7B',

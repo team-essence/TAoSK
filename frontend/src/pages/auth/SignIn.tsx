@@ -140,7 +140,7 @@ const StyledBackground = styled.div`
   left: 0;
   width: 100vw;
   height: calc(100vh - ${({ theme }) => theme.HEADER_HEIGHT});
-  background-image: url('register-background.png');
+  background-image: url('/register-background.png');
   background-size: cover;
   background-position: 50% 100%;
 `
