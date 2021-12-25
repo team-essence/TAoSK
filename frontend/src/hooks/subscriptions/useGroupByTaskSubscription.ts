@@ -21,7 +21,7 @@ export const useGroupByTaskSubscription = (): UseGroupByTaskSubscription => {
 
   useEffect(() => {
     if (!data) return
-    setUpdateGroupListByTask({ ...data.updateGroupsByTask.map(group => ({ ...group.user })) })
+    setUpdateGroupListByTask([...data.updateGroupsByTask.map(group => ({ ...group.user }))])
   }, [data])
 
   return { updateGroupListByTask }
