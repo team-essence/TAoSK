@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { List } from 'src/lists/list';
 import { Task } from 'src/tasks/task';
 import { User } from 'src/users/user';
 import { Repository } from 'typeorm';
@@ -18,6 +19,8 @@ export class ChatsService {
     private userRepository: Repository<User>,
     @InjectRepository(Task)
     private taskRepository: Repository<Task>,
+    @InjectRepository(List)
+    private listRepository: Repository<List>,
   ) {}
 
   getChats(taskId: number): Promise<Chat[]> {
@@ -41,6 +44,7 @@ export class ChatsService {
   ): Promise<{
     chats: Chat[];
     project_id: string;
+    lists: List[];
   }> {
     const task = await this.taskRepository.findOne(taskId, {
       relations: ['project'],
@@ -66,7 +70,23 @@ export class ChatsService {
     });
     if (!chats) throw new NotFoundException();
 
-    return { chats, project_id: task.project.id };
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
+
+    return { chats, project_id: task.project.id, lists };
   }
 
   async updateChat(
@@ -114,6 +134,7 @@ export class ChatsService {
   ): Promise<{
     chats: Chat[];
     project_id: string;
+    lists: List[];
   }> {
     const chat = await this.chatRepository.findOne({
       where: {
@@ -140,6 +161,22 @@ export class ChatsService {
     });
     if (!task) throw new NotFoundException();
 
-    return { chats, project_id: task.project.id };
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
+
+    return { chats, project_id: task.project.id, lists };
   }
 }

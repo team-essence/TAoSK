@@ -8,6 +8,7 @@ import { Exact } from 'types/graphql.gen'
 import { useListsByTaskSubscription } from './subscriptions/useListsByTaskSubscription'
 import { useListsByListSortSubscription } from './subscriptions/useListsByListSortSubscription'
 import { useListsByListSubscription } from './subscriptions/useListsByListSubscription'
+import { useListsByChatSubscription } from './subscriptions/useListsByChatSubscription'
 
 type UseProjectDetail = {
   projectData: LazyQueryResult<
@@ -34,6 +35,7 @@ export const useProjectDetail = (
     useListsByTaskSubscription()
   const { updatedListsByList } = useListsByListSubscription()
   const { updatedListsByListSort } = useListsByListSortSubscription()
+  const { updatedListsByChat } = useListsByChatSubscription()
 
   const [getProjectById, projectData] = useGetProjectLazyQuery({
     onCompleted(data) {
@@ -118,6 +120,11 @@ export const useProjectDetail = (
     setList([])
     setList(updatedListsByListSort)
   }, [updatedListsByListSort])
+
+  useEffect(() => {
+    logger.debug(updatedListsByChat, 'hogehogehohgeohge')
+    setList([...updatedListsByChat])
+  }, [updatedListsByChat])
 
   return {
     projectData,

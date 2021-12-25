@@ -707,3 +707,48 @@ subscription UpdateGroupsByTaskSubSc($project_id: String!) {
     }
   }
 }
+
+
+
+subscription UpdateListByChat($project_id: String!) {
+  updateListByChat(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

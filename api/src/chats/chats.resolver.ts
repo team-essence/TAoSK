@@ -1,6 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Args, Resolver, Query, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
+import { List } from 'src/lists/list';
 import { Chat } from './chat';
 import { ChatsService } from './chats.service';
 
@@ -32,6 +33,13 @@ export class ChatsResolver {
         chats: result.chats,
         projectId: result.project_id,
         taskId,
+      },
+    });
+
+    this.pubSub.publish('updateListByChat', {
+      updateListByChat: {
+        lists: result.lists,
+        projectId: result.project_id,
       },
     });
 
@@ -74,6 +82,13 @@ export class ChatsResolver {
       },
     });
 
+    this.pubSub.publish('updateListByChat', {
+      updateListByChat: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
+    });
+
     return result.chats;
   }
 
@@ -93,5 +108,19 @@ export class ChatsResolver {
     @Args({ name: 'taskId', type: () => String }) taskId: string,
   ) {
     return this.pubSub.asyncIterator('updateChatSubscription');
+  }
+
+  @Subscription((returns) => [List], {
+    filter: (payload, variables) => {
+      return payload.updateListByChat.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateListByChat.lists;
+    },
+  })
+  updateListByChat(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateListByChat');
   }
 }

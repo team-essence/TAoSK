@@ -402,4 +402,5 @@ type Subscription {
   updateUserByTask(userId: String!): User!
   updateGroupsByTask(projectId: String!): [Group!]!
   updateChatSubscription(taskId: String!, projectId: String!): [Chat!]!
+  updateListByChat(projectId: String!): [List!]!
 }
