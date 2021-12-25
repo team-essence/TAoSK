@@ -56,6 +56,7 @@ export class UsersService {
         'invitations.project',
         'groups',
         'groups.project',
+        'groups.project.tasks',
         'groups.project.groups',
         'groups.project.groups.user',
         'groups.project.groups.user.occupation',

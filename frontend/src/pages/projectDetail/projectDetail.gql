@@ -522,6 +522,10 @@ subscription UpdateUserByTaskSubSc($user_id: String!) {
         project_end_flg
         difficulty
 
+        tasks {
+          id
+        }
+
         groups {
           id
 
