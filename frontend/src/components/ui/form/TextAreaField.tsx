@@ -31,16 +31,16 @@ export const TextAreaField: FCX<Props> = ({
   children,
   ...textAreaAttributes
 }) => {
-  const [hasBlured, setHasBlured] = useState<boolean>(false)
+  const [hasBlurred, setHasBlurred] = useState<boolean>(false)
 
-  const shouldShowError = !!(hasBlured && error?.message)
+  const shouldShowError = !!(hasBlurred && error?.message)
   const onBlur = (e: FocusEvent<HTMLTextAreaElement>) => {
     textAreaAttributes.onBlur && textAreaAttributes.onBlur(e)
-    setHasBlured(true)
+    setHasBlurred(true)
   }
 
   useEffect(() => {
-    return () => setHasBlured(false)
+    return () => setHasBlurred(false)
   }, [])
 
   return (

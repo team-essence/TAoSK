@@ -24,16 +24,16 @@ export const InputField: FCX<Props> = ({
   children,
   ...inputAttributes
 }) => {
-  const [hasBlured, setHasBlured] = useState<boolean>(false)
+  const [hasBlurred, setHasBlurred] = useState<boolean>(false)
 
-  const shouldShowError = !!(hasBlured && error?.message)
+  const shouldShowError = !!(hasBlurred && error?.message)
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
     inputAttributes.onBlur && inputAttributes.onBlur(e)
-    setHasBlured(true)
+    setHasBlurred(true)
   }
 
   useEffect(() => {
-    return () => setHasBlured(false)
+    return () => setHasBlurred(false)
   }, [])
 
   return (
