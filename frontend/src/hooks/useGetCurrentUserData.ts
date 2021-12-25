@@ -7,6 +7,7 @@ import {
   useUpdateUserDataByCertificationSubScSubscription,
   useUpdateUserDataByInterestSubScSubscription,
   useUpdateUserDataSubScSubscription,
+  useUpdateUserDataByCreateProjectSubscription,
 } from 'pages/projectDetail/getUser.gen'
 import { useAuthContext } from 'providers/AuthProvider'
 import { Notifications } from 'types/notification'
@@ -62,6 +63,11 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
     },
   })
   const updateUserDataByInterest = useUpdateUserDataByInterestSubScSubscription({
+    variables: {
+      user_id: String(firebaseCurrentUser?.uid),
+    },
+  })
+  const updateUserDataByCreateProject = useUpdateUserDataByCreateProjectSubscription({
     variables: {
       user_id: String(firebaseCurrentUser?.uid),
     },
@@ -131,6 +137,10 @@ export const useGetCurrentUserData = (): UseGetCurrentUserDataReturn => {
   useEffect(() => {
     setUserData(updateUserDataByInterest.data?.updateUserDataByInterest)
   }, [updateUserDataByInterest.data])
+
+  useEffect(() => {
+    setUserData(updateUserDataByCreateProject.data?.projectCreate)
+  }, [updateUserDataByCreateProject.data])
 
   return { getCurrentUser, currentUserData: userData, firebaseCurrentUser, notifications }
 }

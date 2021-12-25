@@ -50,6 +50,7 @@ export class ProjectsService {
       invitations: Invitation[];
       userId: string;
     }[];
+    currentUser: User;
   }> {
     const invitations: {
       invitations: Invitation[];
@@ -147,9 +148,27 @@ export class ProjectsService {
       });
     }
 
+    const user = await this.userRepository.findOne(selectUser.ids[0], {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
     return {
       project,
       invitations,
+      currentUser: user,
     };
   }
 
