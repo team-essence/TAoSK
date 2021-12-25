@@ -27,7 +27,7 @@ type Props = {
   totalExp: number
   notifications: Notifications
   company: string
-  list: List[]
+  lists: List[]
   groups: GetProjectQuery['getProjectById']['groups']
 }
 
@@ -39,7 +39,7 @@ export const ProjectDetailHeader: FCX<Props> = ({
   totalExp,
   notifications,
   company,
-  list,
+  lists,
   groups,
 }) => {
   const navigate = useNavigate()
@@ -128,8 +128,8 @@ export const ProjectDetailHeader: FCX<Props> = ({
   }
 
   useEffect(() => {
-    logger.debug(taskSearch(list, debouncedInputText))
-    setSearchTasks(taskSearch(list, debouncedInputText))
+    logger.debug(taskSearch(lists, debouncedInputText))
+    setSearchTasks(taskSearch(lists, debouncedInputText))
   }, [debouncedInputText])
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useMemo, useCallback, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { assertStatusParam } from 'types/status'
@@ -11,13 +11,14 @@ import {
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
-import { removeFromList, addToList, reorder } from 'utils/handleListOrder'
+import { reorderList, getRefreshedListsVertical } from 'utils/controlList'
+import { moveTask, getTasksInfoToUpdate } from 'utils/controlTask'
 import toast from 'utils/toast/toast'
 import logger from 'utils/debugger/logger'
 
 type UseProjectDetailDragEndArg = {
-  list: List[]
-  setList: Dispatch<SetStateAction<List[]>>
+  lists: List[]
+  setLists: Dispatch<SetStateAction<List[]>>
   setWeapon: ReturnType<typeof useSetWeaponJson>['setWeapon']
   setIsCompleted: ReturnType<typeof useCompleteAnimation>['setIsCompleted']
   firebaseCurrentUser: ReturnType<typeof useGetCurrentUserData>['firebaseCurrentUser']
@@ -29,9 +30,15 @@ type UseProjectDetailDragEndReturn = {
 
 type UseProjectDetailDragEnd = (arg: UseProjectDetailDragEndArg) => UseProjectDetailDragEndReturn
 
+type HandleDroppedColumnList = (args: {
+  destinationIndex: number
+  sourceIndex: number
+  listsCopy: List[]
+}) => Promise<void>
+
 export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
-  list,
-  setList,
+  lists,
+  setLists,
   setWeapon,
   setIsCompleted,
   firebaseCurrentUser,
@@ -58,6 +65,29 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     },
   })
 
+  const handleDroppedColumnList: HandleDroppedColumnList = async ({
+    destinationIndex,
+    sourceIndex,
+    listsCopy,
+  }) => {
+    if (destinationIndex === 0) {
+      toast.warning('未着手は固定されています')
+      return
+    }
+    if (destinationIndex === lists.length - 1) {
+      toast.warning('完了は固定されています')
+      return
+    }
+    const result = reorderList(listsCopy, sourceIndex, destinationIndex)
+    setLists(result)
+    const updateListSort = result.map((list, index) => ({
+      id: list.sort_id,
+      task_list: index,
+    }))
+
+    await updateList({ variables: { listSort: updateListSort } })
+  }
+
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return
     const { source, destination, type } = result
@@ -67,88 +97,37 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     const sourceIndex = source.index
     if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
 
-    const listCopy = [...list]
+    const listsCopy = [...lists]
 
     if (type === DROP_TYPE.COLUMN) {
-      if (destinationIndex === 0) {
-        toast.warning('未着手は固定されています')
-        return
-      }
-      if (destinationIndex === list.length - 1) {
-        toast.warning('完了は固定されています')
-        return
-      }
-      const result = reorder(listCopy, sourceIndex, destinationIndex)
-      setList(result)
-      const updateListSort = result.map((list, index) => {
-        return {
-          id: list.sort_id,
-          task_list: index,
-        }
-      })
-      await updateList({
-        variables: {
-          listSort: updateListSort,
-        },
-      })
+      handleDroppedColumnList({ destinationIndex, sourceIndex, listsCopy })
       return
     }
 
-    const [removedElement, newSourceList] = removeFromList(
-      listCopy[sourceDroppableId].tasks,
+    moveTask({
+      listsCopy,
+      sourceDroppableId,
       sourceIndex,
-    )
-
-    listCopy[sourceDroppableId].tasks = newSourceList
-
-    const destinationTask = listCopy[destinationDroppableId].tasks
-    listCopy[destinationDroppableId].tasks = addToList(
-      destinationTask,
+      destinationDroppableId,
       destinationIndex,
-      removedElement,
-    )
-
-    const sortListCopy = listCopy.map(list => {
-      const sortList = list.tasks.map((task, index) => {
-        task.vertical_sort = index
-        return task
-      })
-
-      list.tasks = sortList
-      return list
     })
 
-    //TODO: 完了にカードが移動したらcompleted_flgをtrueにする処理を書く必要あり
-    const updateTasks = sortListCopy.map((list, index, { length }) => {
-      logger.debug(length)
-      return list.tasks.map((task, taskIndex) => {
-        return {
-          id: task.id,
-          list_id: list.list_id,
-          vertical_sort: taskIndex,
-          completed_flg: index === length - 1 ? true : false,
-        }
-      })
-    })
-    // return
+    const sortedListsCopy = getRefreshedListsVertical(listsCopy)
+    const tasksInfoToUpdate = getTasksInfoToUpdate(sortedListsCopy)
 
-    const joinUpdateTasks = []
-    for (let index = 0; index < updateTasks.length; index++) {
-      joinUpdateTasks.push(...updateTasks[index])
-    }
+    logger.table([...tasksInfoToUpdate])
 
-    logger.table([...joinUpdateTasks])
     await updateTaskSort({
       variables: {
         updateTasks: {
-          tasks: joinUpdateTasks,
+          tasks: tasksInfoToUpdate,
           project_id: String(projectId),
           user_id: firebaseCurrentUser?.uid ?? '',
         },
       },
     })
 
-    setList(listCopy)
+    setLists(listsCopy)
   }
 
   return { onDragEnd }

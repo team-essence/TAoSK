@@ -33,12 +33,12 @@ export const ProjectDetail: FC = () => {
   const { json, setWeapon } = useSetWeaponJson()
   const { anchorEl, isCompleted, setIsCompleted } = useCompleteAnimation<HTMLDivElement>(json)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
-  const [list, setList] = useState<List[]>([])
+  const [lists, setLists] = useState<List[]>([])
   const inputUserName = useInput('')
 
   const { projectData, monsterHPRemaining, monsterTotalHP, isTasks } = useProjectDetail(
     setSelectUserIds,
-    setList,
+    setLists,
   )
 
   const { currentUserData, firebaseCurrentUser, notifications } = useGetCurrentUserData()
@@ -65,8 +65,8 @@ export const ProjectDetail: FC = () => {
   })
 
   const { onDragEnd } = useProjectDetailDragEnd({
-    list,
-    setList,
+    lists,
+    setLists,
     setWeapon,
     setIsCompleted,
     firebaseCurrentUser,
@@ -112,14 +112,14 @@ export const ProjectDetail: FC = () => {
         totalExp={currentUserData?.exp ?? 0}
         company={currentUserData?.company ?? ''}
         notifications={notifications}
-        list={list}
+        lists={lists}
         groups={projectData.data?.getProjectById.groups ?? []}
       />
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
           <ProjectDrawer
             groups={projectData.data?.getProjectById.groups}
-            lists={list}
+            lists={lists}
             onDragEnd={onDragEnd}
           />
           {!!currentUserData && (
