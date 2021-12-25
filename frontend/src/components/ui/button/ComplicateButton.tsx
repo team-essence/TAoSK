@@ -15,16 +15,16 @@ export const BUTTON_COLOR_TYPE = {
 } as const
 type BUTTON_COLOR_TYPE = typeof BUTTON_COLOR_TYPE[keyof typeof BUTTON_COLOR_TYPE]
 
-export const ComplicateButton: FCX<Props> = ({ buttonColorType, text, onClick }) => {
+export const GorgeousButton: FCX<Props> = ({ buttonColorType, text, onClick }) => {
   return (
-    <StyledComplicateButton onClick={onClick}>
+    <StyledGorgeousButton onClick={onClick}>
       <img src={`/svg/${buttonColorType}`} alt="ボタン画像" />
-      <StyledComplicateButtonText>{text}</StyledComplicateButtonText>
-    </StyledComplicateButton>
+      <StyledGorgeousButtonText>{text}</StyledGorgeousButtonText>
+    </StyledGorgeousButton>
   )
 }
 
-const StyledComplicateButton = styled.button`
+const StyledGorgeousButton = styled.button`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(314)};
 
@@ -35,7 +35,7 @@ const StyledComplicateButton = styled.button`
   }
 `
 
-const StyledComplicateButtonText = styled.div`
+const StyledGorgeousButtonText = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;

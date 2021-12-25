@@ -9,7 +9,7 @@ import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVhBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
-import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
+import { BUTTON_COLOR_TYPE, GorgeousButton } from 'components/ui/button/GorgeousButton'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/models/projectList/ProjectListItem'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { ProjectListDetail } from 'components/models/projectList/ProjectListDetail'
@@ -46,7 +46,7 @@ export const ProjectList: FC = () => {
           </StyledProjectTitleWrapper>
           <StyledProjectListBodyWrapper>
             <StyledCreateProjectButton>
-              <ComplicateButton
+              <GorgeousButton
                 buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
                 text="プロジェクト作成"
                 onClick={() => setShouldShowModal(true)}
