@@ -16,7 +16,7 @@ import {
 import { TaskCreateModal } from 'components/models/task/TaskCreateModal'
 import { useInput } from 'hooks/useInput'
 import { usePopover } from 'hooks/usePopover'
-import { useControllTextArea } from 'hooks/useControllTextArea'
+import { useControlTextArea } from 'hooks/useControlTextArea'
 import { useWatchElementAspect } from 'hooks/useWatchElementAspect'
 import { TaskList } from 'components/models/task/TaskList'
 import { CreateTaskButton } from 'components/ui/button/CreateTaskButton'
@@ -33,7 +33,7 @@ type Props = {
 
 export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
   const listTitle = useInput(title)
-  const controll = useControllTextArea()
+  const control = useControlTextArea()
   const { id: projectId } = useParams()
   const { sizeInspectedEl, height } = useWatchElementAspect<HTMLDivElement>()
   const { anchorEl, openPopover, closePopover } = usePopover()
@@ -43,7 +43,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
 
   const handleEnableTextArea = (e?: React.MouseEvent<HTMLElement>) => {
     if (listIndex === 0 || listIndex === listLength - 1 || !e) return
-    controll.enableTextArea(e)
+    control.enableTextArea(e)
   }
 
   const handleUpdateListName = (
@@ -53,7 +53,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
   ) => {
     if (('key' in e && e.key === 'Enter') || e.type === 'blur') {
       updateListName({ variables: { name, list_id } })
-      controll.disableTextArea()
+      control.disableTextArea()
     }
   }
 
@@ -87,8 +87,8 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                     <StyledTitle onClick={e => handleEnableTextArea(e)}>
                       <StyledTitleTextArea
                         {...listTitle}
-                        ref={controll.textAreaRef}
-                        disabled={controll.isDisabled}
+                        ref={control.textAreaRef}
+                        disabled={control.isDisabled}
                         onKeyDown={e =>
                           handleUpdateListName(
                             e,
@@ -103,7 +103,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                             list_id,
                           )
                         }
-                        onFocus={controll.makeAllTextSelected}
+                        onFocus={control.makeAllTextSelected}
                         minRows={1}
                         maxLength={255}
                       />
@@ -123,7 +123,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                           }}
                           handleClose={closePopover}
                           handleRemove={() => handleRemoveList(Number(id), projectId)}
-                          handleEdit={e => !!e && controll.enableTextArea(e)}
+                          handleEdit={e => !!e && control.enableTextArea(e)}
                         />
                       </>
                     )}
