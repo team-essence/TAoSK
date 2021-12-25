@@ -32,8 +32,8 @@ export const CalenderField: FCX<Props> = ({
   children,
   ...inputAttributes
 }) => {
-  const [hasBlured, setHasBlured] = useState<boolean>(false)
-  const shouldShowError = !!(hasBlured && error?.message)
+  const [hasBlurred, setHasBlurred] = useState<boolean>(false)
+  const shouldShowError = !!(hasBlurred && error?.message)
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     inputAttributes.onChange && inputAttributes.onChange(e)
     registration.onChange && registration.onChange(e)
@@ -41,11 +41,11 @@ export const CalenderField: FCX<Props> = ({
   const onBlur = (e: FocusEvent<HTMLInputElement>) => {
     inputAttributes.onBlur && inputAttributes.onBlur(e)
     registration.onBlur && registration.onBlur(e)
-    setHasBlured(true)
+    setHasBlurred(true)
   }
 
   useEffect(() => {
-    return () => setHasBlured(false)
+    return () => setHasBlurred(false)
   }, [])
 
   return (
