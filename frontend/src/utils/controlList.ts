@@ -15,8 +15,8 @@ export const reorderList = (lists: List[], startIndex: number, endIndex: number)
 }
 
 /** DB上のタスクの順番をアップデートする際に使う、vertical_sortの値を更新する */
-export const getRefreshedListsVertical = (lists: List[]): List[] =>
-  lists.map(list => {
+export const getRefreshedListsVertical = (lists: List[]): List[] => {
+  return lists.map(list => {
     const sortedList = list.tasks.map((task, index) => {
       task.vertical_sort = index
       return task
@@ -25,3 +25,4 @@ export const getRefreshedListsVertical = (lists: List[]): List[] =>
     list.tasks = sortedList
     return list
   })
+}

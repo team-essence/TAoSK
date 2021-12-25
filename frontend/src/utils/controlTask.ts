@@ -47,20 +47,23 @@ export const moveTask: MoveTask = ({
 
 /** DB上のタスクの順番をアップデートする時に引数として使えるよう整形する */
 export const adjustTasksInfoToUpdate = (lists: List[]): UpdateTask[] => {
-  return lists
-    .map((list, listIndex, { length }) => {
-      const tasks = list.tasks
+  const tasksInfo = []
 
-      for (let taskIndex = 0; taskIndex < tasks.length; taskIndex++) {
-        const task = tasks[taskIndex]
+  for (let listIndex = 0; listIndex < lists.length; listIndex++) {
+    const list = lists[listIndex]
+    const tasks = list.tasks
 
-        return {
-          id: task.id,
-          list_id: list.list_id,
-          vertical_sort: taskIndex,
-          completed_flg: listIndex === length - 1 ? true : false,
-        }
-      }
-    })
-    .filter((v): v is UpdateTask => !!v)
+    for (let taskIndex = 0; taskIndex < tasks.length; taskIndex++) {
+      const task = tasks[taskIndex]
+
+      tasksInfo.push({
+        id: task.id,
+        list_id: list.list_id,
+        vertical_sort: taskIndex,
+        completed_flg: listIndex === lists.length - 1 ? true : false,
+      })
+    }
+  }
+
+  return tasksInfo
 }
