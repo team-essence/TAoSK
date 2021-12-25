@@ -133,7 +133,12 @@ const StyledLevelContainer = styled.div<{ levelWidth: number }>`
         height: ${calculateMinSizeBasedOnFigmaWidth(52)};
         top: ${calculateMinSizeBasedOnFigmaWidth(-2)};
         left: ${calculateMinSizeBasedOnFigmaWidth(-2)};
-        background: linear-gradient(to bottom, #eac4a6 0%, #d7cbc1 60%, #eac4a6 100%);
+        background: linear-gradient(
+          to bottom,
+          ${theme.COLORS.ZINNWALDITE} 0%,
+          ${theme.COLORS.SISAL} 60%,
+          ${theme.COLORS.ZINNWALDITE} 100%
+        );
         z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
         border-radius: 4px;
       }
