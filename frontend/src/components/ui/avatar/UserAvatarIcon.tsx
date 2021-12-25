@@ -1,6 +1,7 @@
 import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
-import { useHover } from 'hooks/useHover'
+import MuiPopper from '@mui/material/Popper'
+import { useHoverPopper } from 'hooks/useHoverPopper'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
@@ -21,14 +22,14 @@ export const UserAvatarIcon: FCX<Props> = ({
   occupation,
   className,
 }) => {
-  const [hovered, eventHoverHandlers] = useHover()
+  const { anchorEl, hovered, ...eventHoverHandlers } = useHoverPopper()
 
   if (avatarStyleType === AVATAR_STYLE.LIST)
     return (
       <StyledUserAvatarIconListContainer {...eventHoverHandlers} className={className}>
         <StyledUserAvatarListIcon iconImage={iconImage} />
 
-        {hovered && (
+        <StyledMuiPopper open={!!hovered} anchorEl={anchorEl} placement="bottom-start">
           <StyledPopupUserInfoContainer bottom={66}>
             <StyledPopupUserIconContainer>
               <img src={iconImage} />
@@ -39,7 +40,7 @@ export const UserAvatarIcon: FCX<Props> = ({
               <StyledPopupUserOccupation>{occupation}</StyledPopupUserOccupation>
             </StyledPopupUserContainer>
           </StyledPopupUserInfoContainer>
-        )}
+        </StyledMuiPopper>
       </StyledUserAvatarIconListContainer>
     )
   else if (avatarStyleType === AVATAR_STYLE.TASK)
@@ -58,7 +59,7 @@ export const UserAvatarIcon: FCX<Props> = ({
         )}
         <StyledUserAvatarModalIcon iconImage={iconImage} />
 
-        {hovered && (
+        <StyledMuiPopper open={!!hovered} anchorEl={anchorEl} placement="bottom-start">
           <StyledPopupUserInfoContainer bottom={66}>
             <StyledPopupUserIconContainer>
               <img src={iconImage} />
@@ -69,7 +70,7 @@ export const UserAvatarIcon: FCX<Props> = ({
               <StyledPopupUserOccupation>{occupation}</StyledPopupUserOccupation>
             </StyledPopupUserContainer>
           </StyledPopupUserInfoContainer>
-        )}
+        </StyledMuiPopper>
       </StyledUserAvatarIconModalContainer>
     )
 }
@@ -134,8 +135,11 @@ const StyledUserAvatarModalIcon = styled.div<{ iconImage: string }>`
   ${userAvatarIconCss}
 `
 
+const StyledMuiPopper = styled(MuiPopper)`
+  z-index: ${({ theme }) => theme.Z_INDEX.HOVER_POPPER};
+`
+
 const StyledPopupUserInfoContainer = styled.div<{ bottom: number }>`
-  z-index: ${({ theme }) => theme.Z_INDEX.POPOVER};
   position: absolute;
   bottom: ${({ bottom }) => calculateMinSizeBasedOnFigma(-bottom)};
   left: -20%;

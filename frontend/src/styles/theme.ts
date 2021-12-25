@@ -26,6 +26,7 @@ export const theme = {
     MODAL: 100,
     LOADING: 999,
     EFFECT: 1000,
+    HOVER_POPPER: 13000, // Muiのmodalのz-indexが1300のため、モーダル上でPopperを表示させるにはそれと同値のz-indexを指定する必要がある
   },
   FONT_SIZES: {
     SIZE_10: calculateMinSizeBasedOnFigma('10px'),
