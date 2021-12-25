@@ -1,7 +1,7 @@
 import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
-import { CancelButton } from 'components/ui/button/CancelButton'
+import { InputCancelButton } from 'components/ui/button/InputCancelButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
@@ -39,7 +39,7 @@ export const TaskEditTitleField: FCX<Props> = ({ className, id, title }) => {
         <StyledBottomRow>
           <StyledErrorMessage>{!!error?.message && error.message}</StyledErrorMessage>
           <StyledButtonWrapper>
-            <CancelButton onClick={() => setState('view')} />
+            <InputCancelButton onClick={() => setState('view')} />
             <CoarseRedOxideButton text="追加" onClick={onClickSaveButton} disabled={disabled} />
           </StyledButtonWrapper>
         </StyledBottomRow>

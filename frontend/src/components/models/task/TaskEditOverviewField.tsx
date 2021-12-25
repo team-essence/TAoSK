@@ -2,7 +2,7 @@ import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
-import { CancelButton } from 'components/ui/button/CancelButton'
+import { InputCancelButton } from 'components/ui/button/InputCancelButton'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,8 +15,9 @@ type Props = {
 }
 
 export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) => {
-  const { state, setState, onClickSaveButton, disabled, register, error } =
-    useTaskOverviewEditForm({ id, initialOverview: overview })
+  const { state, setState, onClickSaveButton, disabled, register, error } = useTaskOverviewEditForm(
+    { id, initialOverview: overview },
+  )
 
   if (state === 'view') {
     return (
@@ -45,7 +46,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
         <StyledBottomRow>
           <StyledErrorMessage>{!!error?.message && error.message}</StyledErrorMessage>
           <StyledButtonWrapper>
-            <CancelButton onClick={() => setState('view')} />
+            <InputCancelButton onClick={() => setState('view')} />
             <CoarseRedOxideButton text="追加" onClick={onClickSaveButton} disabled={disabled} />
           </StyledButtonWrapper>
         </StyledBottomRow>
