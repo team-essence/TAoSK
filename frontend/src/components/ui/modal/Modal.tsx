@@ -4,8 +4,9 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { strokeTextShadow } from 'utils/strokeTextShadow'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { CrossIcon } from 'components/ui/icon/CrossIcon'
+import styled, { css } from 'styled-components'
 import { theme } from 'styles/theme'
-import styled, { css, keyframes } from 'styled-components'
+import { animation } from 'styles/animation/modalAnimation'
 
 type Props = {
   title?: string
@@ -16,33 +17,34 @@ type Props = {
 
 export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
   return (
-    <MuiModal
+    <StyledMuiModal
       open={shouldShow}
       onBackdropClick={() => onClickCloseBtn()}
       BackdropComponent={StyledBackdrop}
       BackdropProps={{ transitionDuration: 3000 }}>
-      <StyledWrapper className={className}>
+      <StyledWrapper>
         <StyledCloseButton onClick={onClickCloseBtn}>
           <StyledCrossIcon color={theme.COLORS.DUSTY_GRAY} strokeLinecap="round" />
         </StyledCloseButton>
 
         {!!title && <StyledNamePlate>{title}</StyledNamePlate>}
 
-        {children}
-        <StyledBackgroundDragonSymbol />
+        <StyledChildrenWrapper className={className}>{children}</StyledChildrenWrapper>
+
+        <StyledDragonSymbolWrapper>
+          <StyledDragonSymbolLeft />
+          <StyledDragonSymbolRight />
+        </StyledDragonSymbolWrapper>
+
+        <StyledBackgroundWrapper>
+          <StyledBackgroundLeft />
+          <StyledBackgroundRight />
+        </StyledBackgroundWrapper>
       </StyledWrapper>
-    </MuiModal>
+    </StyledMuiModal>
   )
 }
 
-const fadeIn = keyframes`
-from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`
 const StyledBackdrop = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: fixed;
@@ -51,30 +53,29 @@ const StyledBackdrop = styled.div`
   top: 0;
   left: 0;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.6)};
-  opacity: 0;
-  will-change: animation, opacity;
-  animation: ${fadeIn} 0.5s forwards linear;
+  ${animation.backdrop}
 `
-const StyledWrapper = styled.div`
-  z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
+const StyledMuiModal = styled(MuiModal)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   margin: auto;
-  background-image: url('/svg/modal-background.svg');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+`
+const StyledWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.MODAL};
+  position: relative;
+  display: inline-block;
 `
 const StyledNamePlate = styled.p`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_1};
   position: absolute;
   top: ${calculateMinSizeBasedOnFigma(-55 / 2)};
   left: 50%;
-  transform: translateX(-50%);
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,6 +84,7 @@ const StyledNamePlate = styled.p`
   background-image: url('/svg/nameplate.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  ${animation.namePlate}
   ${({ theme }) =>
     css`
       color: ${theme.COLORS.WHITE};
@@ -91,9 +93,37 @@ const StyledNamePlate = styled.p`
       ${strokeTextShadow('2px', theme.COLORS.BLACK)};
     `}
 `
-const StyledBackgroundDragonSymbol = styled.div`
+const StyledChildrenWrapper = styled.div`
+  ${animation.children}
+`
+const StyledBackgroundWrapper = styled.div`
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_2};
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`
+const backgroundCss = css`
+  width: 100%;
+  height: 100%;
+  background-image: url('/svg/modal-background.svg');
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+`
+const StyledBackgroundLeft = styled.div`
+  ${backgroundCss}
+  ${animation.bgLeft}
+`
+const StyledBackgroundRight = styled.div`
+  ${backgroundCss}
+  ${animation.bgRight}
+`
+const StyledDragonSymbolWrapper = styled.div`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   position: absolute;
+  display: flex;
   top: 0;
   right: 0;
   bottom: 0;
@@ -101,9 +131,21 @@ const StyledBackgroundDragonSymbol = styled.div`
   margin: auto;
   width: ${calculateMinSizeBasedOnFigma(600)};
   height: ${calculateMinSizeBasedOnFigma(377)};
+`
+const dragonSymbolCss = css`
+  width: 100%;
+  height: 100%;
   background-image: url('/svg/dragon-symbol.svg');
-  background-size: 100% 100%;
+  background-size: 200% 100%;
   background-repeat: no-repeat;
+`
+const StyledDragonSymbolLeft = styled.div`
+  ${dragonSymbolCss}
+  ${animation.bgLeft}
+`
+const StyledDragonSymbolRight = styled.div`
+  ${dragonSymbolCss}
+  ${animation.bgRight}
 `
 const StyledCloseButton = styled.button`
   z-index: ${({ theme }) => theme.Z_INDEX.INDEX_2};
@@ -118,6 +160,7 @@ const StyledCloseButton = styled.button`
   border: solid 4px ${({ theme }) => convertIntoRGBA(theme.COLORS.MONDO, 0.8)};
   border-radius: 100%;
   background-color: ${({ theme }) => theme.COLORS.WHITE};
+  ${animation.closeButton}
 `
 const StyledCrossIcon = styled(CrossIcon)`
   height: 100%;

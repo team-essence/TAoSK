@@ -7,6 +7,7 @@ export const theme = {
   MAX_WIDTH: `${MAX_WIDTH}px`,
   Z_INDEX: {
     TAILED_DISPLAY: -1000,
+    INDEX_MINUS_2: -2,
     INDEX_MINUS_1: -1,
     INDEX_0: 0,
     INDEX_1: 1,
