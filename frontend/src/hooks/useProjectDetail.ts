@@ -102,21 +102,18 @@ export const useProjectDetail = (
 
   // サブスクリプション, task周り
   useEffect(() => {
-    setList([])
-    setList(updatedLists)
+    setList([...updatedLists])
     setIsTasks(updatedIsTasks)
     setMonsterHPRemaining(updatedMonsterHPRemaining)
     setMonsterTotalHP(updatedMonsterTotalHP)
   }, [updatedLists, updatedMonsterHPRemaining, updatedMonsterTotalHP, updatedIsTasks])
 
   useEffect(() => {
-    setList([])
-    setList(updatedListsByList)
+    setList([...updatedListsByList])
   }, [updatedListsByList])
 
   useEffect(() => {
-    setList([])
-    setList(updatedListsByListSort)
+    setList([...updatedListsByListSort])
   }, [updatedListsByListSort])
 
   return {
