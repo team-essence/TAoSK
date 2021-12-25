@@ -1,9 +1,9 @@
 import React, { FCX } from 'react'
-import { occupationList } from 'consts/occupationList'
-import styled, { css } from 'styled-components'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { useWatchElementAspect } from 'hooks/useWatchElementAspect'
 import exp from 'utils/exp/exp'
+import styled, { css } from 'styled-components'
 
 type Props = {
   iconImage: string
@@ -27,6 +27,8 @@ export const MyPageUserInfo: FCX<Props> = ({
   hp,
   mp,
 }) => {
+  const { sizeInspectedEl, width } = useWatchElementAspect<HTMLParagraphElement>()
+
   return (
     <StyledMyPageUserInfoContainer className={className}>
       <StyledUserWrapper>
@@ -36,9 +38,9 @@ export const MyPageUserInfo: FCX<Props> = ({
 
         <StyledUserInfoContainer>
           <StyledUserDataContainer>
-            <StyledLevelContainer>
+            <StyledLevelContainer levelWidth={width}>
               <StyledLevelLabel>lv.</StyledLevelLabel>
-              <StyledLevel>{exp.toLevel(totalExp)}</StyledLevel>
+              <StyledLevel ref={sizeInspectedEl}>{exp.toLevel(totalExp)}</StyledLevel>
             </StyledLevelContainer>
 
             <StyledUserNameAndUidContainer>
@@ -113,30 +115,30 @@ const StyledUserImageContainer = styled.div`
     border: solid 3px ${({ theme }) => theme.COLORS.ZINNWALDITE};
   }
 `
-
-const StyledLevelContainer = styled.div`
-  position: relative;
-  background: ${({ theme }) => theme.COLORS.CHOCOLATE};
-  width: ${calculateMinSizeBasedOnFigmaWidth(85)};
-  height: ${calculateMinSizeBasedOnFigmaWidth(48)};
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &:after {
-    position: absolute;
-    content: '';
-    width: ${calculateMinSizeBasedOnFigmaWidth(89)};
-    height: ${calculateMinSizeBasedOnFigmaWidth(52)};
-    top: ${calculateMinSizeBasedOnFigmaWidth(-2)};
-    left: ${calculateMinSizeBasedOnFigmaWidth(-2)};
-    background: linear-gradient(to bottom, #eac4a6 0%, #d7cbc1 60%, #eac4a6 100%);
-    z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
-    border-radius: 4px;
-  }
+const StyledLevelContainer = styled.div<{ levelWidth: number }>`
+  ${({ levelWidth, theme }) =>
+    css`
+      position: relative;
+      background: ${theme.COLORS.CHOCOLATE};
+      width: calc(${calculateMinSizeBasedOnFigmaWidth(56)} + ${levelWidth}px);
+      height: ${calculateMinSizeBasedOnFigmaWidth(48)};
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &:after {
+        position: absolute;
+        content: '';
+        width: calc(${calculateMinSizeBasedOnFigmaWidth(60)} + ${levelWidth}px);
+        height: ${calculateMinSizeBasedOnFigmaWidth(52)};
+        top: ${calculateMinSizeBasedOnFigmaWidth(-2)};
+        left: ${calculateMinSizeBasedOnFigmaWidth(-2)};
+        background: linear-gradient(to bottom, #eac4a6 0%, #d7cbc1 60%, #eac4a6 100%);
+        z-index: ${theme.Z_INDEX.INDEX_MINUS_1};
+        border-radius: 4px;
+      }
+    `}
 `
-
 const StyledLevelLabel = styled.p`
   position: absolute;
   top: ${calculateMinSizeBasedOnFigmaWidth(-2)};
@@ -145,28 +147,23 @@ const StyledLevelLabel = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
 `
-
 const StyledLevel = styled.p`
   color: ${({ theme }) => theme.COLORS.WHITE};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_40};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
   letter-spacing: 0;
 `
-
 const StyledUserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `
-
 const StyledUserDataContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0 12px;
 `
-
 const StyledUserNameAndUidContainer = styled.div``
-
 const StyledUserName = styled.h4`
   color: ${({ theme }) => theme.COLORS.FONT.BLACK};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_24};
@@ -178,30 +175,25 @@ const StyledUserUid = styled.p`
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.LIGHT};
 `
-
 const StyledUserInfoWrapper = styled.div`
   padding: 6px 0;
   background: ${({ theme }) => convertIntoRGBA(theme.COLORS.COD_GRAY, 0.11)};
   width: ${calculateMinSizeBasedOnFigmaWidth(426)};
 `
-
 const StyledCompanyContainer = styled(StyledUserInfoWrapper)`
   text-align: center;
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.NORMAL};
 `
-
 const StyledOccupationContainer = styled(StyledUserInfoWrapper)`
   text-align: center;
   font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BOLD};
 `
-
 const StyledParameterContainer = styled(StyledUserInfoWrapper)`
   padding: ${calculateMinSizeBasedOnFigmaWidth(17)} 0;
   display: flex;
   flex-direction: column;
   gap: ${calculateMinSizeBasedOnFigmaWidth(16)} 0;
 `
-
 const StyledStatusBarContainer = styled.div`
   margin: 0 auto;
   position: relative;
@@ -209,13 +201,11 @@ const StyledStatusBarContainer = styled.div`
   align-items: center;
   gap: 0 ${calculateMinSizeBasedOnFigmaWidth(9)};
   width: fit-content;
-
   h5 {
     color: ${({ theme }) => theme.COLORS.MINE_SHAFT};
     font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_14};
     font-weight: ${({ theme }) => theme.FONT_WEIGHTS.BLACK};
   }
-
   p {
     font-family: 'Yanone Kaffeesatz', 'Inter', 'BlinkMacSystemFont', 'Hiragino Kaku Gothic ProN',
       'Hiragino Sans', Meiryo, sans-serif;
@@ -239,13 +229,11 @@ const StyledStatusBarContainer = styled.div`
     `}
   }
 `
-
 const StyledBar = styled.div`
   position: relative;
   width: ${calculateMinSizeBasedOnFigmaWidth(305)};
   height: ${calculateMinSizeBasedOnFigmaWidth(13)};
 `
-
 const StyledHpBar = styled(StyledBar)<{ rate: number }>`
   &::before {
     content: '';
@@ -258,7 +246,6 @@ const StyledHpBar = styled(StyledBar)<{ rate: number }>`
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   }
-
   &::after {
     content: '';
     position: absolute;
@@ -269,7 +256,6 @@ const StyledHpBar = styled(StyledBar)<{ rate: number }>`
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
   }
 `
-
 const StyledMpBar = styled(StyledBar)<{ rate: number }>`
   &::before {
     content: '';
@@ -282,7 +268,6 @@ const StyledMpBar = styled(StyledBar)<{ rate: number }>`
     border-radius: ${calculateMinSizeBasedOnFigmaWidth(100)};
     z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
   }
-
   &::after {
     content: '';
     position: absolute;
