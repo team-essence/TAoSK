@@ -66,6 +66,7 @@ export const ProjectList: FC = () => {
                         projectTitle={group.project.name}
                         startDate={group.project.created_at}
                         endDate={group.project.end_date}
+                        hasTasks={!!group.project.tasks.length}
                       />
                     </StyledProject>
                   ))}

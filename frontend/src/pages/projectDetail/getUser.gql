@@ -51,6 +51,10 @@ query GetCurrentUser($id: String!) {
         project_end_flg
         difficulty
 
+        tasks {
+          id
+        }
+
         groups {
           id
 
@@ -158,6 +162,10 @@ subscription UpdateUserDataSubSc($user_id: String!) {
         project_end_flg
         difficulty
 
+        tasks {
+          id
+        }
+
         groups {
           id
 
@@ -241,6 +249,10 @@ subscription UpdateUserDataByCertificationSubSc($user_id: String!) {
         project_end_flg
         difficulty
 
+        tasks {
+          id
+        }
+
         groups {
           id
 
@@ -323,6 +335,10 @@ subscription UpdateUserDataByInterestSubSc($user_id: String!) {
         end_date
         project_end_flg
         difficulty
+
+        tasks {
+          id
+        }
 
         groups {
           id
