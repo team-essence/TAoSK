@@ -13,7 +13,7 @@ export const Invitation: FC = () => {
 
   const [tryJoinProject] = useJoinProjectMutation({
     onCompleted(data) {
-      navigate(`/projects/${data.joinProject.project.id}`)
+      navigate(`/projects/${data.joinProject.project.id}`, { replace: true })
     },
     onError(err) {
       toast.error('失敗しました')
