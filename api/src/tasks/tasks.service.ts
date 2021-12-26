@@ -5,9 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Allocation } from 'src/allocations/allocation';
-import { AssignTaskInput } from 'src/allocations/dto/newAllocation.input';
+import {
+  AssignTaskInput,
+  NewAllocationInput,
+} from 'src/allocations/dto/newAllocation.input';
 import { Chat } from 'src/chats/chat';
 import { GameLog } from 'src/game-logs/game-log';
+import { Group } from 'src/groups/group';
 import { List } from 'src/lists/list';
 import { Project } from 'src/projects/project';
 import { User } from 'src/users/user';
@@ -16,7 +20,6 @@ import { NewTaskInput } from './dto/newTask.input';
 import { UpdateTaskSort } from './dto/updateTaskSort.input';
 import { UpdatedTask } from './models/udatedTask.model';
 import { Task } from './task';
-import { UpdatedTaskType } from './types/updatedTask.type';
 import StatusPointUtil from './utils/StatusPointUtil';
 
 @Injectable()
@@ -36,13 +39,30 @@ export class TasksService {
     private gameLogRepository: Repository<GameLog>,
     @InjectRepository(Chat)
     private chatRepository: Repository<Chat>,
+    @InjectRepository(Group)
+    private groupRepository: Repository<Group>,
   ) {}
 
-  async updateTaskSort(updateTask: UpdateTaskSort): Promise<UpdatedTask> {
+  async updateTaskSort(updateTask: UpdateTaskSort): Promise<{
+    lists: List[];
+    updatedTask: UpdatedTask;
+    logs: {
+      isUpdate: boolean;
+      logs: GameLog[];
+    };
+    allocationUsers: User[];
+    groups: Group[];
+  }> {
+    const allocationUsers: User[] = [];
+    const logs = {
+      isUpdate: false,
+      logs: [],
+    };
     const returnObjectTask = {
       id: 0,
       high_status_name: '',
       is_completed: false,
+      project_id: updateTask.project_id,
     };
 
     for (let index = 0; index < updateTask.tasks.length; index++) {
@@ -85,6 +105,7 @@ export class TasksService {
         returnObjectTask.id = task.id;
         returnObjectTask.is_completed = true;
         returnObjectTask.high_status_name = highStatus.status_name;
+        logs.isUpdate = true;
 
         task.completed_flg = updateTask.tasks[index].completed_flg;
 
@@ -95,7 +116,23 @@ export class TasksService {
 
         // 経験値付与
         task.allocations.map(async (allocation) => {
-          const user = await this.userRepository.findOne(allocation.user.id);
+          const user = await this.userRepository.findOne(allocation.user.id, {
+            relations: [
+              'interests',
+              'certifications',
+              'invitations',
+              'invitations.project',
+              'groups',
+              'groups.project',
+              'groups.project.tasks',
+              'groups.project.groups',
+              'groups.project.groups.user',
+              'groups.project.groups.user.occupation',
+              'groups.project.monster',
+              'groups.project.monster.specie',
+              'occupation',
+            ],
+          });
 
           const beforeLevel = (user.exp / 100) | 0;
           const sumExp = user.exp + totalStatus;
@@ -122,6 +159,26 @@ export class TasksService {
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
+
+          allocationUsers.push(
+            await this.userRepository.findOne(allocation.user.id, {
+              relations: [
+                'interests',
+                'certifications',
+                'invitations',
+                'invitations.project',
+                'groups',
+                'groups.project',
+                'groups.project.tasks',
+                'groups.project.groups',
+                'groups.project.groups.user',
+                'groups.project.groups.user.occupation',
+                'groups.project.monster',
+                'groups.project.monster.specie',
+                'occupation',
+              ],
+            }),
+          );
         });
 
         // ログ
@@ -154,6 +211,26 @@ export class TasksService {
           await this.userRepository.save(user).catch((err) => {
             throw err;
           });
+
+          allocationUsers.push(
+            await this.userRepository.findOne(allocation.user.id, {
+              relations: [
+                'interests',
+                'certifications',
+                'invitations',
+                'invitations.project',
+                'groups',
+                'groups.project',
+                'groups.project.tasks',
+                'groups.project.groups',
+                'groups.project.groups.user',
+                'groups.project.groups.user.occupation',
+                'groups.project.monster',
+                'groups.project.monster.specie',
+                'occupation',
+              ],
+            }),
+          );
         });
       }
 
@@ -162,13 +239,66 @@ export class TasksService {
       });
     }
 
-    return returnObjectTask;
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: updateTask.project_id })
+      .getMany();
+
+    const gameLogs = await this.gameLogRepository.find({
+      where: {
+        project: {
+          id: updateTask.project_id,
+        },
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 25,
+      relations: ['user', 'project'],
+    });
+    logs.logs = gameLogs;
+
+    const groups = await this.groupRepository.find({
+      where: {
+        project: {
+          id: updateTask.project_id,
+        },
+      },
+      relations: [
+        'user',
+        'user.interests',
+        'user.certifications',
+        'user.occupation',
+      ],
+    });
+
+    return {
+      lists: lists,
+      updatedTask: returnObjectTask,
+      logs,
+      allocationUsers,
+      groups,
+    };
   }
 
   async addTask(
     newTask: NewTaskInput,
     assignUser: AssignTaskInput,
-  ): Promise<Task> {
+  ): Promise<{
+    lists: List[];
+    logs: GameLog[];
+  }> {
     const tasks = await this.taskRepository.find({
       where: {
         project: {
@@ -242,14 +372,51 @@ export class TasksService {
       });
     }
 
-    return task;
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: newTask.project_id })
+      .getMany();
+    console.log(lists);
+
+    const logs = await this.gameLogRepository.find({
+      where: {
+        project: {
+          id: newTask.project_id,
+        },
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 25,
+      relations: ['user', 'project'],
+    });
+
+    return {
+      lists,
+      logs,
+    };
   }
 
-  async updateTitle(taskId: number, title: string): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  async updateTitle(
+    taskId: number,
+    title: string,
+  ): Promise<{ lists: List[]; project_id: string }> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.title = title;
@@ -258,20 +425,34 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return { lists, project_id: task.project.id };
   }
 
-  async updateOverview(taskId: number, overview: string): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  async updateOverview(
+    taskId: number,
+    overview: string,
+  ): Promise<{ lists: List[]; project_id: string }> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.overview = overview;
@@ -280,13 +461,23 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return { lists, project_id: task.project.id };
   }
 
   async updateParameters(
@@ -297,11 +488,12 @@ export class TasksService {
     motivation: number,
     plan: number,
     design: number,
-  ): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  ): Promise<{ lists: List[]; project_id: string }> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.technology = technology;
@@ -315,20 +507,34 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return { lists, project_id: task.project.id };
   }
 
-  async updateEndDate(taskId: number, end_date: string): Promise<Task> {
-    let task = await this.taskRepository.findOne({
+  async updateEndDate(
+    taskId: number,
+    end_date: string,
+  ): Promise<{ lists: List[]; project_id: string }> {
+    const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
 
     task.end_date = end_date;
@@ -337,21 +543,35 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    task = await this.taskRepository.findOne({
-      where: {
-        id: taskId,
-      },
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
 
-    return task;
+    return { lists, project_id: task.project.id };
   }
 
-  async deleteTask(taskId: number): Promise<Task[]> {
+  async deleteTask(
+    taskId: number,
+  ): Promise<{ lists: List[]; project_id: string }> {
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
+      relations: ['project'],
     });
+    const projectId = task.project.id;
 
     await this.chatRepository.delete({
       task: {
@@ -363,10 +583,104 @@ export class TasksService {
       new InternalServerErrorException();
     });
 
-    const tasks = this.taskRepository.find({
-      relations: ['project', 'list'],
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: projectId })
+      .getMany();
+
+    return { lists, project_id: projectId };
+  }
+
+  async assign({
+    newAllocation,
+  }: {
+    newAllocation: NewAllocationInput;
+  }): Promise<{ lists: List[]; project_id: string }> {
+    const user = await this.userRepository.findOne(newAllocation.user_id);
+    if (!user) throw new NotFoundException();
+
+    const task = await this.taskRepository.findOne(newAllocation.task_id, {
+      relations: ['project'],
+    });
+    if (!task) throw new NotFoundException();
+
+    const allocation = this.allocationRepository.create({
+      user,
+      task,
     });
 
-    return tasks;
+    await this.allocationRepository.save(allocation).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
+
+    return { lists, project_id: task.project.id };
+  }
+
+  async unassign(
+    userId: string,
+    taskId,
+  ): Promise<{ lists: List[]; project_id: string }> {
+    const allocation = await this.allocationRepository.findOne({
+      user: {
+        id: userId,
+      },
+      task: {
+        id: taskId,
+      },
+    });
+
+    this.allocationRepository.remove(allocation).catch(() => {
+      new InternalServerErrorException();
+    });
+
+    const task = await this.taskRepository.findOne(taskId, {
+      relations: ['project'],
+    });
+    if (!task) throw new NotFoundException();
+
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: task.project.id })
+      .getMany();
+
+    return { lists, project_id: task.project.id };
   }
 }

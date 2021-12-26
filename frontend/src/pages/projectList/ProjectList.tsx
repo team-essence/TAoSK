@@ -1,18 +1,15 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { Notifications } from 'types/notification'
 import { DEFAULT_USER } from 'consts/defaultImages'
 import { useAuthContext } from 'providers/AuthProvider'
-import { useUsersLazyQuery } from './projectList.gen'
-import { ContentWrapper } from 'components/ui/wrapper/ContentWrapper'
 import { ProjectListHeader } from 'components/ui/header/ProjectListHeader'
 import { ProjectListCreateModal } from 'components/models/projectList/ProjectListCreateModal'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVhBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
-import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
+import { BUTTON_COLOR_TYPE, GorgeousButton } from 'components/ui/button/GorgeousButton'
 import { ACTIVE_STATUS, ProjectListItem } from 'components/models/projectList/ProjectListItem'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { ProjectListDetail } from 'components/models/projectList/ProjectListDetail'
@@ -21,61 +18,45 @@ import {
   projectListDetailMarginLeft,
 } from 'utils/calculateProjectListDetailWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
-  const [getUserById, userData] = useUsersLazyQuery({
-    onCompleted(data) {
-      const notifications = data.user.invitations.map(invitation => {
-        return {
-          id: invitation.project.id,
-          name: invitation.project.name,
-          createAt: invitation.created_at,
-        }
-      })
-      setNotifications(notifications)
-    },
-  })
+  const { currentUserData, notifications } = useGetCurrentUserData()
   const [selectProject, setSelectProject] = useState(0)
-  const [notifications, setNotifications] = useState<Notifications>([])
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
-
-  useEffect(() => {
-    if (!currentUser) return
-    getUserById({ variables: { id: currentUser.uid } })
-  }, [currentUser])
 
   if (!currentUser) return <Navigate to="/signup" />
 
   return (
     <>
       <LazyLoading />
-      <ContentWrapper>
-        <ProjectListHeader
-          iconImage={userData.data?.user.icon_image ?? DEFAULT_USER}
-          name={userData.data?.user.name ?? ''}
-          uid={userData.data?.user.id ?? ''}
-          totalExp={userData.data?.user.exp ?? 0}
-          notifications={notifications}
-        />
+      <ProjectListHeader
+        iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+        name={currentUserData?.name ?? ''}
+        uid={currentUserData?.id ?? ''}
+        totalExp={currentUserData?.exp ?? 0}
+        notifications={notifications}
+      />
 
-        <StyledProjectListPageContainer>
-          <StyledProjectListContainer>
-            <StyledProjectTitleWrapper>
-              <StyledProjectTitle>プロジェクト一覧</StyledProjectTitle>
-            </StyledProjectTitleWrapper>
-            <StyledProjectListBodyWrapper>
-              <StyledCreateProjectButton>
-                <ComplicateButton
-                  buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
-                  text="プロジェクト作成"
-                  onClick={() => setShouldShowModal(true)}
-                />
-              </StyledCreateProjectButton>
+      <StyledProjectListPageContainer>
+        <StyledProjectListContainer>
+          <StyledProjectTitleWrapper>
+            <StyledProjectTitle>プロジェクト一覧</StyledProjectTitle>
+          </StyledProjectTitleWrapper>
+          <StyledProjectListBodyWrapper>
+            <StyledCreateProjectButton>
+              <GorgeousButton
+                buttonColorType={BUTTON_COLOR_TYPE.YELLOW}
+                text="プロジェクト作成"
+                onClick={() => setShouldShowModal(true)}
+              />
+            </StyledCreateProjectButton>
 
+            <StyledScrollWrapper>
               <StyledProjectListScroll>
                 <StyledProjectList>
-                  {userData.data?.user.groups.map((group, index) => (
+                  {currentUserData?.groups.map((group, index) => (
                     <StyledProject key={index} onClick={() => setSelectProject(index)}>
                       <ProjectListItem
                         activeStatue={
@@ -85,29 +66,30 @@ export const ProjectList: FC = () => {
                         projectTitle={group.project.name}
                         startDate={group.project.created_at}
                         endDate={group.project.end_date}
+                        hasTasks={!!group.project.tasks.length}
                       />
                     </StyledProject>
                   ))}
                 </StyledProjectList>
               </StyledProjectListScroll>
-            </StyledProjectListBodyWrapper>
-          </StyledProjectListContainer>
+            </StyledScrollWrapper>
+          </StyledProjectListBodyWrapper>
+        </StyledProjectListContainer>
 
-          <StyledProjectListDetail
-            isJoiningProject={!!userData.data?.user.groups.length}
-            userQuery={userData.data}
-            selectProject={selectProject}
-            openModal={() => setShouldShowModal(true)}
-          />
-
-          <StyledProjectListBackground />
-        </StyledProjectListPageContainer>
-
-        <ProjectListCreateModal
-          shouldShow={shouldShowModal}
-          closeModal={() => setShouldShowModal(false)}
+        <StyledProjectListDetail
+          isJoiningProject={!!currentUserData?.groups.length}
+          userQuery={currentUserData}
+          selectProject={selectProject}
+          openModal={() => setShouldShowModal(true)}
         />
-      </ContentWrapper>
+
+        <StyledProjectListBackground />
+      </StyledProjectListPageContainer>
+
+      <ProjectListCreateModal
+        shouldShow={shouldShowModal}
+        closeModal={() => setShouldShowModal(false)}
+      />
     </>
   )
 }
@@ -165,10 +147,13 @@ const StyledProjectTitle = styled.p`
     `}
 `
 
-const padding = `${calculateVhBasedOnFigma(64)} ${calculateMinSizeBasedOnFigmaWidth(
+const projectListBodyPaddingTop = calculateVhBasedOnFigma(64)
+const projectListBodyPaddingBottom = calculateVhBasedOnFigma(38)
+const padding = `${projectListBodyPaddingTop} ${calculateMinSizeBasedOnFigmaWidth(
   9,
-)} ${calculateVhBasedOnFigma(38)} 0` // ts-styled-pluginエラーを避けるため
+)} ${projectListBodyPaddingBottom} 0` // ts-styled-pluginエラーを避けるため
 const StyledProjectListBodyWrapper = styled.div`
+  position: relative;
   margin-top: ${calculateVhBasedOnFigma(-22)};
   padding: ${padding};
   width: ${projectListBodyWidth};
@@ -186,12 +171,21 @@ const StyledCreateProjectButton = styled.div`
   margin-bottom: ${calculateVhBasedOnFigma(24)};
 `
 
-const StyledProjectListScroll = styled.div`
-  display: flex;
-  justify-content: center;
-  overflow-y: scroll;
-  direction: rtl;
+const StyledScrollWrapper = styled.div`
+  overflow-x: auto;
+  position: relative;
+  margin-left: ${calculateMinSizeBasedOnFigmaWidth(15)};
+  width: ${calculateMinSizeBasedOnFigmaWidth(439)};
   height: 100%;
+`
+
+const StyledProjectListScroll = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  overflow-y: auto;
+  direction: rtl; // スクロールバーを左側に表示する
+  height: calc(100% - (${projectListBodyPaddingTop} + ${projectListBodyPaddingBottom}));
 `
 
 const StyledProjectList = styled.ul`

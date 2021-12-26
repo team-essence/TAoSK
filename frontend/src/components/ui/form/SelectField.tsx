@@ -33,9 +33,9 @@ export const SelectField: FCX<Props> = ({
   ...selectAttributes
 }) => {
   const [value, setValue] = useState<string>('')
-  const [hasBlured, setHasBlured] = useState<boolean>(false)
+  const [hasBlurred, setHasBlurred] = useState<boolean>(false)
 
-  const shouldShowError = !!(hasBlured && error?.message)
+  const shouldShowError = !!(hasBlurred && error?.message)
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     registration?.onChange && registration.onChange(e)
     setValue(e.target.value)
@@ -43,11 +43,11 @@ export const SelectField: FCX<Props> = ({
   const onBlur = (e: FocusEvent<HTMLSelectElement>) => {
     registration?.onBlur && registration.onBlur(e)
     selectAttributes.onBlur && selectAttributes.onBlur(e)
-    setHasBlured(true)
+    setHasBlurred(true)
   }
 
   useEffect(() => {
-    return () => setHasBlured(false)
+    return () => setHasBlurred(false)
   })
 
   return (

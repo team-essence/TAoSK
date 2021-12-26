@@ -8,6 +8,8 @@ import { NewCertificationClientInput } from 'src/certifications/dto/newCertifica
 import { PubSub } from 'graphql-subscriptions';
 import { SearchUserInput } from './dto/searchUser.input';
 import { ProjectDetailUserSearchInput } from './dto/projectDetailUserSearchInput';
+import { GameLog } from 'src/game-logs/game-log';
+import { Group } from 'src/groups/group';
 
 @Resolver((of) => User)
 export class UsersResolver {
@@ -88,14 +90,25 @@ export class UsersResolver {
     @Args({ name: 'project_id' }) project_id: string,
     @Args({ name: 'isOnline' }) isOnline: boolean,
   ) {
-    const user = await this.usersService.updateOnlineFlag(
+    const result = await this.usersService.updateOnlineFlag(
       id,
       project_id,
       isOnline,
     );
-    if (!user) throw new NotFoundException({ id, isOnline });
+    if (!result) throw new NotFoundException({ id, isOnline });
 
-    return user;
+    this.pubSub.publish('updateLogsByOnline', {
+      updateLogsByOnline: {
+        gameLogs: result.logs,
+        projectId: project_id,
+      },
+    });
+
+    this.pubSub.publish('updateGroupsByOnline', {
+      updateGroupsByOnline: { groups: result.groups, projectId: project_id },
+    });
+
+    return result.user;
   }
 
   @Mutation(() => User)
@@ -117,6 +130,13 @@ export class UsersResolver {
     const user = await this.usersService.updateUserName(id, name);
     if (!user) throw new NotFoundException({ id, name });
 
+    this.pubSub.publish('updateUserData', {
+      updateUserData: {
+        user,
+        userId: id,
+      },
+    });
+
     return user;
   }
 
@@ -128,12 +148,59 @@ export class UsersResolver {
     const user = await this.usersService.updateUserIconImage(id, icon_image);
     if (!user) throw new NotFoundException({ id, icon_image });
 
+    this.pubSub.publish('updateUserData', {
+      updateUserData: {
+        user,
+        userId: id,
+      },
+    });
+
     return user;
   }
 
   @Subscription((returns) => User, {})
   userAdded() {
     return this.pubSub.asyncIterator('userAdded');
+  }
+
+  @Subscription((returns) => [GameLog], {
+    filter: (payload, variables) => {
+      return payload.updateLogsByOnline.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateLogsByOnline.gameLogs;
+    },
+  })
+  updateLogsByOnline(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateLogsByOnline');
+  }
+
+  @Subscription((returns) => [Group], {
+    filter: (payload, variables) => {
+      return payload.updateGroupsByOnline.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateGroupsByOnline.groups;
+    },
+  })
+  updateGroupsByOnline(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateGroupsByOnline');
+  }
+
+  @Subscription((returns) => User, {
+    filter: (payload, variables) => {
+      return payload.updateUserData.userId === variables.userId;
+    },
+    resolve: (values) => {
+      return values.updateUserData.user;
+    },
+  })
+  updateUserData(@Args({ name: 'userId', type: () => String }) userId: string) {
+    return this.pubSub.asyncIterator('updateUserData');
   }
 
   // @Mutation((returns) => Boolean)

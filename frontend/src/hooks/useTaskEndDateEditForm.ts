@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEventHandler } from 'react'
 import { useForm, UseFormRegister } from 'react-hook-form'
 import { useUpdateTaskEndDateMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
+import logger from 'utils/debugger/logger'
 
 type FormInputs = { date: string }
 
@@ -25,10 +26,10 @@ export const useTaskEndDateEditForm: UseTaskEndDateEditForm<FormInputs> = ({
   const [newEndDate, setNewEndDate] = useState<string>(initialEndDate)
   const [updateTaskEndDate] = useUpdateTaskEndDateMutation({
     onCompleted(data) {
-      setNewEndDate(data.updateTaskEndDate.end_date)
       toast.success('日付を変更しました')
     },
     onError(err) {
+      logger.debug(err)
       toast.error('日付の変更に失敗しました')
     },
   })

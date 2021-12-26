@@ -3,11 +3,11 @@ import { StatusParam } from 'types/status'
 import { useUpdateTaskParametersMutation } from 'pages/projectDetail/projectDetail.gen'
 import toast from 'utils/toast/toast'
 import { checkObjEqual } from 'utils/checkObjEqual'
+import logger from 'utils/debugger/logger'
 
 type StatusCounts = Record<StatusParam, number>
 
 type UseTaskStatusPointEditFormReturn = {
-  statusCounts: StatusCounts
   setStatusCounts: Dispatch<SetStateAction<StatusCounts>>
   disabled: boolean
   onClickSaveButton: () => void
@@ -32,20 +32,10 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
   )
   const [updateTaskParameterMutation] = useUpdateTaskParametersMutation({
     onCompleted(data) {
-      const { technology, solution, achievement, motivation, design, plan } =
-        data.updateTaskParameters
-      const newValue = {
-        technology,
-        solution,
-        achievement,
-        motivation,
-        design,
-        plan,
-      }
-      setNewStatusCounts({ ...newValue })
       toast.success('パラメーターを変更しました')
     },
     onError(err) {
+      logger.debug(err)
       toast.error('パラメーターの変更に失敗しました')
     },
   })
@@ -60,7 +50,6 @@ export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
   }, [statusCounts])
 
   return {
-    statusCounts,
     setStatusCounts,
     disabled,
     onClickSaveButton,

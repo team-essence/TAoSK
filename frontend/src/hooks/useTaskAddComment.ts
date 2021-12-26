@@ -18,7 +18,7 @@ type UseTaskAddCommentReturn = {
 export const useTaskAddComment = (id: string): UseTaskAddCommentReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const { register, handleSubmit, setValue, value, disabled } = useTaskCommentForm()
-  const myData = useMemo(() => currentUserData.data?.user, [currentUserData.data?.user])
+  const myData = useMemo(() => currentUserData, [currentUserData])
 
   const [addChat] = useAddChatMutation({
     onCompleted(data) {

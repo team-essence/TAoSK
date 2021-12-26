@@ -18,6 +18,7 @@ import { NotificationHeader } from 'components/ui/header/NotificationHeader'
 import { InvitationHeader } from 'components/ui/header/InvitaionHeader'
 import { SearchTaskPopup } from 'components/ui/popup/SearchTaskPopup'
 import { UserAccountSettingModal } from 'components/models/user/UserAccountSettingModal'
+import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 
 type Props = {
   iconImage: string
@@ -26,7 +27,8 @@ type Props = {
   totalExp: number
   notifications: Notifications
   company: string
-  list: List[]
+  lists: List[]
+  groups: GetProjectQuery['getProjectById']['groups']
 }
 
 export const ProjectDetailHeader: FCX<Props> = ({
@@ -37,7 +39,8 @@ export const ProjectDetailHeader: FCX<Props> = ({
   totalExp,
   notifications,
   company,
-  list,
+  lists,
+  groups,
 }) => {
   const navigate = useNavigate()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
@@ -125,8 +128,8 @@ export const ProjectDetailHeader: FCX<Props> = ({
   }
 
   useEffect(() => {
-    logger.debug(taskSearch(list, debouncedInputText))
-    setSearchTasks(taskSearch(list, debouncedInputText))
+    logger.debug(taskSearch(lists, debouncedInputText))
+    setSearchTasks(taskSearch(lists, debouncedInputText))
   }, [debouncedInputText])
 
   useEffect(() => {
@@ -199,6 +202,7 @@ export const ProjectDetailHeader: FCX<Props> = ({
             isClick={isClickInvitation}
             closeClick={() => setIsIsClickInvitation(false)}
             company={company}
+            groups={groups}
           />
         </StyledPopupContainer>
 

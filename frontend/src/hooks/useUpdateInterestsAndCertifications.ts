@@ -58,24 +58,24 @@ export const useUpdateInterestsAndCertifications: UseUpdateInterestsAndCertifica
   })
 
   const onClickSaveCertificationsButton = useCallback(() => {
-    if (!currentUserData.data?.user.id) return
+    if (!currentUserData?.id) return
     updateCertifications({
       variables: {
         names: certificationsTagInfo.items,
-        user_id: currentUserData.data.user.id,
+        user_id: currentUserData?.id,
       },
     })
-  }, [currentUserData.data?.user.id, certificationsTagInfo.items])
+  }, [currentUserData?.id, certificationsTagInfo.items])
 
   const onClickSaveInterestsButton = useCallback(() => {
-    if (!currentUserData.data?.user.id) return
+    if (!currentUserData?.id) return
     updateInterests({
       variables: {
         contexts: interestsTagInfo.items,
-        user_id: currentUserData.data.user.id,
+        user_id: currentUserData?.id,
       },
     })
-  }, [currentUserData.data?.user.id, interestsTagInfo.items])
+  }, [currentUserData?.id, interestsTagInfo.items])
 
   return {
     certificationsModalProps: {

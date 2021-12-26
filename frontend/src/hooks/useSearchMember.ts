@@ -69,7 +69,7 @@ export const useSearchMember = (
       variables: {
         selectUserIds: selectedUserData.map(data => data.id),
         name: debouncedInputText,
-        company: currentUserData.data?.user.company ? currentUserData.data.user.company : '',
+        company: currentUserData?.company ? currentUserData.company : '',
       },
     })
   }, [debouncedInputText, selectedUserData])

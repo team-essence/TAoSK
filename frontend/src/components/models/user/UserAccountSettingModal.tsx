@@ -2,7 +2,7 @@ import React, { FCX, Dispatch, SetStateAction } from 'react'
 import styled, { css } from 'styled-components'
 import { REGEX_EMAIL, REGEX_TEXT } from 'consts/regex'
 import { Modal } from 'components/ui/modal/Modal'
-import { CancelButton } from 'components/ui/button/CancelButton'
+import { InputCancelButton } from 'components/ui/button/InputCancelButton'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { ImageInputField, UPLOAD_BUTTON } from 'components/ui/form/ImageInputField'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -58,7 +58,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                 {!!nameController.error && nameController.error.message}
               </StyledErrorMessage>
               <StyledButtonWrapper>
-                <CancelButton onClick={nameController.initialize} />
+                <InputCancelButton onClick={nameController.initialize} />
                 <CoarseRedOxideButton
                   text="保存"
                   onClick={handleUpdateUserNameMutation}
@@ -94,7 +94,7 @@ export const UserAccountSettingModal: FCX<Props> = ({ shouldShow, setShouldShow,
                 {!!emailController.error && emailController.error.message}
               </StyledErrorMessage>
               <StyledButtonWrapper>
-                <CancelButton onClick={emailController.initialize} />
+                <InputCancelButton onClick={emailController.initialize} />
                 <CoarseRedOxideButton
                   text="保存"
                   onClick={handleChangeEmail}

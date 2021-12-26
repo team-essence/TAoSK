@@ -1,29 +1,17 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { DropResult, resetServerContext } from 'react-beautiful-dnd'
+import { resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
-import { useAuthContext } from 'providers/AuthProvider'
-import { useGetCurrentUserLazyQuery } from './getUser.gen'
 import { useSearchSameCompanyUsersMutation } from '../projectList/projectList.gen'
-import {
-  useGetProjectLazyQuery,
-  useCreateInvitationMutation,
-  useUpdateTaskSortMutation,
-  useCreateListMutation,
-  useUpdateListSortMutation,
-} from './projectDetail.gen'
-import logger from 'utils/debugger/logger'
+import { useCreateInvitationMutation, useCreateListMutation } from './projectDetail.gen'
 import toast from 'utils/toast/toast'
 import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { usePresence } from 'hooks/usePresence'
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
-import { StatusParam } from 'types/status'
 import { List } from 'types/list'
-import { Task } from 'types/task'
 import { DEFAULT_USER } from 'consts/defaultImages'
-import { DROP_TYPE } from 'consts/dropType'
 import { ProjectDrawer } from 'components/models/project/ProjectDrawer'
 import { ProjectRight } from 'components/models/project/ProjectRight'
 import { ProjectMyInfo } from 'components/models/project/ProjectMyInfo'
@@ -31,109 +19,32 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
+import { useProjectDetailDragEnd } from 'hooks/useProjectDetailDragEnd'
+import { useProjectDetail } from 'hooks/useProjectDetail'
+import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { Notifications } from 'types/notification'
+import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
+import Exp from 'utils/exp/exp'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
   usePresence()
   const { id } = useParams()
-  const { currentUser } = useAuthContext()
   const { json, setWeapon } = useSetWeaponJson()
   const { anchorEl, isCompleted, setIsCompleted } = useCompleteAnimation<HTMLDivElement>(json)
   const [selectUserIds, setSelectUserIds] = useState<string[]>([])
-  const [notifications, setNotifications] = useState<Notifications>([])
-  const [monsterHPRemaining, setMonsterHPRemaining] = useState(0)
-  const [monsterTotalHP, setMonsterTotalHP] = useState(0)
-  const [isTasks, setIsTasks] = useState(false)
+  const [lists, setLists] = useState<List[]>([])
   const inputUserName = useInput('')
-  const [getProjectById, projectData] = useGetProjectLazyQuery({
-    onCompleted(data) {
-      data.getProjectById.groups.map(group => {
-        setSelectUserIds(groupList => [...groupList, group.user.id])
-      })
 
-      const sortList: List[] = data.getProjectById.lists.map(list => {
-        const tasks = list.tasks.map(task => {
-          const totalStatusPoint =
-            task.technology +
-            task.achievement +
-            task.solution +
-            task.motivation +
-            task.plan +
-            task.design
+  const { projectData, monsterHPRemaining, monsterTotalHP, isTasks } = useProjectDetail(
+    setSelectUserIds,
+    setLists,
+  )
 
-          setMonsterHPRemaining(monsterHPRemaining => {
-            if (task.completed_flg) return monsterHPRemaining
-            return monsterHPRemaining + totalStatusPoint
-          })
-          setMonsterTotalHP(monsterTotalHP => monsterTotalHP + totalStatusPoint)
-
-          const allocations = task.allocations.map(allocation => {
-            return {
-              id: allocation.user.id,
-              name: allocation.user.name,
-              icon_image: allocation.user.icon_image,
-              occupation: allocation.user.occupation,
-            }
-          })
-
-          return {
-            id: task.id,
-            title: task.title,
-            overview: task.overview,
-            technology: task.technology,
-            achievement: task.achievement,
-            solution: task.solution,
-            motivation: task.motivation,
-            plan: task.plan,
-            design: task.design,
-            vertical_sort: task.vertical_sort,
-            end_date: task.end_date,
-            chatCount: task.chatCount,
-            completed_flg: task.completed_flg,
-            allocations,
-          }
-        })
-
-        logger.debug(tasks.length, 'タスクの数')
-        setIsTasks(isTasks => {
-          if (isTasks) return isTasks
-          return !!tasks.length
-        })
-
-        return {
-          id: list.id,
-          list_id: list.list_id,
-          sort_id: list.listSorts[0].id,
-          index: list.listSorts[0].task_list,
-          title: list.name,
-          tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
-        }
-      })
-
-      sortList.sort((a, b) => a.index - b.index)
-
-      logger.debug(sortList)
-      setList(sortList)
-    },
-    onError(err) {
-      logger.debug(err)
-    },
-  })
-  const [getCurrentUser, currentUserData] = useGetCurrentUserLazyQuery({
-    onCompleted(data) {
-      const notifications: Notifications = data.user.invitations.map(invitation => {
-        return {
-          id: invitation.project.id,
-          name: invitation.project.name,
-          createAt: invitation.created_at,
-        }
-      })
-      setNotifications(notifications)
-    },
-  })
+  const { currentUserData, firebaseCurrentUser, notifications } = useGetCurrentUserData()
 
   const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
+
   const [createInvitation] = useCreateInvitationMutation({
     onCompleted(data) {
       toast.success(`${data.createInvitation.user.name}を招待しました`)
@@ -143,257 +54,38 @@ export const ProjectDetail: FC = () => {
       toast.error('招待に失敗しました')
     },
   })
-  const [updateTaskSort] = useUpdateTaskSortMutation({
-    onCompleted(data) {
-      logger.table(data.updateTaskSort)
-      if (data.updateTaskSort.is_completed) {
-        setWeapon(data.updateTaskSort.high_status_name as StatusParam)
-        setIsCompleted(true)
-      }
-    },
-    onError(err) {
-      logger.debug(err)
-      toast.error('タスクの移動に失敗しました')
-    },
-  })
 
   const [createList] = useCreateListMutation({
     onCompleted(data) {
       toast.success('リストを作成しました')
-      const newListData = data.createList
-
-      const tasks = newListData.tasks.map(task => {
-        const allocations = task.allocations.map(allocation => {
-          return {
-            id: allocation.user.id,
-            name: allocation.user.name,
-            icon_image: allocation.user.icon_image,
-            occupation: allocation.user.occupation,
-          }
-        })
-
-        return {
-          id: task.id,
-          title: task.title,
-          overview: task.overview,
-          technology: task.technology,
-          achievement: task.achievement,
-          solution: task.solution,
-          motivation: task.motivation,
-          plan: task.plan,
-          design: task.design,
-          vertical_sort: task.vertical_sort,
-          end_date: task.end_date,
-          chatCount: task.chatCount,
-          completed_flg: task.completed_flg,
-          allocations,
-        }
-      })
-
-      const newList: List = {
-        id: newListData.id,
-        list_id: newListData.list_id,
-        sort_id: newListData.listSorts[0].id,
-        index: newListData.listSorts[0].task_list,
-        title: newListData.name,
-        tasks: tasks.sort((a, b) => a.vertical_sort - b.vertical_sort),
-      }
-
-      const listCopy = list
-      listCopy.splice(newListData.listSorts[0].task_list, 0, newList)
-      const result = listCopy
-        .map((list, index) => {
-          list.index = index
-          return list
-        })
-        .sort((a, b) => a.index - b.index)
-
-      setList(result)
-      const updateListSort = result.map((list, index) => {
-        return {
-          id: list.sort_id,
-          task_list: index,
-        }
-      })
-      updateList({
-        variables: {
-          listSort: updateListSort,
-        },
-      })
     },
     onError(err) {
       toast.error('リスト作成に失敗しました')
     },
   })
 
-  const [updateList] = useUpdateListSortMutation({
-    onError(err) {
-      toast.error('リスト更新に失敗しました')
-    },
+  const { onDragEnd } = useProjectDetailDragEnd({
+    lists,
+    setLists,
+    setWeapon,
+    setIsCompleted,
+    firebaseCurrentUser,
   })
 
-  const [list, setList] = useState<List[]>([])
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
-
-  useEffect(() => {
-    if (!currentUser) return
-
-    getCurrentUser({
-      variables: {
-        id: currentUser.uid,
-      },
-    })
-  }, [currentUser])
-
-  useEffect(() => {
-    if (!id) return
-
-    getProjectById({
-      variables: {
-        id,
-      },
-    })
-  }, [id])
 
   useEffect(() => {
     searchSameCompanyUsers({
       variables: {
         selectUserIds: selectUserIds,
         name: debouncedInputText,
-        company: currentUserData.data?.user.company ? currentUserData.data.user.company : '',
+        company: currentUserData?.company ? currentUserData.company : '',
       },
     })
   }, [debouncedInputText])
 
   const handleInsertSelectUserId = (userId: string) => {
     setSelectUserIds(selectUserIds => [...selectUserIds, userId])
-  }
-
-  const removeFromList = (list: Task[], index: number): [Task, Task[]] => {
-    const result = Array.from(list)
-    const [removed] = result.splice(index, 1)
-    return [removed, result]
-  }
-
-  const addToList = (list: Task[], index: number, element: Task) => {
-    const result = Array.from(list)
-    result.splice(index, 0, element)
-    return result
-  }
-
-  const reorder = (array: List[], startIndex: number, endIndex: number) => {
-    const result = Array.from(array)
-
-    const previousItem = result[endIndex]
-    const [removed] = result.splice(startIndex, 1)
-
-    if (previousItem) {
-      removed.index = previousItem.index
-    }
-    result.splice(endIndex, 0, removed)
-    return result
-  }
-
-  const onDragEnd = async (result: DropResult) => {
-    if (!result.destination) return
-    const { source, destination, type } = result
-    const destinationDroppableId = Number(destination.droppableId)
-    const sourceDroppableId = Number(source.droppableId)
-    const destinationIndex = destination.index
-    const sourceIndex = source.index
-    if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
-
-    const listCopy = [...list]
-
-    if (type === DROP_TYPE.COLUMN) {
-      if (destinationIndex === 0) {
-        toast.warning('未着手は固定されています')
-        return
-      }
-      if (destinationIndex === list.length - 1) {
-        toast.warning('完了は固定されています')
-        return
-      }
-      const result = reorder(listCopy, sourceIndex, destinationIndex)
-      setList(result)
-      const updateListSort = result.map((list, index) => {
-        return {
-          id: list.sort_id,
-          task_list: index,
-        }
-      })
-      await updateList({
-        variables: {
-          listSort: updateListSort,
-        },
-      })
-      return
-    }
-
-    const [removedElement, newSourceList] = removeFromList(
-      listCopy[sourceDroppableId].tasks,
-      sourceIndex,
-    )
-
-    listCopy[sourceDroppableId].tasks = newSourceList
-
-    const destinationTask = listCopy[destinationDroppableId].tasks
-    listCopy[destinationDroppableId].tasks = addToList(
-      destinationTask,
-      destinationIndex,
-      removedElement,
-    )
-
-    const sortListCopy = listCopy.map(list => {
-      const sortList = list.tasks.map((task, index) => {
-        task.vertical_sort = index
-        return task
-      })
-
-      list.tasks = sortList
-      return list
-    })
-
-    //TODO: 完了にカードが移動したらcompleted_flgをtrueにする処理を書く必要あり
-    const updateTasks = sortListCopy.map((list, index, { length }) => {
-      logger.debug(length)
-      return list.tasks.map((task, taskIndex) => {
-        return {
-          id: task.id,
-          list_id: list.list_id,
-          vertical_sort: taskIndex,
-          completed_flg: index === length - 1 ? true : false,
-        }
-      })
-    })
-    // return
-
-    const joinUpdateTasks = []
-    for (let index = 0; index < updateTasks.length; index++) {
-      joinUpdateTasks.push(...updateTasks[index])
-    }
-
-    logger.table([...joinUpdateTasks])
-    await updateTaskSort({
-      variables: {
-        updateTasks: {
-          tasks: joinUpdateTasks,
-          project_id: String(id),
-          user_id: currentUser?.uid ?? '',
-        },
-      },
-    })
-
-    setList(listCopy)
-  }
-
-  const handleInvitation = async (userId: string, projectId: string) => {
-    await createInvitation({
-      variables: {
-        userId,
-        projectId,
-      },
-    })
   }
 
   const handleCreateList = async () => {
@@ -403,7 +95,7 @@ export const ProjectDetail: FC = () => {
           name: 'リスト名',
           project_id: String(id),
           task_list: 1,
-          user_id: currentUser?.uid ?? '',
+          user_id: firebaseCurrentUser?.uid ?? '',
         },
       },
     })
@@ -414,27 +106,28 @@ export const ProjectDetail: FC = () => {
       <LazyLoading />
       {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
-        iconImage={currentUserData.data?.user.icon_image ?? DEFAULT_USER}
-        name={currentUserData.data?.user.name ?? ''}
-        uid={currentUserData.data?.user.id ?? ''}
-        totalExp={currentUserData.data?.user.exp ?? 0}
-        company={currentUserData.data?.user.company ?? ''}
+        iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
+        name={currentUserData?.name ?? ''}
+        uid={currentUserData?.id ?? ''}
+        totalExp={currentUserData?.exp ?? 0}
+        company={currentUserData?.company ?? ''}
         notifications={notifications}
-        list={list}
+        lists={lists}
+        groups={projectData.data?.getProjectById.groups ?? []}
       />
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
           <ProjectDrawer
             groups={projectData.data?.getProjectById.groups}
-            lists={list}
+            lists={lists}
             onDragEnd={onDragEnd}
           />
-          {!!currentUserData.data && (
+          {!!currentUserData && (
             <ProjectMyInfo
-              {...currentUserData.data.user}
-              iconImage={currentUserData.data.user.icon_image}
-              occupation={currentUserData.data.user.occupation.name}
-              totalExp={currentUserData.data.user.exp}
+              {...currentUserData}
+              iconImage={currentUserData.icon_image}
+              occupation={currentUserData.occupation.name}
+              totalExp={currentUserData.exp}
             />
           )}
         </StyledProjectDetailLeftContainer>
