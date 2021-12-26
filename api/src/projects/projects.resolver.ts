@@ -5,6 +5,7 @@ import { Invitation } from 'src/invitations/invitation';
 import { User } from 'src/users/user';
 import { EndProjectInput } from './dto/endProject.input';
 import { NewProjectInput, SelectUser } from './dto/newProject.input';
+import { UpdateProjectInput } from './dto/updateProject.input';
 import { Project } from './project';
 import { ProjectsService } from './projects.service';
 
@@ -61,6 +62,22 @@ export class ProjectsResolver {
     return this.projectService.completedProject(endProject);
   }
 
+  @Mutation(() => Project)
+  async updateProject(
+    @Args({ name: 'projectId' }) projectId: string,
+    @Args({ name: 'updateProject' }) updateProject: UpdateProjectInput,
+  ) {
+    return this.projectService.updateProject(projectId, updateProject);
+  }
+
+  @Mutation(() => User)
+  async deleteProject(
+    @Args({ name: 'projectId' }) projectId: string,
+    @Args({ name: 'userId' }) userId: string,
+  ) {
+    return this.projectService.deleteProject(projectId, userId);
+  }
+  
   @Subscription((returns) => User, {
     filter: (payload, variables) => {
       return payload.projectCreate.userId === variables.userId;

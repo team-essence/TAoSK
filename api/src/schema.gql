@@ -222,6 +222,8 @@ type Mutation {
   creteOccupation(name: String!): Occupation!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
   completedProject(endProject: EndProjectInput!): Boolean!
+  updateProject(updateProject: UpdateProjectInput!, projectId: String!): Project!
+  deleteProject(userId: String!, projectId: String!): User!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   createList(newList: NewListInput!): [List!]!
@@ -307,6 +309,13 @@ input NewProjectInput {
 input EndProjectInput {
   project_id: String!
   user_id: String!
+}
+
+input UpdateProjectInput {
+  name: String!
+  overview: String!
+  difficulty: Float!
+  end_date: String!
 }
 
 input NewListInput {

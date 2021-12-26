@@ -16,6 +16,10 @@ import { Project } from './project';
 import { v4 as uuidv4 } from 'uuid';
 import { GameLog } from 'src/game-logs/game-log';
 import { EndProjectInput } from './dto/endProject.input';
+import { UpdateProjectInput } from './dto/updateProject.input';
+import { Task } from 'src/tasks/task';
+import { Allocation } from 'src/allocations/allocation';
+import { Chat } from 'src/chats/chat';
 
 @Injectable()
 export class ProjectsService {
@@ -36,6 +40,12 @@ export class ProjectsService {
     private listSortRepository: Repository<ListSort>,
     @InjectRepository(GameLog)
     private gameLogRepository: Repository<GameLog>,
+    @InjectRepository(Task)
+    private taskRepository: Repository<Task>,
+    @InjectRepository(Allocation)
+    private allocationRepository: Repository<Allocation>,
+    @InjectRepository(Chat)
+    private chatRepository: Repository<Chat>,
   ) {}
 
   async create({
@@ -230,5 +240,141 @@ export class ProjectsService {
     } catch (error) {
       return false;
     }
+  }
+
+  async updateProject(
+    id: string,
+    updateProject: UpdateProjectInput,
+  ): Promise<Project> {
+    const project = await this.projectRepository.findOne(id, {
+      relations: [
+        'monster',
+        'monster.specie',
+        'groups',
+        'groups.user',
+        'groups.user.occupation',
+      ],
+    });
+
+    project.name = updateProject.name;
+    project.overview = updateProject.overview;
+    project.difficulty = updateProject.difficulty;
+    project.end_date = new Date(updateProject.end_date);
+
+    this.projectRepository.save(project).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    return project;
+  }
+
+  async deleteProject(projectId: string, userId: string) {
+    const project = await this.projectRepository.findOne(projectId);
+
+    //プロジェクトに紐づいてるもの削除
+    //タスク->チャット・割り当て
+    const tasks = await this.taskRepository.find({
+      where: {
+        project: {
+          id: projectId,
+        },
+      },
+    });
+
+    for (let i = 0; i < tasks.length; i++) {
+      const task = await this.taskRepository.findOne({
+        where: {
+          id: tasks[i].id,
+        },
+      });
+
+      await this.chatRepository.delete({
+        task: {
+          id: tasks[i].id,
+        },
+      });
+
+      await this.allocationRepository.delete({
+        task: {
+          id: tasks[i].id,
+        },
+      });
+
+      //取得してきたものを削除
+      await this.taskRepository.remove(task).catch(() => {
+        new InternalServerErrorException();
+      });
+    }
+
+    // リスト->リスト順序
+    const lists = await this.listRepository.find({
+      where: {
+        project: {
+          id: projectId,
+        },
+      },
+    });
+
+    for (let i = 0; i < lists.length; i++) {
+      const listSort = await this.listSortRepository.findOne({
+        where: {
+          list: {
+            id: lists[i].id,
+          },
+        },
+      });
+
+      //取得してきたものを削除
+      await this.listSortRepository.remove(listSort).catch(() => {
+        new InternalServerErrorException();
+      });
+    }
+
+    await this.listRepository.delete({
+      project: {
+        id: projectId,
+      },
+    });
+    //ログ
+    await this.gameLogRepository.delete({
+      project: {
+        id: projectId,
+      },
+    });
+    //招待
+    await this.invitationRepository.delete({
+      project: {
+        id: projectId,
+      },
+    });
+    //グループ
+    await this.groupRepository.delete({
+      project: {
+        id: projectId,
+      },
+    });
+
+    this.projectRepository.remove(project).catch((err) => {
+      new InternalServerErrorException();
+    });
+
+    const user = this.userRepository.findOne(userId, {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
+    return user;
   }
 }
