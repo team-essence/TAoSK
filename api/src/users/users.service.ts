@@ -62,6 +62,8 @@ export class UsersService {
         'groups.project.groups.user.occupation',
         'groups.project.monster',
         'groups.project.monster.specie',
+        'allocations',
+        'allocations.task',
         'occupation',
       ],
     });
