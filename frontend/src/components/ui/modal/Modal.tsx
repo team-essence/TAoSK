@@ -52,7 +52,7 @@ const StyledBackdrop = styled.div`
   bottom: 0;
   top: 0;
   left: 0;
-  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.6)};
+  background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.7)};
   ${animation.backdrop}
 `
 const StyledMuiModal = styled(MuiModal)`

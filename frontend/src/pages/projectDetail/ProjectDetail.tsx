@@ -19,6 +19,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
+import { ProjectClearOverlay } from 'components/models/project/ProjectClearOverlay'
 import { useProjectDetailDragEnd } from 'hooks/useProjectDetailDragEnd'
 import { useProjectDetail } from 'hooks/useProjectDetail'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
@@ -64,7 +65,7 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { onDragEnd } = useProjectDetailDragEnd({
+  const { onDragEnd, shouldProjectClose } = useProjectDetailDragEnd({
     lists,
     setLists,
     setWeapon,
@@ -141,6 +142,7 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
+      <ProjectClearOverlay shouldOpen={shouldProjectClose} />
       <StyledBackground />
     </>
   )

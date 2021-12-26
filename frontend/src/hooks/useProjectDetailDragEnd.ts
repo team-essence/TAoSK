@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { useState, Dispatch, SetStateAction } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { assertStatusParam } from 'types/status'
@@ -26,6 +26,7 @@ type UseProjectDetailDragEndArg = {
 
 type UseProjectDetailDragEndReturn = {
   onDragEnd: (result: DropResult) => Promise<void>
+  shouldProjectClose: boolean
 }
 
 type UseProjectDetailDragEnd = (arg: UseProjectDetailDragEndArg) => UseProjectDetailDragEndReturn
@@ -50,7 +51,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       logger.table(data.updateTaskSort)
       const { is_completed, high_status_name } = data.updateTaskSort
       if (!is_completed) return
-      if (assertStatusParam(high_status_name)) {
+      if (assertStatusParam(high_status_name) && !shouldProjectClose) {
         setWeapon(high_status_name)
         setIsCompleted(true)
       }
@@ -65,6 +66,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       toast.error('リスト更新に失敗しました')
     },
   })
+  const [shouldProjectClose, setShouldProjectClose] = useState<boolean>(false)
 
   const handleDroppedColumnList: HandleDroppedColumnList = async ({
     destinationIndex,
@@ -115,6 +117,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 
     const sortedListsCopy = getRefreshedListsVertical(listsCopy)
     const tasksInfoToUpdate = adjustTasksInfoToUpdate(sortedListsCopy)
+    setShouldProjectClose(tasksInfoToUpdate.every(task => task.completed_flg))
 
     logger.table([...tasksInfoToUpdate])
 
@@ -131,5 +134,5 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     setLists(listsCopy)
   }
 
-  return { onDragEnd }
+  return { onDragEnd, shouldProjectClose }
 }
