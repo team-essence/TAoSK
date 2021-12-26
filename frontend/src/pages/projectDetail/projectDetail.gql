@@ -644,6 +644,8 @@ subscription UpdateListByListSort($project_id: String!) {
 
 subscription UpdateGroupsByOnline($project_id: String!) {
   updateGroupsByOnline(projectId: $project_id) {
+    id
+
     user {
       id
       name
@@ -679,6 +681,8 @@ subscription UpdateGroupsByOnline($project_id: String!) {
 
 subscription UpdateGroupsByTaskSubSc($project_id: String!) {
   updateGroupsByTask(projectId: $project_id) {
+    id
+
     user {
       id
       name
@@ -711,8 +715,6 @@ subscription UpdateGroupsByTaskSubSc($project_id: String!) {
     }
   }
 }
-
-
 
 subscription UpdateListByChat($project_id: String!) {
   updateListByChat(projectId: $project_id) {
@@ -752,6 +754,43 @@ subscription UpdateListByChat($project_id: String!) {
             name
           }
         }
+      }
+    }
+  }
+}
+
+subscription UpdateGroupsByGroup($project_id: String!) {
+  updateGroupsByGroup(projectId: $project_id) {
+    id
+
+    user {
+      id
+      name
+      icon_image
+      hp
+      mp
+      exp
+      technology
+      achievement
+      motivation
+      solution
+      plan
+      design
+      online_flg
+
+      interests {
+        id
+        context
+      }
+
+      certifications {
+        id
+        name
+      }
+
+      occupation {
+        id
+        name
       }
     }
   }

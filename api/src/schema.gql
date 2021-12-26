@@ -393,6 +393,7 @@ type Subscription {
   updateUserDataByInterest(userId: String!): User!
   projectCreate(userId: String!): User!
   newInvitationByCreateProject(userId: String!): [Invitation!]!
+  updateGroupsByGroup(projectId: String!): [Group!]!
   newInvitation(userId: String!): [Invitation!]!
   updateListByList(projectId: String!): [List!]!
   updateListByListSort(projectId: String!): [List!]!

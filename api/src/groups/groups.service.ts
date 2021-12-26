@@ -23,7 +23,10 @@ export class GroupsService {
     invitationId: string,
     userId: string,
     projectId: string,
-  ): Promise<Group> {
+  ): Promise<{
+    group: Group;
+    groups: Group[];
+  }> {
     // 招待テーブル
     const invitation = await this.invitationRepository.findOne(invitationId);
     invitation.deleted_at = new Date();
@@ -42,6 +45,23 @@ export class GroupsService {
       new InternalServerErrorException();
     });
 
-    return group;
+    const groups = await this.groupRepository.find({
+      where: {
+        project: {
+          id: projectId,
+        },
+      },
+      relations: [
+        'user',
+        'user.interests',
+        'user.certifications',
+        'user.occupation',
+      ],
+    });
+
+    return {
+      group,
+      groups,
+    };
   }
 }
