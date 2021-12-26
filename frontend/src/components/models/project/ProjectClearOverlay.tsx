@@ -1,17 +1,20 @@
 import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
-import { animation } from 'styles/animation/projectClearAnimation'
 import MuiBackdrop from '@mui/material/Backdrop'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
+import { animation } from 'styles/animation/stampAnimation'
 
 type Props = { shouldOpen: boolean }
 
 export const ProjectClearOverlay: FCX<Props> = ({ className, shouldOpen }) => {
   return (
-    <StyledMuiBackdrop className={className} open={shouldOpen}>
+    <StyledMuiBackdrop className={className} open={shouldOpen} invisible={true}>
       <StyledOverlay>
-        <StyledQuestClearStamp src="/svg/project__quest-clear.svg" alt="QUEST CLEAR" />
+        {/* &&演算子なしでコンポーネントを置くとkeyframesアニメーションが効かなくなる */}
+        {shouldOpen && (
+          <StyledQuestClearStamp src="/svg/project__quest-clear.svg" alt="QUEST CLEAR" />
+        )}
       </StyledOverlay>
     </StyledMuiBackdrop>
   )
@@ -29,8 +32,8 @@ const StyledOverlay = styled.div`
   height: 100vh;
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.7)};
 `
-// TODO: アニメーションは適当なのでちゃんと実装する
 const StyledQuestClearStamp = styled.img`
+  display: inline-block;
   width: ${calculateMinSizeBasedOnFigma(782)};
   height: ${calculateMinSizeBasedOnFigma(535)};
   ${animation.stamp}
