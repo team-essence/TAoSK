@@ -13,11 +13,13 @@ import { MyPageTags } from 'components/models/myPage/MyPageTags'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import styled, { css } from 'styled-components'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { useFetchSubscriptionCurrentUserDataFromMyPage } from 'hooks/subscriptions/useFetchSubscriptionCurrentUserFromMyPage'
 
 export const MyPage: FC = () => {
   const { currentUser } = useAuthContext()
   const { id } = useParams()
-  const { currentUserData, notifications } = useGetCurrentUserData()
+  const { currentUserData, notifications, setUserData, setNotifications } = useGetCurrentUserData()
+  useFetchSubscriptionCurrentUserDataFromMyPage(setUserData, setNotifications)
 
   if (!currentUser) return <Navigate to="/" />
   if (currentUser.uid !== id) return <Navigate to="/" />
