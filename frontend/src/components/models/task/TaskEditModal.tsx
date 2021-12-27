@@ -92,7 +92,7 @@ export const TaskEditModal: FCX<Props> = ({
               />
               <StyledTaskEditStatusPointField
                 id={id}
-                isCompleted={completed_flg}
+                completedFlag={completed_flg}
                 technology={technology}
                 solution={solution}
                 achievement={achievement}

@@ -14,6 +14,7 @@ type UseTaskStatusPointEditFormReturn = {
 }
 type UseTaskStatusPointEditForm = (args: {
   id: string
+  completedFlag: boolean
   initialStatusCounts: StatusCounts
 }) => UseTaskStatusPointEditFormReturn
 
