@@ -69,7 +69,49 @@ export class ListsService {
       throw err;
     });
 
-    const lists = await this.listRepository
+    let lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: newList.project_id })
+      .getMany();
+
+    const listSorts = lists.map((list) => {
+      console.log(list.listSorts[0]);
+      return {
+        id: list.listSorts[0].id,
+        sort: list.listSorts[0].task_list,
+      };
+    });
+    listSorts.sort((a, b) => a.sort - b.sort);
+
+    for (let index = 0; index < listSorts.length; index++) {
+      const listSort = await this.listSortRepository.findOne(
+        listSorts[index].id,
+      );
+      if (listSorts.length - 2 === index) {
+        listSort.task_list = listSorts.length - 2;
+      } else if (listSorts.length - 1 === index) {
+        listSort.task_list = listSorts.length - 1;
+      } else {
+        listSort.task_list = index;
+      }
+
+      await this.listSortRepository.save(listSort).catch((err) => {
+        throw err;
+      });
+    }
+
+    lists = await this.listRepository
       .createQueryBuilder('lists')
       .leftJoinAndSelect('lists.listSorts', 'listSorts')
       .leftJoinAndSelect('lists.tasks', 'tasks')
