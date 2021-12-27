@@ -1,9 +1,9 @@
 import React, { FCX } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import MuiBackdrop from '@mui/material/Backdrop'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { animation } from 'styles/animation/stampAnimation'
+import { animation } from 'styles/animation/projectClearAnimation'
 
 type Props = { shouldOpen: boolean }
 
