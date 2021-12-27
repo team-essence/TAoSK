@@ -3,6 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Allocation } from 'src/allocations/allocation';
 import {
@@ -21,6 +22,7 @@ import { UpdateTaskSort } from './dto/updateTaskSort.input';
 import { UpdatedTask } from './models/udatedTask.model';
 import { Task } from './task';
 import StatusPointUtil from './utils/StatusPointUtil';
+import * as io from 'socket.io-client';
 
 @Injectable()
 export class TasksService {
@@ -41,6 +43,7 @@ export class TasksService {
     private chatRepository: Repository<Chat>,
     @InjectRepository(Group)
     private groupRepository: Repository<Group>,
+    private readonly config: ConfigService,
   ) {}
 
   async updateTaskSort(updateTask: UpdateTaskSort): Promise<{
@@ -495,6 +498,18 @@ export class TasksService {
       },
       relations: ['project'],
     });
+
+    if (task.project.tasks.map((task) => task.completed_flg === true)) {
+      const url = this.config.get('SOCKET_CLIENT_EVENTS');
+      const socket = io(url);
+      task.project.groups;
+      const usersId = task.project.groups.map((menber) => menber.user.id);
+      socket.emit('events', {
+        sender: '',
+        room: 'general',
+        message: usersId,
+      });
+    }
 
     task.technology = technology;
     task.achievement = achievement;
