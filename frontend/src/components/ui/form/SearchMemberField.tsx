@@ -55,11 +55,11 @@ export const SearchMemberField: FCX<Props> = ({
 
   return (
     <StyledAllWrapper className={className}>
-      <StyledLabel>パーティメンバー</StyledLabel>
+      <StyledLabel>パーティーメンバー</StyledLabel>
       <StyledInputWrapper>
         <StyledInput
           type="text"
-          placeholder="パーティメンバーを検索"
+          placeholder="パーティーメンバーを検索"
           value={value}
           disabled={completed_flag}
           onChange={onChange}
