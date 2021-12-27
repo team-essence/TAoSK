@@ -65,6 +65,7 @@ export const ProjectListDetail: FCX<Props> = ({
           specie={userQuery?.groups[selectProject].project.monster.specie.name}
           difficulty={userQuery?.groups[selectProject].project.difficulty}
           limitDeadline={userQuery?.groups[selectProject].project.end_date}
+          hasTasks={!!userQuery?.groups[selectProject].project.tasks.length}
         />
 
         <StyledGorgeousButtonContainer>

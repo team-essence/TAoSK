@@ -2,13 +2,15 @@ import React, { Suspense, useRef, FCX } from 'react'
 import { Mesh } from 'three'
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import Model from './DragonIdle'
+import Model from './Egg'
 import styled from 'styled-components'
 import { CgAxesHelper } from 'components/cg/CgAxesHelper'
 
-export const MonsterAvatar: FCX = ({ className }) => {
+type Props = {}
+
+export const EggAvatar: FCX<Props> = ({ className }) => {
   return (
-    <StyledMonsterAvatarContainer className={className}>
+    <StyledEggAvatarContainer className={className}>
       <StyledCanvasWrapper>
         <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>
           <OrbitControls enablePan={false} />
@@ -22,11 +24,11 @@ export const MonsterAvatar: FCX = ({ className }) => {
           </Suspense>
         </Canvas>
       </StyledCanvasWrapper>
-    </StyledMonsterAvatarContainer>
+    </StyledEggAvatarContainer>
   )
 }
 
-const StyledMonsterAvatarContainer = styled.div`
+const StyledEggAvatarContainer = styled.div`
   position: relative;
   overflow: hidden;
   width: 100%;
