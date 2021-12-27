@@ -435,8 +435,8 @@ subscription UpdateChatSubSc($project_id: String!, $task_id: String!) {
   }
 }
 
-subscription EndTaskSubSc($project_id: String!) {
-  endTask(projectId: $project_id) {
+subscription EndTaskSubSc($project_id: String!, $user_id: String!) {
+  endTask(projectId: $project_id, userId: $user_id) {
     id
     high_status_name
     is_completed
@@ -711,8 +711,6 @@ subscription UpdateGroupsByTaskSubSc($project_id: String!) {
     }
   }
 }
-
-
 
 subscription UpdateListByChat($project_id: String!) {
   updateListByChat(projectId: $project_id) {
