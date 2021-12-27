@@ -13,7 +13,7 @@ type Props = {
   status: StatusParam
   statusCounts: Record<StatusParam, number>
   setStatusCounts: Dispatch<SetStateAction<Record<StatusParam, number>>>
-  completedFlag: boolean
+  isCompleted: boolean
 }
 
 export const TaskStatusPointField: FCX<Props> = ({
@@ -21,7 +21,7 @@ export const TaskStatusPointField: FCX<Props> = ({
   status,
   statusCounts,
   setStatusCounts,
-  completedFlag,
+  isCompleted,
 }) => {
   const { count, setCount, increment, decrement, isDisabledIncrement, isDisabledDecrement } =
     useIncrementAndDecrement(10, 0)
@@ -52,9 +52,9 @@ export const TaskStatusPointField: FCX<Props> = ({
       <StyledStatusName>{convertParamIntoJp(status)}</StyledStatusName>
 
       <StyledCountWrapper>
-        <StyledMinusBtn onClick={decrement} disabled={isDisabledDecrement || completedFlag} />
+        <StyledMinusBtn onClick={decrement} disabled={isDisabledDecrement || isCompleted} />
         <StyledCountText>+{count}</StyledCountText>
-        <StyledPlusBtn onClick={increment} disabled={isDisabledIncrement || completedFlag} />
+        <StyledPlusBtn onClick={increment} disabled={isDisabledIncrement || isCompleted} />
       </StyledCountWrapper>
     </StyledStatusWrapper>
   )
