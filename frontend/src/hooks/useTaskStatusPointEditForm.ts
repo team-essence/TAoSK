@@ -14,7 +14,6 @@ type UseTaskStatusPointEditFormReturn = {
 }
 type UseTaskStatusPointEditForm = (args: {
   id: string
-  completedFlag: boolean
   initialStatusCounts: StatusCounts
 }) => UseTaskStatusPointEditFormReturn
 
@@ -23,7 +22,6 @@ type UseTaskStatusPointEditForm = (args: {
  */
 export const useTaskStatusPointEditForm: UseTaskStatusPointEditForm = ({
   id,
-  completedFlag,
   initialStatusCounts,
 }) => {
   const [newStatusCounts, setNewStatusCounts] = useState<StatusCounts>(initialStatusCounts)
