@@ -89,6 +89,7 @@ export const useListsByTaskSubscription = (): UseListByTaskSubscription => {
     })
 
     sortList.sort((a, b) => a.index - b.index)
+    logger.debug(sortList, 'sortlist')
     setUpdatedLists(sortList)
   }, [data])
 

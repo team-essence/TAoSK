@@ -671,7 +671,7 @@ export class TasksService {
       },
     });
 
-    this.allocationRepository.remove(allocation).catch(() => {
+    await this.allocationRepository.remove(allocation).catch(() => {
       new InternalServerErrorException();
     });
 
