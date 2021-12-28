@@ -2,7 +2,7 @@ import React, { FCX } from 'react'
 import styled, { css } from 'styled-components'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
-import { CancelButton } from 'components/ui/button/CancelButton'
+import { InputCancelButton } from 'components/ui/button/InputCancelButton'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,15 +15,16 @@ type Props = {
 }
 
 export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) => {
-  const { state, setState, newOverview, onClickSaveButton, disabled, register, error } =
-    useTaskOverviewEditForm({ id, initialOverview: overview })
+  const { state, setState, onClickSaveButton, disabled, register, error } = useTaskOverviewEditForm(
+    { id, initialOverview: overview },
+  )
 
   if (state === 'view') {
     return (
       <StyledViewWrapper className={className}>
         <StyledH3>概要</StyledH3>
         <StyledClickableArea onClick={() => setState('edit')}>
-          <StyledOverview>{newOverview || '詳しい説明を追加してください'}</StyledOverview>
+          <StyledOverview>{overview || '詳しい説明を追加してください'}</StyledOverview>
           <StyledAnnotation>
             クリックで編集
             <FontAwesomeIcon icon={faPencilAlt} />
@@ -36,7 +37,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
       <StyledEditWrapper className={className}>
         <StyledH3>概要</StyledH3>
         <StyledFlexTextarea
-          initialVal={newOverview}
+          initialVal={overview}
           {...register('overview', {
             maxLength: { value: 1024, message: '1024文字以内で入力してください' },
           })}
@@ -45,7 +46,7 @@ export const TaskEditOverviewField: FCX<Props> = ({ className, id, overview }) =
         <StyledBottomRow>
           <StyledErrorMessage>{!!error?.message && error.message}</StyledErrorMessage>
           <StyledButtonWrapper>
-            <CancelButton onClick={() => setState('view')} />
+            <InputCancelButton onClick={() => setState('view')} />
             <CoarseRedOxideButton text="追加" onClick={onClickSaveButton} disabled={disabled} />
           </StyledButtonWrapper>
         </StyledBottomRow>

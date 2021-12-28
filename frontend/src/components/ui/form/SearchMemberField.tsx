@@ -10,8 +10,14 @@ import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserData } from 'types/userData'
 import type { Task } from 'types/task'
 
+import {
+  useUnAssignTaskMutation,
+  useCreateAllocationMutation,
+} from 'pages/projectDetail/projectDetail.gen'
+import logger from 'utils/debugger/logger'
+
 type Props = {
-  setUserData: Dispatch<SetStateAction<UserData>>
+  taskId: string
   userData: UserData
   shouldCache: boolean
   completed_flag?: Task['completed_flg']
@@ -20,7 +26,7 @@ type Props = {
 
 export const SearchMemberField: FCX<Props> = ({
   className,
-  setUserData,
+  taskId,
   userData,
   shouldCache,
   completed_flag = false,
@@ -40,7 +46,8 @@ export const SearchMemberField: FCX<Props> = ({
     selectedUserData.length,
   )
 
-  useEffect(() => setUserData([...selectedUserData]), [selectedUserData])
+  const [unAssignTaskMutation] = useUnAssignTaskMutation()
+  const [createAllocationMutation] = useCreateAllocationMutation()
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
   // const testAdd = (data: UserData[number]) => {
@@ -48,18 +55,37 @@ export const SearchMemberField: FCX<Props> = ({
   //   setSelectedUserData([...selectedUserData, ...testDatas])
   // }
 
-  const onClickDeleteBtn = (index: number) => {
+  const onClickAssignBtn = (data: UserData[number]) => {
+    setSelectedUserData([...selectedUserData, data])
+    createAllocationMutation({
+      variables: {
+        newAllocation: {
+          user_id: data.id,
+          task_id: taskId,
+        },
+      },
+    })
+  }
+
+  const onClickDeleteBtn = (index: number, data: UserData[number]) => {
     selectedUserData.splice(index, 1)
+    logger.debug(data)
     setSelectedUserData([...selectedUserData.slice()])
+    unAssignTaskMutation({
+      variables: {
+        taskId: Number(taskId),
+        userId: data.id,
+      },
+    })
   }
 
   return (
     <StyledAllWrapper className={className}>
-      <StyledLabel>パーティメンバー</StyledLabel>
+      <StyledLabel>パーティーメンバー</StyledLabel>
       <StyledInputWrapper>
         <StyledInput
           type="text"
-          placeholder="パーティメンバーを検索"
+          placeholder="パーティーメンバーを検索"
           value={value}
           disabled={completed_flag}
           onChange={onChange}
@@ -75,7 +101,7 @@ export const SearchMemberField: FCX<Props> = ({
                 indexAt={
                   index === 0 ? 'first' : index === candidateUserData.length - 1 ? 'last' : 'other'
                 }
-                onMouseDown={() => setSelectedUserData([...selectedUserData, data])}>
+                onMouseDown={() => onClickAssignBtn(data)}>
                 {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
                 <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
                 <StyledProfile>
@@ -110,7 +136,7 @@ export const SearchMemberField: FCX<Props> = ({
                       name={data.name}
                       occupation={data.occupation.name}
                       onClickDeleteBtn={
-                        shouldHideDeleteBtn ? undefined : () => onClickDeleteBtn(index)
+                        shouldHideDeleteBtn ? undefined : () => onClickDeleteBtn(index, data)
                       }
                     />
                   </div>
@@ -122,7 +148,9 @@ export const SearchMemberField: FCX<Props> = ({
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       userCount={overUsersCount}
                       userData={selectedUserData}
-                      onClickDeleteBtn={completed_flag ? undefined : onClickDeleteBtn}
+                      onClickDeleteBtn={
+                        completed_flag ? undefined : () => onClickDeleteBtn(index, data)
+                      }
                     />
                   </div>
                 )

@@ -44,7 +44,19 @@ export class ProjectsService {
   }: {
     newProject: NewProjectInput;
     selectUser: SelectUser;
-  }): Promise<Project> {
+  }): Promise<{
+    project: Project;
+    invitations: {
+      invitations: Invitation[];
+      userId: string;
+    }[];
+    currentUser: User;
+  }> {
+    const invitations: {
+      invitations: Invitation[];
+      userId: string;
+    }[] = [];
+
     // モンスターの取得
     const monster = await this.monsterRepository.findOne(1);
 
@@ -75,6 +87,20 @@ export class ProjectsService {
 
       await this.invitationRepository.save(newInvitationData).catch((err) => {
         new InternalServerErrorException();
+      });
+
+      const invitationsData = await this.invitationRepository.find({
+        where: {
+          user: {
+            id: selectUser.ids[userIdsIndex],
+          },
+        },
+        relations: ['user', 'project'],
+      });
+
+      invitations.push({
+        invitations: invitationsData,
+        userId: selectUser.ids[userIdsIndex],
       });
     }
 
@@ -122,7 +148,28 @@ export class ProjectsService {
       });
     }
 
-    return project;
+    const user = await this.userRepository.findOne(selectUser.ids[0], {
+      relations: [
+        'interests',
+        'certifications',
+        'invitations',
+        'invitations.project',
+        'groups',
+        'groups.project',
+        'groups.project.groups',
+        'groups.project.groups.user',
+        'groups.project.groups.user.occupation',
+        'groups.project.monster',
+        'groups.project.monster.specie',
+        'occupation',
+      ],
+    });
+
+    return {
+      project,
+      invitations,
+      currentUser: user,
+    };
   }
 
   findProjectOne(id: string): Promise<Project> {

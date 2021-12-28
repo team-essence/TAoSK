@@ -4,6 +4,7 @@ import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './DragonIdle'
 import styled from 'styled-components'
+import { CgAxesHelper } from 'components/cg/CgAxesHelper'
 
 export const MonsterAvatar: FCX = ({ className }) => {
   return (
@@ -17,6 +18,7 @@ export const MonsterAvatar: FCX = ({ className }) => {
             <spotLight intensity={2} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow />
             <Model position={[0, -0.3, 0]} />
             <Environment preset="sunset" />
+            <CgAxesHelper />
           </Suspense>
         </Canvas>
       </StyledCanvasWrapper>

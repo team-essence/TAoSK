@@ -10,6 +10,7 @@ type Props = {
   projectTitle: string
   startDate: string
   endDate: string
+  hasTasks: boolean
 }
 
 const PROJECT_STATUS_TYPE = {
@@ -31,13 +32,18 @@ export const ProjectListItem: FCX<Props> = ({
   projectTitle,
   startDate,
   endDate,
+  hasTasks,
 }) => {
   const projectStatus = isEnd ? PROJECT_STATUS_TYPE.END : PROJECT_STATUS_TYPE.PROGRESS
 
   return (
     <StyledProjectListItemContainer className={className} activeStatue={activeStatue}>
       <img src={`/svg/project_${projectStatus + activeStatue}.svg`} alt="プロジェクトアイテム" />
-      <StyledDragonHeadImg src="/svg/dragon-head_1.svg" alt="ドラゴンの顔" />
+      {hasTasks ? (
+        <StyledDragonHeadImg src="/svg/dragon-head_1.svg" alt="ドラゴンの顔" />
+      ) : (
+        <StyledEggImg src="/egg.png" alt="卵" />
+      )}
 
       <StyledProjectInfoContainer>
         <StyledProjectTitle>{projectTitle}</StyledProjectTitle>
@@ -73,6 +79,11 @@ const StyledDragonHeadImg = styled.img`
   height: ${calculateMinSizeBasedOnFigmaWidth(42)};
   position: absolute;
   top: ${calculateMinSizeBasedOnFigmaWidth(12)};
+  left: ${calculateMinSizeBasedOnFigmaWidth(16)};
+`
+
+const StyledEggImg = styled(StyledDragonHeadImg)`
+  top: ${calculateMinSizeBasedOnFigmaWidth(13)};
   left: ${calculateMinSizeBasedOnFigmaWidth(16)};
 `
 

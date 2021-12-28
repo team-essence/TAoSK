@@ -8,12 +8,12 @@ import {
 import { calculateProjectListDetailWidth } from 'utils/calculateProjectListDetailWidth'
 import { ProjectListMonster } from 'components/models/projectList/ProjectListMonster'
 import { ProjectListProjectInfo } from 'components/models/projectList/ProjectListProjectInfo'
-import { BUTTON_COLOR_TYPE, ComplicateButton } from 'components/ui/button/ComplicateButton'
-import { UsersQuery } from 'pages/projectList/projectList.gen'
+import { BUTTON_COLOR_TYPE, GorgeousButton } from 'components/ui/button/GorgeousButton'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 
 type Props = {
   isJoiningProject: boolean
-  userQuery: UsersQuery | undefined
+  userQuery: GetCurrentUserQuery['user'] | undefined
   selectProject: number
   openModal: () => void
 }
@@ -40,7 +40,7 @@ export const ProjectListDetail: FCX<Props> = ({
             <br />
             今すぐ新しいプロジェクトを始めますか
           </p>
-          <ComplicateButton
+          <GorgeousButton
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="プロジェクト作成"
             onClick={openModal}
@@ -53,9 +53,7 @@ export const ProjectListDetail: FCX<Props> = ({
     <StyledProjectListDetailContainer className={className}>
       <StyledProjectDetail>
         <StyledProjectTitleContainer>
-          <StyledProjectTitle>
-            {userQuery?.user.groups[selectProject].project.name}
-          </StyledProjectTitle>
+          <StyledProjectTitle>{userQuery?.groups[selectProject].project.name}</StyledProjectTitle>
 
           <StyledProjectOptionContainer>
             <StyledProjectOption />
@@ -63,26 +61,25 @@ export const ProjectListDetail: FCX<Props> = ({
         </StyledProjectTitleContainer>
 
         <ProjectListMonster
-          specie={userQuery?.user.groups[selectProject].project.monster.specie.name}
-          difficulty={userQuery?.user.groups[selectProject].project.difficulty}
-          limitDeadline={userQuery?.user.groups[selectProject].project.end_date}
+          specie={userQuery?.groups[selectProject].project.monster.specie.name}
+          difficulty={userQuery?.groups[selectProject].project.difficulty}
+          limitDeadline={userQuery?.groups[selectProject].project.end_date}
+          hasTasks={!!userQuery?.groups[selectProject].project.tasks.length}
         />
 
-        <StyledComplicateButtonContainer>
-          <ComplicateButton
+        <StyledGorgeousButtonContainer>
+          <GorgeousButton
             buttonColorType={BUTTON_COLOR_TYPE.RED}
             text="クエスト開始"
-            onClick={() =>
-              handleTransitionToProject(userQuery?.user.groups[selectProject].project.id)
-            }
+            onClick={() => handleTransitionToProject(userQuery?.groups[selectProject].project.id)}
           />
-        </StyledComplicateButtonContainer>
+        </StyledGorgeousButtonContainer>
 
         <ProjectListProjectInfo
-          story={userQuery?.user.groups[selectProject].project.monster.story}
-          overview={userQuery?.user.groups[selectProject].project.overview}
+          story={userQuery?.groups[selectProject].project.monster.story}
+          overview={userQuery?.groups[selectProject].project.overview}
           selectProject={selectProject}
-          groupsProject={userQuery?.user.groups ?? []}
+          groupsProject={userQuery?.groups ?? []}
         />
       </StyledProjectDetail>
     </StyledProjectListDetailContainer>
@@ -160,7 +157,7 @@ const StyledProjectOption = styled.div`
   }
 `
 
-const StyledComplicateButtonContainer = styled.div`
+const StyledGorgeousButtonContainer = styled.div`
   grid-row: 4 / 5;
   grid-column: 1 / 4;
   display: flex;

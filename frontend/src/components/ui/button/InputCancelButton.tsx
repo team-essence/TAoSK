@@ -4,15 +4,15 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = { onClick?: () => void }
 
-export const CancelButton: FCX<Props> = ({ className, onClick }) => {
+export const InputCancelButton: FCX<Props> = ({ className, onClick }) => {
   return (
-    <StyledCancelButton className={className} onClick={onClick}>
+    <StyledInputCancelButton className={className} onClick={onClick}>
       <StyledCancelText>キャンセル</StyledCancelText>
-    </StyledCancelButton>
+    </StyledInputCancelButton>
   )
 }
 
-const StyledCancelButton = styled.button`
+const StyledInputCancelButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;

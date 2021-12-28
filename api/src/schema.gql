@@ -177,6 +177,7 @@ type Company {
 
 type UpdatedTask {
   id: ID!
+  project_id: String!
   high_status_name: String!
   is_completed: Boolean!
 }
@@ -223,19 +224,19 @@ type Mutation {
   completedProject(endProject: EndProjectInput!): Boolean!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
-  createList(newList: NewListInput!): List!
-  updateListName(updateList: UpdateListInput!): List!
+  createList(newList: NewListInput!): [List!]!
+  updateListName(updateList: UpdateListInput!): [List!]!
   removeList(removeList: RemoveListInput): Boolean!
   updateListSort(updateListSort: UpdateListSort!): Boolean!
   updateTaskSort(updateTask: UpdateTaskSort!): UpdatedTask!
-  addTask(assignTask: AssignTaskInput!, newTask: NewTaskInput!): Task!
-  updateTaskTitle(taskId: Float!, title: String!): Task!
-  updateTaskOverview(taskId: Float!, overview: String!): Task!
-  updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): Task!
-  updateTaskEndDate(taskId: Float!, end_date: String!): Task!
-  deleteTask(taskId: Float!): [Task!]!
-  createAllocation(newAllocation: NewAllocationInput!): Allocation!
-  unAssignTask(task_id: Float!, user_id: String!): [Allocation!]!
+  addTask(assignTask: AssignTaskInput!, newTask: NewTaskInput!): [List!]!
+  updateTaskTitle(taskId: Float!, title: String!): [List!]!
+  updateTaskOverview(taskId: Float!, overview: String!): [List!]!
+  updateTaskParameters(taskId: Float!, design: Float!, plan: Float!, motivation: Float!, solution: Float!, achievement: Float!, technology: Float!): [List!]!
+  updateTaskEndDate(taskId: Float!, end_date: String!): [List!]!
+  deleteTask(taskId: Float!): [List!]!
+  createAllocation(newAllocation: NewAllocationInput!): [List!]!
+  unAssignTask(task_id: Float!, user_id: String!): [List!]!
   addChat(userId: String!, taskId: Float!, comment: String!): [Chat!]!
   updateChat(taskId: Float!, comment: String!, chatId: Float!): [Chat!]!
   deleteChat(taskId: Float!, chatId: Float!): [Chat!]!
@@ -385,4 +386,21 @@ input NewLogInput {
 
 type Subscription {
   userAdded: User!
+  updateLogsByOnline(projectId: String!): [GameLog!]!
+  updateGroupsByOnline(projectId: String!): [Group!]!
+  updateUserData(userId: String!): User!
+  updateUserDataByCertification(userId: String!): User!
+  updateUserDataByInterest(userId: String!): User!
+  projectCreate(userId: String!): User!
+  newInvitationByCreateProject(userId: String!): [Invitation!]!
+  newInvitation(userId: String!): [Invitation!]!
+  updateListByList(projectId: String!): [List!]!
+  updateListByListSort(projectId: String!): [List!]!
+  updateList(projectId: String!): [List!]!
+  endTask(userId: String!, projectId: String!): UpdatedTask!
+  updateLogsByTask(projectId: String!): [GameLog!]!
+  updateUserByTask(userId: String!): User!
+  updateGroupsByTask(projectId: String!): [Group!]!
+  updateChatSubscription(taskId: String!, projectId: String!): [Chat!]!
+  updateListByChat(projectId: String!): [List!]!
 }

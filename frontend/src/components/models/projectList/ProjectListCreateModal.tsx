@@ -12,7 +12,7 @@ import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import Rating from '@mui/material/Rating'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { SearchMemberField } from 'components/ui/form/SearchMemberField'
+import { SearchMemberFieldFromProjectCreate } from 'components/ui/form/SearchMemberFieldFromProjectCreate'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { StarIcon } from 'components/ui/icon/StarIcon'
 import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
@@ -61,6 +61,7 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
                 maxLength: { value: 255, message: '255文字以内で入力してください' },
               })}
               required={false}
+              error={errors['overview']}
             />
           </StyledLeftColumn>
 
@@ -87,7 +88,7 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
               />
             </StyledDifficultyWrapper>
 
-            <SearchMemberField
+            <SearchMemberFieldFromProjectCreate
               setUserData={setUserData}
               userData={userData}
               shouldCache={true}

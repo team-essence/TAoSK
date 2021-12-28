@@ -182,13 +182,13 @@ mutation UpdateTaskSort($updateTasks: UpdateTaskSort!) {
 
 mutation UpdateTaskTitle($taskId: Float!, $title: String!) {
   updateTaskTitle(taskId: $taskId, title: $title) {
-    title
+    id
   }
 }
 
 mutation UpdateTaskOverview($taskId: Float!, $overview: String!) {
   updateTaskOverview(taskId: $taskId, overview: $overview) {
-    overview
+    id
   }
 }
 
@@ -211,54 +211,30 @@ mutation UpdateTaskParameters(
     technology: $technology
   ) {
     id
-    design
-    plan
-    motivation
-    solution
-    achievement
-    technology
   }
 }
 
 mutation UpdateTaskEndDate($taskId: Float!, $end_date: String!) {
   updateTaskEndDate(taskId: $taskId, end_date: $end_date) {
     id
-    end_date
   }
 }
 
 mutation CreateAllocation($newAllocation: NewAllocationInput!) {
   createAllocation(newAllocation: $newAllocation) {
-    user {
-      id
-      name
-      icon_image
-      # occupation {
-      #   id
-      #   name
-      # }
-    }
+    id
   }
 }
 
 mutation UnAssignTask($taskId: Float!, $userId: String!) {
   unAssignTask(task_id: $taskId, user_id: $userId) {
-    user {
-      id
-      name
-      icon_image
-      # occupation {
-      #   id
-      #   name
-      # }
-    }
+    id
   }
 }
 
 mutation AddTask($newTask: NewTaskInput!, $assignTask: AssignTaskInput!) {
   addTask(newTask: $newTask, assignTask: $assignTask) {
     id
-    overview
   }
 }
 
@@ -395,5 +371,386 @@ mutation DeleteChat($taskId: Float!, $chatId: Float!) {
     }
     created_at
     updated_at
+  }
+}
+
+subscription UpdateListSubSc($project_id: String!) {
+  updateList(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateChatSubSc($project_id: String!, $task_id: String!) {
+  updateChatSubscription(taskId: $task_id, projectId: $project_id) {
+    id
+    comment
+    user {
+      id
+      name
+      icon_image
+      occupation {
+        id
+        name
+      }
+    }
+    created_at
+    updated_at
+  }
+}
+
+subscription EndTask($project_id: String!, $user_id: String!) {
+  endTask(projectId: $project_id, userId: $user_id) {
+    id
+    high_status_name
+    is_completed
+  }
+}
+
+subscription UpdateLogsByTaskSubSc($project_id: String!) {
+  updateLogsByTask(projectId: $project_id) {
+    id
+    context
+    created_at
+
+    user {
+      id
+      name
+    }
+  }
+}
+
+subscription UpdateLogsByOnline($project_id: String!) {
+  updateLogsByOnline(projectId: $project_id) {
+    id
+    context
+    created_at
+
+    user {
+      id
+      name
+    }
+  }
+}
+
+subscription UpdateUserByTaskSubSc($user_id: String!) {
+  updateUserByTask(userId: $user_id) {
+    id
+    name
+    icon_image
+    company
+    hp
+    mp
+    technology
+    achievement
+    motivation
+    solution
+    plan
+    design
+    exp
+
+    occupation {
+      id
+      name
+    }
+
+    interests {
+      id
+      context
+    }
+
+    certifications {
+      id
+      name
+    }
+
+    invitations {
+      id
+      created_at
+
+      project {
+        id
+        name
+      }
+    }
+
+    groups {
+      id
+
+      project {
+        id
+        name
+        overview
+        created_at
+        end_date
+        project_end_flg
+        difficulty
+
+        tasks {
+          id
+        }
+
+        groups {
+          id
+
+          user {
+            id
+            name
+            icon_image
+
+            occupation {
+              id
+              name
+            }
+          }
+        }
+
+        monster {
+          id
+          name
+          story
+
+          specie {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateListByListSubscription($project_id: String!) {
+  updateListByList(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateListByListSort($project_id: String!) {
+  updateListByListSort(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}
+
+subscription UpdateGroupsByOnline($project_id: String!) {
+  updateGroupsByOnline(projectId: $project_id) {
+    user {
+      id
+      name
+      icon_image
+      hp
+      mp
+      exp
+      technology
+      achievement
+      motivation
+      solution
+      plan
+      design
+      online_flg
+
+      interests {
+        id
+        context
+      }
+
+      certifications {
+        id
+        name
+      }
+
+      occupation {
+        id
+        name
+      }
+    }
+  }
+}
+
+subscription UpdateGroupsByTaskSubSc($project_id: String!) {
+  updateGroupsByTask(projectId: $project_id) {
+    user {
+      id
+      name
+      icon_image
+      hp
+      mp
+      exp
+      technology
+      achievement
+      motivation
+      solution
+      plan
+      design
+      online_flg
+
+      interests {
+        id
+        context
+      }
+
+      certifications {
+        id
+        name
+      }
+
+      occupation {
+        id
+        name
+      }
+    }
+  }
+}
+
+subscription UpdateListByChat($project_id: String!) {
+  updateListByChat(projectId: $project_id) {
+    id
+    list_id
+    name
+
+    listSorts {
+      id
+      task_list
+    }
+
+    tasks {
+      id
+      title
+      overview
+      technology
+      achievement
+      solution
+      motivation
+      plan
+      design
+      vertical_sort
+      end_date
+      chatCount
+      completed_flg
+
+      allocations {
+        id
+
+        user {
+          id
+          name
+          icon_image
+          occupation {
+            id
+            name
+          }
+        }
+      }
+    }
   }
 }

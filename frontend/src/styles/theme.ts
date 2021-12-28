@@ -7,6 +7,7 @@ export const theme = {
   MAX_WIDTH: `${MAX_WIDTH}px`,
   Z_INDEX: {
     TAILED_DISPLAY: -1000,
+    INDEX_MINUS_2: -2,
     INDEX_MINUS_1: -1,
     INDEX_0: 0,
     INDEX_1: 1,
@@ -25,6 +26,7 @@ export const theme = {
     MODAL: 100,
     LOADING: 999,
     EFFECT: 1000,
+    HOVER_POPPER: 13000, // Muiのmodalのz-indexが1300のため、モーダル上でPopperを表示させるにはそれと同値のz-indexを指定する必要がある
   },
   FONT_SIZES: {
     SIZE_10: calculateMinSizeBasedOnFigma('10px'),
@@ -87,6 +89,7 @@ export const theme = {
     SHIP_GRAY: '#38373C',
     OLIVE_GREEN: '#A9BA65',
     ZINNWALDITE: '#EAC4A6',
+    SISAL: '#D7CBC1',
     MONDO: '#463E29',
     SHIP_COVE: '#657DBA',
     BOULDER: '#7B7B7B',

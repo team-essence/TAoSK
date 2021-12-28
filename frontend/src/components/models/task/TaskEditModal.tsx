@@ -45,7 +45,7 @@ export const TaskEditModal: FCX<Props> = ({
     id,
     initialEndDate: end_date,
   })
-  const { userData, setUserData } = useTaskUserSelectForm({ id, initialUserData: allocations })
+  // const { userData, setUserData } = useTaskUserSelectForm({ id, initialUserData: allocations })
   const { onClickDeleteButton, anchorEl, openPopover, closePopover } = useDeleteTask({
     id,
     setShouldShowEditModal: setShouldShow,
@@ -85,13 +85,14 @@ export const TaskEditModal: FCX<Props> = ({
                 onChange={onChange}
               />
               <StyledSearchMemberField
-                setUserData={setUserData}
-                userData={userData}
+                taskId={id}
+                userData={allocations}
                 shouldCache={false}
                 completed_flag={completed_flg}
               />
               <StyledTaskEditStatusPointField
                 id={id}
+                completedFlag={completed_flg}
                 technology={technology}
                 solution={solution}
                 achievement={achievement}

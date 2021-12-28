@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 export type UseInputResult = {
   value: string
@@ -13,6 +13,10 @@ export type UseInputResult = {
  */
 export const useInput = (initialValue: string): UseInputResult => {
   const [value, setValue] = useState<string>(initialValue)
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
 
   return {
     value,

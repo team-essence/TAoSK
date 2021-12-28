@@ -5,7 +5,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import { SmallPopover } from 'components/ui/popup/SmallPopover'
 import { FlexTextarea } from 'components/ui/textarea/FlexTextarea'
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
-import { CancelButton } from 'components/ui/button/CancelButton'
+import { InputCancelButton } from 'components/ui/button/InputCancelButton'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { usePopover } from 'hooks/usePopover'
 import { useHandleChat } from 'hooks/useHandleChat'
@@ -13,6 +13,7 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 
 import type { Chat } from 'types/chat'
+import date from 'utils/date/date'
 
 type Props = {
   taskId: string
@@ -42,7 +43,7 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
         <StyledCommentInfoRow>
           <StyledCommentInfoP>
             <StyledUserNameSpan>{chatInfo.user.name}</StyledUserNameSpan>
-            さんがコメントしました。&emsp;99分前
+            さんがコメントしました。&emsp;{date.formatDistance(chatInfo.updated_at)}
           </StyledCommentInfoP>
 
           {isYour && (
@@ -67,7 +68,7 @@ export const TaskComment: FCX<Props> = ({ taskId, chatInfo, isYour }) => {
             />
 
             <StyledButtonWrapper>
-              <CancelButton onClick={() => setState('view')} />
+              <InputCancelButton onClick={() => setState('view')} />
               <CoarseRedOxideButton text="保存" onClick={onClickUpdateButton} disabled={disabled} />
             </StyledButtonWrapper>
           </StyledInputFormField>

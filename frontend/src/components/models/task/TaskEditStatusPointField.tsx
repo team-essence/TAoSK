@@ -7,15 +7,18 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { STATUS_TYPE } from 'consts/status'
 import { StatusParam } from 'types/status'
 
-type Props = { id: string } & Record<StatusParam, number>
+type Props = { id: string; completedFlag: boolean } & Record<StatusParam, number>
 
-export const TaskEditStatusPointField: FCX<Props> = ({ className, id, ...initialStatusCounts }) => {
-  const { statusCounts, setStatusCounts, disabled, onClickSaveButton } = useTaskStatusPointEditForm(
-    {
-      id,
-      initialStatusCounts,
-    },
-  )
+export const TaskEditStatusPointField: FCX<Props> = ({
+  className,
+  id,
+  completedFlag,
+  ...initialStatusCounts
+}) => {
+  const { setStatusCounts, disabled, onClickSaveButton } = useTaskStatusPointEditForm({
+    id,
+    initialStatusCounts,
+  })
 
   return (
     <StyledWrapper className={className}>
@@ -23,8 +26,9 @@ export const TaskEditStatusPointField: FCX<Props> = ({ className, id, ...initial
       {Object.values(STATUS_TYPE).map((status, index) => (
         <TaskStatusPointField
           status={status}
-          statusCounts={statusCounts}
+          statusCounts={initialStatusCounts}
           setStatusCounts={setStatusCounts}
+          completedFlag={completedFlag}
           key={index}
         />
       ))}

@@ -1,11 +1,16 @@
 import { NotFoundException } from '@nestjs/common';
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import { Args, Resolver, Query, Mutation, Subscription } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
+import { List } from 'src/lists/list';
 import { Chat } from './chat';
 import { ChatsService } from './chats.service';
 
 @Resolver()
 export class ChatsResolver {
-  constructor(private chatsService: ChatsService) {}
+  private pubSub: PubSub;
+  constructor(private chatsService: ChatsService) {
+    this.pubSub = new PubSub();
+  }
 
   @Query(() => [Chat])
   async getChats(@Args({ name: 'taskId' }) taskId: number): Promise<Chat[]> {
@@ -20,11 +25,25 @@ export class ChatsResolver {
     @Args({ name: 'taskId' }) taskId: number,
     @Args({ name: 'userId' }) userId: string,
   ) {
-    const chats = await this.chatsService.addChat(comment, taskId, userId);
+    const result = await this.chatsService.addChat(comment, taskId, userId);
+    if (!result.chats) throw new NotFoundException();
 
-    if (!chats) throw new NotFoundException();
+    this.pubSub.publish('updateChatSubscription', {
+      updateChatSubscription: {
+        chats: result.chats,
+        projectId: result.project_id,
+        taskId,
+      },
+    });
 
-    return chats;
+    this.pubSub.publish('updateListByChat', {
+      updateListByChat: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
+    });
+
+    return result.chats;
   }
 
   @Mutation(() => [Chat])
@@ -33,11 +52,18 @@ export class ChatsResolver {
     @Args({ name: 'comment' }) comment: string,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const chats = await this.chatsService.updateChat(chatId, comment, taskId);
+    const result = await this.chatsService.updateChat(chatId, comment, taskId);
+    if (!result.chats) throw new NotFoundException();
 
-    if (!chats) throw new NotFoundException();
+    this.pubSub.publish('updateChatSubscription', {
+      updateChatSubscription: {
+        chats: result.chats,
+        projectId: result.project_id,
+        taskId,
+      },
+    });
 
-    return chats;
+    return result.chats;
   }
 
   @Mutation(() => [Chat])
@@ -45,10 +71,56 @@ export class ChatsResolver {
     @Args({ name: 'chatId' }) chatId: number,
     @Args({ name: 'taskId' }) taskId: number,
   ) {
-    const chats = await this.chatsService.deleteChat(chatId, taskId);
+    const result = await this.chatsService.deleteChat(chatId, taskId);
+    if (!result.chats) throw new NotFoundException();
 
-    if (!chats) throw new NotFoundException();
+    this.pubSub.publish('updateChatSubscription', {
+      updateChatSubscription: {
+        chats: result.chats,
+        projectId: result.project_id,
+        taskId,
+      },
+    });
 
-    return chats;
+    this.pubSub.publish('updateListByChat', {
+      updateListByChat: {
+        lists: result.lists,
+        projectId: result.project_id,
+      },
+    });
+
+    return result.chats;
+  }
+
+  @Subscription((returns) => [Chat], {
+    filter: (payload, variables) => {
+      return (
+        payload.updateChatSubscription.projectId === variables.projectId &&
+        payload.updateChatSubscription.taskId === Number(variables.taskId)
+      );
+    },
+    resolve: (values) => {
+      return values.updateChatSubscription.chats;
+    },
+  })
+  updateChatSubscription(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+    @Args({ name: 'taskId', type: () => String }) taskId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateChatSubscription');
+  }
+
+  @Subscription((returns) => [List], {
+    filter: (payload, variables) => {
+      return payload.updateListByChat.projectId === variables.projectId;
+    },
+    resolve: (values) => {
+      return values.updateListByChat.lists;
+    },
+  })
+  updateListByChat(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateListByChat');
   }
 }

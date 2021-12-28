@@ -36,7 +36,7 @@ export class ListsService {
     private allocationRepository: Repository<Allocation>,
   ) {}
 
-  async create(newList: NewListInput): Promise<List> {
+  async create(newList: NewListInput): Promise<List[]> {
     const project = await this.projectRepository.findOne(newList.project_id);
     if (!project) throw new NotFoundException();
 
@@ -69,14 +69,23 @@ export class ListsService {
       throw err;
     });
 
-    return await this.listRepository.findOne(list.id, {
-      relations: [
-        'listSorts',
-        'tasks',
-        'tasks.allocations',
-        'tasks.allocations.user',
-      ],
-    });
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: newList.project_id })
+      .getMany();
+
+    return lists;
   }
 
   findByProjectId(projectId: string): Promise<List[]> {
@@ -99,23 +108,46 @@ export class ListsService {
     return lists;
   }
 
-  async updateListName(updateList: UpdateListInput): Promise<List> {
+  async updateListName(updateList: UpdateListInput): Promise<{
+    lists: List[];
+    project_id: string;
+  }> {
     const list = await this.listRepository.findOne({
       where: {
         list_id: updateList.list_id,
       },
+      relations: ['project'],
     });
+    if (!list) throw new NotFoundException();
+
     list.name = updateList.name;
     await this.listRepository.save(list).catch((err) => {
       new InternalServerErrorException();
     });
 
-    if (!list) throw new NotFoundException();
+    const lists = await this.listRepository
+      .createQueryBuilder('lists')
+      .leftJoinAndSelect('lists.listSorts', 'listSorts')
+      .leftJoinAndSelect('lists.tasks', 'tasks')
+      .leftJoinAndSelect('lists.project', 'project')
+      .leftJoinAndSelect('tasks.chats', 'chats')
+      .leftJoinAndSelect('tasks.allocations', 'allocations')
+      .leftJoinAndSelect('allocations.user', 'allocationsUser')
+      .leftJoinAndSelect(
+        'allocationsUser.occupation',
+        'allocationUserOccupation',
+      )
+      .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+      .where('project.id=:id', { id: list.project.id })
+      .getMany();
 
-    return list;
+    return { lists, project_id: list.project.id };
   }
 
-  async removeList(removeList: RemoveListInput): Promise<boolean> {
+  async removeList(removeList: RemoveListInput): Promise<{
+    result: boolean;
+    lists: List[];
+  }> {
     try {
       const list = await this.listRepository.findOne(removeList.id);
       if (!list) throw new NotFoundException();
@@ -202,9 +234,31 @@ export class ListsService {
           });
       }
 
-      return true;
+      const updatedLists = await this.listRepository
+        .createQueryBuilder('lists')
+        .leftJoinAndSelect('lists.listSorts', 'listSorts')
+        .leftJoinAndSelect('lists.tasks', 'tasks')
+        .leftJoinAndSelect('lists.project', 'project')
+        .leftJoinAndSelect('tasks.chats', 'chats')
+        .leftJoinAndSelect('tasks.allocations', 'allocations')
+        .leftJoinAndSelect('allocations.user', 'allocationsUser')
+        .leftJoinAndSelect(
+          'allocationsUser.occupation',
+          'allocationUserOccupation',
+        )
+        .loadRelationCountAndMap('tasks.chatCount', 'tasks.chats')
+        .where('project.id=:id', { id: removeList.project_id })
+        .getMany();
+
+      return {
+        result: true,
+        lists: updatedLists,
+      };
     } catch (error) {
-      return false;
+      return {
+        result: false,
+        lists: [],
+      };
     }
   }
 }
