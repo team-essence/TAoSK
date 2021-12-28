@@ -22,8 +22,8 @@ const addToList = (list: Task[], index: number, element: Task) => {
   return result
 }
 
-/** コピーリスト配列内のタスクを移動する処理 */
-export const moveTaskDataInListsCopy: MoveTask = ({
+/** タスクを移動する処理 */
+export const moveTask: MoveTask = ({
   listsCopy,
   sourceDroppableId,
   sourceIndex,
