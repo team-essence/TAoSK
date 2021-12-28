@@ -13,7 +13,7 @@ import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { reorderList, getRefreshedListsVertical } from 'utils/controlList'
-import { moveTask, adjustTasksInfoToUpdate } from 'utils/controlTask'
+import { moveTaskDataInListsCopy, adjustTasksInfoToUpdate } from 'utils/controlTask'
 import toast from 'utils/toast/toast'
 import logger from 'utils/debugger/logger'
 import { useAuthContext } from 'providers/AuthProvider'
@@ -124,7 +124,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       return
     }
 
-    moveTask({
+    moveTaskDataInListsCopy({
       listsCopy,
       sourceDroppableId,
       sourceIndex,
