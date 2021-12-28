@@ -9,11 +9,13 @@ import {
   calculateMinSizeBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
 import date from 'utils/date/date'
+import { EggAvatar } from '../egg/EggAvatar'
 
 type Props = {
   specie?: string
   difficulty?: number
   limitDeadline: string
+  hasTasks: boolean
 }
 
 export const ProjectListMonster: FCX<Props> = ({
@@ -21,10 +23,11 @@ export const ProjectListMonster: FCX<Props> = ({
   difficulty,
   limitDeadline,
   className,
+  hasTasks,
 }) => {
   return (
     <StyledMonsterContainer className={className}>
-      <StyledMonsterAvatar />
+      {hasTasks ? <StyledMonsterAvatar /> : <StyledEggAvatar />}
 
       <StyledMonsterStatusContainer>
         <StyledMonsterStatus>
@@ -60,6 +63,10 @@ const StyledMonsterContainer = styled.div`
 `
 
 const StyledMonsterAvatar = styled(MonsterAvatar)`
+  flex-grow: 1;
+`
+
+const StyledEggAvatar = styled(EggAvatar)`
   flex-grow: 1;
 `
 
