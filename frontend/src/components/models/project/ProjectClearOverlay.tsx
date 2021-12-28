@@ -9,14 +9,15 @@ type Props = { shouldOpen: boolean }
 
 export const ProjectClearOverlay: FCX<Props> = ({ className, shouldOpen }) => {
   return (
-    <StyledMuiBackdrop className={className} open={shouldOpen} invisible={true}>
-      <StyledOverlay>
-        {/* &&演算子なしでコンポーネントを置くとkeyframesアニメーションが効かなくなる */}
-        {shouldOpen && (
-          <StyledQuestClearStamp src="/svg/project__quest-clear.svg" alt="QUEST CLEAR" />
-        )}
-      </StyledOverlay>
-    </StyledMuiBackdrop>
+    <>
+      <StyledMuiBackdrop className={className} open={shouldOpen} invisible={true}>
+        <StyledOverlay />
+      </StyledMuiBackdrop>
+      {/* MuiBackdropの中に置くとアニメーションが効かないことが多くなるので外に記述する（opacityのアニメーションと衝突してしまうため？ */}
+      {shouldOpen && (
+        <StyledQuestClearStamp src="/svg/project__quest-clear.svg" alt="QUEST CLEAR" />
+      )}
+    </>
   )
 }
 
@@ -33,7 +34,14 @@ const StyledOverlay = styled.div`
   background-color: ${({ theme }) => convertIntoRGBA(theme.COLORS.BLACK, 0.7)};
 `
 const StyledQuestClearStamp = styled.img`
+  z-index: ${({ theme }) => theme.Z_INDEX.UPPER_OVERLAY};
   display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
   width: ${calculateMinSizeBasedOnFigma(782)};
   height: ${calculateMinSizeBasedOnFigma(535)};
   ${animation.stamp}
