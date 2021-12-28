@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { assertStatusParam } from 'types/status'
@@ -7,6 +7,7 @@ import { DROP_TYPE } from 'consts/dropType'
 import {
   useUpdateTaskSortMutation,
   useUpdateListSortMutation,
+  useEndTaskSubscription,
 } from 'pages/projectDetail//projectDetail.gen'
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
@@ -15,6 +16,7 @@ import { reorderList, getRefreshedListsVertical } from 'utils/controlList'
 import { moveTask, adjustTasksInfoToUpdate } from 'utils/controlTask'
 import toast from 'utils/toast/toast'
 import logger from 'utils/debugger/logger'
+import { useAuthContext } from 'providers/AuthProvider'
 
 type UseProjectDetailDragEndArg = {
   lists: List[]
@@ -45,15 +47,28 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
   firebaseCurrentUser,
 }) => {
   const { id: projectId } = useParams()
+  const { currentUser } = useAuthContext()
+  const { data } = useEndTaskSubscription({
+    variables: {
+      project_id: String(projectId),
+      user_id: String(currentUser?.uid),
+    },
+  })
+
+  useEffect(() => {
+    if (!data) return
+
+    const { is_completed, high_status_name } = data.endTask
+    if (!is_completed) return
+    if (assertStatusParam(high_status_name)) {
+      setWeapon(high_status_name)
+      setIsCompleted(true)
+    }
+  }, [data])
+
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
-      logger.table(data.updateTaskSort)
-      const { is_completed, high_status_name } = data.updateTaskSort
-      if (!is_completed) return
-      if (assertStatusParam(high_status_name)) {
-        setWeapon(high_status_name)
-        setIsCompleted(true)
-      }
+      logger.debug(data)
     },
     onError(err) {
       logger.debug(err)
@@ -118,6 +133,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 
     logger.table([...tasksInfoToUpdate])
 
+    setLists(listsCopy)
     await updateTaskSort({
       variables: {
         updateTasks: {
@@ -127,8 +143,6 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
         },
       },
     })
-
-    setLists(listsCopy)
   }
 
   return { onDragEnd }

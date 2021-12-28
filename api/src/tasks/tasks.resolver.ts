@@ -40,7 +40,10 @@ export class TasksResolver {
     });
 
     this.pubSub.publish('endTask', {
-      endTask: result.updatedTask,
+      endTask: {
+        updatedTask: result.updatedTask,
+        user_id: updateTask.user_id,
+      },
     });
 
     if (result.logs.isUpdate) {
@@ -270,12 +273,19 @@ export class TasksResolver {
   @Subscription((returns) => UpdatedTask, {
     filter: (payload, variables) => {
       return (
-        payload.endTask.is_completed &&
-        payload.endTask.project_id === variables.projectId
+        payload.endTask.updatedTask.is_completed &&
+        payload.endTask.updatedTask.project_id === variables.projectId &&
+        payload.endTask.user_id === variables.userId
       );
     },
+    resolve: (values) => {
+      return values.endTask.updatedTask;
+    },
   })
-  endTask(@Args({ name: 'projectId', type: () => String }) projectId: string) {
+  endTask(
+    @Args({ name: 'projectId', type: () => String }) projectId: string,
+    @Args({ name: 'userId', type: () => String }) userId: string,
+  ) {
     return this.pubSub.asyncIterator('endTask');
   }
 
