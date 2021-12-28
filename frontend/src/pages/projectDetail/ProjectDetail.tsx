@@ -19,6 +19,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
+import { ConfirmModal } from 'components/ui/modal/ConfirmModal'
 import { ProjectClearOverlay } from 'components/models/project/ProjectClearOverlay'
 import { useProjectDetailDragEnd } from 'hooks/useProjectDetailDragEnd'
 import { useProjectDetail } from 'hooks/useProjectDetail'
@@ -69,7 +70,7 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { onDragEnd, shouldProjectClose } = useProjectDetailDragEnd({
+  const { onDragEnd, shouldOpenProjectCloseModal, onClickCloseBtn } = useProjectDetailDragEnd({
     lists,
     setLists,
     setWeapon,
@@ -146,7 +147,13 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
-      <ProjectClearOverlay shouldOpen={shouldProjectClose} />
+      <ConfirmModal
+        title="確認"
+        message="最後のタスクを完了し、プロジェクトをクローズしますか?"
+        shouldShow={shouldOpenProjectCloseModal}
+        onClickCloseBtn={onClickCloseBtn}
+      />
+      {/* <ProjectClearOverlay shouldOpen={shouldOpenProjectCloseModal} /> */}
       <StyledBackground />
     </>
   )

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useEffect } from 'react'
+import { Dispatch, SetStateAction, useState, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { assertStatusParam } from 'types/status'
@@ -28,7 +28,8 @@ type UseProjectDetailDragEndArg = {
 
 type UseProjectDetailDragEndReturn = {
   onDragEnd: (result: DropResult) => Promise<void>
-  shouldProjectClose: boolean
+  shouldOpenProjectCloseModal: boolean
+  onClickCloseBtn: () => void
 }
 
 type UseProjectDetailDragEnd = (arg: UseProjectDetailDragEndArg) => UseProjectDetailDragEndReturn
@@ -61,7 +62,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 
     const { is_completed, high_status_name } = data.endTask
     if (!is_completed) return
-    if (assertStatusParam(high_status_name) && !shouldProjectClose) {
+    if (assertStatusParam(high_status_name) && !shouldOpenProjectCloseModal) {
       setWeapon(high_status_name)
       setIsCompleted(true)
     }
@@ -81,7 +82,8 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       toast.error('リスト更新に失敗しました')
     },
   })
-  const [shouldProjectClose, setShouldProjectClose] = useState<boolean>(false)
+  const [shouldOpenProjectCloseModal, setShouldOpenProjectCloseModal] = useState<boolean>(false)
+  const onClickCloseBtn = useCallback(() => setShouldOpenProjectCloseModal(false), [])
 
   const handleDroppedColumnList: HandleDroppedColumnList = async ({
     destinationIndex,
@@ -132,7 +134,8 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 
     const sortedListsCopy = getRefreshedListsVertical(listsCopy)
     const tasksInfoToUpdate = adjustTasksInfoToUpdate(sortedListsCopy)
-    setShouldProjectClose(tasksInfoToUpdate.every(task => task.completed_flg))
+
+    setShouldOpenProjectCloseModal(tasksInfoToUpdate.every(task => task.completed_flg))
 
     logger.table([...tasksInfoToUpdate])
 
@@ -148,5 +151,5 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     })
   }
 
-  return { onDragEnd, shouldProjectClose }
+  return { onDragEnd, shouldOpenProjectCloseModal, onClickCloseBtn }
 }
