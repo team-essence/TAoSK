@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/user';
@@ -36,6 +37,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { AllocationsModule } from './allocations/allocations.module';
 import { ChatsModule } from './chats/chats.module';
 import { GameLogsModule } from './game-logs/game-logs.module';
+import { EventsGateway } from './events/events.gateway';
 
 @Module({
   imports: [
@@ -90,8 +92,13 @@ import { GameLogsModule } from './game-logs/game-logs.module';
     AllocationsModule,
     ChatsModule,
     GameLogsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [`.env.${process.env.NODE_ENV}`, `.env`],
+      load: [],
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {}
