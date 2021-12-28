@@ -7,7 +7,7 @@ import { DROP_TYPE } from 'consts/dropType'
 import {
   useUpdateTaskSortMutation,
   useUpdateListSortMutation,
-  useEndTaskSubScSubscription,
+  useEndTaskSubscription,
 } from 'pages/projectDetail//projectDetail.gen'
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
@@ -48,7 +48,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 }) => {
   const { id: projectId } = useParams()
   const { currentUser } = useAuthContext()
-  const { data } = useEndTaskSubScSubscription({
+  const { data } = useEndTaskSubscription({
     variables: {
       project_id: String(projectId),
       user_id: String(currentUser?.uid),
