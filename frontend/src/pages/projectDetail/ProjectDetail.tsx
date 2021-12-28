@@ -70,13 +70,14 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { onDragEnd, shouldOpenProjectCloseModal, onClickCloseBtn } = useProjectDetailDragEnd({
-    lists,
-    setLists,
-    setWeapon,
-    setIsCompleted,
-    firebaseCurrentUser,
-  })
+  const { onDragEnd, shouldOpenProjectCloseModal, onClickProjectCloseBtn, onClickCancelBtn } =
+    useProjectDetailDragEnd({
+      lists,
+      setLists,
+      setWeapon,
+      setIsCompleted,
+      firebaseCurrentUser,
+    })
 
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
@@ -151,7 +152,8 @@ export const ProjectDetail: FC = () => {
         title="確認"
         message="最後のタスクを完了し、プロジェクトをクローズしますか?"
         shouldShow={shouldOpenProjectCloseModal}
-        onClickCloseBtn={onClickCloseBtn}
+        onClickAcceptBtn={onClickProjectCloseBtn}
+        onClickCloseBtn={onClickCancelBtn}
       />
       {/* <ProjectClearOverlay shouldOpen={shouldOpenProjectCloseModal} /> */}
       <StyledBackground />

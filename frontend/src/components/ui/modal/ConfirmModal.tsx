@@ -6,12 +6,16 @@ import { ModalCancelButton } from 'components/ui/button/ModalCancelButton'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type ModalProps = NonNullable<ComponentProps<typeof Modal>>
-type Props = { message: string } & Pick<ModalProps, 'title' | 'onClickCloseBtn' | 'shouldShow'>
+type Props = { message: string; onClickAcceptBtn: () => void } & Pick<
+  ModalProps,
+  'title' | 'onClickCloseBtn' | 'shouldShow'
+>
 
 export const ConfirmModal: FCX<Props> = ({
   title,
   message,
   shouldShow,
+  onClickAcceptBtn,
   onClickCloseBtn,
   className,
 }) => {
@@ -25,7 +29,7 @@ export const ConfirmModal: FCX<Props> = ({
       <StyledContent>
         <StyledMessage>{message}</StyledMessage>
         <StyledButtonWrapper>
-          <ModalButton text="はい" />
+          <ModalButton text="はい" onClick={onClickAcceptBtn} />
           <ModalCancelButton text="いいえ" onClick={onClickCloseBtn} />
         </StyledButtonWrapper>
       </StyledContent>
