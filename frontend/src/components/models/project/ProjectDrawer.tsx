@@ -76,6 +76,7 @@ const StyledColumnContainer = styled(StyledContainer)`
 const SignBoardContainer = styled.div`
   position: relative;
   top: ${calculateMinSizeBasedOnFigmaWidth(8)};
+  height: fit-content;
 `
 const StyledMainWrap = styled.div<{ isOpen: boolean }>`
   display: flex;

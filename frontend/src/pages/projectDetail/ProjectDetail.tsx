@@ -23,9 +23,7 @@ import { ProjectClearOverlay } from 'components/models/project/ProjectClearOverl
 import { useProjectDetailDragEnd } from 'hooks/useProjectDetailDragEnd'
 import { useProjectDetail } from 'hooks/useProjectDetail'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
-import { Notifications } from 'types/notification'
-import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
-import Exp from 'utils/exp/exp'
+import { useFetchSubscriptionCurrentUserDataFromProjectDetail } from 'hooks/subscriptions/useFetchSubscriptionCurrentUserDataFromProjectDetail'
 
 export const ProjectDetail: FC = () => {
   resetServerContext()
@@ -42,7 +40,13 @@ export const ProjectDetail: FC = () => {
     setLists,
   )
 
-  const { currentUserData, firebaseCurrentUser, notifications } = useGetCurrentUserData()
+  const { currentUserData, firebaseCurrentUser, notifications, setNotifications, setUserData } =
+    useGetCurrentUserData()
+  useFetchSubscriptionCurrentUserDataFromProjectDetail(
+    currentUserData,
+    setUserData,
+    setNotifications,
+  )
 
   const [searchSameCompanyUsers, searchSameCompanyUsersData] = useSearchSameCompanyUsersMutation()
 

@@ -19,10 +19,12 @@ import {
 } from 'utils/calculateProjectListDetailWidth'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { useFetchSubscriptionCurrentUserDataFromProjectList } from 'hooks/subscriptions/useFetchSubscriptionCurrentUserFromProjectList'
 
 export const ProjectList: FC = () => {
   const { currentUser } = useAuthContext()
-  const { currentUserData, notifications } = useGetCurrentUserData()
+  const { currentUserData, notifications, setNotifications, setUserData } = useGetCurrentUserData()
+  useFetchSubscriptionCurrentUserDataFromProjectList(setUserData, setNotifications)
   const [selectProject, setSelectProject] = useState(0)
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
