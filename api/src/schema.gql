@@ -397,7 +397,7 @@ type Subscription {
   updateListByList(projectId: String!): [List!]!
   updateListByListSort(projectId: String!): [List!]!
   updateList(projectId: String!): [List!]!
-  endTask(projectId: String!): UpdatedTask!
+  endTask(userId: String!, projectId: String!): UpdatedTask!
   updateLogsByTask(projectId: String!): [GameLog!]!
   updateUserByTask(userId: String!): User!
   updateGroupsByTask(projectId: String!): [Group!]!
