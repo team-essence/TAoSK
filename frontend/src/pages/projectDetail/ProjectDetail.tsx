@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -70,14 +70,23 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { onDragEnd, shouldOpenProjectCloseModal, onClickProjectCloseBtn, onClickCancelBtn } =
-    useProjectDetailDragEnd({
-      lists,
-      setLists,
-      setWeapon,
-      setIsCompleted,
-      firebaseCurrentUser,
-    })
+  const {
+    onDragEnd,
+    shouldOpenProjectCloseModal,
+    onClickProjectCloseBtn,
+    onClickCancelBtn,
+    hasClearedProject,
+  } = useProjectDetailDragEnd({
+    lists,
+    setLists,
+    setWeapon,
+    setIsCompleted,
+    firebaseCurrentUser,
+  })
+  const isClearProject = useMemo<boolean>(
+    () => !!projectData.data?.getProjectById.project_end_flg || hasClearedProject,
+    [projectData.data?.getProjectById.project_end_flg, hasClearedProject],
+  )
 
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
@@ -155,7 +164,7 @@ export const ProjectDetail: FC = () => {
         onClickAcceptBtn={onClickProjectCloseBtn}
         onClickCloseBtn={onClickCancelBtn}
       />
-      {/* <ProjectClearOverlay shouldOpen={shouldOpenProjectCloseModal} /> */}
+      <ProjectClearOverlay shouldOpen={hasClearedProject} />
       <StyledBackground />
     </>
   )

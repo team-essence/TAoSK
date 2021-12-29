@@ -32,7 +32,7 @@ type UseProjectDetailDragEndReturn = {
   shouldOpenProjectCloseModal: boolean
 } & Pick<
   ReturnType<typeof useHandleProjectCloseConfirmModal>,
-  'onClickCancelBtn' | 'onClickProjectCloseBtn'
+  'onClickCancelBtn' | 'onClickProjectCloseBtn' | 'hasClearedProject'
 >
 
 type UseProjectDetailDragEnd = (arg: UseProjectDetailDragEndArg) => UseProjectDetailDragEndReturn
@@ -61,6 +61,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     handleProjectCloseConfirmModalPromise,
     hasClickedProjectCloseBtn,
     hasClickedCancelBtn,
+    hasClearedProject,
   } = useHandleProjectCloseConfirmModal(projectId, currentUser?.uid)
   const { data } = useEndTaskSubscription({
     variables: {
@@ -186,5 +187,11 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     }
   }, [data])
 
-  return { onDragEnd, shouldOpenProjectCloseModal, onClickProjectCloseBtn, onClickCancelBtn }
+  return {
+    onDragEnd,
+    shouldOpenProjectCloseModal,
+    onClickProjectCloseBtn,
+    onClickCancelBtn,
+    hasClearedProject,
+  }
 }

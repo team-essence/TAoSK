@@ -12,6 +12,7 @@ type UseHandleProjectCloseModalReturn = {
   handleProjectCloseConfirmModalPromise: () => Promise<PromiseResult>
   hasClickedProjectCloseBtn: MutableRefObject<boolean>
   hasClickedCancelBtn: MutableRefObject<boolean>
+  hasClearedProject: boolean
 }
 
 /** プロジェクトを閉じるときに表示される確認モーダルにおける、表示/非表示の状態管理と、はい/いいえを押下した時の処理 */
@@ -19,16 +20,18 @@ export const useHandleProjectCloseConfirmModal = (
   project_id: string | undefined,
   user_id: string | undefined,
 ): UseHandleProjectCloseModalReturn => {
+  const [hasClearedProject, setHasClearedProject] = useState<boolean>(false)
   const [completeProject] = useCompleteProjectMutation({
     onCompleted(data) {
       logger.debug(data)
-      toast.success('プロジェクトを完了しました')
+      setHasClearedProject(true)
     },
     onError(err) {
       logger.debug(err)
       toast.error('プロジェクトの完了に失敗しました')
     },
   })
+
   const [shouldOpenProjectCloseModal, setShouldOpenProjectCloseModal] = useState<boolean>(false)
   const hasClickedProjectCloseBtn = useRef<boolean>(false)
   const hasClickedCancelBtn = useRef<boolean>(false)
@@ -73,5 +76,6 @@ export const useHandleProjectCloseConfirmModal = (
     handleProjectCloseConfirmModalPromise,
     hasClickedProjectCloseBtn,
     hasClickedCancelBtn,
+    hasClearedProject,
   }
 }
