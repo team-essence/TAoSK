@@ -1,15 +1,15 @@
-import React, { Suspense, useRef, FCX } from 'react'
-import { Mesh } from 'three'
+import React, { Suspense, FCX } from 'react'
 import { Environment, OrbitControls } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import Model from './DragonIdle'
-import styled from 'styled-components'
-import { CgAxesHelper } from 'components/cg/CgAxesHelper'
+import { CgAxesHelper } from 'components/models/cg/CgAxesHelper'
+import { CANVAS_BACKGROUND_IMG, CgCanvasWrapper } from '../cg/CgCanvasWrapper'
+import { CgAvatarContainer } from '../cg/CgAvatarContainer'
 
 export const MonsterAvatar: FCX = ({ className }) => {
   return (
-    <StyledMonsterAvatarContainer className={className}>
-      <StyledCanvasWrapper>
+    <CgAvatarContainer className={className}>
+      <CgCanvasWrapper canvasBackgroundImg={CANVAS_BACKGROUND_IMG.MORNING}>
         <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>
           <OrbitControls enablePan={false} />
 
@@ -21,27 +21,7 @@ export const MonsterAvatar: FCX = ({ className }) => {
             <CgAxesHelper />
           </Suspense>
         </Canvas>
-      </StyledCanvasWrapper>
-    </StyledMonsterAvatarContainer>
+      </CgCanvasWrapper>
+    </CgAvatarContainer>
   )
 }
-
-const StyledMonsterAvatarContainer = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
-`
-
-const StyledCanvasWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`
