@@ -127,6 +127,7 @@ export const TaskCard: FCX<Props> = ({
         {...taskInfo}
         shouldShow={shouldShowModal}
         setShouldShow={setShouldShowModal}
+        isCompletedProject={isCompletedProject}
       />
     </>
   )

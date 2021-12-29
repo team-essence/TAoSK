@@ -126,6 +126,7 @@ export const ProjectDetail: FC = () => {
         notifications={notifications}
         lists={lists}
         groups={projectData.data?.getProjectById.groups ?? []}
+        isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
       />
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>

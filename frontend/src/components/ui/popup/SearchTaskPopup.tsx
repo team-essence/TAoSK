@@ -8,10 +8,10 @@ import { TaskEditModal } from 'components/models/task/TaskEditModal'
 
 type Props = {
   searchedTasks: SearchTask[]
+  isCompletedProject: boolean
 }
 
-// TODO: モーダルが出来次第、タスクモーダルが開く処理をかく
-export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
+export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks, isCompletedProject }) => {
   const [isTask, setIsTask] = useState(false)
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
@@ -68,6 +68,7 @@ export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
                           {...task}
                           shouldShow={shouldShowModal}
                           setShouldShow={setShouldShowModal}
+                          isCompletedProject={isCompletedProject}
                         />
                       </div>
                     ))}
