@@ -16,13 +16,11 @@ export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
   useNotificationSubscription(setNotifications)
 
   useEffect(() => {
-    logger.debug(updateUserByTask, 'hogehoge')
+    logger.debug(updateUserByTask)
     if (!updateUserByTask) return
 
     if (currentUserData && Exp.toLevel(updateUserByTask.exp) > Exp.toLevel(currentUserData.exp)) {
-      toast.success(
-        'レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！',
-      )
+      toast.success('レベルが上がりました')
     }
 
     setUserData(updateUserByTask)
