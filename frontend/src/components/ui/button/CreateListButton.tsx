@@ -11,12 +11,12 @@ type Props = {
 export const CreateListButton: FCX<Props> = ({ className, onClick, disabled }) => {
   return (
     <StyledCreateListButton className={className} onClick={onClick} disabled={disabled}>
-      <StyledInnerWrapper>+ リストを追加</StyledInnerWrapper>
+      <StyledInnerWrapper disabled={disabled}>+ リストを追加</StyledInnerWrapper>
     </StyledCreateListButton>
   )
 }
 
-const StyledCreateListButton = styled.button`
+const StyledCreateListButton = styled.button<{ disabled: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,25 +26,39 @@ const StyledCreateListButton = styled.button`
   ${({ theme }) =>
     css`
       background-color: ${theme.COLORS.LINEN};
-      border: solid 1px ${theme.COLORS.RIVER_BED};
       border-radius: 2px;
       box-shadow: -4px 4px 2px ${convertIntoRGBA(theme.COLORS.BLACK, 0.5)};
       font-size: ${theme.FONT_SIZES.SIZE_14};
       font-weight: ${theme.FONT_WEIGHTS.BOLD};
-      color: ${theme.COLORS.SHIP_COVE};
     `}
+
+  ${({ theme, disabled }) => {
+    if (disabled) {
+      return css`
+        cursor: not-allowed;
+        border: solid 1px ${convertIntoRGBA(theme.COLORS.RIVER_BED, 0.4)};
+        color: ${convertIntoRGBA(theme.COLORS.SHIP_COVE, 0.4)};
+      `
+    } else {
+      return css`
+        cursor: pointer;
+        border: solid 1px ${theme.COLORS.RIVER_BED};
+        color: ${theme.COLORS.SHIP_COVE};
+      `
+    }
+  }}
 `
-const StyledInnerWrapper = styled.div`
+const StyledInnerWrapper = styled.div<{ disabled: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   width: calc(100% - ${calculateMinSizeBasedOnFigmaHeight(4)});
   height: calc(100% - ${calculateMinSizeBasedOnFigmaHeight(4)});
-  ${({ theme }) =>
+  ${({ theme, disabled }) =>
     css`
       background-color: ${theme.COLORS.LINEN};
-      border: solid 2px ${theme.COLORS.RIVER_BED};
+      border: solid 2px ${convertIntoRGBA(theme.COLORS.RIVER_BED, disabled ? 0.4 : 1)};
       border-radius: 2px;
     `}
 `
