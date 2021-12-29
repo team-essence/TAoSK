@@ -9,7 +9,6 @@ export const CANVAS_BACKGROUND_IMG = {
 export type CANVAS_BACKGROUND_IMG = typeof CANVAS_BACKGROUND_IMG[keyof typeof CANVAS_BACKGROUND_IMG]
 
 type Props = {
-  children: ReactNode
   canvasBackgroundImg: CANVAS_BACKGROUND_IMG
 }
 

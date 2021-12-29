@@ -1,10 +1,6 @@
 import React, { FCX, ReactNode } from 'react'
 import styled from 'styled-components'
 
-type Props = {
-  children: ReactNode
-}
-
 export const CgAvatarContainer: FCX = ({ className, children }) => {
   return <StyledCgAvatarContainer className={className}>{children}</StyledCgAvatarContainer>
 }
