@@ -1,49 +1,30 @@
-import React, { Suspense, useRef, FCX } from 'react'
-import { Mesh } from 'three'
+import React, { Suspense, FCX } from 'react'
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import Model from './Egg'
-import styled from 'styled-components'
-import { CgAxesHelper } from 'components/cg/CgAxesHelper'
+import { CgAxesHelper } from 'components/models/cg/CgAxesHelper'
+import { CANVAS_BACKGROUND_IMG, CgCanvasWrapper } from '../cg/CgCanvasWrapper'
+import { CgAvatarContainer } from '../cg/CgAvatarContainer'
 
 type Props = {}
 
 export const EggAvatar: FCX<Props> = ({ className }) => {
   return (
-    <StyledEggAvatarContainer className={className}>
-      <StyledCanvasWrapper>
+    <CgAvatarContainer className={className}>
+      <CgCanvasWrapper canvasBackgroundImg={CANVAS_BACKGROUND_IMG.MORNING}>
         <Canvas camera={{ fov: 3.8, position: [12, 4, 12] }}>
           <OrbitControls enablePan={false} />
 
           <Suspense fallback={null}>
-            <ambientLight intensity={2} />
-            <spotLight intensity={2} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow />
+            {/* TODO: ライトのコードは念の為残しとく */}
+            {/* <ambientLight intensity={2} />
+            <spotLight intensity={2} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow /> */}
             <Model position={[0, -0.3, 0]} />
             <Environment preset="sunset" />
             <CgAxesHelper />
           </Suspense>
         </Canvas>
-      </StyledCanvasWrapper>
-    </StyledEggAvatarContainer>
+      </CgCanvasWrapper>
+    </CgAvatarContainer>
   )
 }
-
-const StyledEggAvatarContainer = styled.div`
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
-`
-
-const StyledCanvasWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`
