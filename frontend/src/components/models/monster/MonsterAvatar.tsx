@@ -1,10 +1,10 @@
 import React, { Suspense, FCX } from 'react'
 import { Environment, OrbitControls } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import Model from './DragonIdle'
 import { CgAxesHelper } from 'components/models/cg/CgAxesHelper'
 import { CANVAS_BACKGROUND_IMG, CgCanvasWrapper } from '../cg/CgCanvasWrapper'
 import { CgAvatarContainer } from '../cg/CgAvatarContainer'
+import Model from './Dragon1125'
 
 export const MonsterAvatar: FCX = ({ className }) => {
   return (
