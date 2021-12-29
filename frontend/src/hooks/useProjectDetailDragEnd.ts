@@ -107,7 +107,8 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
   }
 
   const onDragEnd = async (result: DropResult) => {
-    if (!result.destination) return
+    if (!result.destination || !firebaseCurrentUser) return
+
     const { source, destination, type } = result
     const destinationDroppableId = Number(destination.droppableId)
     const sourceDroppableId = Number(source.droppableId)
@@ -142,7 +143,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
         updateTasks: {
           tasks: tasksInfoToUpdate,
           project_id: String(projectId),
-          user_id: firebaseCurrentUser?.uid ?? '',
+          user_id: firebaseCurrentUser.uid,
         },
       },
     })
