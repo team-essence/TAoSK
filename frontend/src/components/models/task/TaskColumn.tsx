@@ -29,9 +29,18 @@ import logger from 'utils/debugger/logger'
 type Props = {
   listIndex: number
   listLength: number
+  isCompletedProject: boolean
 } & Omit<List, 'sort_id' | 'index'>
 
-export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
+export const TaskColumn: FCX<Props> = ({
+  id,
+  list_id,
+  title,
+  tasks,
+  listIndex,
+  listLength,
+  isCompletedProject,
+}) => {
   const listTitle = useInput(title)
   const control = useControlTextArea()
   const { id: projectId } = useParams()
@@ -70,7 +79,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
     <Draggable
       draggableId={`column-${id}`}
       index={listIndex}
-      isDragDisabled={listIndex === 0 || listLength - 1 === listIndex}>
+      isDragDisabled={listIndex === 0 || listLength - 1 === listIndex || isCompletedProject}>
       {provided => (
         <StyledContainer
           ref={provided.innerRef}
@@ -143,7 +152,12 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                       />
                     </>
                   )}
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList
+                    tasks={tasks}
+                    listIndex={listIndex}
+                    listLength={listLength}
+                    isCompletedProject={isCompletedProject}
+                  />
                   {listProvided.placeholder}
                 </StyledTaskListContainer>
               </StyledColumnContainer>

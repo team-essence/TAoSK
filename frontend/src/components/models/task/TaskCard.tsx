@@ -18,6 +18,7 @@ type Props = {
   taskIndex: number
   listIndex: number
   listLength: number
+  isCompletedProject: boolean
 } & Omit<Task, 'vertical_sort'>
 
 export const TaskCard: FCX<Props> = ({
@@ -25,6 +26,7 @@ export const TaskCard: FCX<Props> = ({
   taskIndex,
   listIndex,
   listLength,
+  isCompletedProject,
   ...taskInfo
 }) => {
   const {
@@ -64,7 +66,11 @@ export const TaskCard: FCX<Props> = ({
 
   return (
     <>
-      <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
+      <Draggable
+        key={id}
+        draggableId={`task-${id}`}
+        index={taskIndex}
+        isDragDisabled={isCompletedProject}>
         {(taskProvided, snapshot) => (
           <StyledLi
             className={className}
@@ -127,6 +133,7 @@ export const TaskCard: FCX<Props> = ({
 }
 
 const StyledLi = styled.li`
+  cursor: pointer;
   position: relative;
   padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
   user-select: none;

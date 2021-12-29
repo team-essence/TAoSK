@@ -19,10 +19,11 @@ type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
 
 type Props = {
   lists: List[]
+  isCompletedProject: boolean
   onDragEnd: (result: DropResult) => Promise<void>
 } & Partial<Groups>
 
-export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
+export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd, isCompletedProject }) => {
   const { currentValue, setCurrentValue } = useLocalStorage<boolean>('isOpen', true)
 
   return (
@@ -42,7 +43,7 @@ export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
                 <StyledColumnContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <TaskColumnList lists={lists} />
+                  <TaskColumnList lists={lists} isCompletedProject={isCompletedProject} />
                   {provided.placeholder}
                 </StyledColumnContainer>
               )}
