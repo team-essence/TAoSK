@@ -13,9 +13,17 @@ type Props = {
   shouldShow: boolean
   onClickCloseBtn: () => void
   children: ReactNode
+  isSmall?: boolean
 }
 
-export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, className, children }) => {
+export const Modal: FCX<Props> = ({
+  title,
+  shouldShow,
+  onClickCloseBtn,
+  className,
+  children,
+  isSmall = false,
+}) => {
   return (
     <StyledMuiModal
       open={shouldShow}
@@ -31,10 +39,12 @@ export const Modal: FCX<Props> = ({ title, shouldShow, onClickCloseBtn, classNam
 
         <StyledChildrenWrapper className={className}>{children}</StyledChildrenWrapper>
 
-        <StyledDragonSymbolWrapper>
-          <StyledDragonSymbolLeft />
-          <StyledDragonSymbolRight />
-        </StyledDragonSymbolWrapper>
+        {!isSmall && (
+          <StyledDragonSymbolWrapper>
+            <StyledDragonSymbolLeft />
+            <StyledDragonSymbolRight />
+          </StyledDragonSymbolWrapper>
+        )}
 
         <StyledBackgroundWrapper>
           <StyledBackgroundLeft />
