@@ -4,6 +4,7 @@ query GetProject($id: String!) {
     name
     hp
     difficulty
+    project_end_flg
 
     monster {
       id
@@ -83,6 +84,14 @@ query GetProject($id: String!) {
         }
       }
     }
+  }
+}
+
+mutation CompleteProject($endProject: EndProjectInput!) {
+  completeProject(endProject: $endProject) {
+    id
+    name
+    project_end_flg
   }
 }
 

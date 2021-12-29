@@ -61,7 +61,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     handleProjectCloseConfirmModalPromise,
     hasClickedProjectCloseBtn,
     hasClickedCancelBtn,
-  } = useHandleProjectCloseConfirmModal()
+  } = useHandleProjectCloseConfirmModal(projectId, currentUser?.uid)
   const { data } = useEndTaskSubscription({
     variables: {
       project_id: String(projectId),

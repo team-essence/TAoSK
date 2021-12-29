@@ -1,4 +1,7 @@
 import { useCallback, useState, useRef, MutableRefObject } from 'react'
+import { useCompleteProjectMutation } from 'pages/projectDetail//projectDetail.gen'
+import toast from 'utils/toast/toast'
+import logger from 'utils/debugger/logger'
 
 type PromiseResult = { hasAgreed: boolean }
 
@@ -12,7 +15,20 @@ type UseHandleProjectCloseModalReturn = {
 }
 
 /** プロジェクトを閉じるときに表示される確認モーダルにおける、表示/非表示の状態管理と、はい/いいえを押下した時の処理 */
-export const useHandleProjectCloseConfirmModal = (): UseHandleProjectCloseModalReturn => {
+export const useHandleProjectCloseConfirmModal = (
+  project_id: string | undefined,
+  user_id: string | undefined,
+): UseHandleProjectCloseModalReturn => {
+  const [completeProject] = useCompleteProjectMutation({
+    onCompleted(data) {
+      logger.debug(data)
+      toast.success('プロジェクトを完了しました')
+    },
+    onError(err) {
+      logger.debug(err)
+      toast.error('プロジェクトの完了に失敗しました')
+    },
+  })
   const [shouldOpenProjectCloseModal, setShouldOpenProjectCloseModal] = useState<boolean>(false)
   const hasClickedProjectCloseBtn = useRef<boolean>(false)
   const hasClickedCancelBtn = useRef<boolean>(false)
@@ -20,12 +36,21 @@ export const useHandleProjectCloseConfirmModal = (): UseHandleProjectCloseModalR
     ((value: PromiseResult | PromiseLike<PromiseResult>) => void) | null
   >(null)
 
-  const onClickProjectCloseBtn = useCallback(() => {
+  const onClickProjectCloseBtn = useCallback(async () => {
     if (!outsideResolverRef.current) return
     hasClickedProjectCloseBtn.current = true
     outsideResolverRef.current({ hasAgreed: true })
+    if (!project_id || !user_id) return
+    await completeProject({
+      variables: {
+        endProject: {
+          project_id,
+          user_id,
+        },
+      },
+    })
     setShouldOpenProjectCloseModal(false)
-  }, [outsideResolverRef.current])
+  }, [outsideResolverRef.current, project_id, user_id])
 
   const onClickCancelBtn = useCallback(() => {
     if (!outsideResolverRef.current) return

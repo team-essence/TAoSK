@@ -54,11 +54,11 @@ export class ProjectsResolver {
     return newProjectData.project;
   }
 
-  @Mutation(() => Boolean)
-  async completedProject(
+  @Mutation(() => Project)
+  async completeProject(
     @Args({ name: 'endProject' }) endProject: EndProjectInput,
   ) {
-    return this.projectService.completedProject(endProject);
+    return this.projectService.completeProject(endProject);
   }
 
   @Subscription((returns) => User, {
