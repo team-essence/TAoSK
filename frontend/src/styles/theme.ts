@@ -117,6 +117,7 @@ export const theme = {
     RODEO_DUST: '#C9AE95',
     HELIOTROPE: '#8D7AFF',
     PEACH_ORANGE: '#FFBE9A',
+    RIVER_BED: '#464C5A',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',
