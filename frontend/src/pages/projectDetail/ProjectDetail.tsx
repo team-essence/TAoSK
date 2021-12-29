@@ -83,10 +83,6 @@ export const ProjectDetail: FC = () => {
     setIsCompleted,
     firebaseCurrentUser,
   })
-  const isClearProject = useMemo<boolean>(
-    () => !!projectData.data?.getProjectById.project_end_flg || hasClearedProject,
-    [projectData.data?.getProjectById.project_end_flg, hasClearedProject],
-  )
 
   const debouncedInputText = useDebounce<string>(inputUserName.value, 500)
 
