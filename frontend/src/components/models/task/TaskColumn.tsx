@@ -117,25 +117,28 @@ export const TaskColumn: FCX<Props> = ({
                         maxLength={255}
                       />
                     </StyledTitle>
-                    {listIndex !== 0 && listIndex !== listLength - 1 && listLength !== 3 && (
-                      <>
-                        <StyledSpreadIcon
-                          src="/svg/spread.svg"
-                          alt="spread"
-                          onClick={openPopover}
-                        />
-                        <SmallPopover
-                          anchorEl={anchorEl}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                          }}
-                          handleClose={closePopover}
-                          handleRemove={() => handleRemoveList(Number(id), projectId)}
-                          handleEdit={e => !!e && control.enableTextArea(e)}
-                        />
-                      </>
-                    )}
+                    {listIndex !== 0 &&
+                      listIndex !== listLength - 1 &&
+                      listLength !== 3 &&
+                      !isCompletedProject && (
+                        <>
+                          <StyledSpreadIcon
+                            src="/svg/spread.svg"
+                            alt="spread"
+                            onClick={openPopover}
+                          />
+                          <SmallPopover
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'left',
+                            }}
+                            handleClose={closePopover}
+                            handleRemove={() => handleRemoveList(Number(id), projectId)}
+                            handleEdit={e => !!e && control.enableTextArea(e)}
+                          />
+                        </>
+                      )}
                   </StyledInnerHeadWrap>
                 </StyledHeadContainer>
                 <StyledTaskListContainer headerHeight={height}>
