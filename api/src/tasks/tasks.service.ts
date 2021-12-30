@@ -496,14 +496,19 @@ export class TasksService {
       where: {
         id: taskId,
       },
-      relations: ['project'],
+      relations: [
+        'project',
+        'project.tasks',
+        'project.groups',
+        'project.groups.user',
+      ],
     });
 
     if (task.project.tasks.map((task) => task.completed_flg === true)) {
       const url = this.config.get('SOCKET_CLIENT_EVENTS');
       const socket = io(url);
       task.project.groups;
-      const usersId = task.project.groups.map((menber) => menber.user.id);
+      const usersId = task.project.groups.map((member) => member.user.id);
       socket.emit('events', {
         sender: '',
         room: 'general',
