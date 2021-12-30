@@ -1,10 +1,22 @@
-import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react'
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  ChangeEvent,
+} from 'react'
 import { useDebounce } from 'hooks/useDebounce'
-import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
-import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import type { UserData } from 'types/userData'
+import type { Groups } from 'types/groups'
 
-type UseSearchMemberReturn = {
+type UseSearchSameProjectMemberArg = {
+  userData: UserData
+  shouldCache: boolean
+} & Groups
+
+type UseSearchSameProjectMemberReturn = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   onFocus: () => void
   onBlur: () => void
@@ -15,11 +27,15 @@ type UseSearchMemberReturn = {
   value: string
 }
 
+type UseSearchSameProjectMember = (
+  arg: UseSearchSameProjectMemberArg,
+) => UseSearchSameProjectMemberReturn
+
 let cachedSelectedUserData: UserData = []
 
 /**
- * メンバーを検索するために必要な処理の一群
- * @return {UseSearchMemberReturn} returns
+ * 同じプロジェクト内のメンバーを検索するために必要な処理の一群
+ * @return {UseSearchSameProjectMemberReturn} returns
  * @return {ReturnType<typeof useInput>['onChange']} returns.onChange - 検索欄を入力した時にテキストを参照し続けるため使う
  * @return {() => void} returns.onFocus - 検索結果を表示する
  * @return {() => void} returns.onBlur - 検索結果を非表示にする
@@ -30,22 +46,23 @@ let cachedSelectedUserData: UserData = []
  * @return {string} returns.value - 検索欄に入力するinputタグのvalue
  * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
-export const useSearchMember = (
-  userData: UserData,
-  shouldCache: boolean,
-): UseSearchMemberReturn => {
-  const { currentUserData } = useGetCurrentUserData()
+export const useSearchSameProjectMember: UseSearchSameProjectMember = ({
+  groups,
+  userData,
+  shouldCache,
+}) => {
+  const sameCompanyUsers = useMemo<UserData>(() => groups.map(group => group.user), [groups])
   const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
-  const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
+  const [searchResult, setSearchResult] = useState<UserData>([])
   const [candidateUserData, setCandidateUserData] = useState<UserData>([])
   const [selectedUserData, setSelectedUserData] = useState<UserData>(
     shouldCache && cachedSelectedUserData.length ? cachedSelectedUserData : userData,
   )
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
-  const onFocus = () => setShouldShowResult(true)
-  const onBlur = () => setShouldShowResult(false)
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value), [])
+  const onFocus = useCallback(() => setShouldShowResult(true), [])
+  const onBlur = useCallback(() => setShouldShowResult(false), [])
 
   useEffect(() => {
     // タスク作成後に選択済のユーザーを初期化する
@@ -65,25 +82,24 @@ export const useSearchMember = (
       setCandidateUserData([])
       return
     }
-    searchSameCompanyUsers({
-      variables: {
-        selectUserIds: selectedUserData.map(data => data.id),
-        name: debouncedInputText,
-        company: currentUserData?.company ? currentUserData.company : '',
-      },
-    })
+    const selectedUserIds = selectedUserData.map(datum => datum.id)
+    const result = sameCompanyUsers.filter(
+      v =>
+        (v.id.includes(debouncedInputText) || v.name.includes(debouncedInputText)) &&
+        !selectedUserIds.includes(v.id),
+    )
+    setSearchResult(result)
   }, [debouncedInputText, selectedUserData])
 
   useEffect(() => {
-    const newUserData = searchResult.data?.searchSameCompanyUsers
-    if (!newUserData?.length) {
+    if (!searchResult) {
       setCandidateUserData([])
       return
     }
 
-    if (JSON.stringify(candidateUserData) === JSON.stringify(newUserData)) return
-    setCandidateUserData(newUserData)
-  }, [searchResult.data])
+    if (JSON.stringify(candidateUserData) === JSON.stringify(searchResult)) return
+    setCandidateUserData(searchResult)
+  }, [searchResult])
 
   useEffect(() => () => setValue(''), [])
 

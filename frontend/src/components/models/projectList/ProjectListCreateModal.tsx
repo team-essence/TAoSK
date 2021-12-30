@@ -12,11 +12,12 @@ import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import Rating from '@mui/material/Rating'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { SearchMemberFieldFromProjectCreate } from 'components/ui/form/SearchMemberFieldFromProjectCreate'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { StarIcon } from 'components/ui/icon/StarIcon'
 import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
 import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
+import { useSearchSameCompanyMember } from 'hooks/useSearchSameCompanyMember'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
@@ -35,6 +36,10 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
     handleDifficulty,
     handleCreateProject,
   } = useProjectCreateForm({ closeModal })
+  const returnOfUseSearchSameCompanyMember = useSearchSameCompanyMember({
+    userData,
+    shouldCache: true,
+  })
 
   return (
     <StyledModal
@@ -88,10 +93,9 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
               />
             </StyledDifficultyWrapper>
 
-            <SearchMemberFieldFromProjectCreate
+            <SearchMemberField
+              {...returnOfUseSearchSameCompanyMember}
               setUserData={setUserData}
-              userData={userData}
-              shouldCache={true}
               isFixedFirstUser={true}
             />
           </StyledRightColumn>

@@ -64,7 +64,7 @@ export const useModalInterlockingScroll = (): UseModalInterlockingScrollReturn =
 
   // 連動スクロール本体。overlayがスクロールされたらモーダル内部も連動してスクロールさせる
   useEffect(() => {
-    const setWhichWheeled = (e: WheelEvent) => (whichWheeled.current = 'overlay')
+    const setWhichWheeled = () => (whichWheeled.current = 'overlay')
     const scrollModal = () => {
       if (!scrollableRef.current || !leftColumnRef.current || !rightColumnRef.current) return
       const scrollTop = scrollableRef.current.scrollTop

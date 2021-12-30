@@ -131,7 +131,7 @@ export const ProjectDetail: FC = () => {
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
           <ProjectDrawer
-            groups={projectData.data?.getProjectById.groups}
+            groups={projectData.data?.getProjectById.groups ?? []}
             lists={lists}
             onDragEnd={onDragEnd}
             isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}

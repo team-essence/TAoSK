@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { Notifications } from 'types/notification'
 import { List } from 'types/list'
+import { Groups } from 'types/groups'
 import { SearchTask } from 'types/task'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { taskSearch } from 'utils/search/taskSearch'
@@ -17,7 +18,6 @@ import { NotificationHeader } from 'components/ui/header/NotificationHeader'
 import { InvitationHeader } from 'components/ui/header/InvitaionHeader'
 import { SearchTaskPopup } from 'components/ui/popup/SearchTaskPopup'
 import { UserAccountSettingModal } from 'components/models/user/UserAccountSettingModal'
-import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
 
 type Props = {
   iconImage: string
@@ -27,9 +27,8 @@ type Props = {
   notifications: Notifications
   company: string
   lists: List[]
-  groups: GetProjectQuery['getProjectById']['groups']
   isCompletedProject: boolean
-}
+} & Groups
 
 export const ProjectDetailHeader: FCX<Props> = ({
   className,
@@ -212,6 +211,7 @@ export const ProjectDetailHeader: FCX<Props> = ({
             <StyledSearchTaskPopup
               searchedTasks={searchedTasks}
               isCompletedProject={isCompletedProject}
+              groups={groups}
             />
           </StyledPopupContainer>
         )}

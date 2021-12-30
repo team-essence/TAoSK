@@ -496,14 +496,19 @@ export class TasksService {
       where: {
         id: taskId,
       },
-      relations: ['project'],
+      relations: [
+        'project',
+        'project.tasks',
+        'project.groups',
+        'project.groups.user',
+      ],
     });
 
     if (task.project.tasks.map((task) => task.completed_flg === true)) {
       const url = this.config.get('SOCKET_CLIENT_EVENTS');
       const socket = io(url);
       task.project.groups;
-      const usersId = task.project.groups.map((menber) => menber.user.id);
+      const usersId = task.project.groups.map((member) => member.user.id);
       socket.emit('events', {
         sender: '',
         room: 'general',
@@ -579,21 +584,73 @@ export class TasksService {
 
   async deleteTask(
     taskId: number,
-  ): Promise<{ lists: List[]; project_id: string }> {
+  ): Promise<{ lists: List[]; project_id: string; allocationUsers: User[] }> {
+    const allocationUsers: User[] = [];
     const task = await this.taskRepository.findOne({
       where: {
         id: taskId,
       },
-      relations: ['project'],
+      relations: ['project', 'allocations', 'allocations.user'],
     });
     const projectId = task.project.id;
 
+    const totalStatus = StatusPointUtil.totalStatus(
+      task.technology,
+      task.achievement,
+      task.solution,
+      task.motivation,
+      task.design,
+      task.plan,
+    );
+
+    if (task.completed_flg) {
+      for (const allocation of task.allocations) {
+        const user = await this.userRepository.findOne(allocation.user.id);
+        if (!user) throw new NotFoundException();
+
+        user.exp -= totalStatus;
+        user.technology -= task.technology;
+        user.achievement -= task.achievement;
+        user.solution -= task.solution;
+        user.motivation -= task.motivation;
+        user.design -= task.design;
+        user.plan -= task.plan;
+        await this.userRepository.save(user).catch((err) => {
+          throw err;
+        });
+
+        allocationUsers.push(
+          await this.userRepository.findOne(allocation.user.id, {
+            relations: [
+              'interests',
+              'certifications',
+              'invitations',
+              'invitations.project',
+              'groups',
+              'groups.project',
+              'groups.project.tasks',
+              'groups.project.groups',
+              'groups.project.groups.user',
+              'groups.project.groups.user.occupation',
+              'groups.project.monster',
+              'groups.project.monster.specie',
+              'occupation',
+            ],
+          }),
+        );
+      }
+    }
+
+    await this.allocationRepository.delete({
+      task: {
+        id: taskId,
+      },
+    });
     await this.chatRepository.delete({
       task: {
         id: taskId,
       },
     });
-
     await this.taskRepository.remove(task).catch(() => {
       new InternalServerErrorException();
     });
@@ -614,7 +671,7 @@ export class TasksService {
       .where('project.id=:id', { id: projectId })
       .getMany();
 
-    return { lists, project_id: projectId };
+    return { lists, project_id: projectId, allocationUsers };
   }
 
   async assign({

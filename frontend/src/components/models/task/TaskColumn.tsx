@@ -1,6 +1,7 @@
 import React, { FCX, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
+import { Groups } from 'types/groups'
 import { DROP_TYPE } from 'consts/dropType'
 import { theme } from 'styles/theme'
 import toast from 'utils/toast/toast'
@@ -30,7 +31,8 @@ type Props = {
   listIndex: number
   listLength: number
   isCompletedProject: boolean
-} & Omit<List, 'sort_id' | 'index'>
+} & Omit<List, 'sort_id' | 'index'> &
+  Groups
 
 export const TaskColumn: FCX<Props> = ({
   id,
@@ -40,6 +42,7 @@ export const TaskColumn: FCX<Props> = ({
   listIndex,
   listLength,
   isCompletedProject,
+  groups,
 }) => {
   const listTitle = useInput(title)
   const control = useControlTextArea()
@@ -155,6 +158,7 @@ export const TaskColumn: FCX<Props> = ({
                         closeModal={() => setShouldShowModal(false)}
                         verticalSort={tasks.length}
                         list_id={list_id}
+                        groups={groups}
                       />
                     </>
                   )}
@@ -163,6 +167,7 @@ export const TaskColumn: FCX<Props> = ({
                     listIndex={listIndex}
                     listLength={listLength}
                     isCompletedProject={isCompletedProject}
+                    groups={groups}
                   />
                   {listProvided.placeholder}
                 </StyledTaskListContainer>
