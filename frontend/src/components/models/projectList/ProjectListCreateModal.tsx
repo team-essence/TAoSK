@@ -17,6 +17,7 @@ import { ModalButton } from 'components/ui/button/ModalButton'
 import { StarIcon } from 'components/ui/icon/StarIcon'
 import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
 import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
+import { useSearchSameCompanyMember } from 'hooks/useSearchSameCompanyMember'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 type Props = {
@@ -35,6 +36,10 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
     handleDifficulty,
     handleCreateProject,
   } = useProjectCreateForm({ closeModal })
+  const returnOfUseSearchSameCompanyMember = useSearchSameCompanyMember({
+    userData,
+    shouldCache: true,
+  })
 
   return (
     <StyledModal
@@ -89,9 +94,8 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
             </StyledDifficultyWrapper>
 
             <SearchMemberField
+              {...returnOfUseSearchSameCompanyMember}
               setUserData={setUserData}
-              userData={userData}
-              shouldCache={true}
               isFixedFirstUser={true}
             />
           </StyledRightColumn>

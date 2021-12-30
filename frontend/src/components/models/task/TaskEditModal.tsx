@@ -16,6 +16,7 @@ import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskEndDateEditForm } from 'hooks/useTaskEndDateEditForm'
 import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
+import { useSearchSameProjectMember } from 'hooks/useSearchSameProjectMember'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
 import { Groups } from 'types/groups'
@@ -49,6 +50,11 @@ export const TaskEditModal: FCX<Props> = ({
     initialEndDate: end_date,
   })
   const { userData, setUserData } = useTaskUserSelectForm({ id, initialUserData: allocations })
+  const returnOfUseSearchSameProjectMember = useSearchSameProjectMember({
+    groups,
+    userData,
+    shouldCache: false,
+  })
   const { onClickDeleteButton, anchorEl, openPopover, closePopover } = useDeleteTask({
     id,
     setShouldShowEditModal: setShouldShow,
@@ -88,11 +94,9 @@ export const TaskEditModal: FCX<Props> = ({
                 onChange={onChange}
               />
               <StyledSearchMemberField
+                {...returnOfUseSearchSameProjectMember}
                 setUserData={setUserData}
-                userData={userData}
-                shouldCache={false}
                 completed_flag={completed_flg}
-                groups={groups}
               />
               <StyledTaskEditStatusPointField
                 id={id}

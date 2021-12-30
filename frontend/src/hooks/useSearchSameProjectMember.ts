@@ -1,8 +1,12 @@
 import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react'
 import { useDebounce } from 'hooks/useDebounce'
-import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
-import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import type { UserData } from 'types/userData'
+import type { Groups } from 'types/groups'
+
+type UseSearchSameProjectMemberArg = {
+  userData: UserData
+  shouldCache: boolean
+} & Groups
 
 type UseSearchSameProjectMemberReturn = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -14,6 +18,10 @@ type UseSearchSameProjectMemberReturn = {
   shouldShowResult: boolean
   value: string
 }
+
+type UseSearchSameProjectMember = (
+  arg: UseSearchSameProjectMemberArg,
+) => UseSearchSameProjectMemberReturn
 
 let cachedSelectedUserData: UserData = []
 
@@ -30,14 +38,14 @@ let cachedSelectedUserData: UserData = []
  * @return {string} returns.value - 検索欄に入力するinputタグのvalue
  * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
-export const useSearchSameProjectMember = (
-  userData: UserData,
-  shouldCache: boolean,
-): UseSearchSameProjectMemberReturn => {
-  const { currentUserData } = useGetCurrentUserData()
+export const useSearchSameProjectMember: UseSearchSameProjectMember = ({
+  groups,
+  userData,
+  shouldCache,
+}) => {
   const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
-  const [searchSameCompanyUsers, searchResult] = useSearchSameCompanyUsersMutation()
+  const [searchResult, setSearchResult] = useState<UserData>([])
   const [candidateUserData, setCandidateUserData] = useState<UserData>([])
   const [selectedUserData, setSelectedUserData] = useState<UserData>(
     shouldCache && cachedSelectedUserData.length ? cachedSelectedUserData : userData,
@@ -61,29 +69,32 @@ export const useSearchSameProjectMember = (
   }, [userData])
 
   useEffect(() => {
+    console.log(groups)
+  }, [groups])
+
+  useEffect(() => {
     if (!debouncedInputText) {
       setCandidateUserData([])
       return
     }
-    searchSameCompanyUsers({
-      variables: {
-        selectUserIds: selectedUserData.map(data => data.id),
-        name: debouncedInputText,
-        company: currentUserData?.company ? currentUserData.company : '',
-      },
-    })
+    // searchSameCompanyUsers({
+    //   variables: {
+    //     selectUserIds: selectedUserData.map(data => data.id),
+    //     name: debouncedInputText,
+    //     company: currentUserData?.company ? currentUserData.company : '',
+    //   },
+    // })
   }, [debouncedInputText, selectedUserData])
 
   useEffect(() => {
-    const newUserData = searchResult.data?.searchSameCompanyUsers
-    if (!newUserData?.length) {
+    if (!searchResult) {
       setCandidateUserData([])
       return
     }
 
-    if (JSON.stringify(candidateUserData) === JSON.stringify(newUserData)) return
-    setCandidateUserData(newUserData)
-  }, [searchResult.data])
+    if (JSON.stringify(candidateUserData) === JSON.stringify(searchResult)) return
+    setCandidateUserData(searchResult)
+  }, [searchResult])
 
   useEffect(() => () => setValue(''), [])
 

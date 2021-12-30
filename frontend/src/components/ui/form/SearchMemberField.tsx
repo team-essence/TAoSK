@@ -1,43 +1,45 @@
-import React, { FCX, useEffect, Dispatch, SetStateAction } from 'react'
+import React, { FCX, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react'
 import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
-import { useSearchSameProjectMember } from 'hooks/useSearchSameProjectMember'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserData } from 'types/userData'
 import type { Task } from 'types/task'
-import type { Groups } from 'types/groups'
+
+type SearchSameMemberHookProps = {
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onFocus: () => void
+  onBlur: () => void
+  selectedUserData: UserData
+  setSelectedUserData: Dispatch<SetStateAction<UserData>>
+  candidateUserData: UserData
+  shouldShowResult: boolean
+  value: string
+}
 
 type Props = {
   setUserData: Dispatch<SetStateAction<UserData>>
-  userData: UserData
-  shouldCache: boolean
   completed_flag?: Task['completed_flg']
   isFixedFirstUser?: boolean
-} & Partial<Groups>
+} & SearchSameMemberHookProps
 
 export const SearchMemberField: FCX<Props> = ({
   className,
   setUserData,
-  userData,
-  shouldCache,
+  onChange,
+  onFocus,
+  onBlur,
+  shouldShowResult,
+  candidateUserData,
+  selectedUserData,
+  setSelectedUserData,
+  value,
   completed_flag = false,
   isFixedFirstUser = false,
-  groups,
 }) => {
-  const {
-    onChange,
-    onFocus,
-    onBlur,
-    shouldShowResult,
-    candidateUserData,
-    selectedUserData,
-    setSelectedUserData,
-    value,
-  } = useSearchSameProjectMember(userData, shouldCache)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserData.length,
   )

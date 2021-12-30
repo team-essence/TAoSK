@@ -17,6 +17,7 @@ import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { useSearchSameProjectMember } from 'hooks/useSearchSameProjectMember'
 import { STATUS_TYPE } from 'consts/status'
 
 type Props = {
@@ -48,6 +49,11 @@ export const TaskCreateModal: FCX<Props> = ({
     list_id,
     closeModal,
   })
+  const returnOfUseSearchSameProjectMember = useSearchSameProjectMember({
+    groups,
+    userData,
+    shouldCache: true,
+  })
 
   return (
     <StyledModal
@@ -76,14 +82,14 @@ export const TaskCreateModal: FCX<Props> = ({
               required={false}
             />
           </StyledLeftColumn>
+
           <StyledBorder />
+
           <StyledRightColumn>
             <StyledCalenderField label="期限" registration={register('date')} required={false} />
             <StyledSearchMemberField
+              {...returnOfUseSearchSameProjectMember}
               setUserData={setUserData}
-              userData={userData}
-              shouldCache={true}
-              groups={groups}
             />
 
             <StyledStatusWrapper className={className}>
