@@ -15,6 +15,7 @@ type Props = {
   monsterHPRemaining: number
   monsterHp: number
   isTasks: boolean
+  isCompletedProject: boolean
 }
 
 export const ProjectRight: FCX<Props> = ({
@@ -24,12 +25,14 @@ export const ProjectRight: FCX<Props> = ({
   monsterHPRemaining,
   monsterHp,
   isTasks,
+  isCompletedProject,
 }) => {
   const [gameLogs] = useGameLog()
 
   return (
     <StyledProjectRightContainer className={className}>
-      <CreateListButton onClick={onClick} />
+      <StyledCreateListButton onClick={onClick} disabled={isCompletedProject} />
+
       <StyledProjectGameLog gameLogs={gameLogs} />
 
       <StyledMonster2DInformation
@@ -49,9 +52,11 @@ const StyledProjectRightContainer = styled.div`
   position: relative;
 `
 
-const StyledProjectGameLog = styled(LogContainer)`
-  margin-top: ${calculateMinSizeBasedOnFigmaHeight(16)};
+const StyledCreateListButton = styled(CreateListButton)`
+  margin-bottom: ${calculateMinSizeBasedOnFigmaHeight(23)};
 `
+
+const StyledProjectGameLog = styled(LogContainer)``
 
 const StyledMonster2DInformation = styled(Monster2DInformation)`
   position: fixed;

@@ -7,9 +7,16 @@ type Props = {
   listIndex: number
   listLength: number
   tasks: Task[]
+  isCompletedProject: boolean
 } & Groups
 
-export const TaskList: FCX<Props> = ({ tasks, listIndex, listLength, groups }) => {
+export const TaskList: FCX<Props> = ({
+  tasks,
+  listIndex,
+  listLength,
+  isCompletedProject,
+  groups,
+}) => {
   return (
     <>
       {tasks.map((task, index) => (
@@ -18,6 +25,7 @@ export const TaskList: FCX<Props> = ({ tasks, listIndex, listLength, groups }) =
           taskIndex={index}
           listIndex={listIndex}
           listLength={listLength}
+          isCompletedProject={isCompletedProject}
           groups={groups}
           {...task}
         />

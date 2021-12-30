@@ -9,9 +9,15 @@ import { TaskEditModal } from 'components/models/task/TaskEditModal'
 
 type Props = {
   searchedTasks: SearchTask[]
+  isCompletedProject: boolean
 } & Groups
 
-export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks, groups }) => {
+export const SearchTaskPopup: FCX<Props> = ({
+  className,
+  searchedTasks,
+  isCompletedProject,
+  groups,
+}) => {
   const [isTask, setIsTask] = useState(false)
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
@@ -68,6 +74,7 @@ export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks, groups }
                           {...task}
                           shouldShow={shouldShowModal}
                           setShouldShow={setShouldShowModal}
+                          isCompletedProject={isCompletedProject}
                           groups={groups}
                         />
                       </div>

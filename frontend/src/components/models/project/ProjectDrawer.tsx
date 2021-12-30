@@ -17,10 +17,11 @@ import styled, { css } from 'styled-components'
 
 type Props = {
   lists: List[]
+  isCompletedProject: boolean
   onDragEnd: (result: DropResult) => Promise<void>
 } & Groups
 
-export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
+export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd, isCompletedProject }) => {
   const { currentValue, setCurrentValue } = useLocalStorage<boolean>('isOpen', true)
 
   return (
@@ -40,7 +41,11 @@ export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
                 <StyledColumnContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <TaskColumnList lists={lists} groups={groups} />
+                  <TaskColumnList
+                    lists={lists}
+                    isCompletedProject={isCompletedProject}
+                    groups={groups}
+                  />
                   {provided.placeholder}
                 </StyledColumnContainer>
               )}

@@ -10,7 +10,6 @@ import { taskSearch } from 'utils/search/taskSearch'
 import logger from 'utils/debugger/logger'
 import { NotificationPopup } from 'components/ui/popup/NotificationPopup'
 import { useHover } from 'hooks/useHover'
-import { useInput } from 'hooks/useInput'
 import { useDebounce } from 'hooks/useDebounce'
 import { UserMenuPopup } from 'components/ui/popup/UserMenuPopup'
 import { InvitationPopup } from 'components/ui/popup/InvitationPopup'
@@ -28,6 +27,7 @@ type Props = {
   notifications: Notifications
   company: string
   lists: List[]
+  isCompletedProject: boolean
 } & Groups
 
 export const ProjectDetailHeader: FCX<Props> = ({
@@ -40,6 +40,7 @@ export const ProjectDetailHeader: FCX<Props> = ({
   company,
   lists,
   groups,
+  isCompletedProject,
 }) => {
   const navigate = useNavigate()
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
@@ -207,7 +208,11 @@ export const ProjectDetailHeader: FCX<Props> = ({
 
         {isSearchTaskPopup && (
           <StyledPopupContainer onClick={event => event.stopPropagation()}>
-            <StyledSearchTaskPopup searchedTasks={searchedTasks} groups={groups} />
+            <StyledSearchTaskPopup
+              searchedTasks={searchedTasks}
+              isCompletedProject={isCompletedProject}
+              groups={groups}
+            />
           </StyledPopupContainer>
         )}
       </StyledHeaderWrapper>

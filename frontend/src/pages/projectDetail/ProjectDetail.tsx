@@ -126,6 +126,7 @@ export const ProjectDetail: FC = () => {
         notifications={notifications}
         lists={lists}
         groups={projectData.data?.getProjectById.groups ?? []}
+        isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
       />
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
@@ -133,6 +134,7 @@ export const ProjectDetail: FC = () => {
             groups={projectData.data?.getProjectById.groups ?? []}
             lists={lists}
             onDragEnd={onDragEnd}
+            isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
           />
           {!!currentUserData && (
             <ProjectMyInfo
@@ -150,6 +152,7 @@ export const ProjectDetail: FC = () => {
             monsterHp={monsterTotalHP}
             monsterName={projectData.data?.getProjectById.monster.name ?? ''}
             isTasks={isTasks}
+            isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>

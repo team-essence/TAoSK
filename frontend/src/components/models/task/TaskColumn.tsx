@@ -30,6 +30,7 @@ import logger from 'utils/debugger/logger'
 type Props = {
   listIndex: number
   listLength: number
+  isCompletedProject: boolean
 } & Omit<List, 'sort_id' | 'index'> &
   Groups
 
@@ -40,6 +41,7 @@ export const TaskColumn: FCX<Props> = ({
   tasks,
   listIndex,
   listLength,
+  isCompletedProject,
   groups,
 }) => {
   const listTitle = useInput(title)
@@ -80,7 +82,7 @@ export const TaskColumn: FCX<Props> = ({
     <Draggable
       draggableId={`column-${id}`}
       index={listIndex}
-      isDragDisabled={listIndex === 0 || listLength - 1 === listIndex}>
+      isDragDisabled={listIndex === 0 || listLength - 1 === listIndex || isCompletedProject}>
       {provided => (
         <StyledContainer
           ref={provided.innerRef}
@@ -118,35 +120,41 @@ export const TaskColumn: FCX<Props> = ({
                         maxLength={255}
                       />
                     </StyledTitle>
-                    {listIndex !== 0 && listIndex !== listLength - 1 && listLength !== 3 && (
-                      <>
-                        <StyledSpreadIcon
-                          src="/svg/spread.svg"
-                          alt="spread"
-                          onClick={openPopover}
-                        />
-                        <SmallPopover
-                          anchorEl={anchorEl}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                          }}
-                          handleClose={closePopover}
-                          handleRemove={() => handleRemoveList(Number(id), projectId)}
-                          handleEdit={e => !!e && control.enableTextArea(e)}
-                        />
-                      </>
-                    )}
+                    {listIndex !== 0 &&
+                      listIndex !== listLength - 1 &&
+                      listLength !== 3 &&
+                      !isCompletedProject && (
+                        <>
+                          <StyledSpreadIcon
+                            src="/svg/spread.svg"
+                            alt="spread"
+                            onClick={openPopover}
+                          />
+                          <SmallPopover
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'left',
+                            }}
+                            handleClose={closePopover}
+                            handleRemove={() => handleRemoveList(Number(id), projectId)}
+                            handleEdit={e => !!e && control.enableTextArea(e)}
+                          />
+                        </>
+                      )}
                   </StyledInnerHeadWrap>
                 </StyledHeadContainer>
                 <StyledTaskListContainer headerHeight={height}>
                   {listIndex === 0 && (
                     <>
                       <StyledButtonContainer>
-                        <CreateTaskButton onClick={() => setShouldShowModal(true)} />
+                        <CreateTaskButton
+                          onClick={() => setShouldShowModal(true)}
+                          disabled={isCompletedProject}
+                        />
                       </StyledButtonContainer>
                       <TaskCreateModal
-                        shouldShow={shouldShowModal}
+                        shouldShow={shouldShowModal && !isCompletedProject}
                         closeModal={() => setShouldShowModal(false)}
                         verticalSort={tasks.length}
                         list_id={list_id}
@@ -158,6 +166,7 @@ export const TaskColumn: FCX<Props> = ({
                     tasks={tasks}
                     listIndex={listIndex}
                     listLength={listLength}
+                    isCompletedProject={isCompletedProject}
                     groups={groups}
                   />
                   {listProvided.placeholder}

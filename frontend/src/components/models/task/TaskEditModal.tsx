@@ -24,6 +24,7 @@ import { Groups } from 'types/groups'
 type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
+  isCompletedProject: boolean
 } & Omit<Task, 'vertical_sort'> &
   Groups
 
@@ -43,6 +44,7 @@ export const TaskEditModal: FCX<Props> = ({
   design,
   plan,
   completed_flg,
+  isCompletedProject,
   groups,
 }) => {
   const { onChange, register } = useTaskEndDateEditForm({
@@ -109,7 +111,11 @@ export const TaskEditModal: FCX<Props> = ({
                 plan={plan}
               />
               <StyledDeleteButtonWrapper>
-                <StyledDeleteButton text="タスクを削除" onClick={openPopover} />
+                <StyledDeleteButton
+                  text="タスクを削除"
+                  onClick={openPopover}
+                  disabled={isCompletedProject}
+                />
                 <StyledConfirmPopup
                   anchorEl={anchorEl}
                   anchorOrigin={{
@@ -230,21 +236,41 @@ const StyledTaskEditStatusPointField = styled(TaskEditStatusPointField)`
 const StyledDeleteButtonWrapper = styled.div`
   position: relative;
 `
-const StyledDeleteButton = styled(CoarseButton)`
+
+type Disabled = { disabled: boolean }
+const StyledDeleteButton = styled(CoarseButton).attrs<Disabled>(({ disabled }) => ({
+  disabled,
+}))<Disabled>`
   width: 100%;
   height: ${calculateMinSizeBasedOnFigma(32)};
-  ${({ theme }) =>
-    css`
-      ${strokeTextShadow('1px', theme.COLORS.MONDO)};
-      color: ${theme.COLORS.WHITE};
-      > div {
-        background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
-        > div > div {
-          background-color: ${convertIntoRGBA(theme.COLORS.RED_BERRY, 0.6)};
+  ${({ disabled, theme }) => {
+    if (disabled) {
+      return css`
+        text-shadow: none;
+        color: ${theme.COLORS.SILVER};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.ALTO, 0.55)};
+          > div > div {
+            border: solid 0.2px ${theme.COLORS.BRANDY};
+            background-color: ${convertIntoRGBA(theme.COLORS.NOBEL, 0.64)};
+          }
         }
-      }
-    `}
+      `
+    } else {
+      return css`
+        ${strokeTextShadow('1px', theme.COLORS.MONDO)};
+        color: ${theme.COLORS.WHITE};
+        > div {
+          background-color: ${convertIntoRGBA(theme.COLORS.TEMPTRESS, 0.2)};
+          > div > div {
+            background-color: ${convertIntoRGBA(theme.COLORS.RED_BERRY, 0.6)};
+          }
+        }
+      `
+    }
+  }}
 `
+
 const StyledConfirmPopup = styled(ConfirmPopup)`
   width: ${calculateMinSizeBasedOnFigma(318)};
   height: ${calculateMinSizeBasedOnFigma(188)};
