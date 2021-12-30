@@ -66,15 +66,13 @@ const getDiffUserData = (newData: UserData, preData: UserData): GetDiffUserDataR
   })()
 
   if (type === 'added') {
-    for (let i = 0; i < jsonNewDataArray.length; i++) {
-      const value = jsonNewDataArray[i]
+    for (const value of jsonNewDataArray) {
       if (!jsonPreDataArray.includes(value)) {
         return { type, diff: JSON.parse(value) }
       }
     }
   } else if (type === 'removed') {
-    for (let i = 0; i < jsonPreDataArray.length; i++) {
-      const value = jsonPreDataArray[i]
+    for (const value of jsonPreDataArray) {
       if (!jsonNewDataArray.includes(value)) {
         return { type, diff: JSON.parse(value) }
       }
