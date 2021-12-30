@@ -58,7 +58,9 @@ export class ProjectsResolver {
   async completeProject(
     @Args({ name: 'endProject' }) endProject: EndProjectInput,
   ) {
-    return this.projectService.completeProject(endProject);
+    return this.projectService.completeProject(endProject).catch((err) => {
+      throw err;
+    });
   }
 
   @Subscription((returns) => User, {
