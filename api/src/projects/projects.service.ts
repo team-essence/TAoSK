@@ -202,33 +202,27 @@ export class ProjectsService {
     return project;
   }
 
-  async completedProject(endProject: EndProjectInput): Promise<boolean> {
-    try {
-      const project = await this.projectRepository.findOne(
-        endProject.project_id,
-      );
-      if (!project) throw new NotFoundException();
+  async completeProject(endProject: EndProjectInput): Promise<Project> {
+    const project = await this.projectRepository.findOne(endProject.project_id);
+    if (!project) throw new NotFoundException();
 
-      project.project_end_flg = true;
-      await this.projectRepository.save(project).catch((err) => {
-        new InternalServerErrorException();
-      });
+    project.project_end_flg = true;
+    await this.projectRepository.save(project).catch((err) => {
+      new InternalServerErrorException();
+    });
 
-      const user = await this.userRepository.findOne(endProject.user_id);
-      if (!user) throw new NotFoundException();
+    const user = await this.userRepository.findOne(endProject.user_id);
+    if (!user) throw new NotFoundException();
 
-      const log = this.gameLogRepository.create({
-        context: 'プロジェクト',
-        user,
-        project,
-      });
-      this.gameLogRepository.save(log).catch((err) => {
-        new InternalServerErrorException();
-      });
+    const log = this.gameLogRepository.create({
+      context: 'プロジェクト',
+      user,
+      project,
+    });
+    this.gameLogRepository.save(log).catch((err) => {
+      new InternalServerErrorException();
+    });
 
-      return true;
-    } catch (error) {
-      return false;
-    }
+    return project;
   }
 }

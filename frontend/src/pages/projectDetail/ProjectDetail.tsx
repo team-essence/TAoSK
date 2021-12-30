@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -19,6 +19,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
+import { ConfirmModal } from 'components/ui/modal/ConfirmModal'
 import { ProjectClearOverlay } from 'components/models/project/ProjectClearOverlay'
 import { useProjectDetailDragEnd } from 'hooks/useProjectDetailDragEnd'
 import { useProjectDetail } from 'hooks/useProjectDetail'
@@ -69,7 +70,13 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { onDragEnd, shouldProjectClose } = useProjectDetailDragEnd({
+  const {
+    onDragEnd,
+    shouldOpenProjectCloseModal,
+    onClickProjectCloseBtn,
+    onClickCancelBtn,
+    hasClearedProject,
+  } = useProjectDetailDragEnd({
     lists,
     setLists,
     setWeapon,
@@ -146,7 +153,14 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
-      <ProjectClearOverlay shouldOpen={shouldProjectClose} />
+      <ConfirmModal
+        title="確認"
+        message="最後のタスクを完了し、プロジェクトをクローズしますか?"
+        shouldShow={shouldOpenProjectCloseModal}
+        onClickAcceptBtn={onClickProjectCloseBtn}
+        onClickCloseBtn={onClickCancelBtn}
+      />
+      <ProjectClearOverlay shouldOpen={hasClearedProject} />
       <StyledBackground />
     </>
   )

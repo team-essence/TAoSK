@@ -221,7 +221,7 @@ type Mutation {
   addCompany(newCompany: NewCompanyInput!): Company!
   creteOccupation(name: String!): Occupation!
   createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
-  completedProject(endProject: EndProjectInput!): Boolean!
+  completeProject(endProject: EndProjectInput!): Project!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!
   createList(newList: NewListInput!): [List!]!
