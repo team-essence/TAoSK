@@ -23,6 +23,19 @@ export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
       toast.success('レベルが上がりました')
     }
 
+    const rank = 100
+    if (
+      currentUserData &&
+      (updateUserByTask.technology / rank > currentUserData.technology / rank ||
+        updateUserByTask.solution / rank > currentUserData.solution / rank ||
+        updateUserByTask.achievement / rank > currentUserData.achievement / rank ||
+        updateUserByTask.plan / rank > currentUserData.plan / rank ||
+        updateUserByTask.technology / rank > currentUserData.technology / rank ||
+        updateUserByTask.technology / rank > currentUserData.technology / rank)
+    ) {
+      toast.success('ランクアップ')
+    }
+
     setUserData(updateUserByTask)
   }, [updateUserByTask])
 }
