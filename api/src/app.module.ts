@@ -48,13 +48,14 @@ import { EventsGateway } from './events/events.gateway';
       debug: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       installSubscriptionHandlers: true,
+      useGlobalPrefix: true,
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'db-server',
+      host: 'th-ms-g458.mysql.database.azure.com',
       port: 3306,
-      username: 'root',
-      password: 'password',
+      username: 'taosk@th-ms-g458',
+      password: 'TA0SK2021sk',
       database: 'taosk_db',
       entities: [
         User,
