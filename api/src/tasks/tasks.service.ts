@@ -594,6 +594,12 @@ export class TasksService {
       },
     });
 
+    await this.allocationRepository.delete({
+      task: {
+        id: taskId,
+      },
+    });
+
     await this.taskRepository.remove(task).catch(() => {
       new InternalServerErrorException();
     });
