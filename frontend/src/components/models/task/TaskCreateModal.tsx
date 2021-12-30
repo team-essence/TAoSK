@@ -6,11 +6,12 @@ import styled, {
   ThemeProps,
   DefaultTheme,
 } from 'styled-components'
+import { Groups } from 'types/groups'
 import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
-import { SearchMemberFieldFromProjectCreate } from 'components/ui/form/SearchMemberFieldFromProjectCreate'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
@@ -23,7 +24,7 @@ type Props = {
   closeModal: () => void
   verticalSort: number
   list_id: string
-}
+} & Groups
 
 export const TaskCreateModal: FCX<Props> = ({
   shouldShow,
@@ -31,6 +32,7 @@ export const TaskCreateModal: FCX<Props> = ({
   className,
   verticalSort,
   list_id,
+  groups,
 }) => {
   const {
     handleAddTask,
@@ -81,6 +83,7 @@ export const TaskCreateModal: FCX<Props> = ({
               setUserData={setUserData}
               userData={userData}
               shouldCache={true}
+              groups={groups}
             />
 
             <StyledStatusWrapper className={className}>
@@ -180,9 +183,7 @@ const StyledOverviewField = styled(TextAreaField)`
 const StyledCalenderField = styled(CalenderField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
 `
-const StyledSearchMemberField = StyledCalenderField.withComponent(
-  SearchMemberFieldFromProjectCreate,
-)
+const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
 const StyledStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;

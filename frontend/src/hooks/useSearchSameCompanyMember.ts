@@ -18,7 +18,7 @@ type UseSearchSameCompanyMemberReturn = {
 let cachedSelectedUserData: UserData = []
 
 /**
- * メンバーを検索するために必要な処理の一群
+ * 同じ会社のメンバーを検索するために必要な処理の一群
  * @return {UseSearchSameCompanyMemberReturn} returns
  * @return {ReturnType<typeof useInput>['onChange']} returns.onChange - 検索欄を入力した時にテキストを参照し続けるため使う
  * @return {() => void} returns.onFocus - 検索結果を表示する

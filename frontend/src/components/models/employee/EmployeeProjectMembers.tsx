@@ -1,20 +1,18 @@
 import React, { FCX, useEffect, useState } from 'react'
-import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
+import styled from 'styled-components'
+import { Groups } from 'types/groups'
 import {
   calculateMinSizeBasedOnFigmaWidth,
-  calculateVhBasedOnFigma,
   calculateVwBasedOnFigma,
 } from 'utils/calculateSizeBasedOnFigma'
 import { EmployeeOnlineStatusLabel } from 'components/models/employee/EmployeeOnlineStatusLabel'
 import { EmployeeInformation } from 'components/models/employee/EmployeeInformation'
-import styled from 'styled-components'
 import { GetUserQuery } from 'pages/mypage/mypage.gen'
 import { useOnlineSubscription } from 'hooks/subscriptions/useOnlineSubscription'
 import { useGroupByTaskSubscription } from 'hooks/subscriptions/useGroupByTaskSubscription'
 import logger from 'utils/debugger/logger'
 
-type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
-type Props = Partial<Groups>
+type Props = Groups
 
 export const EmployeeProjectMembers: FCX<Props> = ({ groups }) => {
   const [groupList, setGroupList] = useState<

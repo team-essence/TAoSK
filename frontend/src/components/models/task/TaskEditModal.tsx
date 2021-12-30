@@ -18,11 +18,13 @@ import { useTaskUserSelectForm } from 'hooks/useTaskUserSelectForm'
 import { useModalInterlockingScroll } from 'hooks/useModalInterlockingScroll'
 import { useDeleteTask } from 'hooks/useDeleteTask'
 import { Task } from 'types/task'
+import { Groups } from 'types/groups'
 
 type Props = {
   shouldShow: boolean
   setShouldShow: Dispatch<SetStateAction<boolean>>
-} & Omit<Task, 'vertical_sort'>
+} & Omit<Task, 'vertical_sort'> &
+  Groups
 
 export const TaskEditModal: FCX<Props> = ({
   shouldShow,
@@ -40,12 +42,13 @@ export const TaskEditModal: FCX<Props> = ({
   design,
   plan,
   completed_flg,
+  groups,
 }) => {
   const { onChange, register } = useTaskEndDateEditForm({
     id,
     initialEndDate: end_date,
   })
-  // const { userData, setUserData } = useTaskUserSelectForm({ id, initialUserData: allocations })
+  const { userData, setUserData } = useTaskUserSelectForm({ id, initialUserData: allocations })
   const { onClickDeleteButton, anchorEl, openPopover, closePopover } = useDeleteTask({
     id,
     setShouldShowEditModal: setShouldShow,
@@ -85,10 +88,11 @@ export const TaskEditModal: FCX<Props> = ({
                 onChange={onChange}
               />
               <StyledSearchMemberField
-                taskId={id}
-                userData={allocations}
+                setUserData={setUserData}
+                userData={userData}
                 shouldCache={false}
                 completed_flag={completed_flg}
+                groups={groups}
               />
               <StyledTaskEditStatusPointField
                 id={id}
