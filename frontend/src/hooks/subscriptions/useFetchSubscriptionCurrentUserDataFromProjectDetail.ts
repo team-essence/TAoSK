@@ -16,13 +16,24 @@ export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
   useNotificationSubscription(setNotifications)
 
   useEffect(() => {
-    logger.debug(updateUserByTask, 'hogehoge')
+    logger.debug(updateUserByTask)
     if (!updateUserByTask) return
 
     if (currentUserData && Exp.toLevel(updateUserByTask.exp) > Exp.toLevel(currentUserData.exp)) {
-      toast.success(
-        'レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！レベルアップ！！！！！',
-      )
+      toast.success('レベルが上がりました')
+    }
+
+    const rank = 100
+    if (
+      currentUserData &&
+      (updateUserByTask.technology / rank > currentUserData.technology / rank ||
+        updateUserByTask.solution / rank > currentUserData.solution / rank ||
+        updateUserByTask.achievement / rank > currentUserData.achievement / rank ||
+        updateUserByTask.plan / rank > currentUserData.plan / rank ||
+        updateUserByTask.technology / rank > currentUserData.technology / rank ||
+        updateUserByTask.technology / rank > currentUserData.technology / rank)
+    ) {
+      toast.success('ランクアップ')
     }
 
     setUserData(updateUserByTask)

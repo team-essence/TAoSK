@@ -172,6 +172,15 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       hasClickedCancelBtn.current = false
     }
 
+  const onDragEnd = async (result: DropResult) => {
+    if (!result.destination || !firebaseCurrentUser) return
+
+    const { source, destination, type } = result
+    const destinationDroppableId = Number(destination.droppableId)
+    const sourceDroppableId = Number(source.droppableId)
+    const destinationIndex = destination.index
+    const sourceIndex = source.index
+    if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
     revertDragEndResult()
   }, [hasClickedCancelBtn.current])
 
@@ -187,6 +196,31 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
     }
   }, [data])
 
+    moveTask({
+      listsCopy,
+      sourceDroppableId,
+      sourceIndex,
+      destinationDroppableId,
+      destinationIndex,
+    })
+
+    const sortedListsCopy = getRefreshedListsVertical(listsCopy)
+    const tasksInfoToUpdate = adjustTasksInfoToUpdate(sortedListsCopy)
+    setShouldProjectClose(tasksInfoToUpdate.every(task => task.completed_flg))
+
+    logger.table([...tasksInfoToUpdate])
+
+    setLists(listsCopy)
+    await updateTaskSort({
+      variables: {
+        updateTasks: {
+          tasks: tasksInfoToUpdate,
+          project_id: String(projectId),
+          user_id: firebaseCurrentUser.uid,
+        },
+      },
+    })
+    
   return {
     onDragEnd,
     shouldOpenProjectCloseModal,
