@@ -12,7 +12,7 @@ import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import Rating from '@mui/material/Rating'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { SearchMemberFieldFromProjectCreate } from 'components/ui/form/SearchMemberFieldFromProjectCreate'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { StarIcon } from 'components/ui/icon/StarIcon'
 import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
@@ -88,7 +88,7 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
               />
             </StyledDifficultyWrapper>
 
-            <SearchMemberFieldFromProjectCreate
+            <SearchMemberField
               setUserData={setUserData}
               userData={userData}
               shouldCache={true}

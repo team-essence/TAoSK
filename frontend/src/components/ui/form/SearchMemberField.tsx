@@ -3,34 +3,30 @@ import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
-import { useSearchSameCompanyMember } from 'hooks/useSearchSameCompanyMember'
+import { useSearchSameProjectMember } from 'hooks/useSearchSameProjectMember'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
 import type { UserData } from 'types/userData'
 import type { Task } from 'types/task'
-
-import {
-  useUnAssignTaskMutation,
-  useCreateAllocationMutation,
-} from 'pages/projectDetail/projectDetail.gen'
-import logger from 'utils/debugger/logger'
+import type { Groups } from 'types/groups'
 
 type Props = {
-  taskId: string
+  setUserData: Dispatch<SetStateAction<UserData>>
   userData: UserData
   shouldCache: boolean
   completed_flag?: Task['completed_flg']
   isFixedFirstUser?: boolean
-}
+} & Partial<Groups>
 
 export const SearchMemberField: FCX<Props> = ({
   className,
-  taskId,
+  setUserData,
   userData,
   shouldCache,
   completed_flag = false,
   isFixedFirstUser = false,
+  groups,
 }) => {
   const {
     onChange,
@@ -41,13 +37,12 @@ export const SearchMemberField: FCX<Props> = ({
     selectedUserData,
     setSelectedUserData,
     value,
-  } = useSearchSameCompanyMember(userData, shouldCache)
+  } = useSearchSameProjectMember(userData, shouldCache)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserData.length,
   )
 
-  const [unAssignTaskMutation] = useUnAssignTaskMutation()
-  const [createAllocationMutation] = useCreateAllocationMutation()
+  useEffect(() => setUserData([...selectedUserData]), [selectedUserData])
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
   // const testAdd = (data: UserData[number]) => {
@@ -55,37 +50,18 @@ export const SearchMemberField: FCX<Props> = ({
   //   setSelectedUserData([...selectedUserData, ...testDatas])
   // }
 
-  const onClickAssignBtn = (data: UserData[number]) => {
-    setSelectedUserData([...selectedUserData, data])
-    createAllocationMutation({
-      variables: {
-        newAllocation: {
-          user_id: data.id,
-          task_id: taskId,
-        },
-      },
-    })
-  }
-
-  const onClickDeleteBtn = (index: number, data: UserData[number]) => {
+  const onClickDeleteBtn = (index: number) => {
     selectedUserData.splice(index, 1)
-    logger.debug(data)
     setSelectedUserData([...selectedUserData.slice()])
-    unAssignTaskMutation({
-      variables: {
-        taskId: Number(taskId),
-        userId: data.id,
-      },
-    })
   }
 
   return (
     <StyledAllWrapper className={className}>
-      <StyledLabel>パーティーメンバー</StyledLabel>
+      <StyledLabel>パーティメンバー</StyledLabel>
       <StyledInputWrapper>
         <StyledInput
           type="text"
-          placeholder="パーティーメンバーを検索"
+          placeholder="パーティメンバーを検索"
           value={value}
           disabled={completed_flag}
           onChange={onChange}
@@ -101,7 +77,7 @@ export const SearchMemberField: FCX<Props> = ({
                 indexAt={
                   index === 0 ? 'first' : index === candidateUserData.length - 1 ? 'last' : 'other'
                 }
-                onMouseDown={() => onClickAssignBtn(data)}>
+                onMouseDown={() => setSelectedUserData([...selectedUserData, data])}>
                 {/* inputに付与しているonBlurによりclickイベントが発火しなくなるため、blurより先に実行させるためにonMouseDownを使用 */}
                 <StyledAvatar src={data.icon_image} alt={`${data.name}のアイコン`} />
                 <StyledProfile>
@@ -136,7 +112,7 @@ export const SearchMemberField: FCX<Props> = ({
                       name={data.name}
                       occupation={data.occupation.name}
                       onClickDeleteBtn={
-                        shouldHideDeleteBtn ? undefined : () => onClickDeleteBtn(index, data)
+                        shouldHideDeleteBtn ? undefined : () => onClickDeleteBtn(index)
                       }
                     />
                   </div>
@@ -148,9 +124,7 @@ export const SearchMemberField: FCX<Props> = ({
                       avatarStyleType={AVATAR_STYLE.MODAL}
                       userCount={overUsersCount}
                       userData={selectedUserData}
-                      onClickDeleteBtn={
-                        completed_flag ? undefined : () => onClickDeleteBtn(index, data)
-                      }
+                      onClickDeleteBtn={completed_flag ? undefined : onClickDeleteBtn}
                     />
                   </div>
                 )
