@@ -599,9 +599,7 @@ export class TasksService {
     );
 
     if (task.completed_flg) {
-      for (let index = 0; index < task.allocations.length; index++) {
-        const allocation = task.allocations[index];
-
+      for (const allocation of task.allocations) {
         const user = await this.userRepository.findOne(allocation.user.id);
         if (!user) throw new NotFoundException();
 
