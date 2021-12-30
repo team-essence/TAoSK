@@ -1,6 +1,7 @@
 import React, { FCX, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
+import { Groups } from 'types/groups'
 import { DROP_TYPE } from 'consts/dropType'
 import { theme } from 'styles/theme'
 import toast from 'utils/toast/toast'
@@ -29,9 +30,18 @@ import logger from 'utils/debugger/logger'
 type Props = {
   listIndex: number
   listLength: number
-} & Omit<List, 'sort_id' | 'index'>
+} & Omit<List, 'sort_id' | 'index'> &
+  Groups
 
-export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
+export const TaskColumn: FCX<Props> = ({
+  id,
+  list_id,
+  title,
+  tasks,
+  listIndex,
+  listLength,
+  groups,
+}) => {
   const listTitle = useInput(title)
   const control = useControlTextArea()
   const { id: projectId } = useParams()
@@ -140,10 +150,16 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                         closeModal={() => setShouldShowModal(false)}
                         verticalSort={tasks.length}
                         list_id={list_id}
+                        groups={groups}
                       />
                     </>
                   )}
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList
+                    tasks={tasks}
+                    listIndex={listIndex}
+                    listLength={listLength}
+                    groups={groups}
+                  />
                   {listProvided.placeholder}
                 </StyledTaskListContainer>
               </StyledColumnContainer>

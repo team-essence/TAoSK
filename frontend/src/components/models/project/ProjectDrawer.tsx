@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { StyledMaterialUiMain } from 'styles/mui/StyledMaterialUiMain'
 import { DROP_TYPE } from 'consts/dropType'
 import { List } from 'types/list'
-import { GetProjectQuery } from 'pages/projectDetail/projectDetail.gen'
+import { Groups } from 'types/groups'
 import {
   calculateMinSizeBasedOnFigmaWidth,
   calculateVwBasedOnFigma,
@@ -15,12 +15,10 @@ import { TaskColumnList } from 'components/models/task/TaskColumnList'
 import Drawer from '@mui/material/Drawer'
 import styled, { css } from 'styled-components'
 
-type Groups = Pick<GetProjectQuery['getProjectById'], 'groups'>
-
 type Props = {
   lists: List[]
   onDragEnd: (result: DropResult) => Promise<void>
-} & Partial<Groups>
+} & Groups
 
 export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
   const { currentValue, setCurrentValue } = useLocalStorage<boolean>('isOpen', true)
@@ -42,7 +40,7 @@ export const ProjectDrawer: FCX<Props> = ({ groups, lists, onDragEnd }) => {
             <Droppable droppableId="board" direction="horizontal" type={DROP_TYPE.COLUMN}>
               {provided => (
                 <StyledColumnContainer ref={provided.innerRef} {...provided.droppableProps}>
-                  <TaskColumnList lists={lists} />
+                  <TaskColumnList lists={lists} groups={groups} />
                   {provided.placeholder}
                 </StyledColumnContainer>
               )}

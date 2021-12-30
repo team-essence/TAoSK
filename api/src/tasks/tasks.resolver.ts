@@ -212,6 +212,15 @@ export class TasksResolver {
       },
     });
 
+    for (const allocationUser of result.allocationUsers) {
+      this.pubSub.publish('updateUserByTask', {
+        updateUserByTask: {
+          user: allocationUser,
+          userId: allocationUser.id,
+        },
+      });
+    }
+
     return result.lists;
   }
 
