@@ -1,4 +1,4 @@
-import { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react'
+import { useState, useCallback, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react'
 import { useDebounce } from 'hooks/useDebounce'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
@@ -52,9 +52,9 @@ export const useSearchSameCompanyMember: UseSearchSameCompanyMember = ({
     shouldCache && cachedSelectedUserData.length ? cachedSelectedUserData : userData,
   )
   const [shouldShowResult, setShouldShowResult] = useState<boolean>(false)
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
-  const onFocus = () => setShouldShowResult(true)
-  const onBlur = () => setShouldShowResult(false)
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value), [])
+  const onFocus = useCallback(() => setShouldShowResult(true), [])
+  const onBlur = useCallback(() => setShouldShowResult(false), [])
 
   useEffect(() => {
     // タスク作成後に選択済のユーザーを初期化する
