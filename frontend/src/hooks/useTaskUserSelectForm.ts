@@ -56,26 +56,26 @@ type GetDiffUserDataReturn = {
   type: DiffType
   diff?: UserData[number]
 }
-const getDiffUserData = (newDatas: UserData, preDatas: UserData): GetDiffUserDataReturn => {
-  const jsonNewDatasArray = newDatas.map(v => JSON.stringify(v))
-  const jsonPreDatasArray = preDatas.map(v => JSON.stringify(v))
+const getDiffUserData = (newData: UserData, preData: UserData): GetDiffUserDataReturn => {
+  const jsonNewDataArray = newData.map(v => JSON.stringify(v))
+  const jsonPreDataArray = preData.map(v => JSON.stringify(v))
   const type: DiffType = (() => {
-    if (newDatas.length > preDatas.length) return 'added'
-    if (newDatas.length < preDatas.length) return 'removed'
+    if (newData.length > preData.length) return 'added'
+    if (newData.length < preData.length) return 'removed'
     return 'nothing'
   })()
 
   if (type === 'added') {
-    for (let i = 0; i < jsonNewDatasArray.length; i++) {
-      const value = jsonNewDatasArray[i]
-      if (!jsonPreDatasArray.includes(value)) {
+    for (let i = 0; i < jsonNewDataArray.length; i++) {
+      const value = jsonNewDataArray[i]
+      if (!jsonPreDataArray.includes(value)) {
         return { type, diff: JSON.parse(value) }
       }
     }
   } else if (type === 'removed') {
-    for (let i = 0; i < jsonPreDatasArray.length; i++) {
-      const value = jsonPreDatasArray[i]
-      if (!jsonNewDatasArray.includes(value)) {
+    for (let i = 0; i < jsonPreDataArray.length; i++) {
+      const value = jsonPreDataArray[i]
+      if (!jsonNewDataArray.includes(value)) {
         return { type, diff: JSON.parse(value) }
       }
     }

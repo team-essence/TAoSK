@@ -11,7 +11,6 @@ type Props = {
   searchedTasks: SearchTask[]
 } & Groups
 
-// TODO: モーダルが出来次第、タスクモーダルが開く処理をかく
 export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks, groups }) => {
   const [isTask, setIsTask] = useState(false)
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)

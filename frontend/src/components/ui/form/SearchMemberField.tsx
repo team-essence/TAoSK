@@ -48,8 +48,8 @@ export const SearchMemberField: FCX<Props> = ({
 
   // TODO: 本番環境では消す。UserCountの挙動を確認するためのテスト用。ユーザーデータ1個追加で20個追加される
   // const testAdd = (data: UserData[number]) => {
-  //   const testDatas: UserData = [...Array(20)].map(() => data)
-  //   setSelectedUserData([...selectedUserData, ...testDatas])
+  //   const testData: UserData = [...Array(20)].map(() => data)
+  //   setSelectedUserData([...selectedUserData, ...testData])
   // }
 
   const onClickDeleteBtn = (index: number) => {
