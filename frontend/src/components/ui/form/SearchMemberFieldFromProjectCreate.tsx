@@ -3,7 +3,7 @@ import { AVATAR_STYLE } from 'consts/avatarStyle'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import styled, { css } from 'styled-components'
-import { useSearchMember } from 'hooks/useSearchSameCompanyMember'
+import { useSearchSameCompanyMember } from 'hooks/useSearchSameCompanyMember'
 import { useCalculateOverUsers } from 'hooks/useCalculateOverUsers'
 import { UserAvatarIcon } from 'components/ui/avatar/UserAvatarIcon'
 import { UserCount } from 'components/ui/avatar/UserCount'
@@ -35,7 +35,7 @@ export const SearchMemberFieldFromProjectCreate: FCX<Props> = ({
     selectedUserData,
     setSelectedUserData,
     value,
-  } = useSearchMember(userData, shouldCache)
+  } = useSearchSameCompanyMember(userData, shouldCache)
   const { maxBoxes, overUsersCount, containerRef, avatarRef } = useCalculateOverUsers(
     selectedUserData.length,
   )

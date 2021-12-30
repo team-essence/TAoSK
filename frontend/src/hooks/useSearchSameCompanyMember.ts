@@ -4,7 +4,7 @@ import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import { useSearchSameCompanyUsersMutation } from 'pages/projectList/projectList.gen'
 import type { UserData } from 'types/userData'
 
-type UseSearchMemberReturn = {
+type UseSearchSameCompanyMemberReturn = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   onFocus: () => void
   onBlur: () => void
@@ -19,7 +19,7 @@ let cachedSelectedUserData: UserData = []
 
 /**
  * メンバーを検索するために必要な処理の一群
- * @return {UseSearchMemberReturn} returns
+ * @return {UseSearchSameCompanyMemberReturn} returns
  * @return {ReturnType<typeof useInput>['onChange']} returns.onChange - 検索欄を入力した時にテキストを参照し続けるため使う
  * @return {() => void} returns.onFocus - 検索結果を表示する
  * @return {() => void} returns.onBlur - 検索結果を非表示にする
@@ -30,10 +30,10 @@ let cachedSelectedUserData: UserData = []
  * @return {string} returns.value - 検索欄に入力するinputタグのvalue
  * @return {Dispatch<SetStateAction<string>>} returns.setValue - 検索欄のinputタグのvalueを操作する
  */
-export const useSearchMember = (
+export const useSearchSameCompanyMember = (
   userData: UserData,
   shouldCache: boolean,
-): UseSearchMemberReturn => {
+): UseSearchSameCompanyMemberReturn => {
   const { currentUserData } = useGetCurrentUserData()
   const [value, setValue] = useState<string>('')
   const debouncedInputText = useDebounce<string>(value, 500)
