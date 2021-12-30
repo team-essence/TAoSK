@@ -6,16 +6,18 @@ import styled, {
   ThemeProps,
   DefaultTheme,
 } from 'styled-components'
+import { Groups } from 'types/groups'
 import { Modal } from 'components/ui/modal/Modal'
 import { TextAreaField } from 'components/ui/form/TextAreaField'
 import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
-import { SearchMemberFieldFromProjectCreate } from 'components/ui/form/SearchMemberFieldFromProjectCreate'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { TaskStatusPointField } from 'components/models/task/TaskStatusPointField'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { useTaskCreateForm } from 'hooks/useTaskCreateForm'
+import { useSearchSameProjectMember } from 'hooks/useSearchSameProjectMember'
 import { STATUS_TYPE } from 'consts/status'
 
 type Props = {
@@ -23,7 +25,7 @@ type Props = {
   closeModal: () => void
   verticalSort: number
   list_id: string
-}
+} & Groups
 
 export const TaskCreateModal: FCX<Props> = ({
   shouldShow,
@@ -31,6 +33,7 @@ export const TaskCreateModal: FCX<Props> = ({
   className,
   verticalSort,
   list_id,
+  groups,
 }) => {
   const {
     handleAddTask,
@@ -45,6 +48,11 @@ export const TaskCreateModal: FCX<Props> = ({
     verticalSort,
     list_id,
     closeModal,
+  })
+  const returnOfUseSearchSameProjectMember = useSearchSameProjectMember({
+    groups,
+    userData,
+    shouldCache: true,
   })
 
   return (
@@ -74,13 +82,14 @@ export const TaskCreateModal: FCX<Props> = ({
               required={false}
             />
           </StyledLeftColumn>
+
           <StyledBorder />
+
           <StyledRightColumn>
             <StyledCalenderField label="期限" registration={register('date')} required={false} />
             <StyledSearchMemberField
+              {...returnOfUseSearchSameProjectMember}
               setUserData={setUserData}
-              userData={userData}
-              shouldCache={true}
             />
 
             <StyledStatusWrapper className={className}>
@@ -180,9 +189,7 @@ const StyledOverviewField = styled(TextAreaField)`
 const StyledCalenderField = styled(CalenderField)`
   margin-bottom: ${calculateMinSizeBasedOnFigma(19)};
 `
-const StyledSearchMemberField = StyledCalenderField.withComponent(
-  SearchMemberFieldFromProjectCreate,
-)
+const StyledSearchMemberField = StyledCalenderField.withComponent(SearchMemberField)
 const StyledStatusWrapper = styled.div`
   display: flex;
   flex-direction: column;

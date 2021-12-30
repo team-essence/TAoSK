@@ -1,6 +1,7 @@
 import React, { FCX, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
+import { Groups } from 'types/groups'
 import { Params } from 'types/status'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
@@ -18,13 +19,15 @@ type Props = {
   taskIndex: number
   listIndex: number
   listLength: number
-} & Omit<Task, 'vertical_sort'>
+} & Omit<Task, 'vertical_sort'> &
+  Groups
 
 export const TaskCard: FCX<Props> = ({
   className,
   taskIndex,
   listIndex,
   listLength,
+  groups,
   ...taskInfo
 }) => {
   const {
@@ -121,6 +124,7 @@ export const TaskCard: FCX<Props> = ({
         {...taskInfo}
         shouldShow={shouldShowModal}
         setShouldShow={setShouldShowModal}
+        groups={groups}
       />
     </>
   )
