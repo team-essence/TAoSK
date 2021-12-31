@@ -2,7 +2,6 @@ import React, { FCX } from 'react'
 import { useDisplayStatus } from 'hooks/useDisplayStatus'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
-import status from 'utils/status/status'
 import { StatusParam } from 'types/status'
 import styled, { css } from 'styled-components'
 import { yrsa } from 'styles/fontFamily/fontFamily'
@@ -19,15 +18,16 @@ export const ProjectMyStatus: FCX<Props> = ({
   statusType,
   isTaskCompleted,
 }) => {
-  const { shouldDisplayNum } = useDisplayStatus(statusNum, isTaskCompleted)
+  const { rank, statusNumToDisplay, shouldDisplayNum } = useDisplayStatus(
+    statusNum,
+    isTaskCompleted,
+  )
 
   return (
     <StyledProjectMyStatusContainer className={className} statusType={statusType}>
-      <StyledStatusRank shouldDisplayNum={shouldDisplayNum}>
-        {status.toRank(statusNum)}
-      </StyledStatusRank>
+      <StyledStatusRank shouldDisplayNum={shouldDisplayNum}>{rank}</StyledStatusRank>
       <StyledStatusRankNum shouldDisplayNum={shouldDisplayNum}>
-        {status.toRemainderStatus(statusNum)}
+        {statusNumToDisplay}
       </StyledStatusRankNum>
 
       {statusType === 'design' ? (
