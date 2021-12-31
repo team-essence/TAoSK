@@ -1,4 +1,5 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react'
+import { TRANSITION_DURATION_MS } from 'styles/animation/projectMyStatusTransition'
 import Status from 'utils/status/status'
 
 type UseDisplayStatusReturn = {
@@ -42,9 +43,11 @@ export const useDisplayStatus = (
 
   useEffect(() => {
     const controlStatusNumToDisplay = (type: ControlStatusNumType) => {
+      const MARGIN_TIME = 100
+      const MS = TRANSITION_DURATION_MS + MARGIN_TIME
       setShouldDisplayNum(true)
-      setTimeout(() => flashStatusNumFast(type), 300)
-      setTimeout(() => setShouldDisplayNum(false), 3500)
+      setTimeout(() => flashStatusNumFast(type), MS)
+      setTimeout(() => setShouldDisplayNum(false), MS)
     }
     if (!isComponentMounted.current) {
       isComponentMounted.current = true
