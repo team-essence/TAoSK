@@ -47,7 +47,7 @@ export const useDisplayStatus = (
       const MS = TRANSITION_DURATION_MS + MARGIN_TIME
       setShouldDisplayNum(true)
       setTimeout(() => flashStatusNumFast(type), MS)
-      setTimeout(() => setShouldDisplayNum(false), MS)
+      setTimeout(() => setShouldDisplayNum(false), 3300)
     }
     if (!isComponentMounted.current) {
       isComponentMounted.current = true
