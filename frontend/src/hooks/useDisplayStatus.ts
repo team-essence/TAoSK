@@ -24,7 +24,7 @@ export const useDisplayStatus = (
   const [shouldDisplayNum, setShouldDisplayNum] = useState<boolean>(false)
   const isComponentMounted = useRef<boolean>(false)
   const preIsTaskCompleted = useRef<boolean>(isTaskCompleted)
-  const preRemainderStatus = useRef<number>(remainderStatus)
+  const preCurrentStatusNum = useRef<number>(currentStatusNum)
 
   const flashStatusNumFast = useCallback(
     (type: ControlStatusNumType) => {
@@ -54,14 +54,14 @@ export const useDisplayStatus = (
       return
     }
 
-    const hasStatusNumDecreased = remainderStatus < preRemainderStatus.current
+    const hasStatusNumDecreased = currentStatusNum < preCurrentStatusNum.current
     const hasTaskCompleteAnimationDone = preIsTaskCompleted.current && !isTaskCompleted
 
     if (hasStatusNumDecreased) controlStatusNumToDisplay('down')
     if (hasTaskCompleteAnimationDone) controlStatusNumToDisplay('up')
 
     preIsTaskCompleted.current = isTaskCompleted
-    preRemainderStatus.current = remainderStatus
+    preCurrentStatusNum.current = remainderStatus
   }, [remainderStatus, isTaskCompleted])
 
   return { rank, statusNumToDisplay, shouldDisplayNum }
