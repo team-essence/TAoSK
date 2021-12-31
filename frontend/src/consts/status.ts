@@ -15,3 +15,5 @@ export const INITIAL_STATUS_COUNTS = {
   design: 0,
   plan: 0,
 } as const
+
+export type Rank = 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'

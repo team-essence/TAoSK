@@ -1,4 +1,4 @@
-type Rank = 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'
+import type { Rank } from 'consts/status'
 
 export default class Status {
   /**

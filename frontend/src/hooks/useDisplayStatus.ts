@@ -1,9 +1,10 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { TRANSITION_DURATION_MS } from 'styles/animation/projectMyStatusTransition'
 import Status from 'utils/status/status'
+import type { Rank } from 'consts/status'
 
 type UseDisplayStatusReturn = {
-  rank: ReturnType<typeof Status.toRank>
+  rank: Rank
   statusNumToDisplay: number
   shouldDisplayNum: boolean
 }
@@ -14,12 +15,13 @@ export const useDisplayStatus = (
   currentStatusNum: number,
   isTaskCompleted: boolean,
 ): UseDisplayStatusReturn => {
-  const rank = useMemo(() => Status.toRank(currentStatusNum), [currentStatusNum])
+  const currentRank = useMemo(() => Status.toRank(currentStatusNum), [currentStatusNum])
   const remainderStatus = useMemo(
     () => Status.toRemainderStatus(currentStatusNum),
     [currentStatusNum],
   )
 
+  const [rank, setRank] = useState<Rank>(currentRank)
   const [statusNumToDisplay, setStatusNumToDisplay] = useState<number>(remainderStatus)
   const [shouldDisplayNum, setShouldDisplayNum] = useState<boolean>(false)
   const isComponentMounted = useRef<boolean>(false)
@@ -35,10 +37,11 @@ export const useDisplayStatus = (
         } else {
           setStatusNumToDisplay(pre => Status.toRemainderStatus(type === 'up' ? ++pre : --pre))
           current = Status.toRemainderStatus(type === 'up' ? ++current : --current)
+          setRank(Status.toRank(current))
         }
       }, 100)
     },
-    [remainderStatus],
+    [remainderStatus, currentRank],
   )
 
   useEffect(() => {
