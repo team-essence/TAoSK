@@ -1,21 +1,34 @@
 import React, { FCX } from 'react'
-import styled, { css } from 'styled-components'
-import { yrsa } from 'styles/fontFamily/fontFamily'
+import { useDisplayStatus } from 'hooks/useDisplayStatus'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import status from 'utils/status/status'
 import { StatusParam } from 'types/status'
+import styled, { css } from 'styled-components'
+import { yrsa } from 'styles/fontFamily/fontFamily'
 
 type Props = {
   statusNum: number
   statusType: StatusParam
+  isTaskCompleted: boolean
 }
 
-export const ProjectMyStatus: FCX<Props> = ({ className, statusNum, statusType }) => {
+export const ProjectMyStatus: FCX<Props> = ({
+  className,
+  statusNum,
+  statusType,
+  isTaskCompleted,
+}) => {
+  const { shouldDisplayNum } = useDisplayStatus(statusNum, isTaskCompleted)
+
   return (
     <StyledProjectMyStatusContainer className={className} statusType={statusType}>
-      <StyledStatusRank>{status.toRank(statusNum)}</StyledStatusRank>
-      <StyledStatusRankNum>{status.toRemainderStatus(statusNum)}</StyledStatusRankNum>
+      <StyledStatusRank shouldDisplayNum={shouldDisplayNum}>
+        {status.toRank(statusNum)}
+      </StyledStatusRank>
+      <StyledStatusRankNum shouldDisplayNum={shouldDisplayNum}>
+        {status.toRemainderStatus(statusNum)}
+      </StyledStatusRankNum>
 
       {statusType === 'design' ? (
         <StyledStatusDesignName>デザイン</StyledStatusDesignName>
@@ -62,7 +75,7 @@ const StyledStatusAnimationText = styled(StyledStatusText)`
   transform: translateX(-68%) translateY(-32%);
   transition: all 0.2s;
 `
-const StyledStatusRank = styled(StyledStatusAnimationText)`
+const StyledStatusRank = styled(StyledStatusAnimationText)<{ shouldDisplayNum: boolean }>`
   left: 68%;
   line-height: ${calculateMinSizeBasedOnFigmaWidth(32)};
   font-family: ${yrsa};
@@ -70,8 +83,13 @@ const StyledStatusRank = styled(StyledStatusAnimationText)`
   ${StyledProjectMyStatusContainer}:hover & {
     left: 168%;
   }
+  ${({ shouldDisplayNum }) =>
+    shouldDisplayNum &&
+    css`
+      left: 168%;
+    `}
 `
-const StyledStatusRankNum = styled(StyledStatusAnimationText)`
+const StyledStatusRankNum = styled(StyledStatusAnimationText)<{ shouldDisplayNum: boolean }>`
   left: -68%;
   line-height: ${calculateMinSizeBasedOnFigmaWidth(32)};
   font-family: ${yrsa};
@@ -79,6 +97,11 @@ const StyledStatusRankNum = styled(StyledStatusAnimationText)`
   ${StyledProjectMyStatusContainer}:hover & {
     left: 68%;
   }
+  ${({ shouldDisplayNum }) =>
+    shouldDisplayNum &&
+    css`
+      left: 68%;
+    `}
 `
 const StyledStatusName = styled(StyledStatusText)`
   line-height: ${calculateMinSizeBasedOnFigmaWidth(27)};

@@ -116,7 +116,6 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <LazyLoading />
-      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
         name={currentUserData?.name ?? ''}
@@ -142,6 +141,7 @@ export const ProjectDetail: FC = () => {
               iconImage={currentUserData.icon_image}
               occupation={currentUserData.occupation.name}
               totalExp={currentUserData.exp}
+              isTaskCompleted={isCompleted}
             />
           )}
         </StyledProjectDetailLeftContainer>
@@ -156,6 +156,9 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
+
+      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
+
       <ConfirmModal
         title="確認"
         message="最後のタスクを完了し、プロジェクトをクローズしますか?"
@@ -163,6 +166,7 @@ export const ProjectDetail: FC = () => {
         onClickAcceptBtn={onClickProjectCloseBtn}
         onClickCloseBtn={onClickCancelBtn}
       />
+
       <ProjectClearOverlay shouldOpen={hasClearedProject} />
       <StyledBackground />
     </>
