@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useEffect, useCallback } from 'react'
+import { Dispatch, SetStateAction, useState, useRef, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { assertStatusParam } from 'types/status'
@@ -54,6 +54,7 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
   const { id: projectId } = useParams()
   const { currentUser } = useAuthContext()
   const [dropResult, setDropResult] = useState<DropResult | null>(null)
+  const includesYouInAllocations = useRef<boolean>(false)
   const {
     shouldOpenProjectCloseModal,
     onClickProjectCloseBtn,
@@ -149,12 +150,19 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       logger.table([...tasksInfoToUpdate])
 
       setLists([...listsCopy])
+
+      const user_id = firebaseCurrentUser?.uid ?? ''
+      const allocationUserIds = listsCopy[destinationDroppableId].tasks[
+        destinationIndex
+      ].allocations.map(v => v.id)
+      includesYouInAllocations.current = allocationUserIds.includes(user_id)
+
       await updateTaskSort({
         variables: {
           updateTasks: {
             tasks: tasksInfoToUpdate,
             project_id: String(projectId),
-            user_id: firebaseCurrentUser?.uid ?? '',
+            user_id,
           },
         },
       })
@@ -181,10 +189,15 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 
     const { is_completed, high_status_name } = data.endTask
     if (!is_completed) return
-    if (assertStatusParam(high_status_name) && !hasClickedProjectCloseBtn.current) {
+    if (
+      !hasClickedProjectCloseBtn.current &&
+      includesYouInAllocations.current &&
+      assertStatusParam(high_status_name)
+    ) {
       setWeapon(high_status_name)
       setIsCompleted(true)
     }
+    includesYouInAllocations.current = false
   }, [data])
 
   return {

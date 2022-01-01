@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useMemo } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { resetServerContext } from 'react-beautiful-dnd'
 import styled, { css } from 'styled-components'
@@ -116,7 +116,6 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <LazyLoading />
-      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
         name={currentUserData?.name ?? ''}
@@ -142,6 +141,7 @@ export const ProjectDetail: FC = () => {
               iconImage={currentUserData.icon_image}
               occupation={currentUserData.occupation.name}
               totalExp={currentUserData.exp}
+              isTaskCompleted={isCompleted}
             />
           )}
         </StyledProjectDetailLeftContainer>
@@ -156,6 +156,9 @@ export const ProjectDetail: FC = () => {
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
+
+      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
+
       <ConfirmModal
         title="確認"
         message="最後のタスクを完了し、プロジェクトをクローズしますか?"
@@ -163,6 +166,7 @@ export const ProjectDetail: FC = () => {
         onClickAcceptBtn={onClickProjectCloseBtn}
         onClickCloseBtn={onClickCancelBtn}
       />
+
       <ProjectClearOverlay shouldOpen={hasClearedProject} />
       <StyledBackground />
     </>

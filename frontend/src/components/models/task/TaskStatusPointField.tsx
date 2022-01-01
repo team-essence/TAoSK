@@ -104,17 +104,20 @@ const StyledIconBox = styled.div<{ status: StatusParam }>`
   ${({ status, theme }) => {
     switch (status) {
       case 'technology':
-        return iconBoxCss(theme.COLORS.TECHNOLOGY, convertIntoRGBA(theme.COLORS.BLACK, 0.2))
+        return iconBoxCss(
+          theme.COLORS.STATUS.TECHNOLOGY,
+          convertIntoRGBA(theme.COLORS.STATUS.TECHNOLOGY, 0.2),
+        )
       case 'achievement':
-        return iconBoxCss(theme.COLORS.ACHIEVEMENT, 'transparent')
+        return iconBoxCss(theme.COLORS.STATUS.ACHIEVEMENT, 'transparent')
       case 'solution':
-        return iconBoxCss(theme.COLORS.SOLUTION, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
+        return iconBoxCss(theme.COLORS.STATUS.SOLUTION, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
       case 'motivation':
-        return iconBoxCss(theme.COLORS.MOTIVATION, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
+        return iconBoxCss(theme.COLORS.STATUS.MOTIVATION, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
       case 'design':
-        return iconBoxCss(theme.COLORS.DESIGN, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
+        return iconBoxCss(theme.COLORS.STATUS.DESIGN, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
       case 'plan':
-        return iconBoxCss(theme.COLORS.PLAN, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
+        return iconBoxCss(theme.COLORS.STATUS.PLAN, convertIntoRGBA(theme.COLORS.BLACK, 0.05))
       default: {
         const _exhaustiveCheck: never = status
         throw new Error(`${status} is not status`)

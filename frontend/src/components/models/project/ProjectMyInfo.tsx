@@ -20,6 +20,7 @@ type Props = {
   motivation: number
   design: number
   plan: number
+  isTaskCompleted: boolean
 }
 
 export const ProjectMyInfo: FCX<Props> = ({
@@ -36,6 +37,7 @@ export const ProjectMyInfo: FCX<Props> = ({
   motivation,
   design,
   plan,
+  isTaskCompleted,
 }) => {
   return (
     <StyledProjectMyInfoContainer className={className}>
@@ -72,6 +74,7 @@ export const ProjectMyInfo: FCX<Props> = ({
         motivation={motivation}
         design={design}
         plan={plan}
+        isTaskCompleted={isTaskCompleted}
       />
     </StyledProjectMyInfoContainer>
   )
