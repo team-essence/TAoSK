@@ -1,7 +1,7 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react'
 import { TRANSITION_DURATION_MS } from 'styles/animation/projectMyStatusTransition'
 import Status from 'utils/status/status'
-import type { Rank } from 'consts/status'
+import { Rank, ranks } from 'consts/status'
 
 type UseDisplayStatusReturn = {
   rank: Rank
@@ -26,7 +26,8 @@ export const useDisplayStatus = (
   const [shouldDisplayNum, setShouldDisplayNum] = useState<boolean>(false)
   const isComponentMounted = useRef<boolean>(false)
   const preIsTaskCompleted = useRef<boolean>(isTaskCompleted)
-  const preCurrentStatusNum = useRef<number>(currentStatusNum)
+  const preStatusNum = useRef<number>(currentStatusNum)
+  const preRank = useRef<Rank>(currentRank)
 
   const flashStatusNumFast = useCallback(
     (type: ControlStatusNumType) => {
@@ -57,15 +58,21 @@ export const useDisplayStatus = (
       return
     }
 
-    const hasStatusNumDecreased = currentStatusNum < preCurrentStatusNum.current
+    const hasStatusNumDecreased =
+      ranks.indexOf(currentRank) >= ranks.indexOf(preRank.current) &&
+      currentStatusNum < preStatusNum.current
     const hasTaskCompleteAnimationDone = preIsTaskCompleted.current && !isTaskCompleted
 
-    if (hasStatusNumDecreased) controlStatusNumToDisplay('down')
-    if (hasTaskCompleteAnimationDone) controlStatusNumToDisplay('up')
+    if (hasStatusNumDecreased) {
+      controlStatusNumToDisplay('down')
+    } else if (hasTaskCompleteAnimationDone) {
+      controlStatusNumToDisplay('up')
+    }
 
     preIsTaskCompleted.current = isTaskCompleted
-    preCurrentStatusNum.current = remainderStatus
-  }, [remainderStatus, isTaskCompleted])
+    preStatusNum.current = currentStatusNum
+    preRank.current = currentRank
+  }, [currentStatusNum, isTaskCompleted])
 
   return { rank, statusNumToDisplay, shouldDisplayNum }
 }
