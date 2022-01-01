@@ -4,7 +4,7 @@ import {
   RANK_UP_DURATION_MS,
 } from 'styles/animation/projectMyStatusAnimation'
 import Status from 'utils/status/status'
-import { Rank, ranks } from 'consts/status'
+import { Rank, ranks } from 'consts/rank'
 
 type UseDisplayStatusReturn = {
   rank: Rank

@@ -15,6 +15,3 @@ export const INITIAL_STATUS_COUNTS = {
   design: 0,
   plan: 0,
 } as const
-
-export const ranks = ['S', 'A', 'B', 'C', 'D', 'E', 'F', 'G'] as const
-export type Rank = typeof ranks[number]

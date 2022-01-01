@@ -1,6 +1,7 @@
 import { useEffect, Dispatch, SetStateAction } from 'react'
 import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 import { useUpdateUserByTaskSubscription } from 'hooks/subscriptions/useUserByTaskSubscription'
+import { RANK_INTERVAL } from 'consts/rank'
 import { Notifications } from 'types/notification'
 import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
@@ -23,15 +24,15 @@ export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
       toast.success('レベルが上がりました')
     }
 
-    const rank = 100
     if (
       currentUserData &&
-      (updateUserByTask.technology / rank > currentUserData.technology / rank ||
-        updateUserByTask.solution / rank > currentUserData.solution / rank ||
-        updateUserByTask.achievement / rank > currentUserData.achievement / rank ||
-        updateUserByTask.plan / rank > currentUserData.plan / rank ||
-        updateUserByTask.technology / rank > currentUserData.technology / rank ||
-        updateUserByTask.technology / rank > currentUserData.technology / rank)
+      (updateUserByTask.technology / RANK_INTERVAL > currentUserData.technology / RANK_INTERVAL ||
+        updateUserByTask.solution / RANK_INTERVAL > currentUserData.solution / RANK_INTERVAL ||
+        updateUserByTask.achievement / RANK_INTERVAL >
+          currentUserData.achievement / RANK_INTERVAL ||
+        updateUserByTask.plan / RANK_INTERVAL > currentUserData.plan / RANK_INTERVAL ||
+        updateUserByTask.technology / RANK_INTERVAL > currentUserData.technology / RANK_INTERVAL ||
+        updateUserByTask.technology / RANK_INTERVAL > currentUserData.technology / RANK_INTERVAL)
     ) {
       toast.success('ランクアップ')
     }

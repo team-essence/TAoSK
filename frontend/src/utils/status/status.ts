@@ -1,4 +1,4 @@
-import type { Rank } from 'consts/status'
+import { Rank, RANK_INTERVAL } from 'consts/rank'
 
 export default class Status {
   /**
@@ -10,7 +10,7 @@ export default class Status {
    * @memberof status
    */
   public static toRank(value: number): Rank {
-    const rank = (value >= 0 ? value / 100 : (100 + value) / 100) | 0
+    const rank = (value >= 0 ? value / RANK_INTERVAL : (RANK_INTERVAL + value) / RANK_INTERVAL) | 0
 
     if (rank === 0) return 'G'
     else if (rank === 1) return 'F'
@@ -31,6 +31,6 @@ export default class Status {
    * @memberof status
    */
   public static toRemainderStatus(value: number): number {
-    return value >= 0 ? value % 100 : (100 + value) % 100
+    return value >= 0 ? value % RANK_INTERVAL : (RANK_INTERVAL + value) % RANK_INTERVAL
   }
 }
