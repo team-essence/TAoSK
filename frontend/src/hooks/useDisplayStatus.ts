@@ -38,7 +38,6 @@ export const useDisplayStatus = (
         } else {
           setStatusNumToDisplay(pre => Status.toRemainderStatus(type === 'up' ? ++pre : --pre))
           current = Status.toRemainderStatus(type === 'up' ? ++current : --current)
-          setRank(Status.toRank(current))
         }
       }, 100)
     },
@@ -51,7 +50,10 @@ export const useDisplayStatus = (
       const MS = TRANSITION_DURATION_MS + MARGIN_TIME
       setShouldDisplayNum(true)
       setTimeout(() => flashStatusNumFast(type), MS)
-      setTimeout(() => setShouldDisplayNum(false), 3300)
+      setTimeout(() => {
+        setShouldDisplayNum(false)
+        setRank(Status.toRank(currentStatusNum))
+      }, 3300)
     }
     if (!isComponentMounted.current) {
       isComponentMounted.current = true
