@@ -1,5 +1,8 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react'
-import { TRANSITION_DURATION_MS } from 'styles/animation/projectMyStatusAnimation'
+import {
+  TRANSITION_DURATION_MS,
+  RANK_UP_DURATION_MS,
+} from 'styles/animation/projectMyStatusAnimation'
 import Status from 'utils/status/status'
 import { Rank, ranks } from 'consts/status'
 
@@ -7,6 +10,7 @@ type UseDisplayStatusReturn = {
   rank: Rank
   statusNumToDisplay: number
   shouldDisplayNum: boolean
+  shouldDisplayRankUp: boolean
 }
 
 type ControlStatusNumType = 'up' | 'down'
@@ -25,6 +29,7 @@ export const useDisplayStatus = (
   const [rank, setRank] = useState<Rank>(currentRank)
   const [statusNumToDisplay, setStatusNumToDisplay] = useState<number>(remainderStatus)
   const [shouldDisplayNum, setShouldDisplayNum] = useState<boolean>(false)
+  const [shouldDisplayRankUp, setShouldDisplayRankUp] = useState<boolean>(false)
   const isComponentMounted = useRef<boolean>(false)
   const preIsTaskCompleted = useRef<boolean>(isTaskCompleted)
   const preStatusNum = useRef<number>(currentStatusNum)
@@ -36,11 +41,20 @@ export const useDisplayStatus = (
       const timer = setInterval(() => {
         if (current === remainderStatus) {
           clearInterval(timer)
-        } else {
-          setStatusNumToDisplay(pre => Status.toRemainderStatus(type === 'up' ? ++pre : --pre))
-          const newStatusNum = type === 'up' ? current + 1 : current - 1
-          current = Status.toRemainderStatus(newStatusNum)
-          if (current === 0) setRank(currentRank)
+          return
+        }
+
+        const newStatusNum = type === 'up' ? current + 1 : current - 1
+        setStatusNumToDisplay(pre => Status.toRemainderStatus(type === 'up' ? ++pre : --pre))
+        current = Status.toRemainderStatus(newStatusNum)
+
+        const shouldChangeRank =
+          (type === 'up' && current === 0) || (type === 'down' && current === 99)
+
+        if (shouldChangeRank) setRank(currentRank)
+        if (shouldChangeRank && type === 'up') {
+          setShouldDisplayRankUp(true)
+          setTimeout(() => setShouldDisplayRankUp(false), RANK_UP_DURATION_MS)
         }
       }, 100)
     },
@@ -76,5 +90,5 @@ export const useDisplayStatus = (
     preRank.current = currentRank
   }, [currentStatusNum, isTaskCompleted])
 
-  return { rank, statusNumToDisplay, shouldDisplayNum }
+  return { rank, statusNumToDisplay, shouldDisplayNum, shouldDisplayRankUp }
 }

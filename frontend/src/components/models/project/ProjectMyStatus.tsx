@@ -4,7 +4,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { convertParamIntoJp } from 'utils/convertParamIntoJp'
 import { StatusParam } from 'types/status'
 import styled, { css } from 'styled-components'
-import { statusTextTransition } from 'styles/animation/projectMyStatusTransition'
+import { animation } from 'styles/animation/projectMyStatusAnimation'
 import { yrsa } from 'styles/fontFamily/fontFamily'
 
 type Props = {
@@ -19,13 +19,16 @@ export const ProjectMyStatus: FCX<Props> = ({
   statusType,
   isTaskCompleted,
 }) => {
-  const { rank, statusNumToDisplay, shouldDisplayNum } = useDisplayStatus(
+  const { rank, statusNumToDisplay, shouldDisplayNum, shouldDisplayRankUp } = useDisplayStatus(
     statusNum,
     isTaskCompleted,
   )
 
   return (
-    <StyledProjectMyStatusContainer className={className} statusType={statusType}>
+    <StyledProjectMyStatusContainer
+      className={className}
+      statusType={statusType}
+      shouldDisplayRankUp={shouldDisplayRankUp}>
       <StyledStatusTextWrapper>
         <StyledStatusRankNum shouldDisplayNum={shouldDisplayNum}>
           {statusNumToDisplay}
@@ -42,7 +45,10 @@ export const ProjectMyStatus: FCX<Props> = ({
   )
 }
 
-const StyledProjectMyStatusContainer = styled.div<{ statusType: StatusParam }>`
+const StyledProjectMyStatusContainer = styled.div<{
+  statusType: StatusParam
+  shouldDisplayRankUp: boolean
+}>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -55,6 +61,26 @@ const StyledProjectMyStatusContainer = styled.div<{ statusType: StatusParam }>`
   background: url(${({ statusType }) => `/svg/projectStatuses/${statusType}.svg`});
   background-size: cover;
   background-repeat: no-repeat;
+
+  &:after {
+    ${({ shouldDisplayRankUp }) =>
+      !shouldDisplayRankUp &&
+      css`
+        display: none;
+      `}
+    content: '';
+    z-index: ${({ theme }) => theme.Z_INDEX.INDEX_MINUS_1};
+    position: absolute;
+    bottom: 100%;
+    left: ${calculateMinSizeBasedOnFigmaWidth(7)};
+    width: calc(100% - ${calculateMinSizeBasedOnFigmaWidth(7)});
+    height: ${calculateMinSizeBasedOnFigmaWidth(43)};
+    background-image: url(/svg/projectStatuses/rank-up.svg);
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    ${animation.rankUp}
+  }
 `
 const StyledStatusTextWrapper = styled.div`
   overflow-x: clip;
@@ -64,6 +90,7 @@ const StyledStatusTextWrapper = styled.div`
 `
 const StyledStatusText = styled.p`
   ${({ theme }) => css`
+    z-index: ${theme.Z_INDEX.INDEX_2};
     width: 100%;
     text-align: center;
     font-size: ${theme.FONT_SIZES.SIZE_16};
@@ -73,7 +100,6 @@ const StyledStatusText = styled.p`
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-stroke: 3px transparent;
-    z-index: ${theme.Z_INDEX.INDEX_2};
   `}
 `
 const StyledStatusAnimationText = styled(StyledStatusText)`
@@ -84,7 +110,7 @@ const StyledStatusAnimationText = styled(StyledStatusText)`
   line-height: ${calculateMinSizeBasedOnFigmaWidth(32)};
   font-family: ${yrsa};
   font-size: ${({ theme }) => theme.FONT_SIZES.SIZE_40};
-  ${statusTextTransition}
+  ${animation.statusText}
 `
 const StyledStatusRank = styled(StyledStatusAnimationText)<{ shouldDisplayNum: boolean }>`
   transform: translateX(0%);
