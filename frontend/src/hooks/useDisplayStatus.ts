@@ -1,5 +1,5 @@
 import { useRef, useMemo, useState, useEffect, useCallback } from 'react'
-import { TRANSITION_DURATION_MS } from 'styles/animation/projectMyStatusTransition'
+import { TRANSITION_DURATION_MS } from 'styles/animation/projectMyStatusAnimation'
 import Status from 'utils/status/status'
 import { Rank, ranks } from 'consts/status'
 
@@ -11,6 +11,7 @@ type UseDisplayStatusReturn = {
 
 type ControlStatusNumType = 'up' | 'down'
 
+/** 表示するステータスのランク・経験値を制御する */
 export const useDisplayStatus = (
   currentStatusNum: number,
   isTaskCompleted: boolean,
@@ -37,7 +38,9 @@ export const useDisplayStatus = (
           clearInterval(timer)
         } else {
           setStatusNumToDisplay(pre => Status.toRemainderStatus(type === 'up' ? ++pre : --pre))
-          current = Status.toRemainderStatus(type === 'up' ? ++current : --current)
+          const newStatusNum = type === 'up' ? current + 1 : current - 1
+          current = Status.toRemainderStatus(newStatusNum)
+          if (current === 0) setRank(currentRank)
         }
       }, 100)
     },
@@ -50,10 +53,7 @@ export const useDisplayStatus = (
       const MS = TRANSITION_DURATION_MS + MARGIN_TIME
       setShouldDisplayNum(true)
       setTimeout(() => flashStatusNumFast(type), MS)
-      setTimeout(() => {
-        setShouldDisplayNum(false)
-        setRank(Status.toRank(currentStatusNum))
-      }, 3300)
+      setTimeout(() => setShouldDisplayNum(false), 3300)
     }
     if (!isComponentMounted.current) {
       isComponentMounted.current = true
