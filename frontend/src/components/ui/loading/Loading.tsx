@@ -9,7 +9,7 @@ export const Loading: FCX = () => {
     lottie.loadAnimation({
       container: document.querySelector('#now-loading') as HTMLDivElement,
       renderer: 'svg',
-      animationData: JSON.parse(JSON.stringify(nowLoading)),
+      animationData: JSON.parse(JSON.stringify(nowLoading) || 'null'),
     })
 
     return () => lottie.stop()

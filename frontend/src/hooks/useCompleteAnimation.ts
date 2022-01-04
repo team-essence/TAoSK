@@ -29,7 +29,7 @@ export const useCompleteAnimation = <T extends HTMLElement>(
       container: anchorEl.current,
       renderer: 'svg',
       loop: false,
-      animationData: JSON.parse(JSON.stringify(json)),
+      animationData: JSON.parse(JSON.stringify(json) || 'null'),
     })
 
     animation.addEventListener('complete', () => {
