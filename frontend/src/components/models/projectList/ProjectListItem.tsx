@@ -56,12 +56,12 @@ export const ProjectListItem: FCX<Props> = ({
 const StyledProjectListItemContainer = styled.div<{ activeStatue: ACTIVE_STATUS }>`
   position: relative;
   left: ${calculateMinSizeBasedOnFigmaWidth(0)};
-  transition: all 0.3s cubic-bezier(0, 0.39, 0.17, 0.95);
+  transition: all 0.2s cubic-bezier(0, 0.39, 0.17, 0.95);
 
   ${({ activeStatue }) =>
     activeStatue === ACTIVE_STATUS.ACTIVE &&
     css`
-      transition: all 0.2s cubic-bezier(0.32, 1, 0.66, 0.99);
+      transition: all 0.1s cubic-bezier(0.32, 1, 0.66, 0.99);
       left: ${calculateMinSizeBasedOnFigmaWidth(30)};
     `}
 
