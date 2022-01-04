@@ -90,6 +90,7 @@ export const ProjectList: FC = () => {
 
       <ProjectListCreateModal
         shouldShow={shouldShowModal}
+        setCurrentUserData={setUserData}
         closeModal={() => setShouldShowModal(false)}
       />
     </>
