@@ -4,7 +4,6 @@ import {
   useCreateProjectMutation,
   CreateProjectMutationVariables,
 } from 'pages/projectList/projectList.gen'
-import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import toast from 'utils/toast/toast'
 import type { RatingProps } from '@mui/material/Rating'
 import type { UserData } from 'types/userData'
@@ -38,7 +37,6 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
     setValue,
     watch,
   } = useForm<FormInputs>({ mode: 'onChange' })
-  const { currentUserData } = useGetCurrentUserData()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
@@ -46,6 +44,7 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
   const [difficulty, setDifficulty] = useState<number>(1)
   const [createProject] = useCreateProjectMutation({
     onCompleted(data) {
+      setUserData([])
       closeModal()
       toast.success('プロジェクトを作成しました')
     },
@@ -78,13 +77,6 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
       },
     })
   }, [userData, difficulty])
-
-  useEffect(() => {
-    if (!currentUserData) return
-    if (!userData.length) {
-      setUserData([currentUserData])
-    }
-  }, [currentUserData])
 
   useEffect(() => {
     const initializeInputValues = () => {

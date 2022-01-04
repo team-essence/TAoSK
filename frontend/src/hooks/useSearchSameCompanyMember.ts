@@ -57,15 +57,24 @@ export const useSearchSameCompanyMember: UseSearchSameCompanyMember = ({
   const onBlur = useCallback(() => setShouldShowResult(false), [])
 
   useEffect(() => {
-    // タスク作成後に選択済のユーザーを初期化する
-    if (!userData.length && JSON.stringify(userData) !== JSON.stringify(selectedUserData)) {
-      setSelectedUserData(userData)
+    if (!currentUserData) return
+    if (!userData.length) setSelectedUserData([currentUserData])
+  }, [currentUserData])
+
+  useEffect(() => {
+    // プロジェクト作成後に選択済のユーザーを初期化する
+    const isUserDataPlane = !userData.length || userData.length === 1
+    const hasCreatedProject =
+      isUserDataPlane && JSON.stringify(userData) !== JSON.stringify(selectedUserData)
+
+    if (hasCreatedProject && currentUserData) {
+      setSelectedUserData([currentUserData])
       setValue('')
       cachedSelectedUserData = []
     }
 
     return () => {
-      if (shouldCache) cachedSelectedUserData = selectedUserData
+      if (shouldCache) cachedSelectedUserData = [...selectedUserData]
     }
   }, [userData])
 
