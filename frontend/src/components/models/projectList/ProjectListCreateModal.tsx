@@ -1,4 +1,4 @@
-import React, { FCX } from 'react'
+import React, { FCX, Dispatch, SetStateAction } from 'react'
 import styled, {
   css,
   FlattenInterpolation,
@@ -12,19 +12,27 @@ import { InputField } from 'components/ui/form/InputField'
 import { CalenderField } from 'components/ui/form/CalenderField'
 import Rating from '@mui/material/Rating'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
-import { SearchMemberFieldFromProjectCreate } from 'components/ui/form/SearchMemberFieldFromProjectCreate'
+import { SearchMemberField } from 'components/ui/form/SearchMemberField'
 import { ModalButton } from 'components/ui/button/ModalButton'
 import { StarIcon } from 'components/ui/icon/StarIcon'
 import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
 import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
+import { useSearchSameCompanyMember } from 'hooks/useSearchSameCompanyMember'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 
 type Props = {
   shouldShow: boolean
   closeModal: () => void
+  setCurrentUserData: Dispatch<SetStateAction<GetCurrentUserQuery['user'] | undefined>>
 }
 
-export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, className }) => {
+export const ProjectListCreateModal: FCX<Props> = ({
+  shouldShow,
+  closeModal,
+  setCurrentUserData,
+  className,
+}) => {
   const {
     register,
     isDisabled,
@@ -34,7 +42,11 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
     difficulty,
     handleDifficulty,
     handleCreateProject,
-  } = useProjectCreateForm({ closeModal })
+  } = useProjectCreateForm({ closeModal, setCurrentUserData })
+  const returnOfUseSearchSameCompanyMember = useSearchSameCompanyMember({
+    userData,
+    shouldCache: true,
+  })
 
   return (
     <StyledModal
@@ -88,10 +100,9 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
               />
             </StyledDifficultyWrapper>
 
-            <SearchMemberFieldFromProjectCreate
+            <SearchMemberField
+              {...returnOfUseSearchSameCompanyMember}
               setUserData={setUserData}
-              userData={userData}
-              shouldCache={true}
               isFixedFirstUser={true}
             />
           </StyledRightColumn>

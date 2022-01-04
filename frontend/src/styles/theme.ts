@@ -117,6 +117,7 @@ export const theme = {
     RODEO_DUST: '#C9AE95',
     HELIOTROPE: '#8D7AFF',
     PEACH_ORANGE: '#FFBE9A',
+    RIVER_BED: '#464C5A',
 
     HP: '#85D931',
     HP_BG: '#DBF5C0',
@@ -124,12 +125,6 @@ export const theme = {
     MP_BG: '#C3E8F0',
     EXP: '#D9AA31',
     EXP_BG: '#E7D5A6',
-    TECHNOLOGY: '#6558B9',
-    SOLUTION: '#D26ECE',
-    ACHIEVEMENT: '#DFC635',
-    MOTIVATION: '#BA7565',
-    DESIGN: '#65BAAA',
-    PLAN: '#8FBA65',
 
     GRADATION: {
       TECHNOLOGY: {

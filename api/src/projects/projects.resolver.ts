@@ -24,7 +24,7 @@ export class ProjectsResolver {
     return project;
   }
 
-  @Mutation(() => Project)
+  @Mutation(() => User)
   async createProject(
     @Args({ name: 'newProject' }) newProject: NewProjectInput,
     @Args({ name: 'selectUser' }) selectUser: SelectUser,
@@ -51,14 +51,16 @@ export class ProjectsResolver {
       });
     }
 
-    return newProjectData.project;
+    return newProjectData.currentUser;
   }
 
-  @Mutation(() => Boolean)
-  async completedProject(
+  @Mutation(() => Project)
+  async completeProject(
     @Args({ name: 'endProject' }) endProject: EndProjectInput,
   ) {
-    return this.projectService.completedProject(endProject);
+    return this.projectService.completeProject(endProject).catch((err) => {
+      throw err;
+    });
   }
 
   @Subscription((returns) => User, {

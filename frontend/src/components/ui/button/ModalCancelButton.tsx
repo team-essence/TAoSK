@@ -10,7 +10,7 @@ type Props = {
   text: string
 }
 
-export const ModalButton: FCX<Props> = ({ className, onClick, text, disabled = false }) => {
+export const ModalCancelButton: FCX<Props> = ({ className, onClick, text, disabled = false }) => {
   return (
     <StyledButton className={className} onClick={onClick} disabled={disabled}>
       <StyledText>{text}</StyledText>
@@ -24,7 +24,7 @@ const StyledButton = styled.button<{ disabled: boolean }>`
   align-items: center;
   width: ${calculateMinSizeBasedOnFigma(160)};
   height: ${calculateMinSizeBasedOnFigma(40)};
-  background-image: url('/svg/modal-button.svg');
+  background-image: url('/svg/modal-cancel-button.svg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   ${({ theme }) => css`

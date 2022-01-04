@@ -1,6 +1,7 @@
 import React, { FCX, useState } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { Task } from 'types/task'
+import { Groups } from 'types/groups'
 import { Params } from 'types/status'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 import { changeWeaponImage } from 'utils/changeWeaponImage'
@@ -18,13 +19,17 @@ type Props = {
   taskIndex: number
   listIndex: number
   listLength: number
-} & Omit<Task, 'vertical_sort'>
+  isCompletedProject: boolean
+} & Omit<Task, 'vertical_sort'> &
+  Groups
 
 export const TaskCard: FCX<Props> = ({
   className,
   taskIndex,
   listIndex,
   listLength,
+  isCompletedProject,
+  groups,
   ...taskInfo
 }) => {
   const {
@@ -64,7 +69,11 @@ export const TaskCard: FCX<Props> = ({
 
   return (
     <>
-      <Draggable key={id} draggableId={`task-${id}`} index={taskIndex}>
+      <Draggable
+        key={id}
+        draggableId={`task-${id}`}
+        index={taskIndex}
+        isDragDisabled={isCompletedProject}>
         {(taskProvided, snapshot) => (
           <StyledLi
             className={className}
@@ -121,12 +130,15 @@ export const TaskCard: FCX<Props> = ({
         {...taskInfo}
         shouldShow={shouldShowModal}
         setShouldShow={setShouldShowModal}
+        isCompletedProject={isCompletedProject}
+        groups={groups}
       />
     </>
   )
 }
 
 const StyledLi = styled.li`
+  cursor: pointer;
   position: relative;
   padding-bottom: ${calculateMinSizeBasedOnFigma(8)};
   user-select: none;

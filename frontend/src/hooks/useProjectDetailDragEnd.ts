@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useEffect } from 'react'
+import { Dispatch, SetStateAction, useState, useRef, useEffect, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { DropResult } from 'react-beautiful-dnd'
 import { assertStatusParam } from 'types/status'
@@ -12,6 +12,7 @@ import {
 import { useSetWeaponJson } from 'hooks/useSetWeaponJson'
 import { useCompleteAnimation } from 'hooks/useCompleteAnimation'
 import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
+import { useHandleProjectCloseConfirmModal } from 'hooks/useHandleProjectCloseConfirmModal'
 import { reorderList, getRefreshedListsVertical } from 'utils/controlList'
 import { moveTask, adjustTasksInfoToUpdate } from 'utils/controlTask'
 import toast from 'utils/toast/toast'
@@ -28,8 +29,11 @@ type UseProjectDetailDragEndArg = {
 
 type UseProjectDetailDragEndReturn = {
   onDragEnd: (result: DropResult) => Promise<void>
-  shouldProjectClose: boolean
-}
+  shouldOpenProjectCloseModal: boolean
+} & Pick<
+  ReturnType<typeof useHandleProjectCloseConfirmModal>,
+  'onClickCancelBtn' | 'onClickProjectCloseBtn' | 'hasClearedProject'
+>
 
 type UseProjectDetailDragEnd = (arg: UseProjectDetailDragEndArg) => UseProjectDetailDragEndReturn
 
@@ -49,24 +53,23 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 }) => {
   const { id: projectId } = useParams()
   const { currentUser } = useAuthContext()
+  const [dropResult, setDropResult] = useState<DropResult | null>(null)
+  const includesYouInAllocations = useRef<boolean>(false)
+  const {
+    shouldOpenProjectCloseModal,
+    onClickProjectCloseBtn,
+    onClickCancelBtn,
+    handleProjectCloseConfirmModalPromise,
+    hasClickedProjectCloseBtn,
+    hasClickedCancelBtn,
+    hasClearedProject,
+  } = useHandleProjectCloseConfirmModal(projectId, currentUser?.uid)
   const { data } = useEndTaskSubscription({
     variables: {
       project_id: String(projectId),
       user_id: String(currentUser?.uid),
     },
   })
-
-  useEffect(() => {
-    if (!data) return
-
-    const { is_completed, high_status_name } = data.endTask
-    if (!is_completed) return
-    if (assertStatusParam(high_status_name) && !shouldProjectClose) {
-      setWeapon(high_status_name)
-      setIsCompleted(true)
-    }
-  }, [data])
-
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
       logger.debug(data)
@@ -81,72 +84,127 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       toast.error('リスト更新に失敗しました')
     },
   })
-  const [shouldProjectClose, setShouldProjectClose] = useState<boolean>(false)
 
-  const handleDroppedColumnList: HandleDroppedColumnList = async ({
-    destinationIndex,
-    sourceIndex,
-    listsCopy,
-  }) => {
-    if (destinationIndex === 0) {
-      toast.warning('未着手は固定されています')
-      return
-    }
-    if (destinationIndex === lists.length - 1) {
-      toast.warning('完了は固定されています')
-      return
-    }
-    const result = reorderList(listsCopy, sourceIndex, destinationIndex)
-    setLists(result)
-    const updateListSort = result.map((list, index) => ({
-      id: list.sort_id,
-      task_list: index,
-    }))
+  const handleDroppedColumnList: HandleDroppedColumnList = useCallback(
+    async ({ destinationIndex, sourceIndex, listsCopy }) => {
+      if (destinationIndex === 0) {
+        toast.warning('未着手は固定されています')
+        return
+      }
+      if (destinationIndex === lists.length - 1) {
+        toast.warning('完了は固定されています')
+        return
+      }
+      const result = reorderList(listsCopy, sourceIndex, destinationIndex)
+      setLists(result)
+      const updateListSort = result.map((list, index) => ({
+        id: list.sort_id,
+        task_list: index,
+      }))
 
-    await updateList({ variables: { listSort: updateListSort } })
-  }
+      await updateList({ variables: { listSort: updateListSort } })
+    },
+    [lists],
+  )
 
-  const onDragEnd = async (result: DropResult) => {
-    if (!result.destination) return
-    const { source, destination, type } = result
-    const destinationDroppableId = Number(destination.droppableId)
-    const sourceDroppableId = Number(source.droppableId)
-    const destinationIndex = destination.index
-    const sourceIndex = source.index
-    if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
+  const onDragEnd = useCallback(
+    async (result: DropResult) => {
+      if (!result.destination) return
+      const { source, destination, type } = result
+      const destinationDroppableId = Number(destination.droppableId)
+      const sourceDroppableId = Number(source.droppableId)
+      const destinationIndex = destination.index
+      const sourceIndex = source.index
+      if (destinationDroppableId === sourceDroppableId && destinationIndex === sourceIndex) return
 
-    const listsCopy = [...lists]
+      const listsCopy = [...lists]
 
-    if (type === DROP_TYPE.COLUMN) {
-      handleDroppedColumnList({ destinationIndex, sourceIndex, listsCopy })
-      return
-    }
+      if (type === DROP_TYPE.COLUMN) {
+        handleDroppedColumnList({ destinationIndex, sourceIndex, listsCopy })
+        return
+      }
 
-    moveTask({
-      listsCopy,
-      sourceDroppableId,
-      sourceIndex,
-      destinationDroppableId,
-      destinationIndex,
-    })
+      moveTask({
+        listsCopy,
+        sourceDroppableId,
+        sourceIndex,
+        destinationDroppableId,
+        destinationIndex,
+      })
 
-    const sortedListsCopy = getRefreshedListsVertical(listsCopy)
-    const tasksInfoToUpdate = adjustTasksInfoToUpdate(sortedListsCopy)
-    setShouldProjectClose(tasksInfoToUpdate.every(task => task.completed_flg))
+      if (dropResult) {
+        setDropResult(null)
+        return
+      }
 
-    logger.table([...tasksInfoToUpdate])
+      const sortedListsCopy = getRefreshedListsVertical(listsCopy)
+      const tasksInfoToUpdate = adjustTasksInfoToUpdate(sortedListsCopy)
+      const isAboutToMoveLastTaskToCompleted = tasksInfoToUpdate.every(task => task.completed_flg)
 
-    setLists(listsCopy)
-    await updateTaskSort({
-      variables: {
-        updateTasks: {
-          tasks: tasksInfoToUpdate,
-          project_id: String(projectId),
-          user_id: firebaseCurrentUser?.uid ?? '',
+      if (isAboutToMoveLastTaskToCompleted) {
+        setDropResult(result)
+        const { hasAgreed } = await handleProjectCloseConfirmModalPromise()
+        if (!hasAgreed) return
+      }
+
+      logger.table([...tasksInfoToUpdate])
+
+      setLists([...listsCopy])
+
+      const user_id = firebaseCurrentUser?.uid ?? ''
+      const allocationUserIds = listsCopy[destinationDroppableId].tasks[
+        destinationIndex
+      ].allocations.map(v => v.id)
+      includesYouInAllocations.current = allocationUserIds.includes(user_id)
+
+      await updateTaskSort({
+        variables: {
+          updateTasks: {
+            tasks: tasksInfoToUpdate,
+            project_id: String(projectId),
+            user_id,
+          },
         },
-      },
-    })
-  }
+      })
+    },
+    [lists, dropResult],
+  )
 
-  return { onDragEnd, shouldProjectClose }
+  useEffect(() => {
+    const revertDragEndResult = () => {
+      if (!hasClickedCancelBtn.current || !dropResult) return
+      const temp = dropResult.destination
+      dropResult.destination = dropResult.source
+      dropResult.source = temp ?? dropResult.source
+      onDragEnd(dropResult)
+      hasClickedCancelBtn.current = false
+    }
+
+    revertDragEndResult()
+  }, [hasClickedCancelBtn.current])
+
+  // これがないと完了したタスクでもアサインの更新ができてしまう
+  useEffect(() => {
+    if (!data) return
+
+    const { is_completed, high_status_name } = data.endTask
+    if (!is_completed) return
+    if (
+      !hasClickedProjectCloseBtn.current &&
+      includesYouInAllocations.current &&
+      assertStatusParam(high_status_name)
+    ) {
+      setWeapon(high_status_name)
+      setIsCompleted(true)
+    }
+    includesYouInAllocations.current = false
+  }, [data])
+
+  return {
+    onDragEnd,
+    shouldOpenProjectCloseModal,
+    onClickProjectCloseBtn,
+    onClickCancelBtn,
+    hasClearedProject,
+  }
 }

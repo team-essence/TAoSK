@@ -1,10 +1,10 @@
 export const STATUS_TYPE = {
   TECHNOLOGY: 'technology',
-  ACHIEVEMENT: 'achievement',
   SOLUTION: 'solution',
+  ACHIEVEMENT: 'achievement',
+  PLAN: 'plan',
   MOTIVATION: 'motivation',
   DESIGN: 'design',
-  PLAN: 'plan',
 } as const
 
 export const INITIAL_STATUS_COUNTS = {

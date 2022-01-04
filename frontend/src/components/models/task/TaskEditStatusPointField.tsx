@@ -4,6 +4,7 @@ import { TaskStatusPointField } from 'components/models/task/TaskStatusPointFiel
 import { CoarseRedOxideButton } from 'components/ui/button/CoarseRedOxideButton'
 import { useTaskStatusPointEditForm } from 'hooks/useTaskStatusPointEditForm'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { statusCompare } from 'utils/statusCompare'
 import { STATUS_TYPE } from 'consts/status'
 import { StatusParam } from 'types/status'
 
@@ -23,15 +24,17 @@ export const TaskEditStatusPointField: FCX<Props> = ({
   return (
     <StyledWrapper className={className}>
       <StyledH3>獲得ステータスポイント</StyledH3>
-      {Object.values(STATUS_TYPE).map((status, index) => (
-        <TaskStatusPointField
-          status={status}
-          statusCounts={initialStatusCounts}
-          setStatusCounts={setStatusCounts}
-          completedFlag={completedFlag}
-          key={index}
-        />
-      ))}
+      {Object.values(STATUS_TYPE)
+        .sort(statusCompare)
+        .map((status, index) => (
+          <TaskStatusPointField
+            status={status}
+            statusCounts={initialStatusCounts}
+            setStatusCounts={setStatusCounts}
+            completedFlag={completedFlag}
+            key={index}
+          />
+        ))}
       <StyledSaveButtonWrapper>
         <CoarseRedOxideButton text="保存" onClick={onClickSaveButton} disabled={disabled} />
       </StyledSaveButtonWrapper>

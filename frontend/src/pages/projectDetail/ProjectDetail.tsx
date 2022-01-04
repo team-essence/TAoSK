@@ -19,6 +19,7 @@ import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFig
 import { ProjectDetailHeader } from 'components/ui/header/ProjectDetailHeader'
 import { LazyLoading } from 'components/ui/loading/LazyLoading'
 import { TaskCompleteAnimation } from 'components/models/task/animation/TaskCompleteAnimation'
+import { ConfirmModal } from 'components/ui/modal/ConfirmModal'
 import { ProjectClearOverlay } from 'components/models/project/ProjectClearOverlay'
 import { useProjectDetailDragEnd } from 'hooks/useProjectDetailDragEnd'
 import { useProjectDetail } from 'hooks/useProjectDetail'
@@ -69,7 +70,13 @@ export const ProjectDetail: FC = () => {
     },
   })
 
-  const { onDragEnd, shouldProjectClose } = useProjectDetailDragEnd({
+  const {
+    onDragEnd,
+    shouldOpenProjectCloseModal,
+    onClickProjectCloseBtn,
+    onClickCancelBtn,
+    hasClearedProject,
+  } = useProjectDetailDragEnd({
     lists,
     setLists,
     setWeapon,
@@ -109,7 +116,6 @@ export const ProjectDetail: FC = () => {
   return (
     <>
       <LazyLoading />
-      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
       <ProjectDetailHeader
         iconImage={currentUserData?.icon_image ?? DEFAULT_USER}
         name={currentUserData?.name ?? ''}
@@ -119,13 +125,15 @@ export const ProjectDetail: FC = () => {
         notifications={notifications}
         lists={lists}
         groups={projectData.data?.getProjectById.groups ?? []}
+        isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
       />
       <StyledProjectDetailContainer>
         <StyledProjectDetailLeftContainer>
           <ProjectDrawer
-            groups={projectData.data?.getProjectById.groups}
+            groups={projectData.data?.getProjectById.groups ?? []}
             lists={lists}
             onDragEnd={onDragEnd}
+            isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
           />
           {!!currentUserData && (
             <ProjectMyInfo
@@ -133,6 +141,7 @@ export const ProjectDetail: FC = () => {
               iconImage={currentUserData.icon_image}
               occupation={currentUserData.occupation.name}
               totalExp={currentUserData.exp}
+              isTaskCompleted={isCompleted}
             />
           )}
         </StyledProjectDetailLeftContainer>
@@ -143,10 +152,22 @@ export const ProjectDetail: FC = () => {
             monsterHp={monsterTotalHP}
             monsterName={projectData.data?.getProjectById.monster.name ?? ''}
             isTasks={isTasks}
+            isCompletedProject={projectData.data?.getProjectById.project_end_flg ?? true}
           />
         </StyledProjectDetailRightContainer>
       </StyledProjectDetailContainer>
-      <ProjectClearOverlay shouldOpen={shouldProjectClose} />
+
+      {isCompleted && <TaskCompleteAnimation ref={anchorEl} />}
+
+      <ConfirmModal
+        title="確認"
+        message="最後のタスクを完了し、プロジェクトをクローズしますか?"
+        shouldShow={shouldOpenProjectCloseModal}
+        onClickAcceptBtn={onClickProjectCloseBtn}
+        onClickCloseBtn={onClickCancelBtn}
+      />
+
+      <ProjectClearOverlay shouldOpen={hasClearedProject} />
       <StyledBackground />
     </>
   )

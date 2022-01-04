@@ -1,6 +1,7 @@
 import React, { FCX, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { SearchTask } from 'types/task'
+import { Groups } from 'types/groups'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { convertIntoRGBA } from 'utils/color/convertIntoRGBA'
 import { TaskCardPopup } from 'components/ui/popup/TaskCardPopup'
@@ -8,10 +9,15 @@ import { TaskEditModal } from 'components/models/task/TaskEditModal'
 
 type Props = {
   searchedTasks: SearchTask[]
-}
+  isCompletedProject: boolean
+} & Groups
 
-// TODO: モーダルが出来次第、タスクモーダルが開く処理をかく
-export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
+export const SearchTaskPopup: FCX<Props> = ({
+  className,
+  searchedTasks,
+  isCompletedProject,
+  groups,
+}) => {
   const [isTask, setIsTask] = useState(false)
   const [shouldShowModal, setShouldShowModal] = useState<boolean>(false)
 
@@ -68,6 +74,8 @@ export const SearchTaskPopup: FCX<Props> = ({ className, searchedTasks }) => {
                           {...task}
                           shouldShow={shouldShowModal}
                           setShouldShow={setShouldShowModal}
+                          isCompletedProject={isCompletedProject}
+                          groups={groups}
                         />
                       </div>
                     ))}

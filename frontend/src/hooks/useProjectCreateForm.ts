@@ -4,10 +4,11 @@ import {
   useCreateProjectMutation,
   CreateProjectMutationVariables,
 } from 'pages/projectList/projectList.gen'
-import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import toast from 'utils/toast/toast'
 import type { RatingProps } from '@mui/material/Rating'
 import type { UserData } from 'types/userData'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
+import logger from 'utils/debugger/logger'
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
@@ -24,12 +25,18 @@ type UseProjectCreateFormReturn<T> = {
   setUserData: Dispatch<SetStateAction<UserData>>
 }
 
-type UseProjectCreateForm<T> = (args: { closeModal: () => void }) => UseProjectCreateFormReturn<T>
+type UseProjectCreateForm<T> = (args: {
+  closeModal: () => void
+  setCurrentUserData: Dispatch<SetStateAction<GetCurrentUserQuery['user'] | undefined>>
+}) => UseProjectCreateFormReturn<T>
 
 /**
  * プロジェクト作成に関する処理
  */
-export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeModal }) => {
+export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({
+  closeModal,
+  setCurrentUserData,
+}) => {
   const {
     register,
     handleSubmit,
@@ -38,7 +45,6 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
     setValue,
     watch,
   } = useForm<FormInputs>({ mode: 'onChange' })
-  const { currentUserData } = useGetCurrentUserData()
   const [isDisabled, setIsDisabled] = useState<boolean>(true)
   const isComponentMounted = useRef<boolean>(false)
   const watchAllFields = watch()
@@ -46,10 +52,13 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
   const [difficulty, setDifficulty] = useState<number>(1)
   const [createProject] = useCreateProjectMutation({
     onCompleted(data) {
+      setUserData([])
       closeModal()
+      setCurrentUserData({ ...data?.createProject })
       toast.success('プロジェクトを作成しました')
     },
     onError(err) {
+      logger.debug(err, 'create project error')
       toast.error('プロジェクトの作成に失敗しました')
     },
   })
@@ -78,13 +87,6 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
       },
     })
   }, [userData, difficulty])
-
-  useEffect(() => {
-    if (!currentUserData) return
-    if (!userData.length) {
-      setUserData([currentUserData])
-    }
-  }, [currentUserData])
 
   useEffect(() => {
     const initializeInputValues = () => {

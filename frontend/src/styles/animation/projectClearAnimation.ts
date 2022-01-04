@@ -45,9 +45,16 @@ const stampKeyframes = keyframes`
   }
 `
 
+const ANIMATION_DURATION_MS = 250
+const ANIMATION_DELAY_MS = 100
+export const OPACITY_TRANSITION_DURATION_MS = 250
+export const ANIMATION_TIME_MS = ANIMATION_DURATION_MS + ANIMATION_DELAY_MS
+
 export const animation = {
   stamp: css`
-    animation: ${stampKeyframes} 250ms 100ms both linear;
-    will-change: animation, transform;
+    animation: ${stampKeyframes} ${ANIMATION_DURATION_MS}ms ${ANIMATION_DELAY_MS}ms both linear;
+    // cubic-bezierの値はMuiBackdropにかかっているtransitionと同じ
+    transition: opacity ${OPACITY_TRANSITION_DURATION_MS} cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: animation, transform, opacity;
   `,
 } as const

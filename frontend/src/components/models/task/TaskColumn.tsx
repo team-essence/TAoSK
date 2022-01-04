@@ -1,6 +1,7 @@
 import React, { FCX, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { List } from 'types/list'
+import { Groups } from 'types/groups'
 import { DROP_TYPE } from 'consts/dropType'
 import { theme } from 'styles/theme'
 import toast from 'utils/toast/toast'
@@ -29,9 +30,20 @@ import logger from 'utils/debugger/logger'
 type Props = {
   listIndex: number
   listLength: number
-} & Omit<List, 'sort_id' | 'index'>
+  isCompletedProject: boolean
+} & Omit<List, 'sort_id' | 'index'> &
+  Groups
 
-export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, listLength }) => {
+export const TaskColumn: FCX<Props> = ({
+  id,
+  list_id,
+  title,
+  tasks,
+  listIndex,
+  listLength,
+  isCompletedProject,
+  groups,
+}) => {
   const listTitle = useInput(title)
   const control = useControlTextArea()
   const { id: projectId } = useParams()
@@ -70,7 +82,7 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
     <Draggable
       draggableId={`column-${id}`}
       index={listIndex}
-      isDragDisabled={listIndex === 0 || listLength - 1 === listIndex}>
+      isDragDisabled={listIndex === 0 || listLength - 1 === listIndex || isCompletedProject}>
       {provided => (
         <StyledContainer
           ref={provided.innerRef}
@@ -108,42 +120,55 @@ export const TaskColumn: FCX<Props> = ({ id, list_id, title, tasks, listIndex, l
                         maxLength={255}
                       />
                     </StyledTitle>
-                    {listIndex !== 0 && listIndex !== listLength - 1 && listLength !== 3 && (
-                      <>
-                        <StyledSpreadIcon
-                          src="/svg/spread.svg"
-                          alt="spread"
-                          onClick={openPopover}
-                        />
-                        <SmallPopover
-                          anchorEl={anchorEl}
-                          anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                          }}
-                          handleClose={closePopover}
-                          handleRemove={() => handleRemoveList(Number(id), projectId)}
-                          handleEdit={e => !!e && control.enableTextArea(e)}
-                        />
-                      </>
-                    )}
+                    {listIndex !== 0 &&
+                      listIndex !== listLength - 1 &&
+                      listLength !== 3 &&
+                      !isCompletedProject && (
+                        <>
+                          <StyledSpreadIcon
+                            src="/svg/spread.svg"
+                            alt="spread"
+                            onClick={openPopover}
+                          />
+                          <SmallPopover
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                              vertical: 'bottom',
+                              horizontal: 'left',
+                            }}
+                            handleClose={closePopover}
+                            handleRemove={() => handleRemoveList(Number(id), projectId)}
+                            handleEdit={e => !!e && control.enableTextArea(e)}
+                          />
+                        </>
+                      )}
                   </StyledInnerHeadWrap>
                 </StyledHeadContainer>
                 <StyledTaskListContainer headerHeight={height}>
                   {listIndex === 0 && (
                     <>
                       <StyledButtonContainer>
-                        <CreateTaskButton onClick={() => setShouldShowModal(true)} />
+                        <CreateTaskButton
+                          onClick={() => setShouldShowModal(true)}
+                          disabled={isCompletedProject}
+                        />
                       </StyledButtonContainer>
                       <TaskCreateModal
-                        shouldShow={shouldShowModal}
+                        shouldShow={shouldShowModal && !isCompletedProject}
                         closeModal={() => setShouldShowModal(false)}
                         verticalSort={tasks.length}
                         list_id={list_id}
+                        groups={groups}
                       />
                     </>
                   )}
-                  <TaskList tasks={tasks} listIndex={listIndex} listLength={listLength} />
+                  <TaskList
+                    tasks={tasks}
+                    listIndex={listIndex}
+                    listLength={listLength}
+                    isCompletedProject={isCompletedProject}
+                    groups={groups}
+                  />
                   {listProvided.placeholder}
                 </StyledTaskListContainer>
               </StyledColumnContainer>

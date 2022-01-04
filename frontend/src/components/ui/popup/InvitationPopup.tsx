@@ -1,11 +1,11 @@
 import React, { FCX, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
+import { Groups } from 'types/groups'
 import { calculateMinSizeBasedOnFigmaWidth } from 'utils/calculateSizeBasedOnFigma'
 import { CoverPopup, POPUP_TYPE } from 'components/ui/popup/CoverPopup'
 import { useDebounce } from 'hooks/useDebounce'
 import { useAuthContext } from 'providers/AuthProvider'
 import {
-  GetProjectQuery,
   useCreateInvitationMutation,
   useSearchUsersLazyQuery,
 } from 'pages/projectDetail/projectDetail.gen'
@@ -19,8 +19,7 @@ type Props = {
   isClick: boolean
   company: string
   closeClick: () => void
-  groups: GetProjectQuery['getProjectById']['groups']
-}
+} & Groups
 
 export const InvitationPopup: FCX<Props> = ({
   className,
