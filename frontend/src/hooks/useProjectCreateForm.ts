@@ -8,6 +8,8 @@ import { useGetCurrentUserData } from 'hooks/useGetCurrentUserData'
 import toast from 'utils/toast/toast'
 import type { RatingProps } from '@mui/material/Rating'
 import type { UserData } from 'types/userData'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
+import logger from 'utils/debugger/logger'
 
 // TODO: dateの型に関しては一応stringとしてる、適切な型があれば変える
 type FormInputs = Record<'title' | 'overview' | 'date', string>
@@ -24,12 +26,18 @@ type UseProjectCreateFormReturn<T> = {
   setUserData: Dispatch<SetStateAction<UserData>>
 }
 
-type UseProjectCreateForm<T> = (args: { closeModal: () => void }) => UseProjectCreateFormReturn<T>
+type UseProjectCreateForm<T> = (args: {
+  closeModal: () => void
+  setCurrentUserData: Dispatch<SetStateAction<GetCurrentUserQuery['user'] | undefined>>
+}) => UseProjectCreateFormReturn<T>
 
 /**
  * プロジェクト作成に関する処理
  */
-export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeModal }) => {
+export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({
+  closeModal,
+  setCurrentUserData,
+}) => {
   const {
     register,
     handleSubmit,
@@ -47,9 +55,11 @@ export const useProjectCreateForm: UseProjectCreateForm<FormInputs> = ({ closeMo
   const [createProject] = useCreateProjectMutation({
     onCompleted(data) {
       closeModal()
+      setCurrentUserData({ ...data?.createProject })
       toast.success('プロジェクトを作成しました')
     },
     onError(err) {
+      logger.debug(err, 'create project error')
       toast.error('プロジェクトの作成に失敗しました')
     },
   })

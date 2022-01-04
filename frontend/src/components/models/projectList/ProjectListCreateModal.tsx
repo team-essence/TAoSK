@@ -1,4 +1,4 @@
-import React, { FCX } from 'react'
+import React, { FCX, Dispatch, SetStateAction } from 'react'
 import styled, {
   css,
   FlattenInterpolation,
@@ -19,13 +19,20 @@ import { EmptyStarIcon } from 'components/ui/icon/EmptyStarIcon'
 import { useProjectCreateForm } from 'hooks/useProjectCreateForm'
 import { useSearchSameCompanyMember } from 'hooks/useSearchSameCompanyMember'
 import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
+import { GetCurrentUserQuery } from 'pages/projectDetail/getUser.gen'
 
 type Props = {
   shouldShow: boolean
   closeModal: () => void
+  setCurrentUserData: Dispatch<SetStateAction<GetCurrentUserQuery['user'] | undefined>>
 }
 
-export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, className }) => {
+export const ProjectListCreateModal: FCX<Props> = ({
+  shouldShow,
+  closeModal,
+  setCurrentUserData,
+  className,
+}) => {
   const {
     register,
     isDisabled,
@@ -35,7 +42,7 @@ export const ProjectListCreateModal: FCX<Props> = ({ shouldShow, closeModal, cla
     difficulty,
     handleDifficulty,
     handleCreateProject,
-  } = useProjectCreateForm({ closeModal })
+  } = useProjectCreateForm({ closeModal, setCurrentUserData })
   const returnOfUseSearchSameCompanyMember = useSearchSameCompanyMember({
     userData,
     shouldCache: true,

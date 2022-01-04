@@ -220,7 +220,7 @@ type Mutation {
   updateInterests(contexts: [String!]!, user_id: String!): [Interest!]!
   addCompany(newCompany: NewCompanyInput!): Company!
   creteOccupation(name: String!): Occupation!
-  createProject(selectUser: SelectUser!, newProject: NewProjectInput!): Project!
+  createProject(selectUser: SelectUser!, newProject: NewProjectInput!): User!
   completeProject(endProject: EndProjectInput!): Project!
   joinProject(projectId: String!, userId: String!, invitationId: String!): Group!
   createInvitation(projectId: String!, userId: String!): Invitation!

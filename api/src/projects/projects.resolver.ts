@@ -24,7 +24,7 @@ export class ProjectsResolver {
     return project;
   }
 
-  @Mutation(() => Project)
+  @Mutation(() => User)
   async createProject(
     @Args({ name: 'newProject' }) newProject: NewProjectInput,
     @Args({ name: 'selectUser' }) selectUser: SelectUser,
@@ -51,7 +51,7 @@ export class ProjectsResolver {
       });
     }
 
-    return newProjectData.project;
+    return newProjectData.currentUser;
   }
 
   @Mutation(() => Project)
@@ -65,9 +65,15 @@ export class ProjectsResolver {
 
   @Subscription((returns) => User, {
     filter: (payload, variables) => {
+      console.log(variables.userId);
+      console.log(payload.projectCreate.userId);
+      console.log(payload.projectCreate.userId === variables.userId);
+
       return payload.projectCreate.userId === variables.userId;
     },
     resolve: (values) => {
+      console.log(values.projectCreate.user);
+
       return values.projectCreate.user;
     },
   })
