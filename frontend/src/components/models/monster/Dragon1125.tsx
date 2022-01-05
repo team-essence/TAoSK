@@ -36,10 +36,12 @@ type ActionProps = {
   actionName: MonsterActionName
 }
 
+const dragonModelUrl = 'https://haltokyo.blob.core.windows.net/cg-container/dragon1125.glb'
+
 export default function Model({ ...props }: JSX.IntrinsicElements['group'] & ActionProps) {
   const group = useRef<THREE.Group>()
   const { actionName } = props
-  const { nodes, materials, animations } = useGLTF('/cg/dragon1125.glb') as GLTFResult
+  const { nodes, materials, animations } = useGLTF(dragonModelUrl) as GLTFResult
   const { actions, mixer } = useAnimations<AnimationClip>(animations, group)
   const [nowActionName, setNowActionName] = useState<MonsterActionName>('idle')
   useEffect(() => {
@@ -81,4 +83,4 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group'] & Act
   )
 }
 
-useGLTF.preload('/cg/dragon1125.glb')
+useGLTF.preload(dragonModelUrl)
