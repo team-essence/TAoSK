@@ -27,4 +27,5 @@ const StyledCgCanvasWrapper = styled.div<{ canvasBackgroundImg: CANVAS_BACKGROUN
   background: url(${({ canvasBackgroundImg }) => canvasBackgroundImg});
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 `
