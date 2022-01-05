@@ -6,6 +6,7 @@ import { CANVAS_BACKGROUND_IMG, CgCanvasWrapper } from '../cg/CgCanvasWrapper'
 import { CgAvatarContainer } from '../cg/CgAvatarContainer'
 import Model, { MonsterActionName } from './Dragon1125'
 import styled from 'styled-components'
+import { calculateMinSizeBasedOnFigma } from 'utils/calculateSizeBasedOnFigma'
 
 export const MonsterAvatar: FCX = ({ className }) => {
   const [monsterActionName, setMonsterActionName] = useState<MonsterActionName>('idle')
@@ -71,15 +72,15 @@ const StyledButtonContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 12px 0;
-  top: 10px;
-  left: 10px;
-  z-index: 5;
+  gap: ${calculateMinSizeBasedOnFigma(12)} 0;
+  top: ${calculateMinSizeBasedOnFigma(10)};
+  left: ${calculateMinSizeBasedOnFigma(10)};
+  z-index: ${({ theme }) => theme.Z_INDEX.INDEX_5};
 `
 
 const StyledButton = styled.div`
-  width: 20px;
-  height: 20px;
+  width: ${calculateMinSizeBasedOnFigma(20)};
+  height: ${calculateMinSizeBasedOnFigma(20)};
   background: #fff;
   display: flex;
   align-items: center;
