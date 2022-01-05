@@ -2,9 +2,9 @@ import React, { FCX, ReactNode } from 'react'
 import styled from 'styled-components'
 
 export const CANVAS_BACKGROUND_IMG = {
-  MORNING: '/cgBackground/morning.webp',
-  AFTERNOON: '/cgBackground/afternoon.webp',
-  NIGHT: '/cgBackground/night.webp',
+  MORNING: '/cgBackground/morning.jpg',
+  AFTERNOON: '/cgBackground/afternoon.jpg',
+  NIGHT: '/cgBackground/night.jpg',
 } as const
 export type CANVAS_BACKGROUND_IMG = typeof CANVAS_BACKGROUND_IMG[keyof typeof CANVAS_BACKGROUND_IMG]
 
