@@ -101,7 +101,7 @@ const StyledMyPageBackground = styled.div`
   position: fixed;
   left: 0;
   width: 100vw;
-  background: url('/images/my-page_background.webp');
+  background: url('/images/my-page_background.jpg');
   background-attachment: fixed;
   background-position: cover;
   background-size: 100% 100%;

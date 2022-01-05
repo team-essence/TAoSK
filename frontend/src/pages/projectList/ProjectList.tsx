@@ -215,7 +215,7 @@ const StyledProjectListBackground = styled.div`
       width: 100vw;
       height: calc(100vh - ${theme.HEADER_HEIGHT});
     `}
-  background: url('/images/project-list-page_background.webp');
+  background: url('/images/project-list-page_background.jpg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
 `

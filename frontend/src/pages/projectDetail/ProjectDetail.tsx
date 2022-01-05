@@ -210,7 +210,7 @@ const StyledBackground = styled.div`
   position: fixed;
   left: 0;
   width: 100vw;
-  background: url('/images/project-detail_background.webp');
+  background: url('/images/project-detail_background.jpg');
   background-attachment: fixed;
   background-position: cover;
   background-size: 100% 100%;
