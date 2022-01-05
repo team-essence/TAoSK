@@ -5,6 +5,7 @@ export const CANVAS_BACKGROUND_IMG = {
   MORNING: '/cgBackground/morning.jpg',
   AFTERNOON: '/cgBackground/afternoon.jpg',
   NIGHT: '/cgBackground/night.jpg',
+  NORMAL: '/cgBackground/normal.jpg',
 } as const
 export type CANVAS_BACKGROUND_IMG = typeof CANVAS_BACKGROUND_IMG[keyof typeof CANVAS_BACKGROUND_IMG]
 
