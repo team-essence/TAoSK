@@ -4,6 +4,7 @@ import styled from 'styled-components'
 export const CANVAS_BACKGROUND_IMG = {
   MORNING: '/cgBackground/morning.webp',
   AFTERNOON: '/cgBackground/afternoon.webp',
+  NORMAL: '/cgBackground/normal.webp',
   NIGHT: '/cgBackground/night.webp',
 } as const
 export type CANVAS_BACKGROUND_IMG = typeof CANVAS_BACKGROUND_IMG[keyof typeof CANVAS_BACKGROUND_IMG]
@@ -26,4 +27,5 @@ const StyledCgCanvasWrapper = styled.div<{ canvasBackgroundImg: CANVAS_BACKGROUN
   background: url(${({ canvasBackgroundImg }) => canvasBackgroundImg});
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 `
