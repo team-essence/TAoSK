@@ -43,7 +43,28 @@ export default function Model({ ...props }: JSX.IntrinsicElements['group'] & Act
   const { actions, mixer } = useAnimations<AnimationClip>(animations, group)
   const [nowActionName, setNowActionName] = useState<MonsterActionName>('idle')
   useEffect(() => {
-    actions['idle']?.play()
+    logger.debug(nowActionName, actionName)
+    if (nowActionName === 'idle' && actionName === 'sleeping') {
+      actions['sleepStart']?.reset().fadeIn(1).play()
+      setNowActionName(actionName)
+
+      setTimeout(() => {
+        actions['sleepStart']?.reset().fadeOut(1).stop()
+        actions[actionName]?.play()
+      }, 1600)
+    } else if (nowActionName === 'sleeping' && actionName !== 'sleeping') {
+      actions['sleepEnd']?.play()
+      setNowActionName(actionName)
+
+      setTimeout(() => {
+        actions['sleepEnd']?.reset().fadeOut(1).stop()
+        actions[actionName]?.reset().play()
+      }, 2200)
+    } else {
+      setNowActionName(actionName)
+      actions[actionName]?.reset().fadeIn(1).play()
+    }
+    return () => void actions[actionName]?.fadeOut(1).play()
   }, [actionName])
 
   return (
