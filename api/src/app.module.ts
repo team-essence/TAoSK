@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -39,6 +40,11 @@ import { ChatsModule } from './chats/chats.module';
 import { GameLogsModule } from './game-logs/game-logs.module';
 import { EventsGateway } from './events/events.gateway';
 
+dotenv.config();
+const host = process.env.DATABASE_HOST;
+const username = process.env.DATABASE_USERNAME;
+const password = process.env.DATABASE_PASSWORD;
+
 @Module({
   imports: [
     GraphQLModule.forRoot({
@@ -51,10 +57,10 @@ import { EventsGateway } from './events/events.gateway';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'db-server',
+      host,
+      username,
+      password,
       port: 3306,
-      username: 'root',
-      password: 'password',
       database: 'taosk_db',
       entities: [
         User,
