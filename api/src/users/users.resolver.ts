@@ -158,6 +158,19 @@ export class UsersResolver {
     return user;
   }
 
+  @Mutation(() => User)
+  public async updateHpAndMp(userId: string) {
+    const user = await this.usersService.getUser(userId);
+
+    this.pubSub.publish('updateUserDataByBrain', {
+      updateUserDataByBrain: {
+        user,
+      },
+    });
+
+    return user;
+  }
+
   @Subscription((returns) => User, {})
   userAdded() {
     return this.pubSub.asyncIterator('userAdded');
@@ -201,6 +214,20 @@ export class UsersResolver {
   })
   updateUserData(@Args({ name: 'userId', type: () => String }) userId: string) {
     return this.pubSub.asyncIterator('updateUserData');
+  }
+
+  @Subscription((returns) => User, {
+    filter: (payload, variables) => {
+      return payload.updateUserDataByBrain.user.id === variables.userId;
+    },
+    resolve: (values) => {
+      return values.updateUserDataByBrain.user;
+    },
+  })
+  updateUserDataByBrain(
+    @Args({ name: 'userId', type: () => String }) userId: string,
+  ) {
+    return this.pubSub.asyncIterator('updateUserDataByBrain');
   }
 
   // @Mutation((returns) => Boolean)

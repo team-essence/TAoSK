@@ -214,6 +214,7 @@ type Mutation {
   updateMemo(memo: String!, id: String!): User!
   updateUserName(name: String!, id: String!): User!
   updateUserIconImage(icon_image: String!, id: String!): User!
+  updateHpAndMp: User!
   addCertification(newCertification: NewCertificationInput!): Certification!
   updateCertifications(names: [String!]!, user_id: String!): [Certification!]!
   addInterest(newInterest: NewInterestInput!): Interest!
@@ -389,6 +390,7 @@ type Subscription {
   updateLogsByOnline(projectId: String!): [GameLog!]!
   updateGroupsByOnline(projectId: String!): [Group!]!
   updateUserData(userId: String!): User!
+  updateUserDataByBrain(userId: String!): User!
   updateUserDataByCertification(userId: String!): User!
   updateUserDataByInterest(userId: String!): User!
   projectCreate(userId: String!): User!

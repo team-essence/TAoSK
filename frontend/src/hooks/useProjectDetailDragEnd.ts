@@ -69,6 +69,21 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
       project_id: String(projectId),
       user_id: String(currentUser?.uid),
     },
+    onSubscriptionData(data) {
+      if (!data.subscriptionData.data) return
+
+      const { is_completed, high_status_name } = data.subscriptionData.data.endTask
+      if (!is_completed) return
+      if (
+        !hasClickedProjectCloseBtn.current &&
+        includesYouInAllocations.current &&
+        assertStatusParam(high_status_name)
+      ) {
+        setWeapon(high_status_name)
+        setIsCompleted(true)
+      }
+      includesYouInAllocations.current = false
+    },
   })
   const [updateTaskSort] = useUpdateTaskSortMutation({
     onCompleted(data) {
@@ -182,23 +197,6 @@ export const useProjectDetailDragEnd: UseProjectDetailDragEnd = ({
 
     revertDragEndResult()
   }, [hasClickedCancelBtn.current])
-
-  // これがないと完了したタスクでもアサインの更新ができてしまう
-  useEffect(() => {
-    if (!data) return
-
-    const { is_completed, high_status_name } = data.endTask
-    if (!is_completed) return
-    if (
-      !hasClickedProjectCloseBtn.current &&
-      includesYouInAllocations.current &&
-      assertStatusParam(high_status_name)
-    ) {
-      setWeapon(high_status_name)
-      setIsCompleted(true)
-    }
-    includesYouInAllocations.current = false
-  }, [data])
 
   return {
     onDragEnd,

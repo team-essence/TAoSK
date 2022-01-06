@@ -9,6 +9,6 @@ async function bootstrap() {
     origin: '*',
     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
   });
-  await app.listen(3700);
+  await app.listen(process.env.PORT || 3700);
 }
 bootstrap();

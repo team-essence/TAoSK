@@ -7,6 +7,7 @@ import logger from 'utils/debugger/logger'
 import toast from 'utils/toast/toast'
 import Exp from 'utils/exp/exp'
 import { useNotificationSubscription } from './useNotificationSubscription'
+import { useUpdateUserByBrainSubscription } from './useUpdateUserByBrainSubscription'
 
 export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
   currentUserData: GetCurrentUserQuery['user'] | undefined,
@@ -14,6 +15,7 @@ export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
   setNotifications: Dispatch<SetStateAction<Notifications>>,
 ) => {
   const { updateUserByTask } = useUpdateUserByTaskSubscription()
+  const { updateUserByBrain } = useUpdateUserByBrainSubscription()
   useNotificationSubscription(setNotifications)
 
   useEffect(() => {
@@ -37,6 +39,11 @@ export const useFetchSubscriptionCurrentUserDataFromProjectDetail = (
       toast.success('ランクアップ')
     }
 
-    setUserData(updateUserByTask)
+    setUserData({ ...updateUserByTask })
   }, [updateUserByTask])
+
+  useEffect(() => {
+    if (!updateUserByBrain) return
+    setUserData({ ...updateUserByBrain })
+  }, [updateUserByBrain])
 }
