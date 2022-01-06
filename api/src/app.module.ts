@@ -44,12 +44,13 @@ dotenv.config();
 const host = process.env.DATABASE_HOST;
 const username = process.env.DATABASE_USERNAME;
 const password = process.env.DATABASE_PASSWORD;
+const subscriptionEndpoint = process.env.SUBSCRIPTION_ENDPOINT;
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       playground: {
-        subscriptionEndpoint: 'ws://localhost:3700/graphql',
+        subscriptionEndpoint,
       },
       debug: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
