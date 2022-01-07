@@ -72,7 +72,13 @@ export class TasksService {
       const task = await this.taskRepository.findOne(
         updateTask.tasks[index].id,
         {
-          relations: ['allocations', 'allocations.user'],
+          relations: [
+            'allocations',
+            'allocations.user',
+            'project',
+            'project.groups',
+            'project.groups.user',
+          ],
         },
       );
       if (!task) throw new NotFoundException();
@@ -182,6 +188,18 @@ export class TasksService {
               ],
             }),
           );
+        });
+
+        // socket周りの処理
+        const url = this.config.get('SOCKET_CLIENT_EVENTS');
+
+        const socket = io(url);
+        task.project.groups;
+        const usersId = task.project.groups.map((member) => member.user.id);
+        socket.emit('events', {
+          sender: '',
+          room: 'general',
+          message: usersId,
         });
 
         // ログ
@@ -503,18 +521,6 @@ export class TasksService {
         'project.groups.user',
       ],
     });
-
-    if (task.project.tasks.map((task) => task.completed_flg === true)) {
-      const url = this.config.get('SOCKET_CLIENT_EVENTS');
-      const socket = io(url);
-      task.project.groups;
-      const usersId = task.project.groups.map((member) => member.user.id);
-      socket.emit('events', {
-        sender: '',
-        room: 'general',
-        message: usersId,
-      });
-    }
 
     task.technology = technology;
     task.achievement = achievement;
