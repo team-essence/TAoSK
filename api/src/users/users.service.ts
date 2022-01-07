@@ -72,6 +72,13 @@ export class UsersService {
     return user;
   }
 
+  getUserHpMp(id: string): Promise<User> {
+    const user = this.usersRepository.findOne(id);
+    if (!user) throw new NotFoundException();
+
+    return user;
+  }
+
   getHrAllUsers(company: string): Promise<User[]> {
     const users = this.usersRepository.find({
       relations: [
