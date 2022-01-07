@@ -1,4 +1,11 @@
-import { Body, Controller, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Put,
+  Get,
+  Param,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { updateUserStatus } from 'src/users/dto/updateUserStatus.input';
 import { User } from 'src/users/user';
 import { UsersResolver } from 'src/users/users.resolver';
@@ -18,5 +25,10 @@ export class BrainWavesController {
     this.usersResolver.updateHpAndMp(userData.id);
 
     return userData;
+  }
+
+  @Get('/:id')
+  async getUserById(@Param('id') id: string) {
+    return await this.usersService.getUserHpMp(id);
   }
 }

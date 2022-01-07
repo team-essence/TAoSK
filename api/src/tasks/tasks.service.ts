@@ -199,7 +199,10 @@ export class TasksService {
         socket.emit('events', {
           sender: '',
           room: 'general',
-          message: usersId,
+          message: {
+            usersId,
+            statusName: highStatus.status_name,
+          },
         });
 
         // ログ
