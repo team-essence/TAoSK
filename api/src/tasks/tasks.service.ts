@@ -192,7 +192,6 @@ export class TasksService {
 
         // socket周りの処理
         const url = this.config.get('SOCKET_CLIENT_EVENTS');
-        console.log(url, '私はかみ');
 
         const socket = io(url);
         task.project.groups;
