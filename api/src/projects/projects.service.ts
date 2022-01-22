@@ -128,7 +128,7 @@ export class ProjectsService {
     });
 
     // リストの作成
-    for (let index = 0; index <= 3; index++) {
+    for (let index = 0; index <= 2; index++) {
       const listName = ['未着手', '進行中', '完了'];
 
       const list = this.listRepository.create({
